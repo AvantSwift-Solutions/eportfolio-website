@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "353162856816",
+    "project_id": "avantswiftsolutions",
+    "storage_bucket": "avantswiftsolutions.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:353162856816:android:865a97034d79dfa780e7b5",
+        "android_client_info": {
+          "package_name": "com.example.avantswift_portfolio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "353162856816-ft0dgikqcbdfvhhm7qhi0oockknohlam.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7mpzuuhMKOHuod3dllnlK6rrg2NxHwzM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "353162856816-ft0dgikqcbdfvhhm7qhi0oockknohlam.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
