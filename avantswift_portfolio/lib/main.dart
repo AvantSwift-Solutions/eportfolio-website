@@ -1,5 +1,10 @@
+import 'package:avantswift_portfolio/controller/login_controller.dart';
+import 'package:avantswift_portfolio/models/User.dart';
 import 'package:avantswift_portfolio/pages/default.dart';
-import 'package:avantswift_portfolio/pages/defaultNew.dart';
+import 'package:avantswift_portfolio/pages/login.dart';
+import 'package:avantswift_portfolio/services/auth_state.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
@@ -10,34 +15,78 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(MyApp());
+  final AuthState authState = AuthState(); // Create an instance of AuthState
+
+  runApp(MyApp(authState: authState));
 }
 
 class MyApp extends StatefulWidget {
-  MyApp({Key? key}) : super(key: key);
+  final AuthState authState;
+
+  MyApp({required this.authState, Key? key}) : super(key: key);
 
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
+  final LoginController loginController = LoginController();
+
   @override
   void initState() {
     super.initState();
+    mapAuthentication(); // Map authenticated user to local user model
+  }
+
+  Future<User?> mapAuthentication() async {
+    final auth.User? firebaseUser = widget.authState.getCurrentUser();
+    if (firebaseUser != null) {
+      final userDocument = await FirebaseFirestore.instance
+          .collection('User')
+          .doc(firebaseUser.uid)
+          .get();
+      final currentUser = User.fromDocumentSnapshot(userDocument);
+      loginController.onLoginSuccess(currentUser);
+      return currentUser;
+    }
+    return null;
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'AvantSwift Solutions',
-        theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
-        ),
-        initialRoute: '/home',
-        routes: {
-          '/home': (context) => DefaultPage(),
-          '/New_home': (context) => DefaultPageNew()
-        });
+      title: 'EnableOrg',
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
+      ),
+      initialRoute: '/login',
+      routes: {
+        '/login': (context) => LoginPage(
+              authState: widget.authState,
+              onLoginSuccess: (user) {
+                loginController.onLoginSuccess(user);
+                Navigator.pushNamed(context, '/home');
+              },
+            ),
+        '/home': (context) {
+          return FutureBuilder<User?>(
+            future: mapAuthentication(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Container(); // Return a placeholder widget while waiting
+              } else if (snapshot.hasError || snapshot.data == null) {
+                Future.delayed(Duration.zero, () {
+                  Navigator.pushNamed(context, '/login');
+                });
+                return Container(); // Return a fallback widget if the user is not authenticated or is a manager
+              } else {
+                return DefaultPage(user: snapshot.data!);
+              }
+            },
+          );
+        }
+      },
+    );
   }
 }

@@ -1,6 +1,5 @@
 // ignore_for_file: use_key_in_widget_constructors
 
-import 'package:avantswift_portfolio/pages/default.dart';
 import 'package:flutter/material.dart';
 
 class DefaultPageNew extends StatelessWidget {
