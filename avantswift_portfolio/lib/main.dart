@@ -1,12 +1,13 @@
 import 'package:avantswift_portfolio/controller/login_controller.dart';
 import 'package:avantswift_portfolio/models/User.dart';
-import 'package:avantswift_portfolio/pages/default.dart';
-import 'package:avantswift_portfolio/pages/login.dart';
+import 'package:avantswift_portfolio/admin_pages/default.dart';
+import 'package:avantswift_portfolio/admin_pages/login.dart';
 import 'package:avantswift_portfolio/services/auth_state.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'admin_pages/reset_password.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -85,7 +86,8 @@ class _MyAppState extends State<MyApp> {
               }
             },
           );
-        }
+        },
+        '/forgot-password': (context) => ResetPasswordScreen()
       },
     );
   }
