@@ -21,8 +21,7 @@ class CustomButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor:
-              const Color.fromARGB(255, 5, 36, 83), // Navy blue color
+          backgroundColor: Color.fromARGB(255, 0, 0, 0), // Navy blue color
           shape: ContinuousRectangleBorder(
             borderRadius: BorderRadius.circular(8.0), // Sharp rectangle shape
           ),
