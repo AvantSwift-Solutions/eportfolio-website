@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(
                   width: 600,
                   height: 196,
-                  child: Image.asset('logo.png'),
+                  child: Image.asset('logo.jpg'),
                 ),
                 const SizedBox(height: 20),
                 const Text(
@@ -89,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                     width: 160.0,
                     height: 36.0,
                     child: CustomButton(
-                      text: Text(
+                      text: const Text(
                         'Login',
                         style: TextStyle(
                           color: Colors.white,
@@ -107,20 +107,20 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/user/login');
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/forgot-password');
                   },
-                  child: Text('User Login'),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  'Forgot your password?',
-                  style: TextStyle(
-                    color: Color(0xFF161D58),
-                    fontSize: 16,
-                    fontFamily: 'Cormorant Garamond',
-                    fontWeight: FontWeight.w400,
+                  child: const Text(
+                    'Forgot your password?',
+                    style: TextStyle(
+                      color: Color(0xFF161D58),
+                      fontSize: 16,
+                      fontFamily: 'Cormorant Garamond',
+                      fontWeight: FontWeight.w400,
+                      decoration: TextDecoration
+                          .underline, // Add underline to mimic link
+                    ),
                   ),
                 ),
               ],
@@ -159,8 +159,8 @@ class _LoginPageState extends State<LoginPage> {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Login Error'),
-            content: Text('Failed to log in. Please try again.'),
+            title: const Text('Login Error'),
+            content: const Text('Failed to log in. Please try again.'),
             actions: [
               TextButton(
                 onPressed: () {
@@ -173,18 +173,18 @@ class _LoginPageState extends State<LoginPage> {
         );
       }
     } catch (e) {
-      print('Login Error: $e');
+      // print('Login Error: $e');
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Login Error'),
-          content: Text('Failed to log in. Please try again.'),
+          title: const Text('Login Error'),
+          content: const Text('Failed to log in. Please try again.'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         ),
