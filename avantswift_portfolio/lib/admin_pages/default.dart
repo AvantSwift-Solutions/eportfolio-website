@@ -10,12 +10,10 @@ class DefaultPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('My Website - ${user.name}'),
-      ),
+      appBar: AppBar(),
       body: const Center(
         child: Text(
-          'Welcome to my website',
+          'Welcome to your website',
           style: TextStyle(fontSize: 24),
         ),
       ),
