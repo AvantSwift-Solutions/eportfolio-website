@@ -19,13 +19,11 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.10'
+          cache: true
 
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Install lcov
-        run: sudo apt-get install lcov
-    
       - name: Verify formatting
         run: dart format .
 
@@ -34,12 +32,15 @@ jobs:
       
       - name: Run tests with coverage
         run: flutter test --coverage || true
+      
+      - name: Install lcov
+        run: sudo apt-get install lcov
 
       - name: Publish coverage report
         uses: actions/upload-artifact@v2
         with:
           name: coverage-report
-          path: coverage/lcov-report
+          path: coverage/lcov.info
 
       - name: Check coverage threshold and set job status
         run: |
