@@ -31,7 +31,7 @@ jobs:
         run: flutter analyze || true
       
       - name: Run tests with coverage
-        run: flutter test -r compact > test_results.txt || true
+        run: flutter test -r compact | tee test_results.txt || true
 
       - name: Check coverage threshold and set job status
         run: |
