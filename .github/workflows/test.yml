@@ -40,6 +40,12 @@ jobs:
         run: |
           lcov --summary coverage/lcov.info | grep lines | awk '{print $2}'
         id: coverage_controller
+      
+      # - name: Publish coverage report for controller
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: coverage-report-controller
+      #     path: coverage/lcov-report
 
       - name: Run tests with coverage for models
         run: flutter test --coverage test/models || true
@@ -49,17 +55,11 @@ jobs:
           lcov --summary coverage/lcov.info | grep lines | awk '{print $2}'
         id: coverage_models
 
-      - name: Publish coverage report for controller
-        uses: actions/upload-artifact@v2
-        with:
-          name: coverage-report-controller
-          path: coverage/lcov-report
-
-      - name: Publish coverage report for models
-        uses: actions/upload-artifact@v2
-        with:
-          name: coverage-report-models
-          path: coverage/lcov-report
+      # - name: Publish coverage report for models
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: coverage-report-models
+      #     path: coverage/lcov-report
 
       - name: Check coverage threshold and set job status
         run: |
@@ -70,15 +70,10 @@ jobs:
 
           threshold=80.0
 
-          if (( $(awk "BEGIN {print ($coverage_value_controller >= $threshold)}") )); then
-            if (( $(awk "BEGIN {print ($coverage_value_models >= $threshold)}") )); then
-              echo "Code coverage is above threshold. CI/CD passes."
-              exit 0
-            else
-              echo "Code coverage for models is below threshold. CI/CD fails. Coverage: $coverage_percentage"
-              exit 1
-            fi
+          if [[ $coverage_value_controller >= $threshold && $coverage_value_models >= $threshold ]]; then
+            echo "Code coverage is above threshold. CI/CD passes."
+            exit 0
           else
-            echo "Code coverage is below threshold. CI/CD fails. Coverage: $coverage_percentage"
+            echo "Code coverage is below threshold. CI/CD fails. Coverage for controller: $coverage_percentage_controller%, Coverage for models: $coverage_percentage_models%"
             exit 1
           fi
