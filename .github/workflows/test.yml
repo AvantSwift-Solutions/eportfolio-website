@@ -33,6 +33,30 @@ jobs:
 
       - name: Analyze project source
         run: dart analyze
+      
+      - name: Run tests with coverage
+        run: flutter test --coverage
 
-      - name: Run tests
-        run: flutter test
+      - name: Calculate code coverage percentage
+        run: |
+          lcov --summary coverage/lcov.info | grep lines | awk '{print $2}'
+        id: coverage
+
+      - name: Publish coverage report
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage-report
+          path: coverage/lcov-report
+
+      - name: Check coverage threshold and set job status
+        run: |
+          coverage_percentage="${{ steps.coverage.outputs.stdout }}"
+          threshold=50
+
+          if [ "$coverage_percentage" -ge "$threshold" ]; then
+            echo "Code coverage is above threshold. CI/CD passes."
+            exit 0
+          else
+            echo "Code coverage is below threshold. CI/CD fails."
+            exit 1
+          fi
