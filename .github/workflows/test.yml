@@ -1,13 +1,8 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
 name: Testing
 
 on:
   push:
-    branches: "feature/EP-18"
+    branches: feature/EP-18
 
 jobs:
   build:
@@ -28,24 +23,15 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
     
-      - name: Verify formatting
-        run: dart format .
-
       - name: Analyze project source
-        run: dart analyze
-      
+        run: flutter analyze
+
       - name: Run tests with coverage
-        run: flutter test --coverage || true
+        run: flutter test --coverage
 
-      - name: Publish coverage report
-        uses: actions/upload-artifact@v2
-        with:
-          name: coverage-report
-          path: coverage/lcov-report
-
-      - name: Check coverage threshold and set job status
+      - name: Calculate code coverage percentage
         run: |
-          coverage_output=$(lcov --summary coverage/lcov.info | grep lines | awk '{print $2}')
+          coverage_output=$(cat coverage/lcov.info | grep -E '^LF:' | awk -F':' '{print $2}')
           threshold=50
 
           if [[ -z "$coverage_output" ]]; then
