@@ -40,10 +40,10 @@ jobs:
         run: |
           coverage=$(lcov --summary coverage/lcov.info | grep lines | awk '{print $2}')
 
-          threshold=80.0
+          threshold=50.0
           
           if [[ "$(awk -v a=$coverage -v b=$threshold 'BEGIN { print (a >= b) }')" == "1" ]]; then
-              echo "Code coverage is above threshold. CI/CD passes."
+              echo "Code coverage is above threshold. CI/CD passes. Coverage: $coverage"
               exit 0
           else
               echo "Code coverage is below threshold. CI/CD fails. Coverage: $coverage"

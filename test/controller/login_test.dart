@@ -43,100 +43,100 @@ void main() {
       expect(find.text('Forgot your password?'), findsOneWidget);
     });
 
-    // testWidgets('Validates email and password', (WidgetTester tester) async {
-    //   await tester.pumpWidget(
-    //     MaterialApp(
-    //       home: LoginPage(
-    //         onLoginSuccess: onLoginSuccess,
-    //         authState: authState,
-    //       ),
-    //     ),
-    //   );
+    testWidgets('Validates email and password', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: LoginPage(
+            onLoginSuccess: onLoginSuccess,
+            authState: authState,
+          ),
+        ),
+      );
 
-    //   // Tap the login button without entering any text
-    //   await tester.tap(find.text('Login'));
-    //   await tester.pump();
+      // Tap the login button without entering any text
+      await tester.tap(find.text('Login'));
+      await tester.pump();
 
-    //   // Verify that the form validation errors are displayed
-    //   expect(find.text('Please enter an email'), findsOneWidget);
-    //   expect(find.text('Please enter a password'), findsOneWidget);
-    // });
+      // Verify that the form validation errors are displayed
+      expect(find.text('Please enter an email'), findsOneWidget);
+      expect(find.text('Please enter a password'), findsOneWidget);
+    });
 
-    // testWidgets('Logs in with valid email and password',
-    //     (WidgetTester tester) async {
-    //   // Mock the sign in with email and password method
-    //   when(authState.signInWithEmailAndPassword('test', 'test'))
-    //       .thenAnswer((_) => Future.value(null));
+    testWidgets('Logs in with valid email and password',
+        (WidgetTester tester) async {
+      // Mock the sign in with email and password method
+      when(authState.signInWithEmailAndPassword('test', 'test'))
+          .thenAnswer((_) => Future.value(null));
 
-    //   // Mock the user document snapshot
-    //   final userDocument = {
-    //     'name': user.name,
-    //     'uid': user.uid,
-    //     'email': user.email,
-    //     'creationTimestamp': user.creationTimestamp
-    //   };
-    //   // when(authState.firestore)
-    //   //     .thenAnswer((_) => MockFirestoreInstance());
-    //   // when(authState.firestore.collection('User').doc(user.uid))
-    //   //     .thenAnswer((_) => MockDocumentSnapshot(userDocument));
+      // Mock the user document snapshot
+      final userDocument = {
+        'name': user.name,
+        'uid': user.uid,
+        'email': user.email,
+        'creationTimestamp': user.creationTimestamp
+      };
+      // when(authState.firestore)
+      //     .thenAnswer((_) => MockFirestoreInstance());
+      // when(authState.firestore.collection('User').doc(user.uid))
+      //     .thenAnswer((_) => MockDocumentSnapshot(userDocument));
 
-    //   // Mock the onLoginSuccess callback
-    //   onLoginSuccess = (User user) {
-    //     expect(user.name, equals('testUser'));
-    //     expect(user.uid, equals('123'));
-    //     expect(user.email, equals('test@example.com'));
-    //     expect(user.creationTimestamp, Timestamp.fromDate(DateTime.now()));
-    //   };
+      // Mock the onLoginSuccess callback
+      onLoginSuccess = (User user) {
+        expect(user.name, equals('testUser'));
+        expect(user.uid, equals('123'));
+        expect(user.email, equals('test@example.com'));
+        expect(user.creationTimestamp, Timestamp.fromDate(DateTime.now()));
+      };
 
-    //   await tester.pumpWidget(
-    //     MaterialApp(
-    //       home: LoginPage(
-    //         onLoginSuccess: onLoginSuccess,
-    //         authState: authState,
-    //       ),
-    //     ),
-    //   );
+      await tester.pumpWidget(
+        MaterialApp(
+          home: LoginPage(
+            onLoginSuccess: onLoginSuccess,
+            authState: authState,
+          ),
+        ),
+      );
 
-    //   // Enter valid email and password
-    //   await tester.enterText(find.byType(TextFormField).first, 'test@example.com');
-    //   await tester.enterText(find.byType(TextFormField).last, 'password');
+      // Enter valid email and password
+      await tester.enterText(find.byType(TextFormField).first, 'test@example.com');
+      await tester.enterText(find.byType(TextFormField).last, 'password');
 
-    //   // Tap the login button
-    //   await tester.tap(find.text('Login'));
-    //   await tester.pumpAndSettle();
+      // Tap the login button
+      await tester.tap(find.text('Login'));
+      await tester.pumpAndSettle();
 
-    //   // Verify that the onLoginSuccess callback was called
-    //   verify(onLoginSuccess(user)).called(1);
-    // });
+      // Verify that the onLoginSuccess callback was called
+      verify(onLoginSuccess(user)).called(1);
+    });
 
-    // testWidgets('Shows error dialog when login fails',
-    //     (WidgetTester tester) async {
-    //   // Mock the sign in with email and password method to throw an error
-    //   when(authState.signInWithEmailAndPassword('test', 'test'))
-    //       .thenThrow('Login Error');
+    testWidgets('Shows error dialog when login fails',
+        (WidgetTester tester) async {
+      // Mock the sign in with email and password method to throw an error
+      when(authState.signInWithEmailAndPassword('test', 'test'))
+          .thenThrow('Login Error');
 
-    //   await tester.pumpWidget(
-    //     MaterialApp(
-    //       home: LoginPage(
-    //         onLoginSuccess: onLoginSuccess,
-    //         authState: authState,
-    //       ),
-    //     ),
-    //   );
+      await tester.pumpWidget(
+        MaterialApp(
+          home: LoginPage(
+            onLoginSuccess: onLoginSuccess,
+            authState: authState,
+          ),
+        ),
+      );
 
-    //   // Enter valid email and password
-    //   await tester.enterText(find.byType(TextFormField).first, 'test@example.com');
-    //   await tester.enterText(find.byType(TextFormField).last, 'password');
+      // Enter valid email and password
+      await tester.enterText(find.byType(TextFormField).first, 'test@example.com');
+      await tester.enterText(find.byType(TextFormField).last, 'password');
 
-    //   // Tap the login button
-    //   await tester.tap(find.text('Login'));
-    //   await tester.pumpAndSettle();
+      // Tap the login button
+      await tester.tap(find.text('Login'));
+      await tester.pumpAndSettle();
 
-    //   // Verify that the error dialog is displayed
-    //   expect(find.text('Login Error'), findsOneWidget);
-    //   expect(find.text('Failed to log in. Please try again.'), findsOneWidget);
-    //   expect(find.text('OK'), findsOneWidget);
-    // });
+      // Verify that the error dialog is displayed
+      expect(find.text('Login Error'), findsOneWidget);
+      expect(find.text('Failed to log in. Please try again.'), findsOneWidget);
+      expect(find.text('OK'), findsOneWidget);
+    });
   });
 }
 
