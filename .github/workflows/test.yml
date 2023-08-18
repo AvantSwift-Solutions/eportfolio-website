@@ -44,7 +44,7 @@ jobs:
           total=$((passed + failed))
           percentage=$(( (passed * 100) / total ))
           
-          threshold=50
+          threshold=80
           
           if ((percentage >= threshold)); then
               echo "Code coverage is above threshold. CI/CD passes."
