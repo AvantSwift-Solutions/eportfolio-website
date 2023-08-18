@@ -38,8 +38,8 @@ jobs:
 
           last_line=$(tail -n 1 "test_results.txt")
 
-          passed=$(echo "$last_line" | sed -E 's/.*\+([0-9]+).*/\1/')
-          failed=$(echo "$last_line" | sed -E 's/.*-([0-9]+).*/\1/')
+          passed=$(echo "$last_line" | grep -oE '[0-9]+' | awk 'NR==1')
+          failed=$(echo "$last_line" | grep -oE '[0-9]+' | awk 'NR==2')
           
           total=$((passed + failed))
           percentage=$(( (passed * 100) / total ))
