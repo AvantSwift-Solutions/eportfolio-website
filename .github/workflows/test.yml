@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-    
+
       - name: Setup Dart
         uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
 
@@ -30,12 +30,16 @@ jobs:
       # - name: Analyze project source
       #   run: flutter analyze || true
       
+      - name: Install lcov
+        run: sudo apt-get update && sudo apt-get install lcov
+
       - name: Run tests with coverage
-        run: flutter test --coverage || true
+        run: flutter test --coverage
 
       - name: Calculate code coverage percentage
         run: |
-          lcov --summary coverage/lcov.info | grep lines | awk '{print $2}'
+          coverage_percentage=$(lcov --summary coverage/lcov.info | grep lines | awk '{print $2}')
+          echo "Coverage Percentage: $coverage_percentage%"
         id: coverage
 
       - name: Publish coverage report
@@ -46,13 +50,12 @@ jobs:
 
       - name: Check coverage threshold and set job status
         run: |
-          coverage_percentage="${{ steps.coverage.outputs.stdout }}"
           threshold=80
 
           if [ "$coverage_percentage" -ge "$threshold" ]; then
-            echo "Code coverage is above threshold. CI/CD passes."
+            echo "Code coverage is above threshold. CI/CD passes. Coverage: $coverage_percentage%"
             exit 0
           else
-            echo "Code coverage is below threshold. CI/CD fails."
+            echo "Code coverage is below threshold. CI/CD fails. Coverage: $coverage_percentage%"
             exit 1
           fi
