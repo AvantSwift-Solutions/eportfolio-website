@@ -50,6 +50,7 @@ jobs:
 
       - name: Check coverage threshold and set job status
         run: |
+          coverage_percentage="${{ steps.coverage.outputs.stdout }}"
           threshold=80
 
           if [ "$coverage_percentage" -ge "$threshold" ]; then
