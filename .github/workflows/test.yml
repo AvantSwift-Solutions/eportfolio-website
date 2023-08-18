@@ -24,14 +24,14 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Verify formatting
-        run: dart format .
+      # - name: Verify formatting
+      #   run: dart format .
 
-      - name: Analyze project source
-        run: flutter analyze || true
+      # - name: Analyze project source
+      #   run: flutter analyze || true
       
       - name: Run tests with coverage
-        run: flutter test -r compact | tee test_results.txt || true
+        run: flutter test -r github | tee test_results.txt || true
 
       - name: Check coverage threshold and set job status
         run: |
