@@ -31,7 +31,7 @@ jobs:
         run: flutter analyze || true
       
       - name: Run tests with coverage
-        run: flutter test > test_results.txt || true
+        run: flutter test -r compact > test_results.txt || true
 
       - name: Check coverage threshold and set job status
         run: |
@@ -40,16 +40,16 @@ jobs:
 
           passed=$(echo "$last_line" | sed -E 's/.*\+([0-9]+).*/\1/')
           failed=$(echo "$last_line" | sed -E 's/.*-([0-9]+).*/\1/')
-
-          total=$((passed + failed))
-          percentage=$(echo "scale=2; $passed / $total" | bc)
-
-          threshold=0.5
           
-          if (( "$percentage" >= "$threshold" )); then
-            echo "Code coverage is above threshold. CI/CD passes."
-            exit 0
+          total=$((passed + failed))
+          percentage=$(( (passed * 100) / total ))
+          
+          threshold=50
+          
+          if ((percentage >= threshold)); then
+              echo "Code coverage is above threshold. CI/CD passes."
+              exit 0
           else
-            echo "Code coverage is below threshold. CI/CD fails."
-            exit 1
+              echo "Code coverage is below threshold. CI/CD fails."
+              exit 1
           fi
