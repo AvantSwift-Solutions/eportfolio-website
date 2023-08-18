@@ -31,32 +31,54 @@ jobs:
       #   run: flutter analyze || true
       
       - name: Install lcov
-        run: sudo apt-get update && sudo apt-get install lcov
+        run: sudo apt-get update > /dev/null && sudo apt-get install lcov > /dev/null
 
-      - name: Run tests with coverage
-        run: flutter test --coverage || true
+      - name: Run tests with coverage for controller
+        run: flutter test --coverage test/controller
 
-      - name: Calculate code coverage percentage
+      - name: Calculate code coverage percentage for controller
         run: |
-          coverage_percentage=$(lcov --summary coverage/lcov.info | grep lines | awk '{print $2}')
-          echo "Coverage Percentage: $coverage_percentage%"
-        id: coverage
+          lcov --summary coverage/lcov.info | grep lines | awk '{print $2}'
+        id: coverage_controller
 
-      - name: Publish coverage report
-        uses: actions/upload-artifact@v3
+      - name: Run tests with coverage for models
+        run: flutter test --coverage test/models
+
+      - name: Calculate code coverage percentage for models
+        run: |
+          lcov --summary coverage/lcov.info | grep lines | awk '{print $2}'
+        id: coverage_models
+
+      - name: Publish coverage report for controller
+        uses: actions/upload-artifact@v2
         with:
-          name: coverage-report
+          name: coverage-report-controller
+          path: coverage/lcov-report
+
+      - name: Publish coverage report for models
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage-report-models
           path: coverage/lcov-report
 
       - name: Check coverage threshold and set job status
         run: |
-          coverage_percentage="${{ steps.coverage.outputs.stdout }}"
-          threshold=80
+          coverage_percentage_controller="${{ steps.coverage_controller.outputs.stdout }}"
+          coverage_percentage_models="${{ steps.coverage_models.outputs.stdout }}"
+          coverage_value_controller=$(echo "$coverage_percentage_controller" | sed 's/%//')
+          coverage_value_models=$(echo "$coverage_percentage_models" | sed 's/%//')
 
-          if [ "$coverage_percentage" -ge "$threshold" ]; then
-            echo "Code coverage is above threshold. CI/CD passes. Coverage: $coverage_percentage%"
-            exit 0
+          threshold=80.0
+
+          if (( $(awk "BEGIN {print ($coverage_value_controller >= $threshold)}") )); then
+            if (( $(awk "BEGIN {print ($coverage_value_models >= $threshold)}") )); then
+              echo "Code coverage is above threshold. CI/CD passes."
+              exit 0
+            else
+              echo "Code coverage for models is below threshold. CI/CD fails. Coverage: $coverage_percentage"
+              exit 1
+            fi
           else
-            echo "Code coverage is below threshold. CI/CD fails. Coverage: $coverage_percentage%"
+            echo "Code coverage is below threshold. CI/CD fails. Coverage: $coverage_percentage"
             exit 1
           fi
