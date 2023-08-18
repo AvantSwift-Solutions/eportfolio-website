@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
+    
       - name: Setup Dart
         uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
 
@@ -22,16 +22,28 @@ jobs:
 
       - name: Install dependencies
         run: flutter pub get
+
+      - name: Install lcov
+        run: sudo apt-get install lcov
     
+      - name: Verify formatting
+        run: dart format .
+
       - name: Analyze project source
         run: flutter analyze || true
-
+      
       - name: Run tests with coverage
         run: flutter test --coverage || true
 
-      - name: Calculate code coverage percentage
+      - name: Publish coverage report
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage-report
+          path: coverage/lcov-report
+
+      - name: Check coverage threshold and set job status
         run: |
-          coverage_output=$(cat coverage/lcov.info | grep -E '^LF:' | awk -F':' '{print $2}')
+          coverage_output=$(lcov --summary coverage/lcov.info | grep lines | awk '{print $2}')
           threshold=50
 
           if [[ -z "$coverage_output" ]]; then
