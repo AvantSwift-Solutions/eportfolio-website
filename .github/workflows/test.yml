@@ -70,7 +70,7 @@ jobs:
 
           threshold=80.0
 
-          if [[ $coverage_value_controller -ge $threshold && $coverage_value_models -ge $threshold ]]; then
+          if (( $(echo "$coverage_value_controller >= $threshold" | bc -l) )) && (( $(echo "$coverage_value_models >= $threshold" | bc -l) )); then
             echo "Code coverage is above threshold. CI/CD passes."
             exit 0
           else
