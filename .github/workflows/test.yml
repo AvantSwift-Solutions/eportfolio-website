@@ -53,7 +53,12 @@ jobs:
           coverage_percentage="${{ steps.coverage.outputs.stdout }}"
           threshold=50
 
-          if [ "$coverage_percentage" -ge "$threshold" ]; then
+          if [[ -z "$coverage_percentage" ]]; then
+            echo "Failed to calculate coverage. CI/CD fails."
+            exit 1
+          fi
+
+          if (( "$coverage_percentage" >= "$threshold" )); then
             echo "Code coverage is above threshold. CI/CD passes."
             exit 0
           else
