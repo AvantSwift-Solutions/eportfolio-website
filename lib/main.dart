@@ -24,7 +24,7 @@ void main() async {
 class MyApp extends StatefulWidget {
   final AuthState authState;
 
-  MyApp({required this.authState, Key? key}) : super(key: key);
+      MyApp({required this.authState, Key? key}) : super(key: key);
 
   @override
   _MyAppState createState() => _MyAppState();
