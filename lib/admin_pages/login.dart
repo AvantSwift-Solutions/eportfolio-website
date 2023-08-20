@@ -76,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                       obscureText: true,
                       validator: (value) {
                         if (value?.isEmpty ?? true) {
-                          return 'Please enter a password';
+                          return 'Please type the password';
                         }
                         return null;
                       },
