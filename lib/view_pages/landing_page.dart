@@ -12,9 +12,9 @@ class LandingPage extends StatelessWidget {
         future: _landingPageController.getLandingPageData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error loading data'));
+            return const Center(child: Text('Error loading data'));
           }
 
           final landingPageData = snapshot.data;
@@ -58,7 +58,7 @@ class LandingPage extends StatelessWidget {
                     Image.network(
                       landingPageData.imageURL,
                       width: MediaQuery.of(context).size.width * 0.3,
-                      height: 500,
+                      height: MediaQuery.of(context).size.height * 0.7,
                       fit: BoxFit.cover,
                     ),
                   ],
