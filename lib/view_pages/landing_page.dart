@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../controller/view_controllers/landing_page_controller.dart';
+import '../ui/custom_texts/public_view_text_styles.dart';
 
 class LandingPage extends StatelessWidget {
   final LandingPageController _landingPageController = LandingPageController();
@@ -40,15 +41,18 @@ class LandingPage extends StatelessWidget {
                           children: [
                             Text(
                               landingPageData!.landingPageTitle,
-                              style: TextStyle(
+                              style:
+                                  PublicViewTextStyles.generalHeading.copyWith(
                                 fontSize: titleFontSize,
-                                fontWeight: FontWeight.bold,
                               ),
                             ),
                             const SizedBox(height: 20),
                             Text(
                               landingPageData.landingPageDescription,
-                              style: TextStyle(fontSize: descriptionFontSize),
+                              style:
+                                  PublicViewTextStyles.generalBodyText.copyWith(
+                                fontSize: descriptionFontSize,
+                              ),
                             ),
                             const SizedBox(height: 20),
                           ],
