@@ -11,18 +11,24 @@ class DefaultPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text(
-              'Welcome to your website',
-              style: TextStyle(fontSize: 24),
-            ),
-            const SizedBox(height: 20),
-            LandingPageAdmin(), // Placing the LandingPageAdmin widget here
-          ],
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                'Welcome to your website',
+                style: TextStyle(fontSize: 24),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'You are logged in as an admin',
+                style: TextStyle(fontSize: 16),
+              ),
+              LandingPageAdmin(), // Placing the LandingPageAdmin widget here
+            ],
+          ),
         ),
       ),
     );

@@ -41,8 +41,8 @@ class LandingPageAdminController {
         user.landingPageDescription = landingPageData.landingPageDescription;
         user.imageURL = landingPageData.imageURL;
 
-        await user.update();
-        return true; // Return true if update is successful
+        bool updateSuccess = await user.update();
+        return updateSuccess; // Return true if update is successful
       } else {
         return false;
       }

@@ -57,31 +57,28 @@ class User {
 
   Future<void> create() async {
     try {
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(uid)
-          .set(toMap());
+      await FirebaseFirestore.instance.collection('User').doc(uid).set(toMap());
       print('User document created');
     } catch (e) {
       print('Error creating user document: $e');
     }
   }
 
-  Future<void> update() async {
+  Future<bool> update() async {
     try {
       await FirebaseFirestore.instance
-          .collection('users')
+          .collection('User')
           .doc(uid)
           .update(toMap());
-      print('User document updated');
+      return true;
     } catch (e) {
-      print('Error updating user document: $e');
+      return false;
     }
   }
 
   Future<void> delete() async {
     try {
-      await FirebaseFirestore.instance.collection('users').doc(uid).delete();
+      await FirebaseFirestore.instance.collection('User').doc(uid).delete();
       print('User document deleted');
     } catch (e) {
       print('Error deleting user document: $e');
