@@ -3,14 +3,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class User {
   final String uid;
   final String email;
-  final String name;
+  String name;
   final Timestamp creationTimestamp;
+  String landingPageTitle;
+  String landingPageDescription;
+  String imageURL;
 
   User({
     required this.uid,
     required this.email,
     required this.name,
     required this.creationTimestamp,
+    required this.landingPageTitle,
+    required this.landingPageDescription,
+    required this.imageURL,
   });
 
   factory User.fromDocumentSnapshot(DocumentSnapshot snapshot) {
@@ -20,15 +26,79 @@ class User {
       final email = data['email'] as String;
       final name = data['name'] as String;
       final creationTimestamp = data['creationTimestamp'] as Timestamp;
+      final landingPageTitle = data['landingPageTitle'] as String;
+      final imageUrl = data['imageURL'] as String;
+      final landingPageDescription = data['landingPageDescription'] as String;
 
       return User(
-        creationTimestamp: creationTimestamp,
-        uid: uid,
-        email: email,
-        name: name,
-      );
+          creationTimestamp: creationTimestamp,
+          uid: uid,
+          email: email,
+          name: name,
+          landingPageTitle: landingPageTitle,
+          landingPageDescription: landingPageDescription,
+          imageURL: imageUrl);
     } catch (e) {
       rethrow;
+    }
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'uid': uid,
+      'email': email,
+      'name': name,
+      'creationTimestamp': creationTimestamp,
+      'landingPageTitle': landingPageTitle,
+      'landingPageDescription': landingPageDescription,
+      'imageUrl': imageURL
+    };
+  }
+
+  Future<void> create() async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .set(toMap());
+      print('User document created');
+    } catch (e) {
+      print('Error creating user document: $e');
+    }
+  }
+
+  Future<void> update() async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .update(toMap());
+      print('User document updated');
+    } catch (e) {
+      print('Error updating user document: $e');
+    }
+  }
+
+  Future<void> delete() async {
+    try {
+      await FirebaseFirestore.instance.collection('users').doc(uid).delete();
+      print('User document deleted');
+    } catch (e) {
+      print('Error deleting user document: $e');
+    }
+  }
+
+  static Future<User?> getFirstUser() async {
+    try {
+      QuerySnapshot snapshot =
+          await FirebaseFirestore.instance.collection('User').limit(1).get();
+      if (snapshot.docs.isNotEmpty) {
+        return User.fromDocumentSnapshot(snapshot.docs.first);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
     }
   }
 }
