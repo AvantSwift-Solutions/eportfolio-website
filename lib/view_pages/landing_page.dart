@@ -19,33 +19,51 @@ class LandingPage extends StatelessWidget {
 
           final landingPageData = snapshot.data;
 
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  landingPageData!.landingPageTitle,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          return SingleChildScrollView(
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Constrained width text boxes
+                    Container(
+                      width: 500, // Adjust this value as needed
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            landingPageData!.landingPageTitle,
+                            style: const TextStyle(
+                              fontSize: 56, // Increased font size
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 20), // Increased spacing
+                          Text(
+                            landingPageData.landingPageDescription,
+                            style: TextStyle(fontSize: 14),
+                          ),
+                          const SizedBox(height: 20),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 20), // Adding some horizontal spacing
+                    // Image on the right
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Image.network(
+                          landingPageData.imageURL,
+                          width: 200,
+                          height: 200,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 10),
-                Text(
-                  landingPageData.landingPageDescription,
-                  style: TextStyle(fontSize: 16),
-                ),
-                SizedBox(height: 20),
-                // Image.network(
-                //   landingPageData.imageURL,
-                //   width: 200,
-                //   height: 200,
-                //   fit: BoxFit.cover,
-                // ),
-                SizedBox(height: 10),
-                Text(
-                  'Name: ${landingPageData.name}',
-                  style: TextStyle(fontSize: 16),
-                ),
-              ],
+              ),
             ),
           );
         },

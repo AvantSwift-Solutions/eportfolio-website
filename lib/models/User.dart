@@ -51,7 +51,7 @@ class User {
       'creationTimestamp': creationTimestamp,
       'landingPageTitle': landingPageTitle,
       'landingPageDescription': landingPageDescription,
-      'imageUrl': imageURL
+      'imageURL': imageURL
     };
   }
 

@@ -64,7 +64,7 @@ class _MyAppState extends State<MyApp> {
       ),
       initialRoute: '/landing-page',
       routes: {
-        '/landing-page' :(context) => LandingPage(),
+        '/landing-page': (context) => LandingPage(),
         '/login': (context) => LoginPage(
               authState: widget.authState,
               onLoginSuccess: (user) {

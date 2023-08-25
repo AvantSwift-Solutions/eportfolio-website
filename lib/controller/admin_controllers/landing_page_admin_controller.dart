@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+import 'package:firebase_storage/firebase_storage.dart';
+
 import '../../dto/landing_page_dto.dart';
 import '../../models/User.dart'; // Import the User class
 
@@ -39,6 +42,9 @@ class LandingPageAdminController {
         user.name = landingPageData.name;
         user.landingPageTitle = landingPageData.landingPageTitle;
         user.landingPageDescription = landingPageData.landingPageDescription;
+
+        /* ImageURL requires additional steps of taking to storage and
+         getting the URL */
         user.imageURL = landingPageData.imageURL;
 
         bool updateSuccess = await user.update();
@@ -48,6 +54,20 @@ class LandingPageAdminController {
       }
     } catch (e) {
       return false;
+    }
+  }
+
+  Future<String?> uploadImageAndGetURL(
+      Uint8List imageBytes, String fileName) async {
+    try {
+      final ref = FirebaseStorage.instance.ref().child('images/$fileName');
+      final uploadTask = ref.putData(imageBytes);
+      final TaskSnapshot snapshot = await uploadTask;
+      final imageURL = await snapshot.ref.getDownloadURL();
+      return imageURL;
+    } catch (e) {
+      print('Error uploading image: $e');
+      return null;
     }
   }
 }
