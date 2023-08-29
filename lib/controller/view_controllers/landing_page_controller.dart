@@ -1,7 +1,7 @@
 
 import '../../dto/landing_page_dto.dart';
 import '../../models/User.dart';
-import '../../reposervices/user_repo_services.dart';
+import '../../reposervice/user_repo_services.dart';
 
 class LandingPageController {
   final UserRepoService userRepoService;

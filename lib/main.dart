@@ -4,6 +4,7 @@ import 'package:avantswift_portfolio/admin_pages/default.dart';
 import 'package:avantswift_portfolio/admin_pages/login.dart';
 import 'package:avantswift_portfolio/services/auth_state.dart';
 import 'package:avantswift_portfolio/view_pages/landing_page.dart';
+import 'package:avantswift_portfolio/view_pages/single_view_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_core/firebase_core.dart';
@@ -64,7 +65,7 @@ class _MyAppState extends State<MyApp> {
       ),
       initialRoute: '/landing-page',
       routes: {
-        '/landing-page': (context) => LandingPage(),
+        '/landing-page': (context) => SinglePageView(),
         '/login': (context) => LoginPage(
               authState: widget.authState,
               onLoginSuccess: (user) {

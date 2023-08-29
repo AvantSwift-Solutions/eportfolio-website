@@ -1,5 +1,5 @@
 import 'package:avantswift_portfolio/controller/view_controllers/landing_page_controller.dart';
-import 'package:avantswift_portfolio/reposervices/user_repo_services.dart';
+import 'package:avantswift_portfolio/reposervice/user_repo_services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

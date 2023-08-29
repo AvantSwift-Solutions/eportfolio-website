@@ -3,7 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 import '../../dto/landing_page_dto.dart';
 import '../../models/User.dart';
-import '../../reposervices/user_repo_services.dart'; // Import the User class
+import '../../reposervice/user_repo_services.dart'; // Import the User class
 
 class LandingPageAdminController {
   final UserRepoService userRepoService;

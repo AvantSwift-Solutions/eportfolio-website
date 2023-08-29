@@ -6,7 +6,7 @@
 import 'dart:async' as _i3;
 
 import 'package:avantswift_portfolio/models/User.dart' as _i4;
-import 'package:avantswift_portfolio/reposervices/user_repo_services.dart'
+import 'package:avantswift_portfolio/reposervice/user_repo_services.dart'
     as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 
