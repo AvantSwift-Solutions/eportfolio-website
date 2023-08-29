@@ -1,9 +1,11 @@
+import 'package:avantswift_portfolio/reposervices/user_repo_services.dart';
 import 'package:flutter/material.dart';
 import '../controller/view_controllers/landing_page_controller.dart';
 import '../ui/custom_texts/public_view_text_styles.dart';
 
 class LandingPage extends StatelessWidget {
-  final LandingPageController _landingPageController = LandingPageController();
+  final LandingPageController _landingPageController =
+      LandingPageController(UserRepoService()); // Up for debate with this one
 
   @override
   Widget build(BuildContext context) {
