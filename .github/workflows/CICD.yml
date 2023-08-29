@@ -24,8 +24,8 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
       
-      - name: Deploy
-        run: flutter build web
+      # - name: Deploy
+      #   run: flutter build web
 
       # - name: Verify formatting
       #   run: dart format .
