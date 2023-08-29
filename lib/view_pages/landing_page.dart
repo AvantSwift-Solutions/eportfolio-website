@@ -14,7 +14,6 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-  final GlobalKey _scrollKey = GlobalKey();
 
   final LandingPageController _landingPageController =
       LandingPageController(UserRepoService());
