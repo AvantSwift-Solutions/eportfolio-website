@@ -1,20 +1,34 @@
-// ignore_for_file: use_key_in_widget_constructors
-
+import 'package:avantswift_portfolio/admin_pages/landing_page_admin.dart';
 import 'package:avantswift_portfolio/models/User.dart';
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
 class DefaultPage extends StatelessWidget {
-  User user;
+  final User user;
+
   DefaultPage({required this.user});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: const Center(
-        child: Text(
-          'Welcome to your website',
-          style: TextStyle(fontSize: 24),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                'Welcome to your website',
+                style: TextStyle(fontSize: 24),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'You are logged in as an admin',
+                style: TextStyle(fontSize: 16),
+              ),
+              LandingPageAdmin(), // Placing the LandingPageAdmin widget here
+            ],
+          ),
         ),
       ),
     );

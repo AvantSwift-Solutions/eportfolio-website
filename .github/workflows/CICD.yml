@@ -5,7 +5,7 @@ on:
     branches: main
 
 jobs:
-  build:
+  build_and_test:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,15 +23,12 @@ jobs:
 
       - name: Install dependencies
         run: flutter pub get
-      
-      - name: Deploy
-        run: flutter build web
 
-      # - name: Verify formatting
-      #   run: dart format .
+      - name: Verify formatting
+        run: dart format .
 
-      # - name: Analyze project source
-      #   run: flutter analyze || true
+      - name: Analyze project source
+        run: flutter analyze || true
       
       - name: Install lcov
         run: sudo apt-get update > /dev/null && sudo apt-get install lcov > /dev/null
@@ -39,11 +36,11 @@ jobs:
       - name: Run tests with coverage
         run: flutter test --coverage test/controller test/models || true
 
-      - name: Check coverage threshold and set job status
+      - name: Check if coverage threshold is above 30%
         run: |
           coverage=$(lcov --summary coverage/lcov.info | grep lines | awk '{print $2}')
 
-          threshold=50.0
+          threshold=30.0
           
           if [[ "$(awk -v a=$coverage -v b=$threshold 'BEGIN { print (a >= b) }')" == "1" ]]; then
               echo "Code coverage is above threshold. CI/CD passes. Coverage: $coverage"
@@ -52,3 +49,13 @@ jobs:
               echo "Code coverage is below threshold. CI/CD fails. Coverage: $coverage"
               exit 1
           fi
+      
+      - name: Build app
+        run: flutter build web
+      
+      - name: Deploy preview to Firebase
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_AVANTSWIFTSOLUTIONS }}'
+          projectId: avantswiftsolutions

@@ -3,6 +3,7 @@ import 'package:avantswift_portfolio/models/User.dart';
 import 'package:avantswift_portfolio/admin_pages/default.dart';
 import 'package:avantswift_portfolio/admin_pages/login.dart';
 import 'package:avantswift_portfolio/services/auth_state.dart';
+import 'package:avantswift_portfolio/view_pages/single_view_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_core/firebase_core.dart';
@@ -24,7 +25,7 @@ void main() async {
 class MyApp extends StatefulWidget {
   final AuthState authState;
 
-      MyApp({required this.authState, Key? key}) : super(key: key);
+  MyApp({required this.authState, Key? key}) : super(key: key);
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -61,8 +62,9 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
       ),
-      initialRoute: '/login',
+      initialRoute: '/landing-page',
       routes: {
+        '/landing-page': (context) => SinglePageView(),
         '/login': (context) => LoginPage(
               authState: widget.authState,
               onLoginSuccess: (user) {
