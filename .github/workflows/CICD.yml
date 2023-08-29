@@ -49,14 +49,12 @@ jobs:
               echo "Code coverage is below threshold. CI/CD fails. Coverage: $coverage"
               exit 1
           fi
-
-  build_and_preview:
-    if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - run: flutter build web #npm ci && npm run build
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      
+      - name: Build web
+        run: flutter build web #npm ci && npm run build
+      
+      - name: Deploy to Firebase
+        uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_AVANTSWIFTSOLUTIONS }}'
