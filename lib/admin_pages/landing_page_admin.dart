@@ -1,12 +1,13 @@
 // ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
 import 'dart:typed_data';
+import 'package:avantswift_portfolio/reposervices/user_repo_services.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import '../controller/admin_controllers/landing_page_admin_controller.dart';
 
 class LandingPageAdmin extends StatelessWidget {
   final LandingPageAdminController _adminController =
-      LandingPageAdminController();
+      LandingPageAdminController(UserRepoService());
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,7 @@ class LandingPageAdmin extends StatelessWidget {
     final landingPageData = await _adminController.getLandingPageData();
 
     TextEditingController nameController =
-        TextEditingController(text: landingPageData.name);
+        TextEditingController(text: landingPageData!.name);
     TextEditingController titleController =
         TextEditingController(text: landingPageData.landingPageTitle);
     TextEditingController descriptionController =
@@ -96,7 +97,8 @@ class LandingPageAdmin extends StatelessWidget {
                     }
 
                     bool isSuccess = await _adminController
-                        .updateLandingPageData(landingPageData);
+                            .updateLandingPageData(landingPageData) ??
+                        false;
                     if (isSuccess) {
                       Navigator.of(dialogContext).pop();
                       ScaffoldMessenger.of(context).showSnackBar(

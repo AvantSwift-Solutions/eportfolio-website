@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
-  final String uid;
-  final String email;
-  String name;
-  final Timestamp creationTimestamp;
-  String landingPageTitle;
-  String landingPageDescription;
-  String imageURL;
+  final String? uid;
+  final String? email;
+  String? name;
+  final Timestamp? creationTimestamp;
+  String? landingPageTitle;
+  String? landingPageDescription;
+  String? imageURL;
 
   User({
     required this.uid,
@@ -64,7 +64,7 @@ class User {
     }
   }
 
-  Future<bool> update() async {
+  Future<bool>? update() async {
     try {
       await FirebaseFirestore.instance
           .collection('User')
@@ -82,20 +82,6 @@ class User {
       print('User document deleted');
     } catch (e) {
       print('Error deleting user document: $e');
-    }
-  }
-
-  static Future<User?> getFirstUser() async {
-    try {
-      QuerySnapshot snapshot =
-          await FirebaseFirestore.instance.collection('User').limit(1).get();
-      if (snapshot.docs.isNotEmpty) {
-        return User.fromDocumentSnapshot(snapshot.docs.first);
-      } else {
-        return null;
-      }
-    } catch (e) {
-      return null;
     }
   }
 }

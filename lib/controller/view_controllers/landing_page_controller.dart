@@ -1,11 +1,26 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../../dto/landing_page_dto.dart';
 import '../../models/User.dart';
 
 class LandingPageController {
-  Future<LandingPageDTO> getLandingPageData() async {
+  Future<User?> getFirstUser() async {
     try {
-      User? user = await User.getFirstUser();
+      QuerySnapshot snapshot =
+          await FirebaseFirestore.instance.collection('User').limit(1).get();
+      if (snapshot.docs.isNotEmpty) {
+        return User.fromDocumentSnapshot(snapshot.docs.first);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
 
+  Future<LandingPageDTO>? getLandingPageData() async {
+    try {
+      User? user = await getFirstUser();
       if (user != null) {
         return LandingPageDTO(
           name: user.name,

@@ -1,14 +1,19 @@
 import 'dart:typed_data';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import '../../dto/landing_page_dto.dart';
-import '../../models/User.dart'; // Import the User class
+import '../../models/User.dart';
+import '../../reposervices/user_repo_services.dart'; // Import the User class
 
 class LandingPageAdminController {
-  Future<LandingPageDTO> getLandingPageData() async {
-    try {
-      User? user = await User.getFirstUser();
+  final UserRepoService userRepoService;
 
+  LandingPageAdminController(this.userRepoService); // Constructor
+
+  Future<LandingPageDTO>? getLandingPageData() async {
+    try {
+      User? user = await userRepoService.getFirstUser();
       if (user != null) {
         return LandingPageDTO(
           name: user.name,
@@ -34,9 +39,9 @@ class LandingPageAdminController {
     }
   }
 
-  Future<bool> updateLandingPageData(LandingPageDTO landingPageData) async {
+  Future<bool>? updateLandingPageData(LandingPageDTO landingPageData) async {
     try {
-      User? user = await User.getFirstUser();
+      User? user = await userRepoService.getFirstUser();
 
       if (user != null) {
         user.name = landingPageData.name;
@@ -47,7 +52,7 @@ class LandingPageAdminController {
          getting the URL */
         user.imageURL = landingPageData.imageURL;
 
-        bool updateSuccess = await user.update();
+        bool updateSuccess = await user.update() ?? false;
         return updateSuccess; // Return true if update is successful
       } else {
         return false;

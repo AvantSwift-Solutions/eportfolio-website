@@ -1,8 +1,8 @@
 class LandingPageDTO {
-  String name;
-  String landingPageTitle;
-  String landingPageDescription;
-  String imageURL;
+  String? name;
+  String? landingPageTitle;
+  String? landingPageDescription;
+  String? imageURL;
 
   LandingPageDTO({
     required this.name,

@@ -46,6 +46,7 @@ dependencies:
   file_picker: ^5.3.3
 
 dev_dependencies:
+  build_runner: ^2.4.6
   flutter_test:
     sdk: flutter
 

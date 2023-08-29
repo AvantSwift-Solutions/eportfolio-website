@@ -40,7 +40,8 @@ class LandingPage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              landingPageData!.landingPageTitle,
+                              landingPageData?.landingPageTitle ??
+                                  'Default Title',
                               style:
                                   PublicViewTextStyles.generalHeading.copyWith(
                                 fontSize: titleFontSize,
@@ -48,7 +49,8 @@ class LandingPage extends StatelessWidget {
                             ),
                             const SizedBox(height: 20),
                             Text(
-                              landingPageData.landingPageDescription,
+                              landingPageData?.landingPageDescription ??
+                                  'Default Description',
                               style:
                                   PublicViewTextStyles.generalBodyText.copyWith(
                                 fontSize: descriptionFontSize,
@@ -60,7 +62,8 @@ class LandingPage extends StatelessWidget {
                       ),
                     ),
                     Image.network(
-                      landingPageData.imageURL,
+                      landingPageData?.imageURL ??
+                          'https://example.com/default_image.jpg',
                       width: MediaQuery.of(context).size.width * 0.3,
                       height: MediaQuery.of(context).size.height * 0.7,
                       fit: BoxFit.cover,
