@@ -1,9 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import '../controller/view_controllers/contact_section_controller.dart';
 import '../reposervice/user_repo_services.dart';
 import '../ui/custom_texts/public_view_text_styles.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:http/http.dart' as http;
 
 class ContactSection extends StatefulWidget {
@@ -38,10 +38,10 @@ class _ContactSectionState extends State<ContactSection> {
     _messageController.clear();
   }
 
-  Future sendEmail() async {
+  Future sendEmail(String name, String contactEmail) async {
 
-    const to_name = 'Vincent';
-    const to_email = 'vinnyluu.02@gmail.com';
+    final toName = name;
+    final toEmail = contactEmail;
     
     const serviceId = 'service_wp59pl6';
     const templateId = 'template_6atjqpb';
@@ -59,8 +59,8 @@ class _ContactSectionState extends State<ContactSection> {
         'template_id': templateId,
         'user_id': userId,
         'template_params': {
-          'to_name': to_name,
-          'to_email': to_email,
+          'to_name': toName,
+          'to_email': toEmail,
           'from_name': _nameController.text,
           'from_email': _emailController.text,
           'subject': _subjectController.text,
@@ -104,7 +104,7 @@ class _ContactSectionState extends State<ContactSection> {
                         children: [
                           TextFormField(
                             controller: _nameController,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               labelText: 'Name',
                             ),
                             validator: (value) {
@@ -116,14 +116,12 @@ class _ContactSectionState extends State<ContactSection> {
                           ),
                           TextFormField(
                             controller: _emailController,
-                            decoration: InputDecoration(
-                              labelText: 'Email',
-                            ),
+                            decoration: const InputDecoration(labelText: 'Email'),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter your email';
                               }
-                              if (!value.contains('@')) {
+                              if (!EmailValidator.validate(value)) {
                                 return 'Please enter a valid email';
                               }
                               return null;
@@ -131,9 +129,7 @@ class _ContactSectionState extends State<ContactSection> {
                           ),
                           TextFormField(
                             controller: _subjectController,
-                            decoration: InputDecoration(
-                              labelText: 'Subject',
-                            ),
+                            decoration: const InputDecoration(labelText: 'Subject'),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter a subject';
@@ -143,9 +139,7 @@ class _ContactSectionState extends State<ContactSection> {
                           ),
                           TextFormField(
                             controller: _messageController,
-                            decoration: InputDecoration(
-                              labelText: 'Message',
-                            ),
+                            decoration: const InputDecoration(labelText: 'Message'),
                             maxLines: null,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -158,7 +152,9 @@ class _ContactSectionState extends State<ContactSection> {
                           ElevatedButton(
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                await sendEmail();
+                                await sendEmail(
+                                  contactSectionData?.name ?? 'Default Name',
+                                  contactSectionData?.contactEmail ?? 'Default Email');
                                 clear();
                               }
                             },
