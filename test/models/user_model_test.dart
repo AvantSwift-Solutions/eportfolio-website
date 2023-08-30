@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../lib/models/User.dart'; // Update this import based on your project structure
+import '../../lib/models/User.dart';
 
 void main() {
   group('User class tests', () {
@@ -17,6 +17,8 @@ void main() {
         landingPageTitle: 'Welcome to my page',
         landingPageDescription: 'This is my landing page',
         imageURL: 'https://example.com/image.jpg',
+        contactEmail: 'differentEmail@example.com',
+        linkedinURL: 'https://www.linkedin.com/in/example-user/'
       );
       final userMap = user.toMap();
 
