@@ -49,7 +49,7 @@ class _ContactSectionState extends State<ContactSection> {
 
     final url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
 
-    await http.post(
+    final response = await http.post(
       url,
       headers: {
         'Content-Type': 'application/json',
@@ -68,6 +68,20 @@ class _ContactSectionState extends State<ContactSection> {
         },
       }),
     );
+
+    if (response.body == 'OK') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Email sent successfully'),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Error sending email'),
+        ),
+      );
+    }
   }
 
   @override
