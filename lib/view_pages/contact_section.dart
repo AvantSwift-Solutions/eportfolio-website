@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../controller/view_controllers/contact_section_controller.dart';
 import '../reposervice/user_repo_services.dart';
+import '../ui/custom_scroll_button.dart';
 import '../ui/custom_texts/public_view_text_styles.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:http/http.dart' as http;
@@ -98,6 +99,7 @@ class _ContactSectionState extends State<ContactSection> {
         final contactSectionData = snapshot.data;
         final screenWidth = MediaQuery.of(context).size.width;
 
+        double titleFontSize = screenWidth * 0.03;
         double descriptionFontSize = screenWidth * 0.01;
 
         return Center(
@@ -116,6 +118,12 @@ class _ContactSectionState extends State<ContactSection> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Text(
+                            'Send a message',
+                            style: PublicViewTextStyles.generalHeading.copyWith(
+                              fontSize: titleFontSize,
+                            ),
+                          ),
                           TextFormField(
                             controller: _nameController,
                             decoration: const InputDecoration(
@@ -163,7 +171,8 @@ class _ContactSectionState extends State<ContactSection> {
                             },
                           ),
                           const SizedBox(height: 20),
-                          ElevatedButton(
+                          CustomScrollButton(
+                            text: 'Send',
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 await sendEmail(
@@ -172,7 +181,6 @@ class _ContactSectionState extends State<ContactSection> {
                                 clear();
                               }
                             },
-                            child: const Text('Send'),
                           ),
                         ],
                       ),
@@ -180,12 +188,24 @@ class _ContactSectionState extends State<ContactSection> {
                   ),
                 ),
                 Expanded(
-                  flex: 2, // Adjust flex as needed
+                  flex: 1, // Adjust flex as needed
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
+                    padding: const EdgeInsets.only(left: 100.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Text(
+                          'Connect Further',
+                          style: PublicViewTextStyles.generalHeading.copyWith(
+                            fontSize: titleFontSize,
+                          ),
+                        ),
+                        Text(
+                          'Email',
+                          style: PublicViewTextStyles.generalSubHeading.copyWith(
+                            fontSize: titleFontSize/2,
+                          ),
+                        ),
                         Text(
                           contactSectionData?.contactEmail ?? 'Default Email',
                           style: PublicViewTextStyles.generalBodyText.copyWith(
@@ -193,6 +213,12 @@ class _ContactSectionState extends State<ContactSection> {
                           ),
                         ),
                         const SizedBox(height: 20),
+                        Text(
+                          'LinkedIn',
+                          style: PublicViewTextStyles.generalSubHeading.copyWith(
+                            fontSize: titleFontSize/2,
+                          ),
+                        ),
                         Text(
                           contactSectionData?.linkedinURL ?? 'Default LinkedIn',
                           style: PublicViewTextStyles.generalBodyText.copyWith(
