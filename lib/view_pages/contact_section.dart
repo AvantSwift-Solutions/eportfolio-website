@@ -6,6 +6,8 @@ import '../ui/custom_scroll_button.dart';
 import '../ui/custom_texts/public_view_text_styles.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ContactSection extends StatefulWidget {
   ContactSection({Key? key}) : super(key: key);
@@ -100,134 +102,254 @@ class _ContactSectionState extends State<ContactSection> {
         final screenWidth = MediaQuery.of(context).size.width;
 
         double titleFontSize = screenWidth * 0.03;
-        double descriptionFontSize = screenWidth * 0.01;
 
         return Center(
           child: Padding(
             padding: const EdgeInsets.all(50.0),
-            child: Row(
-              // Use Row for side-by-side layout
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  flex: 1, // Adjust flex as needed
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 20.0),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Send a message',
-                            style: PublicViewTextStyles.generalHeading.copyWith(
-                              fontSize: titleFontSize,
-                            ),
-                          ),
-                          TextFormField(
-                            controller: _nameController,
-                            decoration: const InputDecoration(
-                              labelText: 'Name',
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your name';
-                              }
-                              return null;
-                            },
-                          ),
-                          TextFormField(
-                            controller: _emailController,
-                            decoration: const InputDecoration(labelText: 'Email'),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your email';
-                              }
-                              if (!EmailValidator.validate(value)) {
-                                return 'Please enter a valid email';
-                              }
-                              return null;
-                            },
-                          ),
-                          TextFormField(
-                            controller: _subjectController,
-                            decoration: const InputDecoration(labelText: 'Subject'),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter a subject';
-                              }
-                              return null;
-                            },
-                          ),
-                          TextFormField(
-                            controller: _messageController,
-                            decoration: const InputDecoration(labelText: 'Message'),
-                            maxLines: null,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter a message';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 20),
-                          CustomScrollButton(
-                            text: 'Send',
-                            onPressed: () async {
-                              if (_formKey.currentState!.validate()) {
-                                await sendEmail(
-                                  contactSectionData?.name ?? 'Default Name',
-                                  contactSectionData?.contactEmail ?? 'Default Email');
-                                clear();
-                              }
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
+                const Divider(),
+                Text(
+                  'Let\'s Get in Touch',
+                  style: PublicViewTextStyles.generalHeading.copyWith(
+                    fontSize: titleFontSize*1.2,
                   ),
                 ),
-                Expanded(
-                  flex: 1, // Adjust flex as needed
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 100.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Connect Further',
-                          style: PublicViewTextStyles.generalHeading.copyWith(
-                            fontSize: titleFontSize,
+                const SizedBox(height: 60),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Padding(
+                        padding: const EdgeInsets.all(0),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Send a Message',
+                                style: PublicViewTextStyles.generalSubHeading.copyWith(
+                                  fontSize: titleFontSize,
+                                ),
+                              ),
+                              const Divider(),
+                              const SizedBox(height: 20),
+                              TextFormField(
+                                controller: _nameController,
+                                decoration: const InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderSide: BorderSide(
+                                      color: Colors.black,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderSide: BorderSide(
+                                      color: Colors.black,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  hintText: 'Name',
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your name';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(height: 20),
+                              TextFormField(
+                                controller: _emailController,
+                                decoration: const InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderSide: BorderSide(
+                                      color: Colors.black,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderSide: BorderSide(
+                                      color: Colors.black,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  hintText: 'Email',
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your email';
+                                  }
+                                  if (!EmailValidator.validate(value)) {
+                                    return 'Please enter a valid email';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(height: 20),
+                              TextFormField(
+                                controller: _subjectController,
+                                decoration: const InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderSide: BorderSide(
+                                      color: Colors.black,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderSide: BorderSide(
+                                      color: Colors.black,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  hintText: 'Subject',
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter a subject';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(height: 20),
+                              TextFormField(
+                                controller: _messageController,
+                                maxLines: 10,
+                                decoration: const InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderSide: BorderSide(
+                                      color: Colors.black,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderSide: BorderSide(
+                                      color: Colors.black,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  hintText: 'Message',
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter a message';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(height: 20),
+                              const SizedBox(height: 20),
+                              CustomScrollButton(
+                                text: 'Send',
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    await sendEmail(
+                                      contactSectionData?.name ?? 'Default Name',
+                                      contactSectionData?.contactEmail ?? 'Default Email');
+                                    clear();
+                                  }
+                                },
+                              ),
+                            ],
                           ),
                         ),
-                        Text(
-                          'Email',
-                          style: PublicViewTextStyles.generalSubHeading.copyWith(
-                            fontSize: titleFontSize/2,
-                          ),
-                        ),
-                        Text(
-                          contactSectionData?.contactEmail ?? 'Default Email',
-                          style: PublicViewTextStyles.generalBodyText.copyWith(
-                            fontSize: descriptionFontSize,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Text(
-                          'LinkedIn',
-                          style: PublicViewTextStyles.generalSubHeading.copyWith(
-                            fontSize: titleFontSize/2,
-                          ),
-                        ),
-                        Text(
-                          contactSectionData?.linkedinURL ?? 'Default LinkedIn',
-                          style: PublicViewTextStyles.generalBodyText.copyWith(
-                            fontSize: descriptionFontSize,
-                          ),
-                        )
-                      ],
+                      ),
                     ),
-                  ),
+                    // Dummy coloumn for formatting
+                    const Expanded(flex: 1, child: Padding(padding: EdgeInsets.all(0))),
+                    Expanded(
+                      flex: 2,
+                      child: Padding(
+                        padding: const EdgeInsets.all(0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Connect Further',
+                              style: PublicViewTextStyles.generalSubHeading.copyWith(
+                                fontSize: titleFontSize,
+                              ),
+                            ),
+                            const Divider(),
+                            const SizedBox(height: 20),
+                            Row(
+                              children: [
+                                const SizedBox(width: 96),
+                                Text(
+                                  'Email',
+                                  style: PublicViewTextStyles.generalBodyText.copyWith(
+                                    fontSize: titleFontSize / 2,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                SvgPicture.asset(
+                                  'mail.svg',
+                                  width: 84,
+                                  height: 84,
+                                ),
+                                const SizedBox(width: 12),
+                                Text(
+                                  contactSectionData?.contactEmail ?? 'No email avaliable',
+                                  style: PublicViewTextStyles.generalSubHeading.copyWith(
+                                    fontSize: titleFontSize / 2,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const Divider(),
+                            const SizedBox(height: 20),
+                            Row(
+                              children: [
+                                const SizedBox(width: 96),
+                                Text(
+                                  'LinkedIn',
+                                  style: PublicViewTextStyles.generalBodyText.copyWith(
+                                    fontSize: titleFontSize / 2,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                SvgPicture.asset(
+                                  'linkedin.svg',
+                                  width: 84,
+                                  height: 84,
+                                ),
+                                const SizedBox(width: 12),
+                                GestureDetector(
+                                  onTap: () {
+                                    launchUrl(Uri.parse(contactSectionData?.linkedinURL ?? 'https://www.linkedin.com/'));
+                                  },
+                                  child: Text(
+                                    '@${contactSectionData?.name}',
+                                    style: PublicViewTextStyles.generalSubHeading.copyWith(
+                                      fontSize: titleFontSize / 2,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const Divider(),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
