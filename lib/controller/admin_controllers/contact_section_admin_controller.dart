@@ -18,9 +18,9 @@ class ContactSectionAdminController {
         );
       } else {
         return ContactSectionDTO (
-          name: 'No name avaliable',
-          contactEmail: 'No email avaliable',
-          linkedinURL: 'No LinkedIn avaliable'
+          name: 'Unknown',
+          contactEmail: 'No email available',
+          linkedinURL: 'No LinkedIn available'
         );
       }
     } catch (e) {

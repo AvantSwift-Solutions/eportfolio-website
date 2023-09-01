@@ -19,7 +19,7 @@ class ContactSectionController {
         );
       } else {
         return ContactSectionDTO(
-          name: 'No name avaliable',
+          name: 'Unknown',
           contactEmail: 'No email avaliable',
           linkedinURL: 'No LinkedIn avaliable'
         );

@@ -25,7 +25,11 @@ void main() {
       expect(userMap['uid'], 'user123');
       expect(userMap['email'], 'user@example.com');
       expect(userMap['name'], 'John Doe');
-      // Add more assertions for other properties
+      expect(userMap['landingPageTitle'], 'Welcome to my page');
+      expect(userMap['landingPageDescription'], 'This is my landing page');
+      expect(userMap['imageURL'], 'https://example.com/image.jpg');
+      expect(userMap['contactEmail'], 'differentEmail@example.com');
+      expect(userMap['linkedinURL'], 'https://www.linkedin.com/in/example-user/');
     });
 
     // Write more tests for other methods (create, update, delete, getFirstUser)

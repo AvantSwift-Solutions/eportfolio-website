@@ -64,7 +64,7 @@ void main() {
     expect(landingPageData!.name, 'Error');
     expect(landingPageData.landingPageTitle, 'Error');
     expect(landingPageData.landingPageDescription, 'Error');
-    expect(landingPageData.imageURL, 'https://example.com/default_image.jpg');
+    expect(landingPageData.imageURL, 'https://example.com/error.jpg');
   });
 
   test('updateLandingPageData returns true on successful update', () async {
