@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import '../../dto/contact_section_dto.dart';
 import '../../models/User.dart';
 import '../../reposervice/user_repo_services.dart';
@@ -44,6 +43,7 @@ class ContactSectionController {
     const serviceId = 'service_wp59pl6';
     const templateId = 'template_6atjqpb';
     const userId = 'ydMCRddLc0NvkjQM5';
+    const accessToken = '1Uf6JLM9il0xwhzJZfTxj';
 
     final url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
 
@@ -56,6 +56,7 @@ class ContactSectionController {
         'service_id': serviceId,
         'template_id': templateId,
         'user_id': userId,
+        'accessToken': accessToken,
         'template_params': {
           'to_name': toName,
           'to_email': toEmail,

@@ -1,4 +1,5 @@
 import 'package:avantswift_portfolio/controller/view_controllers/contact_section_controller.dart';
+import 'package:avantswift_portfolio/dto/contact_section_dto.dart';
 import 'package:avantswift_portfolio/reposervice/user_repo_services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -51,6 +52,46 @@ void main() {
     expect(landingPageData!.name, 'Error');
     expect(landingPageData.contactEmail, 'Error');
     expect(landingPageData.linkedinURL, 'Error');
+  });
+
+  test('sendEmail returns true on success', () async {
+    when(mockRepoService.getFirstUser()).thenAnswer((_) async => mockUser);
+
+    final response = await controller.sendEmail(
+      ContactSectionDTO(
+        name: mockUser.name,
+        contactEmail: 'valid_email@gmail.com',
+        linkedinURL: mockUser.linkedinURL,
+      ),
+      {
+        'from_name': 'Test Name',
+        'from_email': 'another_valid_email@gmail.com',
+        'message': 'Test Message',
+      },
+    );
+
+    expect(response, true);
+    
+  });
+
+  test('sendEmail returns false for invalid contactEmail', () async {
+    when(mockRepoService.getFirstUser()).thenAnswer((_) async => mockUser);
+
+    final response = await controller.sendEmail(
+      ContactSectionDTO(
+        name: mockUser.name,
+        contactEmail: 'invalid_email',
+        linkedinURL: mockUser.linkedinURL,
+      ),
+      {
+        'from_name': 'Test Name',
+        'from_email': 'valid_email@gmail.com',
+        'message': 'Test Message',
+      },
+    );
+
+    expect(response, false);
+    
   });
 
 }
