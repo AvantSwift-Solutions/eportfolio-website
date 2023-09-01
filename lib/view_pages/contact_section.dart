@@ -1,11 +1,9 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../controller/view_controllers/contact_section_controller.dart';
 import '../reposervice/user_repo_services.dart';
 import '../ui/custom_scroll_button.dart';
 import '../ui/custom_texts/public_view_text_styles.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -41,50 +39,13 @@ class _ContactSectionState extends State<ContactSection> {
     _messageController.clear();
   }
 
-  Future sendEmail(String name, String contactEmail) async {
-
-    final toName = name;
-    final toEmail = contactEmail;
-    
-    const serviceId = 'service_wp59pl6';
-    const templateId = 'template_6atjqpb';
-    const userId = 'ydMCRddLc0NvkjQM5';
-
-    final url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
-
-    final response = await http.post(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: json.encode({
-        'service_id': serviceId,
-        'template_id': templateId,
-        'user_id': userId,
-        'template_params': {
-          'to_name': toName,
-          'to_email': toEmail,
-          'from_name': _nameController.text,
-          'from_email': _emailController.text,
-          'subject': _subjectController.text,
-          'message': _messageController.text,
-        },
-      }),
-    );
-
-    if (response.body == 'OK') {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Email sent successfully'),
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Error sending email'),
-        ),
-      );
-    }
+  Map<String, String> getFields() {
+    return {
+      'from_name': _nameController.text,
+      'from_email': _emailController.text,
+      'subject': _subjectController.text,
+      'message': _messageController.text,
+    };
   }
 
   @override
@@ -154,6 +115,20 @@ class _ContactSectionState extends State<ContactSection> {
                                       width: 1.0,
                                     ),
                                   ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderSide: BorderSide(
+                                      color: Colors.red,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderSide: BorderSide(
+                                      color: Colors.red,
+                                      width: 1.0,
+                                    ),
+                                  ),
                                   hintText: 'Name',
                                 ),
                                 validator: (value) {
@@ -178,6 +153,20 @@ class _ContactSectionState extends State<ContactSection> {
                                     borderRadius: BorderRadius.all(Radius.circular(8.0),),
                                     borderSide: BorderSide(
                                       color: Colors.black,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderSide: BorderSide(
+                                      color: Colors.red,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderSide: BorderSide(
+                                      color: Colors.red,
                                       width: 1.0,
                                     ),
                                   ),
@@ -211,6 +200,20 @@ class _ContactSectionState extends State<ContactSection> {
                                       width: 1.0,
                                     ),
                                   ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderSide: BorderSide(
+                                      color: Colors.red,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderSide: BorderSide(
+                                      color: Colors.red,
+                                      width: 1.0,
+                                    ),
+                                  ),
                                   hintText: 'Subject',
                                 ),
                                 validator: (value) {
@@ -239,6 +242,20 @@ class _ContactSectionState extends State<ContactSection> {
                                       width: 1.0,
                                     ),
                                   ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderSide: BorderSide(
+                                      color: Colors.red,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderSide: BorderSide(
+                                      color: Colors.red,
+                                      width: 1.0,
+                                    ),
+                                  ),
                                   hintText: 'Message',
                                 ),
                                 validator: (value) {
@@ -254,10 +271,30 @@ class _ContactSectionState extends State<ContactSection> {
                                 text: 'Send',
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
-                                    await sendEmail(
-                                      contactSectionData?.name ?? 'Default Name',
-                                      contactSectionData?.contactEmail ?? 'Default Email');
+                                    final fields = getFields();
                                     clear();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Sending email...'),
+                                      ),
+                                    );
+                                    final res = await _contactSectionController
+                                      .sendEmail(contactSectionData, fields);
+                                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                    if (res) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          content: Text('Email sent successfully'),
+                                        ),
+                                      );
+                                    } else {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          content: Text('Error sending email'),
+                                        ),
+                                      );
+                                    }
+                                    
                                   }
                                 },
                               ),
@@ -358,4 +395,5 @@ class _ContactSectionState extends State<ContactSection> {
       },
     );
   }
+
 }
