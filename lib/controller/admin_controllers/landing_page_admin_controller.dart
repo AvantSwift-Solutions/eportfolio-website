@@ -33,7 +33,7 @@ class LandingPageAdminController {
         name: 'Error',
         landingPageTitle: 'Error',
         landingPageDescription: 'Error',
-        imageURL: 'https://example.com/default_image.jpg',
+        imageURL: 'https://example.com/error.jpg',
       );
     }
   }

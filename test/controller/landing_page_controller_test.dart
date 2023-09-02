@@ -47,13 +47,15 @@ void main() {
     expect(landingPageData.imageURL, 'https://example.com/default_image.jpg');
   });
 
-  test('getLandingPageData returns default data when user is null', () async {
-    when(mockRepoService.getFirstUser()).thenAnswer((_) async => null);
+  test('getLandingPageData returns error data on exception', () async {
+    when(mockRepoService.getFirstUser()).thenThrow(Exception('Test Exception'));
+
     final landingPageData = await controller.getLandingPageData();
 
-    expect(landingPageData!.name, 'Unknown');
-    expect(landingPageData.landingPageTitle, 'Welcome');
-    expect(landingPageData.landingPageDescription, 'No description available');
-    expect(landingPageData.imageURL, 'https://example.com/default_image.jpg');
+    expect(landingPageData!.name, 'Error');
+    expect(landingPageData.landingPageTitle, 'Error');
+    expect(landingPageData.landingPageDescription, 'Error');
+    expect(landingPageData.imageURL, 'https://example.com/error.jpg');
   });
+  
 }
