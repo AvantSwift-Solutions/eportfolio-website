@@ -15,14 +15,11 @@ class EducationSectionAdmin extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              onPressed: () async {
-                _showEducationList(context, await _adminController.getEducationSectionData() ?? []);
-              },
-              child: const Text('Edit Education Info'),
-            ),
+          ElevatedButton(
+            onPressed: () async {
+              _showEducationList(context, await _adminController.getEducationSectionData() ?? []);
+            },
+            child: const Text('Edit Education Info'),
           ),
         ],
       ),
@@ -36,7 +33,7 @@ class EducationSectionAdmin extends StatelessWidget {
         return AlertDialog(
           title: const Text('Education List'),
           content: SizedBox(
-            width: double.maxFinite,
+            width: 200,
             child: educationList.isNotEmpty
                 ? ListView.builder(
                     shrinkWrap: true,
@@ -59,6 +56,71 @@ class EducationSectionAdmin extends StatelessWidget {
               },
               child: const Text('Close'),
             ),
+            ElevatedButton(
+              onPressed: () {
+                _showAddNewDialog(context, educationList);
+              },
+              child: const Text('Add New Education'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  _showAddNewDialog(BuildContext context, List<Education> educationList) async {
+    Navigator.of(context).pop();
+    final education = Education(
+      id: '',
+      // startDate: null,
+      // endDate: null,
+      logoURL: null,
+      schoolName: '',
+      degree: '',
+      description: '',
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        final schoolNameController = TextEditingController();
+        final degreeController = TextEditingController();
+        final descriptionController = TextEditingController();
+        return AlertDialog(
+          title: const Text('Add Education'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                TextField(
+                  controller: schoolNameController,
+                  onChanged: (value) => education.schoolName = value,
+                  decoration: const InputDecoration(labelText: 'School Name'),
+                ),
+                TextField(
+                  controller: degreeController,
+                  onChanged: (value) => education.degree = value,
+                  decoration: const InputDecoration(labelText: 'Degree'),
+                ),
+                TextField(
+                  controller: descriptionController,
+                  onChanged: (value) => education.description = value,
+                  decoration: const InputDecoration(labelText: 'Description'),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                education.create();
+                educationList.add(education);
+                Navigator.pop(dialogContext);
+              },
+              child: const Text('Save'),
+            ),
           ],
         );
       },
@@ -66,6 +128,7 @@ class EducationSectionAdmin extends StatelessWidget {
   }
 
   void _showEditDialog(BuildContext context, int i) async {
+    Navigator.of(context).pop();
     final educationSectionData = await _adminController.getEducationSectionData();
 
     TextEditingController schoolNameController = 
