@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfessionalExperience {
   final String professionalExperienceId;
-  String? jobTitle;
+  String jobTitle;
   String? companyName;
   String? location;
   DateTime? startDate;
