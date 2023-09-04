@@ -4,6 +4,8 @@ import '../reposervice/user_repo_services.dart';
 import '../ui/custom_texts/public_view_text_styles.dart';
 
 class AboutMeSection extends StatefulWidget {
+  const AboutMeSection({super.key});
+
   @override
   _AboutMeSectionState createState() => _AboutMeSectionState();
 }
@@ -44,14 +46,15 @@ class _AboutMeSectionState extends State<AboutMeSection> {
                       Text(
                         'A Bit About Myself...',
                         style: PublicViewTextStyles.generalHeading.copyWith(
-                          fontSize: titleFontSize * 1.2,
+                          fontSize: titleFontSize * 0.8,
+                          fontWeight: FontWeight.bold
                         ),
                       ),
                       const SizedBox(height: 20),
                       Text(
                         aboutMeSectionData?.aboutMe ?? 'Default Description',
                         style: PublicViewTextStyles.generalBodyText.copyWith(
-                          fontSize: descriptionFontSize,
+                          fontSize: descriptionFontSize * 1.3,
                         ),
                       ),
                       const SizedBox(height: 20),
