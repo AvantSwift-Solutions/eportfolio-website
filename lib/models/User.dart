@@ -10,18 +10,19 @@ class User {
   String? imageURL;
   String? contactEmail;
   String? linkedinURL;
+  String? aboutMe;
 
-  User({
-    required this.uid,
-    required this.email,
-    required this.name,
-    required this.creationTimestamp,
-    required this.landingPageTitle,
-    required this.landingPageDescription,
-    required this.imageURL,
-    required this.contactEmail,
-    required this.linkedinURL
-  });
+  User(
+      {required this.uid,
+      required this.email,
+      required this.name,
+      required this.creationTimestamp,
+      required this.landingPageTitle,
+      required this.landingPageDescription,
+      required this.imageURL,
+      required this.contactEmail,
+      required this.linkedinURL,
+      required this.aboutMe});
 
   factory User.fromDocumentSnapshot(DocumentSnapshot snapshot) {
     try {
@@ -35,6 +36,7 @@ class User {
       final landingPageDescription = data['landingPageDescription'] as String;
       final contactEmail = data['contactEmail'] as String;
       final linkedinURL = data['linkedinURL'] as String;
+      final aboutMe = data['aboutMe'] as String;
 
       return User(
           creationTimestamp: creationTimestamp,
@@ -45,7 +47,8 @@ class User {
           landingPageDescription: landingPageDescription,
           imageURL: imageUrl,
           contactEmail: contactEmail,
-          linkedinURL: linkedinURL);
+          linkedinURL: linkedinURL,
+          aboutMe: aboutMe);
     } catch (e) {
       rethrow;
     }
@@ -61,7 +64,8 @@ class User {
       'landingPageDescription': landingPageDescription,
       'imageURL': imageURL,
       'contactEmail': contactEmail,
-      'linkedinURL': linkedinURL
+      'linkedinURL': linkedinURL,
+      'aboutMe': aboutMe
     };
   }
 
