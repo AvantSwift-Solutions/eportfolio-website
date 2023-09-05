@@ -20,23 +20,6 @@ class PersonalProjectAdminController {
   }
 
   
-  // Future<PersonalProjectDTO?> getSelectedPersonalProject(PersonalProjectDTO personalProjectData) async {
-  //   try {
-  //     List<PersonalProjectDTO> personalProjectDTOList = await getPersonalProjectList();
-
-  //     // Find the selected project by comparing with its ppid.
-  //     PersonalProjectDTO? selectedProject = personalProjectDTOList.firstWhere(
-  //       (project) => project.ppid == personalProjectData.ppid,
-  //       // ignore: cast_from_null_always_fails
-  //       orElse: () => null as PersonalProjectDTO,
-  //     );
-
-  //     return selectedProject;
-  //   } catch (e) {
-  //     return null;
-  //   }
-  // }
-
   Future<bool>? updatePersonalProjectData(int index, PersonalProject newProject) async {
     try {
       List<PersonalProject> personalProjects = await personalProjectRepoService.getAllProjects();
@@ -53,21 +36,10 @@ class PersonalProjectAdminController {
     }
   }
 
-  // Future<void> addPersonalProject(PersonalProject newProject) async {
-  //   try {
-  //     await newProject.create();
-  //   } catch (e) {
-  //     // Handle any errors, log them, and return false to indicate failure.
-  //     print('Error adding personal project: $e');
-  //     return;
-  //   }
-  // }
 
   Future<bool> deletePersonalProject(int index) async {
     try {
       List<PersonalProject> personalProjects = await personalProjectRepoService.getAllProjects();
-
-      // Use the delete method or your Firestore logic to delete the project from the database.
       await personalProjects[index].delete();
       return true;
     } catch (e) {
@@ -78,8 +50,7 @@ class PersonalProjectAdminController {
 
 
 
-  Future<String?> uploadImageAndGetURL(
-      Uint8List imageBytes, String fileName) async {
+  Future<String?> uploadImageAndGetURL(Uint8List imageBytes, String fileName) async {
     try {
       final ref = FirebaseStorage.instance.ref().child('images/$fileName');
       final uploadTask = ref.putData(imageBytes);

@@ -37,7 +37,7 @@ class PersonalProjectAdmin extends StatelessWidget {
         context: context,
         builder: (BuildContext dialogContext) {
           return AlertDialog(
-            title: Text('Edit Personal Project'),
+            title: const Text('Edit Personal Project'),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -46,14 +46,14 @@ class PersonalProjectAdmin extends StatelessWidget {
                     Navigator.of(dialogContext).pop();
                     _showAddProjectDialog(context, personalProjects);
                   },
-                  child: Text('Add Personal Project'),
+                  child: const Text('Add Personal Project'),
                 ),
                 ElevatedButton(
                   onPressed: () async {
                     Navigator.of(dialogContext).pop();
                     _showExistingProjectsDialog(context, personalProjects);
                   },
-                  child: Text('Update Existing Project'),
+                  child: const Text('Update Existing Project'),
                 ),
               ],
             ),
@@ -62,7 +62,7 @@ class PersonalProjectAdmin extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(dialogContext).pop();
                 },
-                child: Text('Cancel'),
+                child: const Text('Cancel'),
               ),
             ],
           );
@@ -77,18 +77,16 @@ class PersonalProjectAdmin extends StatelessWidget {
     Uint8List? pickedImageBytes;
     PersonalProject newProject = PersonalProject(ppid: '', name: '', creationTimestamp: Timestamp.now());
 
-    // Implement the dialog to add a new project here.
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: Text('Add Personal Project'),
+              title: const Text('Add Personal Project'),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Add input fields for project details here.
                   TextField(
                     controller: nameController,
                     onChanged: (value) => newProject.name = value,
@@ -119,8 +117,6 @@ class PersonalProjectAdmin extends StatelessWidget {
               actions: <Widget>[
                 TextButton(
                   onPressed: () async {
-                    // Implement logic to add a new project.
-                    // After adding, you can show a success message or handle errors.
                     if (nameController.text.isEmpty || descriptionController.text.isEmpty) {
                       print('Name or description is empty');
                       return;
@@ -140,17 +136,12 @@ class PersonalProjectAdmin extends StatelessWidget {
                     newProject.create();
                     personalProjects.add(newProject);
                     Navigator.of(dialogContext).pop();
-                    // setState(() {});
+                    setState(() {});
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('Added a new personal project')),
                     );
-                    // if (true) {
-                    //   ScaffoldMessenger.of(context).showSnackBar(
-                    //     SnackBar(content: Text('Failed to add a new project')),
-                    //   );
-                    // }
                   },
-                  child: Text('Add'),
+                  child: const Text('Add'),
                 ),
                 TextButton(
                   onPressed: () {
@@ -172,8 +163,8 @@ class PersonalProjectAdmin extends StatelessWidget {
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text('Project List'),
-          content: Container(
+          title: const Text('Project List'),
+          content: SizedBox(
             width: 300,
             height: 300,
             child: personalProjects.isNotEmpty
@@ -189,14 +180,13 @@ class PersonalProjectAdmin extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
-                              icon: Icon(Icons.edit),
+                              icon: const Icon(Icons.edit),
                               onPressed: () {
-                                // selectedProject = project;
                                 _showUpdateProjectDialog(context, index);
                               },
                             ),
                             IconButton(
-                              icon: Icon(Icons.delete),
+                              icon: const Icon(Icons.delete),
                               onPressed: () {
                                 _showDeleteDialog(context, index);
                               },
@@ -216,7 +206,7 @@ class PersonalProjectAdmin extends StatelessWidget {
               onPressed: () {
                 Navigator.of(dialogContext).pop();
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
           ],
         );
@@ -239,11 +229,10 @@ class PersonalProjectAdmin extends StatelessWidget {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: Text('Update Existing Project'),
+              title: const Text('Update Existing Project'),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Add input fields for project details here.
                   TextField(
                     controller: nameController,
                     onChanged: (value) => personalProjects[i].name = value,
@@ -278,7 +267,6 @@ class PersonalProjectAdmin extends StatelessWidget {
                       print('Name or description is empty');
                       return;
                     }
-                    // If the user picked a new image, upload it and update the imageURL.
                     if (pickedImageBytes != null) {
                       String? imageURL = await _adminController.uploadImageAndGetURL(
                         pickedImageBytes!,
@@ -291,18 +279,18 @@ class PersonalProjectAdmin extends StatelessWidget {
 
                     bool isSuccess = await _adminController.updatePersonalProjectData(i, personalProjects[i]) ?? false;
                     if (isSuccess) {
-                      // setState(() {});
+                      setState(() {});
                       Navigator.of(dialogContext).pop();
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Updated an existing personal project')),
+                        const SnackBar(content: Text('Updated an existing personal project')),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Failed to update an existing personal project')),
+                        const SnackBar(content: Text('Failed to update an existing personal project')),
                       );
                     }
                   },
-                  child: Text('Update'),
+                  child: const Text('Update'),
                 ),
                 TextButton(
                   onPressed: () {
@@ -319,43 +307,39 @@ class PersonalProjectAdmin extends StatelessWidget {
   }
 
 
-  void _showDeleteDialog(BuildContext context, int i) async {
-    // final personalProjects = await _adminController.getPersonalProjectList();
-    // final selectedProject = personalProjects[i];
- 
+  void _showDeleteDialog(BuildContext context, int i) async { 
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: Text('Confirm Deletion'),
-              content: Text('Are you sure you want to delete this project?'),
+              title: const Text('Confirm Deletion'),
+              content: const Text('Are you sure you want to delete this project?'),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
                     Navigator.of(dialogContext).pop();
                   },
-                  child: Text('Cancel'),
+                  child: const Text('Cancel'),
                 ),
                 TextButton(
                   onPressed: () async {
-                    // Call the deletePersonalProject method here.
                     final deleted = await _adminController.deletePersonalProject(i);
                     Navigator.of(dialogContext).pop(); // Close the dialog.
                     
                     if (deleted) {
                       setState(() {});
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Project deleted successfully')),
+                        const SnackBar(content: Text('Project deleted successfully')),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Failed to delete the project')),
+                        const SnackBar(content: Text('Failed to delete the project')),
                       );
                     }
                   },
-                  child: Text('Delete'),
+                  child: const Text('Delete'),
                 ),
               ],
             );
@@ -364,7 +348,6 @@ class PersonalProjectAdmin extends StatelessWidget {
       },
     );
   }
-
 
 
   Future<Uint8List?> _pickImage() async {
