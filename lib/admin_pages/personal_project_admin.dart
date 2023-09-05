@@ -1,17 +1,15 @@
 // ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
 import 'dart:typed_data';
-import 'package:avantswift_portfolio/dto/personal_project_dto.dart';
 import 'package:avantswift_portfolio/reposervice/personal_project_repo_services.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import '../controller/admin_controllers/personal_project_admin_controller.dart';
+import '../models/PersonalProject.dart';
 
 class PersonalProjectAdmin extends StatelessWidget {
   final PersonalProjectAdminController _adminController =
       PersonalProjectAdminController(PersonalProjectRepoService());
-  PersonalProjectDTO newProject = PersonalProjectDTO(ppid: '', name: '', description: '', imageURL: '');
-  PersonalProjectDTO selectedProject = PersonalProjectDTO(ppid: '', name: '', description: '', imageURL: '');
-  List <PersonalProjectDTO> personalProjects = [];
   
 
   @override
@@ -22,8 +20,8 @@ class PersonalProjectAdmin extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
-              onPressed: () {
-                _showEditDialog(context);
+              onPressed: () async {
+                _showEditDialog(context, await _adminController.getPersonalProjectList());
               },
               child: const Text('Edit Personal Project'),
             ),
@@ -34,7 +32,7 @@ class PersonalProjectAdmin extends StatelessWidget {
   }
 
 
-  void _showEditDialog(BuildContext context) async {
+  void _showEditDialog(BuildContext context, List<PersonalProject> personalProjects) async {
       showDialog(
         context: context,
         builder: (BuildContext dialogContext) {
@@ -44,16 +42,16 @@ class PersonalProjectAdmin extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: ()  {
                     Navigator.of(dialogContext).pop();
-                    _showAddProjectDialog(context);
+                    _showAddProjectDialog(context, personalProjects);
                   },
                   child: Text('Add Personal Project'),
                 ),
                 ElevatedButton(
                   onPressed: () async {
                     Navigator.of(dialogContext).pop();
-                    _showExistingProjectsDialog(context);
+                    _showExistingProjectsDialog(context, personalProjects);
                   },
                   child: Text('Update Existing Project'),
                 ),
@@ -73,53 +71,11 @@ class PersonalProjectAdmin extends StatelessWidget {
   }
 
 
-  Widget _buildProjectList(BuildContext context) {
-    if (personalProjects.isEmpty){
-      return Text('No projects available.');
-    }
-    
-    return ListView.builder(
-      itemCount: personalProjects.length,
-      itemBuilder: (context, index) {
-        final project = personalProjects[index];
-        return ListTile(
-          key: UniqueKey(),
-          title: Text(project.name),
-          subtitle: Text(project.description),
-          leading: Image.network(project.imageURL),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              IconButton(
-                icon: Icon(Icons.edit),
-                onPressed: () {
-                  selectedProject = project;
-                  _showUpdateProjectDialog(context, selectedProject);
-                },
-              ),
-              IconButton(
-                icon: Icon(Icons.delete),
-                onPressed: () {
-                  _showDeleteDialog(context, selectedProject);
-                },
-              ),
-            ],
-          ),
-          onTap: () {
-            selectedProject = project;
-            _showUpdateProjectDialog(context, selectedProject);
-          },
-        );
-      },
-    );
-  }  
-
-
-
-  void _showAddProjectDialog(BuildContext context) {
+  void _showAddProjectDialog(BuildContext context, List<PersonalProject> personalProjects) {
     TextEditingController nameController = TextEditingController();
     TextEditingController descriptionController = TextEditingController();
     Uint8List? pickedImageBytes;
+    PersonalProject newProject = PersonalProject(ppid: '', name: '', creationTimestamp: Timestamp.now());
 
     // Implement the dialog to add a new project here.
     showDialog(
@@ -154,7 +110,6 @@ class PersonalProjectAdmin extends StatelessWidget {
                       if (imageBytes != null) {
                         pickedImageBytes = imageBytes;
                         setState(() {});
-
                       }
                     },
                     child: const Text('Pick an Image'),
@@ -170,13 +125,7 @@ class PersonalProjectAdmin extends StatelessWidget {
                       print('Name or description is empty');
                       return;
                     }
-                    PersonalProjectDTO newProject = PersonalProjectDTO(
-                      ppid: '',
-                      name: nameController.text,
-                      description: descriptionController.text,
-                      imageURL: '',
-                    );
-
+                    
                     if (pickedImageBytes != null) {
                       String? imageURL = await _adminController.uploadImageAndGetURL(
                         pickedImageBytes!,
@@ -187,24 +136,19 @@ class PersonalProjectAdmin extends StatelessWidget {
                       }
                     }
 
-                    // Add a new project.
-                    // bool isSuccess = await _adminController.addPersonalProject(newProject);
-                    final ppid = await _adminController.addPersonalProject(newProject);
-                    newProject.ppid = ppid!;
+                    // await _adminController.addPersonalProject(newProject);
+                    newProject.create();
+                    personalProjects.add(newProject);
                     Navigator.of(dialogContext).pop();
-
-                    if (newProject.ppid.isNotEmpty){
-                      // add newProject into project list.
-                      personalProjects.add(newProject);
-                      setState(() {});
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Added a new personal project')),
-                      );
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Failed to add a new project')),
-                      );
-                    }
+                    // setState(() {});
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Added a new personal project')),
+                    );
+                    // if (true) {
+                    //   ScaffoldMessenger.of(context).showSnackBar(
+                    //     SnackBar(content: Text('Failed to add a new project')),
+                    //   );
+                    // }
                   },
                   child: Text('Add'),
                 ),
@@ -223,16 +167,49 @@ class PersonalProjectAdmin extends StatelessWidget {
   }
 
 
-  void _showExistingProjectsDialog(BuildContext context) {
+  void _showExistingProjectsDialog(BuildContext context, List<PersonalProject> personalProjects) {
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text('Select a Project to Update'),
+          title: Text('Project List'),
           content: Container(
             width: 300,
             height: 300,
-            child: _buildProjectList(context),
+            child: personalProjects.isNotEmpty
+                ? ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: personalProjects.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(personalProjects[index].name),
+                        // subtitle: Text(personalProjects[index].description),
+                        // leading: Image.network(personalProjects[index].imageURL),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.edit),
+                              onPressed: () {
+                                // selectedProject = project;
+                                _showUpdateProjectDialog(context, index);
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                _showDeleteDialog(context, index);
+                              },
+                            ),
+                          ],
+                        ),
+                        onTap: () {
+                          _showUpdateProjectDialog(context, index);
+                        },
+                      );
+                    },
+                  )
+                : const Text('No projects available'),
           ), 
           actions: <Widget>[
             TextButton(
@@ -248,8 +225,10 @@ class PersonalProjectAdmin extends StatelessWidget {
   }
 
 
-  void _showUpdateProjectDialog(BuildContext context, PersonalProjectDTO selectedProject) {
-    // Implement the dialog to update an existing project here.
+  void _showUpdateProjectDialog(BuildContext context, int i) async {
+    final personalProjects = await _adminController.getPersonalProjectList();
+    final selectedProject = personalProjects[i];
+
     TextEditingController nameController = TextEditingController(text: selectedProject.name);
     TextEditingController descriptionController = TextEditingController(text: selectedProject.description);
     Uint8List? pickedImageBytes;
@@ -267,14 +246,14 @@ class PersonalProjectAdmin extends StatelessWidget {
                   // Add input fields for project details here.
                   TextField(
                     controller: nameController,
-                    onChanged: (value) => newProject.name = value,
+                    onChanged: (value) => personalProjects[i].name = value,
                     decoration: const InputDecoration(
                       labelText: 'Name'),
                   ),
                   TextField(
                     controller: descriptionController,
                     onChanged: (value) =>
-                    newProject.description = value,
+                    personalProjects[i].description = value,
                     decoration: const InputDecoration(
                       labelText: 'Description'),
                   ),
@@ -295,7 +274,6 @@ class PersonalProjectAdmin extends StatelessWidget {
               actions: <Widget>[
                 TextButton(
                   onPressed: () async {
-                    // Implement logic to update an existing project.
                     if (nameController.text.isEmpty || descriptionController.text.isEmpty) {
                       print('Name or description is empty');
                       return;
@@ -311,25 +289,17 @@ class PersonalProjectAdmin extends StatelessWidget {
                       }
                     }
 
-                    bool? isSuccess = await _adminController.updatePersonalProjectData(selectedProject);
-                    if (isSuccess != null) {
-                      if (isSuccess) {
-                        int index = personalProjects.indexWhere((project) => project.ppid == selectedProject.ppid);
-                        if (index != -1) {
-                          setState(() {
-                            personalProjects[index] = selectedProject;
-                          });
-                        }
-                        Navigator.of(dialogContext).pop();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Updated an existing personal project')),
-                        );
-                        // setState(() {});
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Failed to update an existing personal project')),
-                        );
-                      }
+                    bool isSuccess = await _adminController.updatePersonalProjectData(i, personalProjects[i]) ?? false;
+                    if (isSuccess) {
+                      // setState(() {});
+                      Navigator.of(dialogContext).pop();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Updated an existing personal project')),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Failed to update an existing personal project')),
+                      );
                     }
                   },
                   child: Text('Update'),
@@ -349,7 +319,10 @@ class PersonalProjectAdmin extends StatelessWidget {
   }
 
 
-  void _showDeleteDialog(BuildContext context, PersonalProjectDTO selectedProject) {
+  void _showDeleteDialog(BuildContext context, int i) async {
+    // final personalProjects = await _adminController.getPersonalProjectList();
+    // final selectedProject = personalProjects[i];
+ 
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -368,12 +341,10 @@ class PersonalProjectAdmin extends StatelessWidget {
                 TextButton(
                   onPressed: () async {
                     // Call the deletePersonalProject method here.
-                    final deleted = await _adminController.deletePersonalProject(selectedProject);
+                    final deleted = await _adminController.deletePersonalProject(i);
                     Navigator.of(dialogContext).pop(); // Close the dialog.
+                    
                     if (deleted) {
-                      // Remove the deleted project from the personalProjects list.
-                      personalProjects.removeWhere((project) => project.ppid == selectedProject.ppid);
-                      // Update the UI if needed.
                       setState(() {});
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Project deleted successfully')),

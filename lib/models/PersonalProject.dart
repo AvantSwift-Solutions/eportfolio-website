@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:uuid/uuid.dart';
 
 class PersonalProject {
-  String? ppid;
-  String? name;
+  final String ppid;
+  String name;
   String? description;
-  final Timestamp? creationTimestamp;
+  Timestamp? creationTimestamp;
   String? imageURL;
   
 
@@ -17,23 +18,20 @@ class PersonalProject {
   });
 
   factory PersonalProject.fromDocumentSnapshot(DocumentSnapshot snapshot) {
-    try {
-      final data = snapshot.data() as Map<String, dynamic>;
-      final ppid = data['ppid'] as String;
-      final name = data['name'] as String;
-      final description = data['description'] as String;
-      final creationTimestamp = data['creationTimestamp'] as Timestamp;
-      final imageUrl = data['imageURL'] as String;
+    final data = snapshot.data() as Map<String, dynamic>;
+    final ppid = data['ppid'];
+    final name = data['name'];
+    final description = data['description'];
+    final creationTimestamp = data['creationTimestamp'];
+    final imageUrl = data['imageURL'];
 
-      return PersonalProject(
-          creationTimestamp: creationTimestamp,
-          ppid: ppid,
-          name: name,
-          description: description,
-          imageURL: imageUrl);
-    } catch (e) {
-      rethrow;
-    }
+    return PersonalProject(
+      ppid: snapshot.id,
+      name: name,
+      description: description,
+      creationTimestamp: creationTimestamp,
+      imageURL: imageUrl,
+    );
   }
 
   Map<String, dynamic> toMap() {
@@ -46,19 +44,17 @@ class PersonalProject {
     };
   }
 
-  Future<String?> create() async {
+  Future<void> create() async {
     try {
-      final documentReference  = await FirebaseFirestore.instance.collection('PersonalProject').add(toMap());
+      final ppid = const Uuid().v4();
+      await FirebaseFirestore.instance.collection('PersonalProject').doc(ppid).set(toMap());
       print('Personal project document created');
-      print(documentReference.id);
-      return documentReference.id;
     } catch (e) {
       print('Error creating personal project document: $e');
-      return null;
     }
   }
 
-  Future<bool>? update() async {
+  Future<bool> update() async {
     try {
       await FirebaseFirestore.instance
           .collection('PersonalProject')
