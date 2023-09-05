@@ -9,12 +9,14 @@ class EducationRepoService {
     try {
       QuerySnapshot snapshot =
           await FirebaseFirestore.instance.collection('Education').get();
-      final tmp = snapshot.docs
-          .map((doc) => Education.fromDocumentSnapshot(doc))
-          .toList();  
-      return tmp;
+      if (snapshot.docs.isNotEmpty) {
+        return snapshot.docs.map((doc) => Education.fromDocumentSnapshot(doc))
+          .toList();
+      } else {
+        return null;
+      }
     } catch (e) {
-      log('error: $e');  
+      log('Error getting all education: $e');
       return null;
     }
   }

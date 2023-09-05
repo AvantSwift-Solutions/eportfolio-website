@@ -24,16 +24,15 @@ class EducationSectionAdminController {
       List<Education>? allEducation = await educationRepoService.getAllEducation();
 
       if (allEducation!.isNotEmpty) {
-        // Education education = allEducation[index];
-        // allEducation[index].startDate = newEducation.startDate;
-        // allEducation[index].endDate = newEducation.endDate;
+        allEducation[index].startDate = newEducation.startDate;
+        allEducation[index].endDate = newEducation.endDate;
         allEducation[index].logoURL = newEducation.logoURL;
         allEducation[index].schoolName = newEducation.schoolName;
         allEducation[index].degree = newEducation.degree;
         allEducation[index].description = newEducation.description;
         
         bool updateSuccess = await allEducation[index].update();
-        return updateSuccess; // Return true if update is successful
+        return updateSuccess;
       } else {
         return false;
       }

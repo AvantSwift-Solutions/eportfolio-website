@@ -3,8 +3,8 @@ import 'package:uuid/uuid.dart';
 
 class Education {
   final String id;
-  // Timestamp? startDate;
-  // Timestamp? endDate;
+  Timestamp? startDate;
+  Timestamp? endDate;
   String? logoURL;
   String schoolName;
   String? degree;
@@ -12,8 +12,8 @@ class Education {
 
   Education({
     required this.id,
-    // required this.startDate,
-    // this.endDate,
+    required this.startDate,
+    required this.endDate,
     this.logoURL,
     required this.schoolName,
     required this.degree,
@@ -22,8 +22,8 @@ class Education {
 
   factory Education.fromDocumentSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;
-    // final startDate = data['startDate'] as Timestamp?;
-    // final endDate = data['endDate'] as Timestamp?;
+    final startDate = data['startDate'];
+    final endDate = data['endDate'];
     final logoURL = data['logoURL'] as String?;
     final schoolName = data['schoolName'] as String;
     final degree = data['degree'] as String?;
@@ -31,8 +31,8 @@ class Education {
 
     return Education(
       id: snapshot.id,
-      // startDate: startDate,
-      // endDate: endDate,
+      startDate: startDate,
+      endDate: endDate,
       logoURL: logoURL,
       schoolName: schoolName,
       degree: degree,
@@ -42,8 +42,8 @@ class Education {
 
   Map<String, dynamic> toMap() {
     return {
-      // 'startDate': startDate,
-      // 'endDate': endDate,
+      'startDate': startDate,
+      'endDate': endDate,
       'logoURL': logoURL,
       'schoolName': schoolName,
       'degree': degree,
@@ -66,13 +66,10 @@ class Education {
 
   Future<bool> update() async {
     try {
-      final data = toMap();
-      // data['startDate'] = startDate?.toDate().toString();
-      // data['endDate'] = endDate?.toDate().toString();
       await FirebaseFirestore.instance
           .collection('Education')
           .doc(id)
-          .update(data);
+          .update(toMap());
       return true;
     } catch (e) {
       print('Error updating education document: $e');

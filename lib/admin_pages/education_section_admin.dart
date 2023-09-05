@@ -1,10 +1,12 @@
 // ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
 import 'dart:typed_data';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import '../controller/admin_controllers/education_section_admin_controller.dart';
 import '../models/Education.dart';
 import '../reposervice/education_repo_services.dart';
+import 'package:intl/intl.dart';
 
 class EducationSectionAdmin extends StatelessWidget {
   final EducationSectionAdminController _adminController =
@@ -72,19 +74,24 @@ class EducationSectionAdmin extends StatelessWidget {
     Navigator.of(context).pop();
     final education = Education(
       id: '',
-      // startDate: null,
-      // endDate: null,
+      startDate: Timestamp.now(),
+      endDate: Timestamp.now(),
       logoURL: null,
       schoolName: '',
       degree: '',
       description: '',
     );
+    
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
         final schoolNameController = TextEditingController();
         final degreeController = TextEditingController();
         final descriptionController = TextEditingController();
+        final startDateController = TextEditingController(text: DateFormat('yyyy-MM-dd').format(education.startDate!.toDate()));
+        final endDateController = TextEditingController(text: DateFormat('yyyy-MM-dd').format(education.endDate!.toDate()));
+
+
         return AlertDialog(
           title: const Text('Add Education'),
           content: SingleChildScrollView(
@@ -104,6 +111,16 @@ class EducationSectionAdmin extends StatelessWidget {
                   controller: descriptionController,
                   onChanged: (value) => education.description = value,
                   decoration: const InputDecoration(labelText: 'Description'),
+                ),
+                TextField(
+                  controller: startDateController,
+                  onChanged: (value) => education.startDate = Timestamp.fromDate(DateTime.parse(value)),
+                  decoration: const InputDecoration(labelText: 'Start Date (YYYY-MM-DD)'),
+                ),
+                TextField(
+                  controller: endDateController,
+                  onChanged: (value) => education.endDate = Timestamp.fromDate(DateTime.parse(value)),
+                  decoration: const InputDecoration(labelText: 'End Date (YYYY-MM-DD)'),
                 ),
               ],
             ),
@@ -130,13 +147,17 @@ class EducationSectionAdmin extends StatelessWidget {
   void _showEditDialog(BuildContext context, int i) async {
     Navigator.of(context).pop();
     final educationSectionData = await _adminController.getEducationSectionData();
+    final education = educationSectionData![i];
 
     TextEditingController schoolNameController = 
-        TextEditingController(text: educationSectionData?[i].schoolName);
+        TextEditingController(text: education.schoolName);
     TextEditingController degreeController = 
-        TextEditingController(text: educationSectionData?[i].degree);
+        TextEditingController(text: education.degree);
     TextEditingController descriptionController = 
-        TextEditingController(text: educationSectionData?[i].description);
+        TextEditingController(text: education.description);
+    TextEditingController startDateController = TextEditingController(text: DateFormat('yyyy-MM-dd').format(education.startDate!.toDate()));
+    TextEditingController endDateController = TextEditingController(text: DateFormat('yyyy-MM-dd').format(education.endDate!.toDate()));
+
 
     Uint8List? pickedImageBytes;
 
@@ -146,7 +167,7 @@ class EducationSectionAdmin extends StatelessWidget {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: Text('Edit your education information for ${educationSectionData![i].schoolName}'),
+              title: Text('Edit your education information for ${education.schoolName}'),
               content: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -166,6 +187,16 @@ class EducationSectionAdmin extends StatelessWidget {
                       onChanged: (value) =>
                           educationSectionData[i].description = value,
                       decoration: const InputDecoration(labelText: 'Description'),
+                    ),
+                    TextField(
+                      controller: startDateController,
+                      onChanged: (value) => education.startDate = Timestamp.fromDate(DateTime.parse(value)),
+                      decoration: const InputDecoration(labelText: 'Start Date (YYYY-MM-DD)'),
+                    ),
+                    TextField(
+                      controller: endDateController,
+                      onChanged: (value) => education.endDate = Timestamp.fromDate(DateTime.parse(value)),
+                      decoration: const InputDecoration(labelText: 'End Date (YYYY-MM-DD)'),
                     ),
                     if (pickedImageBytes != null)
                       Image.memory(pickedImageBytes!),
