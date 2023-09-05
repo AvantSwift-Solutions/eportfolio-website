@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
 class Education {
-  final String id;
+  final String eid;
   Timestamp? startDate;
   Timestamp? endDate;
   String? logoURL;
@@ -11,7 +11,7 @@ class Education {
   String? description;
 
   Education({
-    required this.id,
+    required this.eid,
     required this.startDate,
     required this.endDate,
     this.logoURL,
@@ -24,13 +24,13 @@ class Education {
     final data = snapshot.data() as Map<String, dynamic>;
     final startDate = data['startDate'];
     final endDate = data['endDate'];
-    final logoURL = data['logoURL'] as String?;
-    final schoolName = data['schoolName'] as String;
-    final degree = data['degree'] as String?;
-    final description = data['description'] as String?;
+    final logoURL = data['logoURL'];
+    final schoolName = data['schoolName'];
+    final degree = data['degree'];
+    final description = data['description'];
 
     return Education(
-      id: snapshot.id,
+      eid: snapshot.id,
       startDate: startDate,
       endDate: endDate,
       logoURL: logoURL,
@@ -53,10 +53,10 @@ class Education {
 
   Future<void> create() async {
     try {
-      final id = const Uuid().v4();
+      final eid = const Uuid().v4();
       await FirebaseFirestore.instance
           .collection('Education')
-          .doc(id)
+          .doc(eid)
           .set(toMap());
       print('Education document created');
     } catch (e) {
@@ -68,7 +68,7 @@ class Education {
     try {
       await FirebaseFirestore.instance
           .collection('Education')
-          .doc(id)
+          .doc(eid)
           .update(toMap());
       return true;
     } catch (e) {
@@ -81,7 +81,7 @@ class Education {
     try {
       await FirebaseFirestore.instance
           .collection('Education')
-          .doc(id)
+          .doc(eid)
           .delete();
       print('Education document deleted');
     } catch (e) {

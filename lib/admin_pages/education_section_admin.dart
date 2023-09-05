@@ -73,7 +73,7 @@ class EducationSectionAdmin extends StatelessWidget {
   _showAddNewDialog(BuildContext context, List<Education> educationList) async {
     Navigator.of(context).pop();
     final education = Education(
-      id: '',
+      eid: '',
       startDate: Timestamp.now(),
       endDate: Timestamp.now(),
       logoURL: null,
@@ -90,7 +90,6 @@ class EducationSectionAdmin extends StatelessWidget {
         final descriptionController = TextEditingController();
         final startDateController = TextEditingController(text: DateFormat('yyyy-MM-dd').format(education.startDate!.toDate()));
         final endDateController = TextEditingController(text: DateFormat('yyyy-MM-dd').format(education.endDate!.toDate()));
-
 
         return AlertDialog(
           title: const Text('Add Education'),
@@ -112,16 +111,58 @@ class EducationSectionAdmin extends StatelessWidget {
                   onChanged: (value) => education.description = value,
                   decoration: const InputDecoration(labelText: 'Description'),
                 ),
-                TextField(
-                  controller: startDateController,
-                  onChanged: (value) => education.startDate = Timestamp.fromDate(DateTime.parse(value)),
-                  decoration: const InputDecoration(labelText: 'Start Date (YYYY-MM-DD)'),
-                ),
-                TextField(
-                  controller: endDateController,
-                  onChanged: (value) => education.endDate = Timestamp.fromDate(DateTime.parse(value)),
-                  decoration: const InputDecoration(labelText: 'End Date (YYYY-MM-DD)'),
-                ),
+                Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: startDateController,
+                            decoration: const InputDecoration(labelText: 'Start Date'),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () async {
+                            final pickedDate = await showDatePicker(
+                              context: context,
+                              initialDate: education.startDate!.toDate(),
+                              firstDate: DateTime(1900),
+                              lastDate: DateTime(2100),
+                            );
+                            if (pickedDate != null) {
+                              final formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                              startDateController.text = formattedDate;
+                              education.startDate = Timestamp.fromDate(pickedDate);
+                            }
+                          },
+                          icon: const Icon(Icons.calendar_today),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: endDateController,
+                            decoration: const InputDecoration(labelText: 'End Date'),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () async {
+                            final pickedDate = await showDatePicker(
+                              context: context,
+                              initialDate: education.endDate!.toDate(),
+                              firstDate: DateTime(1900),
+                              lastDate: DateTime(2100),
+                            );
+                            if (pickedDate != null) {
+                              final formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                              endDateController.text = formattedDate;
+                              education.endDate = Timestamp.fromDate(pickedDate);
+                            }
+                          },
+                          icon: const Icon(Icons.calendar_today),
+                        ),
+                      ],
+                    ),
               ],
             ),
           ),
@@ -155,8 +196,10 @@ class EducationSectionAdmin extends StatelessWidget {
         TextEditingController(text: education.degree);
     TextEditingController descriptionController = 
         TextEditingController(text: education.description);
-    TextEditingController startDateController = TextEditingController(text: DateFormat('yyyy-MM-dd').format(education.startDate!.toDate()));
-    TextEditingController endDateController = TextEditingController(text: DateFormat('yyyy-MM-dd').format(education.endDate!.toDate()));
+    TextEditingController startDateController
+      = TextEditingController(text: DateFormat('yyyy-MM-dd').format(education.startDate!.toDate()));
+    TextEditingController endDateController
+      = TextEditingController(text: DateFormat('yyyy-MM-dd').format(education.endDate!.toDate()));
 
 
     Uint8List? pickedImageBytes;
@@ -188,15 +231,57 @@ class EducationSectionAdmin extends StatelessWidget {
                           educationSectionData[i].description = value,
                       decoration: const InputDecoration(labelText: 'Description'),
                     ),
-                    TextField(
-                      controller: startDateController,
-                      onChanged: (value) => education.startDate = Timestamp.fromDate(DateTime.parse(value)),
-                      decoration: const InputDecoration(labelText: 'Start Date (YYYY-MM-DD)'),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: startDateController,
+                            decoration: const InputDecoration(labelText: 'Start Date'),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () async {
+                            final pickedDate = await showDatePicker(
+                              context: context,
+                              initialDate: education.startDate!.toDate(),
+                              firstDate: DateTime(1900),
+                              lastDate: DateTime(2100),
+                            );
+                            if (pickedDate != null) {
+                              final formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                              startDateController.text = formattedDate;
+                              education.startDate = Timestamp.fromDate(pickedDate);
+                            }
+                          },
+                          icon: const Icon(Icons.calendar_today),
+                        ),
+                      ],
                     ),
-                    TextField(
-                      controller: endDateController,
-                      onChanged: (value) => education.endDate = Timestamp.fromDate(DateTime.parse(value)),
-                      decoration: const InputDecoration(labelText: 'End Date (YYYY-MM-DD)'),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: endDateController,
+                            decoration: const InputDecoration(labelText: 'End Date'),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () async {
+                            final pickedDate = await showDatePicker(
+                              context: context,
+                              initialDate: education.endDate!.toDate(),
+                              firstDate: DateTime(1900),
+                              lastDate: DateTime(2100),
+                            );
+                            if (pickedDate != null) {
+                              final formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                              endDateController.text = formattedDate;
+                              education.endDate = Timestamp.fromDate(pickedDate);
+                            }
+                          },
+                          icon: const Icon(Icons.calendar_today),
+                        ),
+                      ],
                     ),
                     if (pickedImageBytes != null)
                       Image.memory(pickedImageBytes!),
