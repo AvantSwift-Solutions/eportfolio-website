@@ -15,11 +15,14 @@ class TSkillSectionAdmin extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          ElevatedButton(
-            onPressed: () async {
-              _showTSkillList(context, await _adminController.getTSkillSectionData() ?? []);
-            },
-            child: const Text('Edit Technical Skill Info'),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ElevatedButton(
+              onPressed: () async {
+                _showTSkillList(context, await _adminController.getTSkillSectionData() ?? []);
+              },
+              child: const Text('Edit Technical Skill Info'),
+            ),
           ),
         ],
       ),
@@ -106,13 +109,13 @@ class TSkillSectionAdmin extends StatelessWidget {
 
     Uint8List? pickedImageBytes;
 
-    var title;
+    String title;
     var newTSkill = false;
     if (tskill.name == '') {
       title = 'Add new technical skill information';
       newTSkill = true;
     } else {
-      title = 'Edit your tskill information for ${tskill.name}';
+      title = 'Edit your technical skill information for ${tskill.name}';
     }
 
     Navigator.of(context).pop();
@@ -152,7 +155,7 @@ class TSkillSectionAdmin extends StatelessWidget {
                       final name = tskill.name;
                       tskill.delete();
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('TSkill info for $name deleted')));
+                        SnackBar(content: Text('Technical skill info for $name deleted')));
                       Navigator.pop(dialogContext);
                     },
                     child: const Text('Delete'),
