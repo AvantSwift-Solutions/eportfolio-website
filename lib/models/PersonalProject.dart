@@ -19,7 +19,6 @@ class PersonalProject {
 
   factory PersonalProject.fromDocumentSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;
-    final ppid = data['ppid'];
     final name = data['name'];
     final description = data['description'];
     final creationTimestamp = data['creationTimestamp'];

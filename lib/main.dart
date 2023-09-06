@@ -1,4 +1,3 @@
-import 'package:avantswift_portfolio/admin_pages/landing_page_admin.dart';
 import 'package:avantswift_portfolio/controller/login_controller.dart';
 import 'package:avantswift_portfolio/models/User.dart';
 import 'package:avantswift_portfolio/admin_pages/default.dart';
@@ -65,8 +64,7 @@ class _MyAppState extends State<MyApp> {
       ),
       initialRoute: '/home',
       routes: {
-        '/landing-page':(context) => LandingPageAdmin(),
-        // '/landing-page': (context) => SinglePageView(),
+        '/landing-page': (context) => SinglePageView(),
         '/login': (context) => LoginPage(
               authState: widget.authState,
               onLoginSuccess: (user) {
