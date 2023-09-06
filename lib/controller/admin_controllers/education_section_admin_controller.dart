@@ -31,7 +31,7 @@ class EducationSectionAdminController {
         allEducation[index].degree = newEducation.degree;
         allEducation[index].description = newEducation.description;
         
-        bool updateSuccess = await allEducation[index].update();
+        bool updateSuccess = await allEducation[index].update() ?? false;
         return updateSuccess;
       } else {
         return false;

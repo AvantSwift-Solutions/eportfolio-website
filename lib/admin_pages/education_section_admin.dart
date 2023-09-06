@@ -45,7 +45,7 @@ class EducationSectionAdmin extends StatelessWidget {
                         onPressed: () {
                           _showEditDialog(context, index);
                         },
-                        child: Text(educationList[index].schoolName),
+                        child: Text(educationList[index].schoolName!),
                       );
                     },
                   )

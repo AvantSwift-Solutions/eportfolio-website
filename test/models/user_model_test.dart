@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../lib/models/User.dart';
+import 'package:avantswift_portfolio/models/User.dart';
 
 void main() {
   group('User class tests', () {

@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
 class Education {
-  final String eid;
+  final String? eid;
   Timestamp? startDate;
   Timestamp? endDate;
   String? logoURL;
-  String schoolName;
+  String? schoolName;
   String? degree;
   String? description;
 
@@ -42,6 +42,7 @@ class Education {
 
   Map<String, dynamic> toMap() {
     return {
+      'eid': eid,
       'startDate': startDate,
       'endDate': endDate,
       'logoURL': logoURL,
@@ -64,7 +65,7 @@ class Education {
     }
   }
 
-  Future<bool> update() async {
+  Future<bool>? update() async {
     try {
       await FirebaseFirestore.instance
           .collection('Education')
