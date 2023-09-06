@@ -22,11 +22,12 @@ class ProfessionalExperienceSectionAdminController {
       List<ProfessionalExperience>? allProfessionalExperiences = await professionalExperienceRepoService.getAllProfessionalExperiences();
 
       if (allProfessionalExperiences!.isNotEmpty) {
-        
         allProfessionalExperiences[index].jobTitle = newProfessionalExperience.jobTitle;
         allProfessionalExperiences[index].companyName = newProfessionalExperience.companyName;
-        allProfessionalExperiences[index].logoUrl = newProfessionalExperience.logoUrl;
+        allProfessionalExperiences[index].logoURL = newProfessionalExperience.logoURL;
         allProfessionalExperiences[index].location = newProfessionalExperience.location;
+        allProfessionalExperiences[index].startDate = newProfessionalExperience.startDate;
+        allProfessionalExperiences[index].endDate = newProfessionalExperience.endDate;
         allProfessionalExperiences[index].description = newProfessionalExperience.description;
         
         bool updateSuccess = await allProfessionalExperiences[index].update();

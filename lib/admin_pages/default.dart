@@ -1,4 +1,5 @@
 import 'package:avantswift_portfolio/admin_pages/landing_page_admin.dart';
+import 'package:avantswift_portfolio/admin_pages/professional_experience_section_admin.dart';
 import 'package:avantswift_portfolio/models/User.dart';
 import 'package:flutter/material.dart';
 
@@ -26,7 +27,8 @@ class DefaultPage extends StatelessWidget {
                 'You are logged in as an admin',
                 style: TextStyle(fontSize: 16),
               ),
-              LandingPageAdmin(), // Placing the LandingPageAdmin widget here
+              LandingPageAdmin(),
+              ProfessionalExperienceSectionAdmin(), // Placing the LandingPageAdmin widget here
             ],
           ),
         ),

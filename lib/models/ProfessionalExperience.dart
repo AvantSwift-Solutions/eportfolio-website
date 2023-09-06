@@ -1,63 +1,47 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:uuid/uuid.dart';
 
 class ProfessionalExperience {
   final String professionalExperienceId;
   String jobTitle;
   String? companyName;
   String? location;
-  DateTime? startDate;
-  DateTime? endDate;
+  Timestamp? startDate;
+  Timestamp? endDate;
   String? description;
-  String? logoUrl;  
-  Timestamp? creationTimestamp;
+  String? logoURL; 
 
   ProfessionalExperience({
     required this.professionalExperienceId,
     required this.jobTitle,
     required this.companyName,
-    this.logoUrl,
     this.location,
     this.startDate,
     this.endDate,
     this.description,
-    required this.creationTimestamp,
+    this.logoURL,
   });
 
   factory ProfessionalExperience.fromDocumentSnapshot(DocumentSnapshot snapshot) {
   try {
     final data = snapshot.data() as Map<String, dynamic>;
-
-    final professionalExperienceId = data['professionalExperienceId'] as String;
-    final jobTitle = data['jobTitle'] as String;
-    final companyName = data['companyName'] as String;
-    final creationTimestamp = data['creationTimestamp'] as Timestamp;
-    final location = data['location'] as String?;
-    final description = data['description'] as String?;
-    final startDateTimestamp = data['startDate'] as Timestamp?;
-    final endDateTimestamp = data['endDate'] as Timestamp?;
-    final logoUrl = data['logoUrl'] as String?;
-
-    DateTime? startDate;
-    DateTime? endDate;
-
-    if (startDateTimestamp != null) {
-      startDate = startDateTimestamp.toDate();
-    }
-
-    if (endDateTimestamp != null) {
-      endDate = endDateTimestamp.toDate();
-    }
+    final jobTitle = data['jobTitle'];
+    final companyName = data['companyName'];
+    final location = data['location'];
+    final description = data['description'];
+    final startDate = data['startDate'];
+    final endDate = data['endDate'];
+    final logoURL = data['logoURL'];
 
     return ProfessionalExperience(
-      creationTimestamp: creationTimestamp,
-      professionalExperienceId: professionalExperienceId,
+      professionalExperienceId: snapshot.id,
       jobTitle: jobTitle,
       companyName: companyName,
       location: location,
       description: description,
       startDate: startDate,
       endDate: endDate,
-      logoUrl: logoUrl,
+      logoURL: logoURL,
     );
   } catch (e) {
     rethrow;
@@ -66,7 +50,6 @@ class ProfessionalExperience {
 
   Map<String, dynamic> toMap() {
     return {
-      'creationTimestamp': creationTimestamp,
       'professionalExperienceId': professionalExperienceId,
       'jobTitle': jobTitle,
       'companyName': companyName,
@@ -74,13 +57,14 @@ class ProfessionalExperience {
       'description': description,
       'startDate': startDate,
       'endDate': endDate,
-      'logoUrl': logoUrl,
+      'logoURL': logoURL,
     };
   }
 
   Future<void> create() async {
     try {
-      await FirebaseFirestore.instance.collection('professional_experience').doc(professionalExperienceId).set(toMap());
+      final id = const Uuid().v4();
+      await FirebaseFirestore.instance.collection('ProfessionalExperience').doc(id).set(toMap());
       print('Professional experience document created');
     } catch (e) {
       print('Error creating Professional experience document: $e');
@@ -90,7 +74,7 @@ class ProfessionalExperience {
   Future<bool> update() async {
     try {
       await FirebaseFirestore.instance
-          .collection('professional_experience')
+          .collection('ProfessionalExperience')
           .doc(professionalExperienceId)
           .update(toMap());
       return true;
@@ -101,7 +85,7 @@ class ProfessionalExperience {
 
   Future<void> delete() async {
     try {
-      await FirebaseFirestore.instance.collection('professional_experience').doc(professionalExperienceId).delete();
+      await FirebaseFirestore.instance.collection('ProfessionalExperience').doc(professionalExperienceId).delete();
       print('User document deleted');
     } catch (e) {
       print('Error deleting user document: $e');

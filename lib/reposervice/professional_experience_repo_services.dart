@@ -6,7 +6,7 @@ class ProfessionalExperienceRepoService {
   Future<List<ProfessionalExperience>?> getAllProfessionalExperiences() async {
     try {
       QuerySnapshot snapshot =
-          await FirebaseFirestore.instance.collection('professional_experience').get();
+          await FirebaseFirestore.instance.collection('ProfessionalExperience').get();
       final tmp = snapshot.docs
           .map((doc) => ProfessionalExperience.fromDocumentSnapshot(doc))
           .toList();  
