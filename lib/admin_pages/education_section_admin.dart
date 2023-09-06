@@ -17,11 +17,14 @@ class EducationSectionAdmin extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          ElevatedButton(
-            onPressed: () async {
-              _showEducationList(context, await _adminController.getEducationSectionData() ?? []);
-            },
-            child: const Text('Edit Education Info'),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+              child: ElevatedButton(
+              onPressed: () async {
+                _showEducationList(context, await _adminController.getEducationSectionData() ?? []);
+              },
+              child: const Text('Edit Education Info'),
+            ),
           ),
         ],
       ),
@@ -121,7 +124,7 @@ class EducationSectionAdmin extends StatelessWidget {
 
     Uint8List? pickedImageBytes;
 
-    var title;
+    String title;
     var newEducation = false;
     if (education.schoolName == '') {
       title = 'Add new education information';
