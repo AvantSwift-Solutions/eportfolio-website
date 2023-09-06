@@ -121,6 +121,17 @@ class EducationSectionAdmin extends StatelessWidget {
 
     Uint8List? pickedImageBytes;
 
+    var title;
+    var newEducation = false;
+    if (education.schoolName == '') {
+      title = 'Add new education information';
+      newEducation = true;
+    } else {
+      title = 'Edit your education information for ${education.schoolName}';
+    }
+
+    
+
     Navigator.of(context).pop();
     showDialog(
       context: context,
@@ -128,7 +139,7 @@ class EducationSectionAdmin extends StatelessWidget {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: Text('Edit your education information for ${education.schoolName}'),
+              title: Text(title),
               content: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -216,6 +227,17 @@ class EducationSectionAdmin extends StatelessWidget {
                 ),
               ),
               actions: <Widget>[
+                if (!newEducation)
+                  TextButton(
+                    onPressed: () async {
+                      final name = education.schoolName;
+                      education.delete();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Education info for $name deleted')));
+                      Navigator.pop(dialogContext);
+                    },
+                    child: const Text('Delete'),
+                  ),
                 TextButton(
                   onPressed: () async {
                     if (pickedImageBytes != null) {
@@ -239,8 +261,8 @@ class EducationSectionAdmin extends StatelessWidget {
                   child: const Text('OK'),
                 ),
                 TextButton(
-                  onPressed: () {
-                    Navigator.of(dialogContext).pop();
+                  onPressed: () async {
+                    Navigator.pop(dialogContext);
                   },
                   child: const Text('Cancel'),
                 ),
