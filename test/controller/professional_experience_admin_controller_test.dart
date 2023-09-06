@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:avantswift_portfolio/controller/admin_controllers/professional_experience_section_admin_controller.dart';
-import 'professional_experience_admin_controller_mocks.dart';
+import 'professional_experience_admin_controller.mocks.dart';
 
 @GenerateMocks([ProfessionalExperienceRepoService])
 class MockProfessionalExperience extends Mock implements ProfessionalExperience {}
@@ -87,7 +87,7 @@ void main() {
     expect(professionalExperienceSectionData, null);
   });
 
-  test('updateEducationSectionData returns true on successful update', () async {
+  test('updateProfessionalExperienceSectionData returns true on successful update', () async {
     when(mockRepoService.getAllProfessionalExperiences()).thenAnswer((_) async
       => [mockProfessionalExperience1, mockProfessionalExperience2]);
     when(mockProfessionalExperience1.update()).thenAnswer((_) async => true);
