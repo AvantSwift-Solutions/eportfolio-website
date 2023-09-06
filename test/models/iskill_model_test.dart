@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:avantswift_portfolio/models/ISkill.dart';
 
 void main() {
-  group('Technical Skill class tests', () {
+  group('Interpersonal Skill class tests', () {
     // Could not test fromDocumentSnapshot because it uses a
     // DocumentSnapshot which is a final class and cannot be extended?
 
@@ -13,7 +13,7 @@ void main() {
       );
       final iskillMap = iskill.toMap();
 
-      expect(iskillMap['tsid'], 'iskill123');
+      expect(iskillMap['isid'], 'iskill123');
       expect(iskillMap['name'], 'mockISkill');
     });
 

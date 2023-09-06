@@ -24,7 +24,8 @@ class TSkillSectionAdminController {
       List<TSkill>? allTSkill = await tSkillRepoService.getAllTSkill();
 
       if (allTSkill!.isNotEmpty) {
-        allTSkill[index].name = newTSkill.name;       
+        allTSkill[index].name = newTSkill.name;
+        allTSkill[index].imageURL = newTSkill.imageURL;       
         bool updateSuccess = await allTSkill[index].update() ?? false;
         return updateSuccess;
       } else {
