@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer';
 import '../models/Reccomendation.dart';
 
-class ProfessionalExperienceRepoService {
+class ReccomendationRepoService {
   Future<List<Reccomendation>?> getAllReccomendations() async {
     try {
       QuerySnapshot snapshot =
