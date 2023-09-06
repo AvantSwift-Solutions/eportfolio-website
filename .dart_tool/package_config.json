@@ -410,6 +410,12 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "intl",
+      "rootUri": "file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/intl-0.18.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "io",
       "rootUri": "file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/io-1.0.4",
       "packageUri": "lib/",
@@ -818,7 +824,7 @@
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2023-09-06T14:30:01.078737Z",
+  "generated": "2023-09-06T14:48:17.423056Z",
   "generator": "pub",
   "generatorVersion": "3.0.6"
 }

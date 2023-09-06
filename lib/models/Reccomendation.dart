@@ -3,7 +3,7 @@ import 'package:uuid/uuid.dart';
 
 class Reccomendation {
   final String reccomendationId;
-  String? colleagueName;
+  String colleagueName;
   String? colleagueJobTitle;
   String description;
   String? imageURL; 
@@ -11,7 +11,7 @@ class Reccomendation {
   Reccomendation({
     required this.reccomendationId,
     required this.description,
-    this.colleagueName,
+    required this.colleagueName,
     this.colleagueJobTitle,
     this.imageURL,
   });
