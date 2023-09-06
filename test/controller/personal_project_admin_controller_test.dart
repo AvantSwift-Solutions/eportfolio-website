@@ -1,7 +1,6 @@
 import 'package:avantswift_portfolio/controller/admin_controllers/personal_project_admin_controller.dart';
 import 'package:avantswift_portfolio/models/PersonalProject.dart';
 import 'package:avantswift_portfolio/reposervice/personal_project_repo_services.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -12,26 +11,18 @@ import 'personal_project_admin_controller_test.mocks.dart';
 class MockPersonalProject extends Mock implements PersonalProject {
 
   void main() {
-    late MockPersonalProject mockPersonalProject;
     late PersonalProjectAdminController controller;
     late MockPersonalProjectRepoService mockRepoService;
 
     setUp(() {
-      // mockPersonalProject = MockPersonalProject();
-      // when(mockPersonalProject.creationTimestamp).thenReturn(Timestamp.now());
-      // when(mockPersonalProject.ppid).thenReturn('mockPpid');
-      // when(mockPersonalProject.name).thenReturn('Mock User');
-      // when(mockPersonalProject.description).thenReturn('Mock Description');
-      // when(mockPersonalProject.imageURL).thenReturn('http://example.com/mock_image.jpg');
-
       mockRepoService = MockPersonalProjectRepoService();
       controller = PersonalProjectAdminController(mockRepoService);
     });
 
     test('getAllProjects returns a list of personal projects', () async {
       final mockPersonalProjects = [
-        PersonalProject(ppid: '1', name: 'Project 1', creationTimestamp: Timestamp.now()),
-        PersonalProject(ppid: '2', name: 'Project 2', creationTimestamp: Timestamp.now()),
+        PersonalProject(ppid: '1', name: 'Project 1'),
+        PersonalProject(ppid: '2', name: 'Project 2'),
       ];
       when(mockRepoService.getAllProjects()).thenAnswer((_) async => mockPersonalProjects);
 
@@ -52,10 +43,10 @@ class MockPersonalProject extends Mock implements PersonalProject {
 
     test('updatePersonalProjectData updates an existing personal project', () async {
       final mockPersonalProjects = [
-        PersonalProject(ppid: '1', name: 'Project 1', creationTimestamp: Timestamp.now()),
-        PersonalProject(ppid: '2', name: 'Project 2', creationTimestamp: Timestamp.now()),
+        PersonalProject(ppid: '1', name: 'Project 1'),
+        PersonalProject(ppid: '2', name: 'Project 2'),
       ];
-      final updatedProject = PersonalProject(ppid: '1', name: 'Updated Project', creationTimestamp: Timestamp.now());
+      final updatedProject = PersonalProject(ppid: '1', name: 'Updated Project');
       const indexToUpdate = 0;
 
       when(mockRepoService.getAllProjects()).thenAnswer((_) async => mockPersonalProjects);
@@ -70,9 +61,8 @@ class MockPersonalProject extends Mock implements PersonalProject {
     });
 
     test('updatePersonalProjectData returns false on error', () async {
-      // Arrange
-      final mockPersonalProjects = [PersonalProject(ppid: '1', name: 'Project 1', creationTimestamp: Timestamp.now())];
-      final updatedProject = PersonalProject(ppid: '1', name: 'Updated Project', creationTimestamp: Timestamp.now());
+      final mockPersonalProjects = [PersonalProject(ppid: '1', name: 'Project 1')];
+      final updatedProject = PersonalProject(ppid: '1', name: 'Updated Project');
       const indexToUpdate = 0;
 
       when(mockRepoService.getAllProjects()).thenAnswer((_) async => mockPersonalProjects);
@@ -85,10 +75,10 @@ class MockPersonalProject extends Mock implements PersonalProject {
 
     test('deletePersonalProject deletes an existing personal project', () async {
       final mockPersonalProjects = [
-        PersonalProject(ppid: '1', name: 'Project 1', creationTimestamp: Timestamp.now()),
-        PersonalProject(ppid: '2', name: 'Project 2', creationTimestamp: Timestamp.now()),
+        PersonalProject(ppid: '1', name: 'Project 1'),
+        PersonalProject(ppid: '2', name: 'Project 2'),
       ];
-      final indexToDelete = 1;
+      const indexToDelete = 1;
 
       when(mockRepoService.getAllProjects()).thenAnswer((_) async => mockPersonalProjects);
       when(mockPersonalProjects[indexToDelete].delete()).thenAnswer((_) async {});
@@ -100,7 +90,7 @@ class MockPersonalProject extends Mock implements PersonalProject {
     });
 
     test('deletePersonalProject returns false on error', () async {
-      final mockPersonalProjects = [PersonalProject(ppid: '1', name: 'Project 1', creationTimestamp: Timestamp.now())];
+      final mockPersonalProjects = [PersonalProject(ppid: '1', name: 'Project 1')];
       const indexToDelete = 0;
 
       when(mockRepoService.getAllProjects()).thenAnswer((_) async => mockPersonalProjects);

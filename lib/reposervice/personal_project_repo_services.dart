@@ -19,30 +19,4 @@ class PersonalProjectRepoService {
     }
   }
 
-  // Future<PersonalProject?> getSelectedProject(PersonalProject selectedProject) async {
-  //   try {
-  //     if (selectedProject.ppid.isEmpty){
-  //       print('ppid is empty');
-  //       return null;
-  //     }
-  //     DocumentSnapshot querySnapshot = await FirebaseFirestore.instance
-  //         .collection('PersonalProject')
-  //         .doc(selectedProject.ppid)
-  //         .get();
-
-  //     if (querySnapshot.exists) {
-  //       String docID = querySnapshot.id;
-  //       PersonalProject project = PersonalProject.fromDocumentSnapshot(querySnapshot);
-  //       project.ppid = docID;
-  //       return project;
-  //     } else {
-  //       // No projects found.
-  //       return null;
-  //     }
-  //   } catch (e) {
-  //     // Handle any errors.
-  //     print('Error fetching most recently created project: $e');
-  //     return null;
-  //   }
-  // }
 }

@@ -13,7 +13,7 @@ class PersonalProject {
     required this.ppid,
     required this.name,
     this.description,
-    required this.creationTimestamp,
+    this.creationTimestamp,
     this.imageURL,
   });
 
