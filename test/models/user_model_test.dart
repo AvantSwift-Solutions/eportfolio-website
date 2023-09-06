@@ -10,16 +10,16 @@ void main() {
 
     test('User.toMap should convert user to a map', () {
       final user = User(
-        uid: 'user123',
-        email: 'user@example.com',
-        name: 'John Doe',
-        creationTimestamp: Timestamp.now(),
-        landingPageTitle: 'Welcome to my page',
-        landingPageDescription: 'This is my landing page',
-        imageURL: 'https://example.com/image.jpg',
-        contactEmail: 'differentEmail@example.com',
-        linkedinURL: 'https://www.linkedin.com/in/example-user/'
-      );
+          uid: 'user123',
+          email: 'user@example.com',
+          name: 'John Doe',
+          creationTimestamp: Timestamp.now(),
+          landingPageTitle: 'Welcome to my page',
+          landingPageDescription: 'This is my landing page',
+          imageURL: 'https://example.com/image.jpg',
+          contactEmail: 'differentEmail@example.com',
+          linkedinURL: 'https://www.linkedin.com/in/example-user/',
+          aboutMe: 'This is about me');
       final userMap = user.toMap();
 
       expect(userMap['uid'], 'user123');
@@ -29,7 +29,9 @@ void main() {
       expect(userMap['landingPageDescription'], 'This is my landing page');
       expect(userMap['imageURL'], 'https://example.com/image.jpg');
       expect(userMap['contactEmail'], 'differentEmail@example.com');
-      expect(userMap['linkedinURL'], 'https://www.linkedin.com/in/example-user/');
+      expect(
+          userMap['linkedinURL'], 'https://www.linkedin.com/in/example-user/');
+      expect(userMap['aboutMe'], 'This is about me');
     });
 
     // Write more tests for other methods (create, update, delete, getFirstUser)
