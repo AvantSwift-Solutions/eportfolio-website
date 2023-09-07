@@ -693,13 +693,13 @@
     },
     {
       "name": "url_launcher",
-      "rootUri": "file:///C:/Users/Amritesh%20Dasgupta/AppData/Local/Pub/Cache/hosted/pub.dev/url_launcher-6.1.13",
+      "rootUri": "file:///C:/Users/Amritesh%20Dasgupta/AppData/Local/Pub/Cache/hosted/pub.dev/url_launcher-6.1.14",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
     {
       "name": "url_launcher_android",
-      "rootUri": "file:///C:/Users/Amritesh%20Dasgupta/AppData/Local/Pub/Cache/hosted/pub.dev/url_launcher_android-6.0.39",
+      "rootUri": "file:///C:/Users/Amritesh%20Dasgupta/AppData/Local/Pub/Cache/hosted/pub.dev/url_launcher_android-6.1.0",
       "packageUri": "lib/",
       "languageVersion": "2.19"
     },
@@ -723,7 +723,7 @@
     },
     {
       "name": "url_launcher_platform_interface",
-      "rootUri": "file:///C:/Users/Amritesh%20Dasgupta/AppData/Local/Pub/Cache/hosted/pub.dev/url_launcher_platform_interface-2.1.4",
+      "rootUri": "file:///C:/Users/Amritesh%20Dasgupta/AppData/Local/Pub/Cache/hosted/pub.dev/url_launcher_platform_interface-2.1.5",
       "packageUri": "lib/",
       "languageVersion": "2.19"
     },
@@ -824,7 +824,7 @@
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2023-09-07T04:53:22.231043Z",
+  "generated": "2023-09-07T04:56:37.242858Z",
   "generator": "pub",
   "generatorVersion": "3.0.5"
 }

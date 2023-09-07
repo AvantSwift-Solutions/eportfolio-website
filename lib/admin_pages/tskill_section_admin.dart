@@ -2,13 +2,13 @@
 import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import '../controller/admin_controllers/recommendation_section_admin_controller.dart';
-import '../models/Recommendation.dart';
-import '../reposervice/recommendation_repo_services.dart';
+import '../controller/admin_controllers/tskill_section_admin_controller.dart';
+import '../models/TSkill.dart';
+import '../reposervice/tskill_repo_services.dart';
 
-class RecommendationSectionAdmin extends StatelessWidget {
-  final RecommendationSectionAdminController _adminController =
-      RecommendationSectionAdminController(RecommendationRepoService());
+class TSkillSectionAdmin extends StatelessWidget {
+  final TSkillSectionAdminController _adminController =
+      TSkillSectionAdminController(TSkillRepoService());
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +17,11 @@ class RecommendationSectionAdmin extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
-              child: ElevatedButton(
+            child: ElevatedButton(
               onPressed: () async {
-                _showRecommendationList(context, await _adminController.getRecommendationSectionData() ?? []);
+                _showTSkillList(context, await _adminController.getTSkillSectionData() ?? []);
               },
-              child: const Text('Edit Recommendation Info'),
+              child: const Text('Edit Technical Skill Info'),
             ),
           ),
         ],
@@ -29,28 +29,28 @@ class RecommendationSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showRecommendationList(BuildContext context, List<Recommendation> recommendationList) {
+  void _showTSkillList(BuildContext context, List<TSkill> tskillList) {
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: const Text('Peer recommendation List'),
+          title: const Text('Technical Skill List'),
           content: SizedBox(
             width: 200,
-            child: recommendationList.isNotEmpty
+            child: tskillList.isNotEmpty
                 ? ListView.builder(
                     shrinkWrap: true,
-                    itemCount: recommendationList.length,
+                    itemCount: tskillList.length,
                     itemBuilder: (BuildContext context, int index) {
                       return ElevatedButton(
                         onPressed: () {
                           _showEditDialog(context, index);
                         },
-                        child: Text(recommendationList[index].colleagueName!),
+                        child: Text(tskillList[index].name!),
                       );
                     },
                   )
-                : const Text('No peer recommendation data available.'),
+                : const Text('No technical skill data available.'),
           ),
           actions: <Widget>[
             TextButton(
@@ -61,9 +61,9 @@ class RecommendationSectionAdmin extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                _showAddNewDialog(context, recommendationList);
+                _showAddNewDialog(context, tskillList);
               },
-              child: const Text('Add New Peer Recommendation'),
+              child: const Text('Add New Technical Skill'),
             ),
           ],
         );
@@ -72,58 +72,51 @@ class RecommendationSectionAdmin extends StatelessWidget {
   }
 
   
-  void _showAddNewDialog(BuildContext context, List<Recommendation> recommendationList) async {
+  void _showAddNewDialog(BuildContext context, List<TSkill> tskillList) async {
 
-    final recommendation = Recommendation(
-      rid: '',
-      colleagueName: '',
-      colleagueJobTitle: '',
-      description: '',
-      imageURL: null,
+    final tskill = TSkill(
+      tsid: '',
+      name: '',
     );
 
-    _showRecommendationDialog(context, recommendation,
-      (recc) async {
-        recc.create();
+    _showTSkillDialog(context, tskill,
+      (skill) async {
+        skill.create();
         return true;
       });
+
   }
 
   void _showEditDialog(BuildContext context, int i) async {
 
-    final recommendationSectionData
-      = await _adminController.getRecommendationSectionData();
-    final experience = recommendationSectionData![i];
+    final tskillSectionData
+      = await _adminController.getTSkillSectionData();
+    final tskill = tskillSectionData![i];
 
-    _showRecommendationDialog(context, experience,
-      (recc) async {
-        return await _adminController.updateRecommendationSectionData(i, recc)
+    _showTSkillDialog(context, tskill,
+      (skill) async {
+        return await _adminController.updateTSkillSectionData(i, skill)
           ?? false;
       });
+
   }
 
-  void _showRecommendationDialog(BuildContext context, Recommendation recommendation,
-    Future<bool> Function(Recommendation) onRecommendationUpdated) {
+  void _showTSkillDialog(BuildContext context, TSkill tskill,
+    Future<bool> Function(TSkill) onTSkillUpdated) {
       
-    TextEditingController colleagueNameController = 
-        TextEditingController(text: recommendation.colleagueName);
-    TextEditingController colleagueJobTitleController = 
-        TextEditingController(text: recommendation.colleagueJobTitle);
-    TextEditingController descriptionController = 
-        TextEditingController(text: recommendation.description);
+    TextEditingController nameController = 
+        TextEditingController(text: tskill.name);
 
     Uint8List? pickedImageBytes;
 
     String title;
-    var newRecommendation = false;
-    if (recommendation.description == '') {
-      title = 'Add new peer recommendation information';
-      newRecommendation = true;
+    var newTSkill = false;
+    if (tskill.name == '') {
+      title = 'Add new technical skill information';
+      newTSkill = true;
     } else {
-      title = 'Edit your peer recommendation information for ${recommendation.description}';
+      title = 'Edit your technical skill information for ${tskill.name}';
     }
-
-    
 
     Navigator.of(context).pop();
     showDialog(
@@ -137,21 +130,9 @@ class RecommendationSectionAdmin extends StatelessWidget {
                 child: Column(
                   children: [
                     TextField(
-                      controller: colleagueNameController,
-                      onChanged: (value) => recommendation.colleagueName = value,
-                      decoration: const InputDecoration(labelText: 'Name of Colleague'),
-                    ),
-                    TextField(
-                      controller: colleagueJobTitleController,
-                      onChanged: (value) =>
-                          recommendation.colleagueJobTitle = value,
-                      decoration: const InputDecoration(labelText: 'Job Title of Colleague'),
-                    ),
-                    TextField(
-                      controller: descriptionController,
-                      onChanged: (value) =>
-                          recommendation.description = value,
-                      decoration: const InputDecoration(labelText: 'Description of Recommendation'),
+                      controller: nameController,
+                      onChanged: (value) => tskill.name = value,
+                      decoration: const InputDecoration(labelText: 'Skill Name'),
                     ),
                     if (pickedImageBytes != null) Image.memory(pickedImageBytes!),
                     ElevatedButton(
@@ -168,13 +149,13 @@ class RecommendationSectionAdmin extends StatelessWidget {
                 ),
               ),
               actions: <Widget>[
-                if (!newRecommendation)
+                if (!newTSkill)
                   TextButton(
                     onPressed: () async {
-                      final name = recommendation.colleagueName;
-                      recommendation.delete();
+                      final name = tskill.name;
+                      tskill.delete();
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Reccomendatiom from $name deleted')));
+                        SnackBar(content: Text('Technical skill info for $name deleted')));
                       Navigator.pop(dialogContext);
                     },
                     child: const Text('Delete'),
@@ -186,16 +167,16 @@ class RecommendationSectionAdmin extends StatelessWidget {
                           await _adminController.uploadImageAndGetURL(
                               pickedImageBytes!, 'selected_image.jpg');
                       if (imageURL != null) {
-                        recommendation.imageURL = imageURL;
+                        tskill.imageURL = imageURL;
                       }
                     }
-                    bool isSuccess = await onRecommendationUpdated(recommendation);
+                    bool isSuccess = await onTSkillUpdated(tskill);
                     if (isSuccess) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Peer recommendation info updated')));
+                        const SnackBar(content: Text('Technical skill info updated')));
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Error updating peer recommendation info')));
+                        const SnackBar(content: Text('Error updating technical skill info')));
                     }
                     Navigator.pop(dialogContext);
                   },
