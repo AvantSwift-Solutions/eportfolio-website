@@ -79,7 +79,7 @@ class AwardCertAdmin extends StatelessWidget {
     TextEditingController sourceController = TextEditingController();
     
     Uint8List? pickedImageBytes;
-    AwardCert newAwardCert = AwardCert(acid: '', name: '', creationTimestamp: Timestamp.now());
+    AwardCert newAwardCert = AwardCert(acid: '', name: '', link: '', source: '');
 
     showDialog(
       context: context,

@@ -14,14 +14,13 @@ class AwardCert {
     required this.acid,
     required this.name,
     this.imageURL,
-    this.link,
-    this.source,
-    required this.creationTimestamp,
+    required this.link,
+    required this.source,
+    this.creationTimestamp,
   });
 
   factory AwardCert.fromDocumentSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;
-    final acid = data['acid'];
     final name = data['name'];
     final imageURL = data['imageURL'];
     final link = data['link'];
