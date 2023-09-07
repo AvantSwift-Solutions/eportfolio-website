@@ -38,7 +38,6 @@ class DefaultPage extends StatelessWidget {
               TSkillSectionAdmin(),
               ISkillSectionAdmin(),
               ProfessionalExperienceSectionAdmin(),
-              EducationSectionAdmin(),
               ContactSectionAdmin(),
               EducationSectionAdmin(),
               RecommendationSectionAdmin(),
