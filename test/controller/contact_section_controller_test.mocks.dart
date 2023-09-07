@@ -97,6 +97,14 @@ class MockUser extends _i1.Mock implements _i4.User {
         returnValueForMissingStub: null,
       );
   @override
+  set aboutMe(String? _aboutMe) => super.noSuchMethod(
+        Invocation.setter(
+          #aboutMe,
+          _aboutMe,
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
   Map<String, dynamic> toMap() => (super.noSuchMethod(
         Invocation.method(
           #toMap,
