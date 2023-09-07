@@ -19,7 +19,7 @@ void main() {
 
   setUp(() {
     mockProfessionalExperience1 = MockProfessionalExperience();
-    when(mockProfessionalExperience1.professionalExperienceId).thenReturn('mockId1');
+    when(mockProfessionalExperience1.peid).thenReturn('mockId1');
     when(mockProfessionalExperience1.jobTitle).thenReturn('Mock JobTitle1');
     when(mockProfessionalExperience1.companyName).thenReturn('Mock CompanyName1');
     when(mockProfessionalExperience1.location).thenReturn('Mock Location1');
@@ -29,7 +29,7 @@ void main() {
     when(mockProfessionalExperience1.description).thenReturn('Mock Description1');
 
     mockProfessionalExperience2 = MockProfessionalExperience();
-    when(mockProfessionalExperience2.professionalExperienceId).thenReturn('mockId2');
+    when(mockProfessionalExperience2.peid).thenReturn('mockId2');
     when(mockProfessionalExperience2.jobTitle).thenReturn('Mock JobTitle2');
     when(mockProfessionalExperience2.companyName).thenReturn('Mock CompanyName2');
     when(mockProfessionalExperience2.location).thenReturn('Mock Location2');
@@ -55,7 +55,7 @@ void main() {
     var exp1 = getAllProfessionalExperiences[0];
     var exp2 = getAllProfessionalExperiences[1];
 
-    expect(exp1.professionalExperienceId, mockProfessionalExperience1.professionalExperienceId);
+    expect(exp1.peid, mockProfessionalExperience1.peid);
     expect(exp1.jobTitle, mockProfessionalExperience1.jobTitle);
     expect(exp1.companyName, mockProfessionalExperience1.companyName);
     expect(exp1.location, mockProfessionalExperience1.location);
@@ -64,7 +64,7 @@ void main() {
     expect(exp1.logoURL, mockProfessionalExperience1.logoURL);
     expect(exp1.description, mockProfessionalExperience1.description);
 
-    expect(exp2.professionalExperienceId, mockProfessionalExperience2.professionalExperienceId);
+    expect(exp2.peid, mockProfessionalExperience2.peid);
     expect(exp2.jobTitle, mockProfessionalExperience2.jobTitle);
     expect(exp2.companyName, mockProfessionalExperience2.companyName);
     expect(exp2.location, mockProfessionalExperience2.location);
@@ -94,7 +94,7 @@ void main() {
 
     final updateResult = await controller.updateProfessionalExperienceSectionData(0,
       ProfessionalExperience(
-        professionalExperienceId: 'mockId1',
+        peid: 'mockId1',
         jobTitle: 'New Mock JobTitle1',
         companyName: 'New Mock CompanyName1',
         location: 'New Mock Location1',
@@ -122,7 +122,7 @@ void main() {
 
     final updateResult = await controller.updateProfessionalExperienceSectionData(0,
       ProfessionalExperience(
-        professionalExperienceId: 'mockId1',
+        peid: 'mockId1',
         jobTitle: 'New Mock JobTitle1',
         companyName: 'New Mock CompanyName1',
         location: 'New Mock Location1',

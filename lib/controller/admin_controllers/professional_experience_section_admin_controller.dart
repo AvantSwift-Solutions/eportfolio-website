@@ -30,7 +30,7 @@ class ProfessionalExperienceSectionAdminController {
         allProfessionalExperiences[index].endDate = newProfessionalExperience.endDate;
         allProfessionalExperiences[index].description = newProfessionalExperience.description;
         
-        bool updateSuccess = await allProfessionalExperiences[index].update();
+        bool updateSuccess = await allProfessionalExperiences[index].update() ?? false;
         return updateSuccess; // Return true if update is successful
       } else {
         return false;

@@ -48,7 +48,7 @@ class ProfessionalExperienceSectionAdmin extends StatelessWidget {
                         onPressed: () {
                           _showEditDialog(context, index);
                         },
-                        child: Text(professionalExperienceList[index].jobTitle),
+                        child: Text(professionalExperienceList[index].jobTitle!),
                       );
                     },
                   )
@@ -77,7 +77,7 @@ class ProfessionalExperienceSectionAdmin extends StatelessWidget {
   void _showAddNewDialog(BuildContext context, List<ProfessionalExperience> professionalExperienceList) async {
 
     final professionalExperience = ProfessionalExperience(
-      professionalExperienceId: '',
+      peid: '',
       jobTitle: '',
       companyName: '',
       location: '',

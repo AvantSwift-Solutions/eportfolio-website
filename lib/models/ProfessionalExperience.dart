@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
 class ProfessionalExperience {
-  final String professionalExperienceId;
-  String jobTitle;
+  final String? peid;
+  String? jobTitle;
   String? companyName;
   String? location;
   Timestamp? startDate;
@@ -12,7 +12,7 @@ class ProfessionalExperience {
   String? logoURL; 
 
   ProfessionalExperience({
-    required this.professionalExperienceId,
+    required this.peid,
     required this.jobTitle,
     required this.companyName,
     this.location,
@@ -34,7 +34,7 @@ class ProfessionalExperience {
     final logoURL = data['logoURL'];
 
     return ProfessionalExperience(
-      professionalExperienceId: snapshot.id,
+      peid: snapshot.id,
       jobTitle: jobTitle,
       companyName: companyName,
       location: location,
@@ -50,7 +50,7 @@ class ProfessionalExperience {
 
   Map<String, dynamic> toMap() {
     return {
-      'professionalExperienceId': professionalExperienceId,
+      'peid': peid,
       'jobTitle': jobTitle,
       'companyName': companyName,
       'location': location,
@@ -71,11 +71,11 @@ class ProfessionalExperience {
     }
   }
 
-  Future<bool> update() async {
+  Future<bool>? update() async {
     try {
       await FirebaseFirestore.instance
           .collection('ProfessionalExperience')
-          .doc(professionalExperienceId)
+          .doc(peid)
           .update(toMap());
       return true;
     } catch (e) {
@@ -85,7 +85,7 @@ class ProfessionalExperience {
 
   Future<void> delete() async {
     try {
-      await FirebaseFirestore.instance.collection('ProfessionalExperience').doc(professionalExperienceId).delete();
+      await FirebaseFirestore.instance.collection('ProfessionalExperience').doc(peid).delete();
       print('User document deleted');
     } catch (e) {
       print('Error deleting user document: $e');

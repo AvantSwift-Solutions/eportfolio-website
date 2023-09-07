@@ -8,9 +8,9 @@ void main() {
     // Could not test fromDocumentSnapshot because it uses a
     // DocumentSnapshot which is a final class and cannot be extended?
 
-    test('ProfessionalExperience.toMap should convert education to a map', () {
+    test('ProfessionalExperience.toMap should convert professionalExperience to a map', () {
       final professionalExperience = ProfessionalExperience(
-        professionalExperienceId: 'exp123',
+        peid: 'exp123',
         jobTitle: 'Scrum Master',
         companyName: 'TikTok',
         location: 'New York',
@@ -21,7 +21,7 @@ void main() {
       );
       final professionalExperienceMap = professionalExperience.toMap();
 
-      expect(professionalExperienceMap['eid'], 'edu123');
+      expect(professionalExperienceMap['peid'], 'exp123');
       expect(professionalExperienceMap['jobTitle'], 'Scrum Master');
       expect(professionalExperienceMap['companyName'], 'TikTok');
       expect(professionalExperienceMap['location'], 'New York');
