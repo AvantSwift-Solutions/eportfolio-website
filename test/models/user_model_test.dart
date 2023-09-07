@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../lib/models/User.dart'; // Update this import based on your project structure
+import '../../lib/models/User.dart';
 
 void main() {
   group('User class tests', () {
@@ -10,20 +10,28 @@ void main() {
 
     test('User.toMap should convert user to a map', () {
       final user = User(
-        uid: 'user123',
-        email: 'user@example.com',
-        name: 'John Doe',
-        creationTimestamp: Timestamp.now(),
-        landingPageTitle: 'Welcome to my page',
-        landingPageDescription: 'This is my landing page',
-        imageURL: 'https://example.com/image.jpg',
-      );
+          uid: 'user123',
+          email: 'user@example.com',
+          name: 'John Doe',
+          creationTimestamp: Timestamp.now(),
+          landingPageTitle: 'Welcome to my page',
+          landingPageDescription: 'This is my landing page',
+          imageURL: 'https://example.com/image.jpg',
+          contactEmail: 'differentEmail@example.com',
+          linkedinURL: 'https://www.linkedin.com/in/example-user/',
+          aboutMe: 'This is about me');
       final userMap = user.toMap();
 
       expect(userMap['uid'], 'user123');
       expect(userMap['email'], 'user@example.com');
       expect(userMap['name'], 'John Doe');
-      // Add more assertions for other properties
+      expect(userMap['landingPageTitle'], 'Welcome to my page');
+      expect(userMap['landingPageDescription'], 'This is my landing page');
+      expect(userMap['imageURL'], 'https://example.com/image.jpg');
+      expect(userMap['contactEmail'], 'differentEmail@example.com');
+      expect(
+          userMap['linkedinURL'], 'https://www.linkedin.com/in/example-user/');
+      expect(userMap['aboutMe'], 'This is about me');
     });
 
     // Write more tests for other methods (create, update, delete, getFirstUser)

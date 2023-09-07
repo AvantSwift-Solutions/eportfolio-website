@@ -26,6 +26,7 @@ void main() {
     when(mockUser.landingPageTitle).thenReturn('Mock Title');
     when(mockUser.landingPageDescription).thenReturn('Mock Description');
     when(mockUser.imageURL).thenReturn('http://example.com/mock_image.jpg');
+    when(mockUser.aboutMe).thenReturn('Mock About Me');
 
     mockRepoService = MockUserRepoService();
     controller = LandingPageAdminController(mockRepoService);
@@ -64,7 +65,7 @@ void main() {
     expect(landingPageData!.name, 'Error');
     expect(landingPageData.landingPageTitle, 'Error');
     expect(landingPageData.landingPageDescription, 'Error');
-    expect(landingPageData.imageURL, 'https://example.com/default_image.jpg');
+    expect(landingPageData.imageURL, 'https://example.com/error.jpg');
   });
 
   test('updateLandingPageData returns true on successful update', () async {
