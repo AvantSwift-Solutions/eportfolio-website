@@ -2,35 +2,35 @@ import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import '../../models/AwardCert.dart';
-import '../../reposervice/award_cert_repo_services.dart'; // Import the PersonalProject class
+import '../../reposervice/award_cert_repo_services.dart'; // Import the AwardCert class
 
 class AwardCertAdminController {
   final AwardCertRepoService awardCertRepoService;
 
   AwardCertAdminController(this.awardCertRepoService); // Constructor
 
-  Future <List<AwardCert>> getAwardCertList() async {
+  Future <List<AwardCert>?> getAwardCertList() async {
     try {
-      List<AwardCert> awardCerts = await awardCertRepoService.getAllAwardCert();
+      List<AwardCert>? awardCerts = await awardCertRepoService.getAllAwardCert();
       return awardCerts;
     } catch (e) {
       print('Error getting AwardCert list: $e');
-      return [];
+      return null;
     }
   }
 
   
   Future<bool>? updateAwardCertData(int index, AwardCert newAwardCert) async {
     try {
-      List<AwardCert> awardCerts = await awardCertRepoService.getAllAwardCert();
+      List<AwardCert>? awardCerts = await awardCertRepoService.getAllAwardCert();
 
-      awardCerts[index].name = newAwardCert.name;
-      awardCerts[index].imageURL = newAwardCert.imageURL;
-      awardCerts[index].link = newAwardCert.link;
-      awardCerts[index].source = newAwardCert.source;
+      awardCerts?[index].name = newAwardCert.name;
+      awardCerts?[index].imageURL = newAwardCert.imageURL;
+      awardCerts?[index].link = newAwardCert.link;
+      awardCerts?[index].source = newAwardCert.source;
 
 
-      bool updateSuccess = await awardCerts[index].update();
+      bool updateSuccess = await awardCerts?[index].update() ?? false;
       return updateSuccess;
     } catch (e) {
       print('Error updating awardCert: $e');
@@ -41,8 +41,8 @@ class AwardCertAdminController {
 
   Future<bool> deleteAwardCert(int index) async {
     try {
-      List<AwardCert> awardCerts = await awardCertRepoService.getAllAwardCert();
-      await awardCerts[index].delete();
+      List<AwardCert>? awardCerts = await awardCertRepoService.getAllAwardCert();
+      await awardCerts?[index].delete();
       return true;
     } catch (e) {
       print('Error deleting award cert: $e');

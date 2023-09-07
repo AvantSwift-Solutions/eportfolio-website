@@ -2,7 +2,6 @@
 import 'dart:typed_data';
 import 'package:avantswift_portfolio/controller/admin_controllers/award_cert_admin_controller.dart';
 import 'package:avantswift_portfolio/reposervice/award_cert_repo_services.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +32,7 @@ class AwardCertAdmin extends StatelessWidget {
   }
 
 
-  void _showEditDialog(BuildContext context, List<AwardCert> awardCerts) async {
+  void _showEditDialog(BuildContext context, List<AwardCert>? awardCerts) async {
       showDialog(
         context: context,
         builder: (BuildContext dialogContext) {
@@ -45,14 +44,14 @@ class AwardCertAdmin extends StatelessWidget {
                 ElevatedButton(
                   onPressed: ()  {
                     Navigator.of(dialogContext).pop();
-                    _showAddAwardCertDialog(context, awardCerts);
+                    _showAddAwardCertDialog(context, awardCerts!);
                   },
                   child: const Text('Add AwardCert'),
                 ),
                 ElevatedButton(
                   onPressed: () async {
                     Navigator.of(dialogContext).pop();
-                    _showExistingAwardCertDialog(context, awardCerts);
+                    _showExistingAwardCertDialog(context, awardCerts!);
                   },
                   child: const Text('Update Existing AwardCert'),
                 ),
@@ -179,7 +178,7 @@ class AwardCertAdmin extends StatelessWidget {
                     itemCount: awardCerts.length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        title: Text(awardCerts[index].name),
+                        title: Text(awardCerts[index].name!),
                         // leading: Image.network(awardCerts[index].imageURL),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -222,11 +221,11 @@ class AwardCertAdmin extends StatelessWidget {
 
   void _showUpdateAwardCertDialog(BuildContext context, int i) async {
     final awardCerts = await _adminController.getAwardCertList();
-    final selectedAwardCert = awardCerts[i];
+    final selectedAwardCert = awardCerts?[i];
 
-    TextEditingController nameController = TextEditingController(text: selectedAwardCert.name);
-    TextEditingController linkController = TextEditingController(text: selectedAwardCert.link);
-    TextEditingController sourceController = TextEditingController(text: selectedAwardCert.source);
+    TextEditingController nameController = TextEditingController(text: selectedAwardCert?.name);
+    TextEditingController linkController = TextEditingController(text: selectedAwardCert?.link);
+    TextEditingController sourceController = TextEditingController(text: selectedAwardCert?.source);
     Uint8List? pickedImageBytes;
 
     showDialog(
@@ -241,21 +240,21 @@ class AwardCertAdmin extends StatelessWidget {
                 children: [
                   TextField(
                     controller: nameController,
-                    onChanged: (value) => awardCerts[i].name = value,
+                    onChanged: (value) => awardCerts?[i].name = value,
                     decoration: const InputDecoration(
                       labelText: 'Name'),
                   ),
                   TextField(
                     controller: linkController,
                     onChanged: (value) =>
-                    awardCerts[i].link = value,
+                    awardCerts?[i].link = value,
                     decoration: const InputDecoration(
                       labelText: 'Link'),
                   ),
                   TextField(
                     controller: sourceController,
                     onChanged: (value) =>
-                    awardCerts[i].source = value,
+                    awardCerts?[i].source = value,
                     decoration: const InputDecoration(
                       labelText: 'Source'),
                   ),
@@ -282,11 +281,11 @@ class AwardCertAdmin extends StatelessWidget {
                         'selected_image.jpg',
                       );
                       if (imageURL != null) {
-                        selectedAwardCert.imageURL = imageURL;
+                        selectedAwardCert?.imageURL = imageURL;
                       }
                     }
 
-                    bool isSuccess = await _adminController.updateAwardCertData(i, awardCerts[i]) ?? false;
+                    bool isSuccess = await _adminController.updateAwardCertData(i, awardCerts![i]) ?? false;
                     if (isSuccess) {
                       setState(() {});
                       Navigator.of(dialogContext).pop();

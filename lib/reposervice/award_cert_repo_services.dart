@@ -4,7 +4,7 @@ import '../models/AwardCert.dart';
 
 
 class AwardCertRepoService {
-  Future<List<AwardCert>> getAllAwardCert() async {
+  Future<List<AwardCert>?> getAllAwardCert() async {
     try {
       QuerySnapshot snapshot =
           await FirebaseFirestore.instance.collection('AwardCert').get();

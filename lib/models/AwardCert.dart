@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
 class AwardCert {
-  final String acid;
-  String name;
+  final String? acid;
+  String? name;
   String? imageURL;
   String? link;
   String? source;
@@ -58,7 +58,7 @@ class AwardCert {
     }
   }
 
-  Future<bool> update() async {
+  Future<bool>? update() async {
     try {
       await FirebaseFirestore.instance
           .collection('AwardCert')

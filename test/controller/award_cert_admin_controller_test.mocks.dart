@@ -31,7 +31,7 @@ class MockAwardCertRepoService extends _i1.Mock
   }
 
   @override
-  _i3.Future<List<_i4.AwardCert>> getAllAwardCert() => (super.noSuchMethod(
+  _i3.Future<List<_i4.AwardCert>?> getAllAwardCert() => (super.noSuchMethod(
         Invocation.method(
           #getAllAwardCert,
           [],
