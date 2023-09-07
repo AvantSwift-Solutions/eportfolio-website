@@ -34,7 +34,7 @@ class LandingPageAdmin extends StatelessWidget {
     TextEditingController nameController =
         TextEditingController(text: landingPageData!.name);
     TextEditingController titleController =
-        TextEditingController(text: landingPageData.landingPageTitle);
+        TextEditingController(text: landingPageData.nickname);
     TextEditingController descriptionController =
         TextEditingController(text: landingPageData.landingPageDescription);
 
@@ -58,9 +58,9 @@ class LandingPageAdmin extends StatelessWidget {
                     TextField(
                       controller: titleController,
                       onChanged: (value) =>
-                          landingPageData.landingPageTitle = value,
+                          landingPageData.nickname = value,
                       decoration: const InputDecoration(
-                          labelText: 'Landing Page Title'),
+                          labelText: 'Nickname'),
                     ),
                     TextField(
                       controller: descriptionController,

@@ -16,14 +16,14 @@ class LandingPageAdminController {
       if (user != null) {
         return LandingPageDTO(
           name: user.name,
-          landingPageTitle: user.landingPageTitle,
+          nickname: user.nickname,
           landingPageDescription: user.landingPageDescription,
           imageURL: user.imageURL,
         );
       } else {
         return LandingPageDTO(
           name: 'Unknown',
-          landingPageTitle: 'Welcome',
+          nickname: 'Welcome',
           landingPageDescription: 'No description available',
           imageURL: 'https://example.com/default_image.jpg',
         );
@@ -31,7 +31,7 @@ class LandingPageAdminController {
     } catch (e) {
       return LandingPageDTO(
         name: 'Error',
-        landingPageTitle: 'Error',
+        nickname: 'Error',
         landingPageDescription: 'Error',
         imageURL: 'https://example.com/error.jpg',
       );
@@ -44,7 +44,7 @@ class LandingPageAdminController {
 
       if (user != null) {
         user.name = landingPageData.name;
-        user.landingPageTitle = landingPageData.landingPageTitle;
+        user.nickname = landingPageData.nickname;
         user.landingPageDescription = landingPageData.landingPageDescription;
 
         /* ImageURL requires additional steps of taking to storage and

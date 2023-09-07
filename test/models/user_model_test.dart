@@ -14,7 +14,7 @@ void main() {
           email: 'user@example.com',
           name: 'John Doe',
           creationTimestamp: Timestamp.now(),
-          landingPageTitle: 'Welcome to my page',
+          nickname: 'Welcome to my page',
           landingPageDescription: 'This is my landing page',
           imageURL: 'https://example.com/image.jpg',
           contactEmail: 'differentEmail@example.com',

@@ -23,7 +23,7 @@ void main() {
     when(mockUser.uid).thenReturn('mockUid');
     when(mockUser.email).thenReturn('mock@example.com');
     when(mockUser.name).thenReturn('Mock User');
-    when(mockUser.landingPageTitle).thenReturn('Mock Title');
+    when(mockUser.nickname).thenReturn('Mock Title');
     when(mockUser.landingPageDescription).thenReturn('Mock Description');
     when(mockUser.imageURL).thenReturn('http://example.com/mock_image.jpg');
     when(mockUser.aboutMe).thenReturn('Mock About Me');
@@ -39,7 +39,7 @@ void main() {
 
     // Make assertions on the returned data
     expect(landingPageData!.name, mockUser.name);
-    expect(landingPageData.landingPageTitle, mockUser.landingPageTitle);
+    expect(landingPageData.nickname, mockUser.nickname);
     expect(landingPageData.landingPageDescription,
         mockUser.landingPageDescription);
     expect(landingPageData.imageURL, mockUser.imageURL);
@@ -52,7 +52,7 @@ void main() {
     final landingPageData = await controller.getLandingPageData();
 
     expect(landingPageData!.name, 'Unknown');
-    expect(landingPageData.landingPageTitle, 'Welcome');
+    expect(landingPageData.nickname, 'Welcome');
     expect(landingPageData.landingPageDescription, 'No description available');
     expect(landingPageData.imageURL, 'https://example.com/default_image.jpg');
   });
@@ -63,7 +63,7 @@ void main() {
     final landingPageData = await controller.getLandingPageData();
 
     expect(landingPageData!.name, 'Error');
-    expect(landingPageData.landingPageTitle, 'Error');
+    expect(landingPageData.nickname, 'Error');
     expect(landingPageData.landingPageDescription, 'Error');
     expect(landingPageData.imageURL, 'https://example.com/error.jpg');
   });
@@ -75,7 +75,7 @@ void main() {
     final updateResult = await controller.updateLandingPageData(
       LandingPageDTO(
         name: 'New Name',
-        landingPageTitle: 'New Title',
+        nickname: 'New Title',
         landingPageDescription: 'New Description',
         imageURL: 'http://example.com/new_image.jpg',
       ),
@@ -83,7 +83,7 @@ void main() {
 
     expect(updateResult, true);
     verify(mockUser.name = 'New Name');
-    verify(mockUser.landingPageTitle = 'New Title');
+    verify(mockUser.nickname = 'New Title');
     verify(mockUser.landingPageDescription = 'New Description');
     verify(mockUser.imageURL = 'http://example.com/new_image.jpg');
     verify(mockUser.update()); // Verify that the method was called
@@ -95,7 +95,7 @@ void main() {
     final updateResult = await controller.updateLandingPageData(
       LandingPageDTO(
         name: 'New Name',
-        landingPageTitle: 'New Title',
+        nickname: 'New Title',
         landingPageDescription: 'New Description',
         imageURL: 'http://example.com/new_image.jpg',
       ),

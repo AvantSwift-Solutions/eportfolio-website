@@ -14,7 +14,6 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-
   final LandingPageController _landingPageController =
       LandingPageController(UserRepoService());
 
@@ -47,20 +46,70 @@ class _LandingPageState extends State<LandingPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        landingPageData?.landingPageTitle ?? 'Default Title',
-                        style: PublicViewTextStyles.generalHeading.copyWith(
-                          fontSize: titleFontSize,
+                      RichText(
+                        text: TextSpan(
+                          style: PublicViewTextStyles.generalHeading.copyWith(
+                            fontSize: titleFontSize,
+                          ),
+                          children: [
+                            const TextSpan(
+                              text: 'Hey there, \nI\'m ',
+                            ),
+                            TextSpan(
+                              text: '${landingPageData?.name} ',
+                              style: const TextStyle(
+                                color: Color(0xFFFBC9A7), // Color for "Zhou"
+                                fontFamily: 'Montserrat',
+                              ),
+                            ),
+                            const TextSpan(
+                              text: 'but you \ncan call me ',
+                            ),
+                            TextSpan(
+                              text: '${landingPageData?.nickname}',
+                              style: const TextStyle(
+                                color: Color(0xFFFBC9A7), // Color for "Zhou"
+                                fontFamily: 'Montserrat',
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(height: 20),
-                      Text(
-                        landingPageData?.landingPageDescription ??
-                            'Default Description',
-                        style: PublicViewTextStyles.generalBodyText.copyWith(
-                          fontSize: descriptionFontSize,
-                        ),
-                      ),
+                      RichText(
+                          text: TextSpan(
+                              style:
+                                  PublicViewTextStyles.generalBodyText.copyWith(
+                                fontSize: descriptionFontSize,
+                              ),
+                              children: [
+                            WidgetSpan(
+                              child: SizedBox(
+                                width:
+                                    50, // Adjust the width of the line as needed
+                                height:
+                                    25, // Adjust the height of the line as needed
+                                child: Divider(
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                            TextSpan(
+                              text: '      ',
+                              style:
+                                  PublicViewTextStyles.generalBodyText.copyWith(
+                                fontSize: descriptionFontSize,
+                              ),
+                            ),
+                            TextSpan(
+                              text: landingPageData?.landingPageDescription ??
+                                  'Default Description',
+                              style:
+                                  PublicViewTextStyles.generalBodyText.copyWith(
+                                fontSize: descriptionFontSize,
+                              ),
+                            ),
+                          ])),
                       const SizedBox(height: 20),
                       CustomScrollButton(
                         text: 'Contact Me',
