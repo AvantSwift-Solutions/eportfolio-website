@@ -2,14 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
 class Reccomendation {
-  final String reccomendationId;
-  String colleagueName;
+  final String? rid;
+  String? colleagueName;
   String? colleagueJobTitle;
-  String description;
+  String? description;
   String? imageURL; 
 
   Reccomendation({
-    required this.reccomendationId,
+    required this.rid,
     required this.description,
     required this.colleagueName,
     this.colleagueJobTitle,
@@ -25,7 +25,7 @@ class Reccomendation {
     final imageURL = data['imageURL'];
 
     return Reccomendation(
-      reccomendationId: snapshot.id,
+      rid: snapshot.id,
       colleagueName: colleagueName,
       colleagueJobTitle: colleagueJobTitle,
       description: description,
@@ -38,7 +38,7 @@ class Reccomendation {
 
   Map<String, dynamic> toMap() {
     return {
-      'reccomendationId': reccomendationId,
+      'rid': rid,
       'colleagueName': colleagueName,
       'colleagueJobTitle': colleagueJobTitle,
       'description': description,
@@ -56,11 +56,11 @@ class Reccomendation {
     }
   }
 
-  Future<bool> update() async {
+  Future<bool>? update() async {
     try {
       await FirebaseFirestore.instance
           .collection('Reccomendation')
-          .doc(reccomendationId)
+          .doc(rid)
           .update(toMap());
       return true;
     } catch (e) {
@@ -70,7 +70,7 @@ class Reccomendation {
 
   Future<void> delete() async {
     try {
-      await FirebaseFirestore.instance.collection('Reccomendation').doc(reccomendationId).delete();
+      await FirebaseFirestore.instance.collection('Reccomendation').doc(rid).delete();
       print('Reccomendation document deleted');
     } catch (e) {
       print('Error deleting reccomendation document: $e');

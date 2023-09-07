@@ -48,7 +48,7 @@ class ReccomendationSectionAdmin extends StatelessWidget {
                         onPressed: () {
                           _showEditDialog(context, index);
                         },
-                        child: Text(reccomendationList[index].colleagueName),
+                        child: Text(reccomendationList[index].colleagueName!),
                       );
                     },
                   )
@@ -77,7 +77,7 @@ class ReccomendationSectionAdmin extends StatelessWidget {
   void _showAddNewDialog(BuildContext context, List<Reccomendation> reccomendationList) async {
 
     final reccomendation = Reccomendation(
-      reccomendationId: '',
+      rid: '',
       colleagueName: '',
       colleagueJobTitle: '',
       description: '',

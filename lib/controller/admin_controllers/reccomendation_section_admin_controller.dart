@@ -27,7 +27,7 @@ class ReccomendationSectionAdminController {
         allReccomendations[index].description = newReccomendation.description;
         allReccomendations[index].imageURL = newReccomendation.imageURL;
         
-        bool updateSuccess = await allReccomendations[index].update();
+        bool updateSuccess = await allReccomendations[index].update() ?? false;
         return updateSuccess; // Return true if update is successful
       } else {
         return false;

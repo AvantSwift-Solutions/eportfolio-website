@@ -8,7 +8,7 @@ void main() {
 
     test('Reccomendation.toMap should convert reccomendation to a map', () {
       final reccomendation = Reccomendation(
-        reccomendationId: 'recc123',
+        rid: 'rid123',
         colleagueName: 'Steve Jobs',
         colleagueJobTitle: 'CEO',
         description: 'This is a reccomendation',
@@ -16,7 +16,7 @@ void main() {
       );
       final reccomendationMap = reccomendation.toMap();
 
-      expect(reccomendationMap['reccomendationId'], 'edu123');
+      expect(reccomendationMap['rid'], 'rid123');
       expect(reccomendationMap['colleagueName'], 'Steve Jobs');
       expect(reccomendationMap['colleagueJobTitle'], 'CEO');
       expect(reccomendationMap['description'], 'This is a reccomendation');
