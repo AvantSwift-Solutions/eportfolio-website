@@ -9,26 +9,26 @@ class PersonalProjectAdminController {
 
   PersonalProjectAdminController(this.personalProjectRepoService); // Constructor
 
-  Future <List<PersonalProject>> getPersonalProjectList() async {
+  Future <List<PersonalProject>?> getPersonalProjectList() async {
     try {
-      List<PersonalProject> personalProjects = await personalProjectRepoService.getAllProjects();
+      List<PersonalProject>? personalProjects = await personalProjectRepoService.getAllProjects();
       return personalProjects;
     } catch (e) {
       print('Error getting personal project list: $e');
-      return [];
+      return null;
     }
   }
 
   
   Future<bool>? updatePersonalProjectData(int index, PersonalProject newProject) async {
     try {
-      List<PersonalProject> personalProjects = await personalProjectRepoService.getAllProjects();
+      List<PersonalProject>? personalProjects = await personalProjectRepoService.getAllProjects();
 
-      personalProjects[index].name = newProject.name;
-      personalProjects[index].description = newProject.description;
-      personalProjects[index].imageURL = newProject.imageURL;
+      personalProjects?[index].name = newProject.name;
+      personalProjects?[index].description = newProject.description;
+      personalProjects?[index].imageURL = newProject.imageURL;
 
-      bool updateSuccess = await personalProjects[index].update();
+      bool? updateSuccess = await personalProjects?[index].update() ?? false;
       return updateSuccess;
     } catch (e) {
       print('Error updating personal project: $e');
@@ -39,8 +39,8 @@ class PersonalProjectAdminController {
 
   Future<bool> deletePersonalProject(int index) async {
     try {
-      List<PersonalProject> personalProjects = await personalProjectRepoService.getAllProjects();
-      await personalProjects[index].delete();
+      List<PersonalProject>? personalProjects = await personalProjectRepoService.getAllProjects();
+      await personalProjects?[index].delete();
       return true;
     } catch (e) {
       print('Error deleting personal project: $e');

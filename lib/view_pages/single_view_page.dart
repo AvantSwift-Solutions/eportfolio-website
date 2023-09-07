@@ -19,7 +19,6 @@ class SinglePageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: Container(
         height: MediaQuery.of(context).size.height -
             kToolbarHeight -

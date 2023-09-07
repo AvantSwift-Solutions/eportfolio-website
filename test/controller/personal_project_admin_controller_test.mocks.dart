@@ -31,7 +31,7 @@ class MockPersonalProjectRepoService extends _i1.Mock
   }
 
   @override
-  _i3.Future<List<_i4.PersonalProject>> getAllProjects() => (super.noSuchMethod(
+  _i3.Future<List<_i4.PersonalProject>?> getAllProjects() => (super.noSuchMethod(
         Invocation.method(
           #getAllProjects,
           [],

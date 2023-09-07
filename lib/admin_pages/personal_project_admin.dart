@@ -32,7 +32,7 @@ class PersonalProjectAdmin extends StatelessWidget {
   }
 
 
-  void _showEditDialog(BuildContext context, List<PersonalProject> personalProjects) async {
+  void _showEditDialog(BuildContext context, List<PersonalProject>? personalProjects) async {
       showDialog(
         context: context,
         builder: (BuildContext dialogContext) {
@@ -44,14 +44,14 @@ class PersonalProjectAdmin extends StatelessWidget {
                 ElevatedButton(
                   onPressed: ()  {
                     Navigator.of(dialogContext).pop();
-                    _showAddProjectDialog(context, personalProjects);
+                    _showAddProjectDialog(context, personalProjects!);
                   },
                   child: const Text('Add Personal Project'),
                 ),
                 ElevatedButton(
                   onPressed: () async {
                     Navigator.of(dialogContext).pop();
-                    _showExistingProjectsDialog(context, personalProjects);
+                    _showExistingProjectsDialog(context, personalProjects!);
                   },
                   child: const Text('Update Existing Project'),
                 ),
@@ -173,7 +173,7 @@ class PersonalProjectAdmin extends StatelessWidget {
                     itemCount: personalProjects.length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        title: Text(personalProjects[index].name),
+                        title: Text(personalProjects[index].name!),
                         // subtitle: Text(personalProjects[index].description),
                         // leading: Image.network(personalProjects[index].imageURL),
                         trailing: Row(
@@ -217,10 +217,10 @@ class PersonalProjectAdmin extends StatelessWidget {
 
   void _showUpdateProjectDialog(BuildContext context, int i) async {
     final personalProjects = await _adminController.getPersonalProjectList();
-    final selectedProject = personalProjects[i];
+    final selectedProject = personalProjects?[i];
 
-    TextEditingController nameController = TextEditingController(text: selectedProject.name);
-    TextEditingController descriptionController = TextEditingController(text: selectedProject.description);
+    TextEditingController nameController = TextEditingController(text: selectedProject?.name);
+    TextEditingController descriptionController = TextEditingController(text: selectedProject?.description);
     Uint8List? pickedImageBytes;
 
     showDialog(
@@ -235,14 +235,14 @@ class PersonalProjectAdmin extends StatelessWidget {
                 children: [
                   TextField(
                     controller: nameController,
-                    onChanged: (value) => personalProjects[i].name = value,
+                    onChanged: (value) => personalProjects?[i].name = value,
                     decoration: const InputDecoration(
                       labelText: 'Name'),
                   ),
                   TextField(
                     controller: descriptionController,
                     onChanged: (value) =>
-                    personalProjects[i].description = value,
+                    personalProjects?[i].description = value,
                     decoration: const InputDecoration(
                       labelText: 'Description'),
                   ),
@@ -273,11 +273,11 @@ class PersonalProjectAdmin extends StatelessWidget {
                         'selected_image.jpg',
                       );
                       if (imageURL != null) {
-                        selectedProject.imageURL = imageURL;
+                        selectedProject?.imageURL = imageURL;
                       }
                     }
 
-                    bool isSuccess = await _adminController.updatePersonalProjectData(i, personalProjects[i]) ?? false;
+                    bool isSuccess = await _adminController.updatePersonalProjectData(i, personalProjects![i]) ?? false;
                     if (isSuccess) {
                       setState(() {});
                       Navigator.of(dialogContext).pop();

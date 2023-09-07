@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
 class PersonalProject {
-  final String ppid;
-  String name;
+  final String? ppid;
+  String? name;
   String? description;
   Timestamp? creationTimestamp;
   String? imageURL;
@@ -53,7 +53,7 @@ class PersonalProject {
     }
   }
 
-  Future<bool> update() async {
+  Future<bool>? update() async {
     try {
       await FirebaseFirestore.instance
           .collection('PersonalProject')

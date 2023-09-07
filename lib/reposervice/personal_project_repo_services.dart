@@ -4,7 +4,7 @@ import '../models/PersonalProject.dart';
 
 
 class PersonalProjectRepoService {
-  Future<List<PersonalProject>> getAllProjects() async {
+  Future<List<PersonalProject>?> getAllProjects() async {
     try {
       QuerySnapshot snapshot =
           await FirebaseFirestore.instance.collection('PersonalProject').get();
