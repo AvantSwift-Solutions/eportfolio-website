@@ -21,9 +21,10 @@ class ExperienceSectionAdmin extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
-              child: ElevatedButton(
+            child: ElevatedButton(
               onPressed: () async {
-                _showExperienceList(context, await _adminController.getExperienceSectionData() ?? []);
+                _showExperienceList(context,
+                    await _adminController.getExperienceSectionData() ?? []);
               },
               child: const Text('Edit  Experience Info'),
             ),
@@ -33,7 +34,8 @@ class ExperienceSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showExperienceList(BuildContext context, List<Experience> experienceList) {
+  void _showExperienceList(
+      BuildContext context, List<Experience> experienceList) {
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -75,9 +77,8 @@ class ExperienceSectionAdmin extends StatelessWidget {
     );
   }
 
-  
-  void _showAddNewDialog(BuildContext context, List<Experience> experienceList) async {
-
+  void _showAddNewDialog(
+      BuildContext context, List<Experience> experienceList) async {
     final experience = Experience(
       peid: '',
       jobTitle: '',
@@ -89,41 +90,37 @@ class ExperienceSectionAdmin extends StatelessWidget {
       logoURL: null,
     );
 
-    _showExperienceDialog(context, experience,
-      (exp) async {
-        exp.create();
-        return true;
-      });
+    _showExperienceDialog(context, experience, (exp) async {
+      exp.create();
+      return true;
+    });
   }
 
   void _showEditDialog(BuildContext context, int i) async {
-
-    final experienceSectionData
-      = await _adminController.getExperienceSectionData();
+    final experienceSectionData =
+        await _adminController.getExperienceSectionData();
     final experience = experienceSectionData![i];
 
-    _showExperienceDialog(context, experience,
-      (exp) async {
-        return await _adminController.updateExperienceSectionData(i, exp)
-          ?? false;
-      });
+    _showExperienceDialog(context, experience, (exp) async {
+      return await _adminController.updateExperienceSectionData(i, exp) ??
+          false;
+    });
   }
 
   void _showExperienceDialog(BuildContext context, Experience experience,
-    Future<bool> Function(Experience) onExperienceUpdated) {
-      
-    TextEditingController jobTitleController = 
+      Future<bool> Function(Experience) onExperienceUpdated) {
+    TextEditingController jobTitleController =
         TextEditingController(text: experience.jobTitle);
-    TextEditingController companyNameController = 
+    TextEditingController companyNameController =
         TextEditingController(text: experience.companyName);
-    TextEditingController locationController = 
+    TextEditingController locationController =
         TextEditingController(text: experience.location);
-    TextEditingController descriptionController = 
+    TextEditingController descriptionController =
         TextEditingController(text: experience.description);
-    TextEditingController startDateController
-      = TextEditingController(text: DateFormat('MMMM d, y').format(experience.startDate!.toDate()));
-    TextEditingController endDateController
-      = TextEditingController(text: DateFormat('MMMM d, y').format(experience.endDate!.toDate()));
+    TextEditingController startDateController = TextEditingController(
+        text: DateFormat('MMMM d, y').format(experience.startDate!.toDate()));
+    TextEditingController endDateController = TextEditingController(
+        text: DateFormat('MMMM d, y').format(experience.endDate!.toDate()));
 
     Uint8List? pickedImageBytes;
 
@@ -135,8 +132,6 @@ class ExperienceSectionAdmin extends StatelessWidget {
     } else {
       title = 'Edit your  experience information for ${experience.jobTitle}';
     }
-
-    
 
     Navigator.of(context).pop();
     showDialog(
@@ -156,28 +151,28 @@ class ExperienceSectionAdmin extends StatelessWidget {
                     ),
                     TextField(
                       controller: companyNameController,
-                      onChanged: (value) =>
-                          experience.companyName = value,
-                      decoration: const InputDecoration(labelText: 'Company Name'),
+                      onChanged: (value) => experience.companyName = value,
+                      decoration:
+                          const InputDecoration(labelText: 'Company Name'),
                     ),
                     TextField(
                       controller: locationController,
-                      onChanged: (value) =>
-                          experience.location = value,
+                      onChanged: (value) => experience.location = value,
                       decoration: const InputDecoration(labelText: 'Location'),
                     ),
                     TextField(
                       controller: descriptionController,
-                      onChanged: (value) =>
-                          experience.description = value,
-                      decoration: const InputDecoration(labelText: 'Description'),
+                      onChanged: (value) => experience.description = value,
+                      decoration:
+                          const InputDecoration(labelText: 'Description'),
                     ),
                     Row(
                       children: [
                         Expanded(
                           child: TextField(
                             controller: startDateController,
-                            decoration: const InputDecoration(labelText: 'Start Date'),
+                            decoration:
+                                const InputDecoration(labelText: 'Start Date'),
                           ),
                         ),
                         IconButton(
@@ -189,9 +184,11 @@ class ExperienceSectionAdmin extends StatelessWidget {
                               lastDate: DateTime(2100),
                             );
                             if (pickedDate != null) {
-                              final formattedDate = DateFormat('MMMM d, y').format(pickedDate);
+                              final formattedDate =
+                                  DateFormat('MMMM d, y').format(pickedDate);
                               startDateController.text = formattedDate;
-                              experience.startDate = Timestamp.fromDate(pickedDate);
+                              experience.startDate =
+                                  Timestamp.fromDate(pickedDate);
                             }
                           },
                           icon: const Icon(Icons.calendar_today),
@@ -203,7 +200,8 @@ class ExperienceSectionAdmin extends StatelessWidget {
                         Expanded(
                           child: TextField(
                             controller: endDateController,
-                            decoration: const InputDecoration(labelText: 'End Date'),
+                            decoration:
+                                const InputDecoration(labelText: 'End Date'),
                           ),
                         ),
                         IconButton(
@@ -215,16 +213,19 @@ class ExperienceSectionAdmin extends StatelessWidget {
                               lastDate: DateTime(2100),
                             );
                             if (pickedDate != null) {
-                              final formattedDate = DateFormat('MMMM d, y').format(pickedDate);
+                              final formattedDate =
+                                  DateFormat('MMMM d, y').format(pickedDate);
                               endDateController.text = formattedDate;
-                              experience.endDate = Timestamp.fromDate(pickedDate);
+                              experience.endDate =
+                                  Timestamp.fromDate(pickedDate);
                             }
                           },
                           icon: const Icon(Icons.calendar_today),
                         ),
                       ],
                     ),
-                    if (pickedImageBytes != null) Image.memory(pickedImageBytes!),
+                    if (pickedImageBytes != null)
+                      Image.memory(pickedImageBytes!),
                     ElevatedButton(
                       onPressed: () async {
                         Uint8List? imageBytes = await _pickImage();
@@ -244,8 +245,8 @@ class ExperienceSectionAdmin extends StatelessWidget {
                     onPressed: () async {
                       final name = experience.jobTitle;
                       experience.delete();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(' experience info for $name deleted')));
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(' experience info for $name deleted')));
                       Navigator.pop(dialogContext);
                     },
                     child: const Text('Delete'),
@@ -262,11 +263,11 @@ class ExperienceSectionAdmin extends StatelessWidget {
                     }
                     bool isSuccess = await onExperienceUpdated(experience);
                     if (isSuccess) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text(' experience info updated')));
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text(' experience info updated')));
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Error updating  experience info')));
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('Error updating  experience info')));
                     }
                     Navigator.pop(dialogContext);
                   },
@@ -299,5 +300,4 @@ class ExperienceSectionAdmin extends StatelessWidget {
 
     return null;
   }
-
 }

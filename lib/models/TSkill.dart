@@ -61,10 +61,7 @@ class TSkill {
 
   Future<void> delete() async {
     try {
-      await FirebaseFirestore.instance
-          .collection('TSkill')
-          .doc(tsid)
-          .delete();
+      await FirebaseFirestore.instance.collection('TSkill').doc(tsid).delete();
     } catch (e) {
       log('Error deleting TSkill document: $e');
     }

@@ -10,9 +10,10 @@ class AwardCertAdminController {
 
   AwardCertAdminController(this.awardCertRepoService); // Constructor
 
-  Future <List<AwardCert>?> getAwardCertList() async {
+  Future<List<AwardCert>?> getAwardCertList() async {
     try {
-      List<AwardCert>? awardCerts = await awardCertRepoService.getAllAwardCert();
+      List<AwardCert>? awardCerts =
+          await awardCertRepoService.getAllAwardCert();
       return awardCerts;
     } catch (e) {
       log('Error getting AwardCert list: $e');
@@ -20,16 +21,15 @@ class AwardCertAdminController {
     }
   }
 
-  
   Future<bool>? updateAwardCertData(int index, AwardCert newAwardCert) async {
     try {
-      List<AwardCert>? awardCerts = await awardCertRepoService.getAllAwardCert();
+      List<AwardCert>? awardCerts =
+          await awardCertRepoService.getAllAwardCert();
 
       awardCerts?[index].name = newAwardCert.name;
       awardCerts?[index].imageURL = newAwardCert.imageURL;
       awardCerts?[index].link = newAwardCert.link;
       awardCerts?[index].source = newAwardCert.source;
-
 
       bool updateSuccess = await awardCerts?[index].update() ?? false;
       return updateSuccess;
@@ -39,10 +39,10 @@ class AwardCertAdminController {
     }
   }
 
-
   Future<bool> deleteAwardCert(int index) async {
     try {
-      List<AwardCert>? awardCerts = await awardCertRepoService.getAllAwardCert();
+      List<AwardCert>? awardCerts =
+          await awardCertRepoService.getAllAwardCert();
       await awardCerts?[index].delete();
       return true;
     } catch (e) {
@@ -51,9 +51,8 @@ class AwardCertAdminController {
     }
   }
 
-
-
-  Future<String?> uploadImageAndGetURL(Uint8List imageBytes, String fileName) async {
+  Future<String?> uploadImageAndGetURL(
+      Uint8List imageBytes, String fileName) async {
     try {
       final ref = FirebaseStorage.instance.ref().child('images/$fileName');
       final uploadTask = ref.putData(imageBytes);

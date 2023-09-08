@@ -46,9 +46,8 @@ class AboutMeSectionState extends State<AboutMeSection> {
                       Text(
                         'A Bit About Myself...',
                         style: PublicViewTextStyles.generalHeading.copyWith(
-                          fontSize: titleFontSize * 0.8,
-                          fontWeight: FontWeight.bold
-                        ),
+                            fontSize: titleFontSize * 0.8,
+                            fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 20),
                       Text(

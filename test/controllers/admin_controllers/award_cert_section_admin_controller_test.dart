@@ -8,6 +8,7 @@ import 'mocks/award_cert_section_admin_controller_test.mocks.dart';
 
 @GenerateMocks([AwardCertRepoService])
 class MockAwardCert extends Mock implements AwardCert {}
+
 void main() {
   late AwardCert ac1;
   late AwardCert ac2;
@@ -31,13 +32,12 @@ void main() {
     when(ac2.name).thenReturn('mock name2');
     when(ac2.link).thenReturn('https://example.com/mock_certification2.pdf');
     when(ac2.source).thenReturn('mock source2');
-
   });
 
   group('Award Cert section admin controller tests', () {
-
     test('getAwardCertList returns a list of awardcerts', () async {
-      when(mockRepoService.getAllAwardCert()).thenAnswer((_) async => [ac1,ac2]);
+      when(mockRepoService.getAllAwardCert())
+          .thenAnswer((_) async => [ac1, ac2]);
 
       final awardCerts = await controller.getAwardCertList();
 
@@ -51,24 +51,31 @@ void main() {
 
       expect(awardCert2?.link, ac2.link);
       expect(awardCert2?.source, ac2.source);
-
     });
 
     test('getAwardCertList returns null on error', () async {
-      when(mockRepoService.getAllAwardCert()).thenThrow(Exception('Test Exception'));
+      when(mockRepoService.getAllAwardCert())
+          .thenThrow(Exception('Test Exception'));
 
       final awardCerts = await controller.getAwardCertList();
 
       expect(awardCerts, null);
     });
 
-    test('updateAwardCertData updates an existing awardcert and returns true', () async {
-      when(mockRepoService.getAllAwardCert()).thenAnswer((_) async => [ac1,ac2]);
+    test('updateAwardCertData updates an existing awardcert and returns true',
+        () async {
+      when(mockRepoService.getAllAwardCert())
+          .thenAnswer((_) async => [ac1, ac2]);
       when(ac1.update()).thenAnswer((_) async => true);
 
       const indexToUpdate = 0;
-      final updatedAwardCert = AwardCert(acid: 'mockid1', name: 'Updated Certificate', link: 'https://example.com/mock_certification1_new.pdf', source: 'mock source1');
-      final updatedResult = await controller.updateAwardCertData(indexToUpdate, updatedAwardCert);
+      final updatedAwardCert = AwardCert(
+          acid: 'mockid1',
+          name: 'Updated Certificate',
+          link: 'https://example.com/mock_certification1_new.pdf',
+          source: 'mock source1');
+      final updatedResult =
+          await controller.updateAwardCertData(indexToUpdate, updatedAwardCert);
 
       expect(updatedResult, isTrue);
       verify(ac1.name = 'Updated Certificate');
@@ -78,12 +85,17 @@ void main() {
     });
 
     test('updateAwardCertData returns false on awardcerts is null', () async {
-      final updatedAwardCert = AwardCert(acid: 'mockid1', name: 'Updated Certificate', link: 'https://example.com/mock_certification1_new.pdf', source: 'mock source1');
+      final updatedAwardCert = AwardCert(
+          acid: 'mockid1',
+          name: 'Updated Certificate',
+          link: 'https://example.com/mock_certification1_new.pdf',
+          source: 'mock source1');
       const indexToUpdate = 0;
 
       when(mockRepoService.getAllAwardCert()).thenAnswer((_) async => null);
-      
-      final updateResult = await controller.updateAwardCertData(indexToUpdate, updatedAwardCert);
+
+      final updateResult =
+          await controller.updateAwardCertData(indexToUpdate, updatedAwardCert);
 
       expect(updateResult, isFalse);
 

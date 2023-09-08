@@ -10,7 +10,7 @@ class AwardCert {
   String? link;
   String? source;
   Timestamp? creationTimestamp;
-  
+
   AwardCert({
     required this.acid,
     required this.name,
@@ -52,7 +52,10 @@ class AwardCert {
   Future<void> create() async {
     try {
       final acid = const Uuid().v4();
-      await FirebaseFirestore.instance.collection('AwardCert').doc(acid).set(toMap());
+      await FirebaseFirestore.instance
+          .collection('AwardCert')
+          .doc(acid)
+          .set(toMap());
     } catch (e) {
       log('Error creating AwardCert document: $e');
     }
@@ -73,7 +76,10 @@ class AwardCert {
 
   Future<void> delete() async {
     try {
-      await FirebaseFirestore.instance.collection('AwardCert').doc(acid).delete();
+      await FirebaseFirestore.instance
+          .collection('AwardCert')
+          .doc(acid)
+          .delete();
     } catch (e) {
       log('Error deleting AwardCert document: $e');
     }

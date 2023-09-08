@@ -22,7 +22,7 @@ class ISkillSectionAdminController {
       List<ISkill>? allISkill = await iSkillRepoService.getAllISkill();
 
       if (allISkill!.isNotEmpty) {
-        allISkill[index].name = newISkill.name;       
+        allISkill[index].name = newISkill.name;
         bool updateSuccess = await allISkill[index].update() ?? false;
         return updateSuccess;
       } else {
@@ -33,5 +33,4 @@ class ISkillSectionAdminController {
       return false;
     }
   }
-
 }

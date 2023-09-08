@@ -28,6 +28,5 @@ void main() {
       expect(educationMap['degree'], 'Degree name');
       expect(educationMap['description'], 'This is a degree');
     });
-
   });
 }

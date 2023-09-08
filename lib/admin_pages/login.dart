@@ -9,7 +9,8 @@ class LoginPage extends StatefulWidget {
   final Function(model.User) onLoginSuccess;
   final AuthState authState;
 
-  const LoginPage({super.key, required this.onLoginSuccess, required this.authState});
+  const LoginPage(
+      {super.key, required this.onLoginSuccess, required this.authState});
 
   @override
   LoginPageState createState() => LoginPageState();

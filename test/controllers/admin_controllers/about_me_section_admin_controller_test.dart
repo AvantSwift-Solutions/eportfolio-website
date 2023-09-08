@@ -55,7 +55,8 @@ void main() {
     });
 
     test('getAboutMeSectionData returns error data on exception', () async {
-      when(mockRepoService.getFirstUser()).thenThrow(Exception('Test Exception'));
+      when(mockRepoService.getFirstUser())
+          .thenThrow(Exception('Test Exception'));
 
       final aboutMeSectionData = await controller.getAboutMeSectionData();
 
@@ -63,7 +64,8 @@ void main() {
       expect(aboutMeSectionData.imageURL, 'https://example.com/error.jpg');
     });
 
-    test('updateAboutMeSectionData returns true on successful update', () async {
+    test('updateAboutMeSectionData returns true on successful update',
+        () async {
       when(mockRepoService.getFirstUser()).thenAnswer((_) async => mockUser);
       when(mockUser.update()).thenAnswer((_) async => true);
 

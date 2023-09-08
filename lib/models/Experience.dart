@@ -11,7 +11,7 @@ class Experience {
   Timestamp? startDate;
   Timestamp? endDate;
   String? description;
-  String? logoURL; 
+  String? logoURL;
 
   Experience({
     required this.peid,
@@ -25,30 +25,30 @@ class Experience {
   });
 
   factory Experience.fromDocumentSnapshot(DocumentSnapshot snapshot) {
-  try {
-    final data = snapshot.data() as Map<String, dynamic>;
-    final jobTitle = data['jobTitle'];
-    final companyName = data['companyName'];
-    final location = data['location'];
-    final description = data['description'];
-    final startDate = data['startDate'];
-    final endDate = data['endDate'];
-    final logoURL = data['logoURL'];
+    try {
+      final data = snapshot.data() as Map<String, dynamic>;
+      final jobTitle = data['jobTitle'];
+      final companyName = data['companyName'];
+      final location = data['location'];
+      final description = data['description'];
+      final startDate = data['startDate'];
+      final endDate = data['endDate'];
+      final logoURL = data['logoURL'];
 
-    return Experience(
-      peid: snapshot.id,
-      jobTitle: jobTitle,
-      companyName: companyName,
-      location: location,
-      description: description,
-      startDate: startDate,
-      endDate: endDate,
-      logoURL: logoURL,
-    );
-  } catch (e) {
-    rethrow;
+      return Experience(
+        peid: snapshot.id,
+        jobTitle: jobTitle,
+        companyName: companyName,
+        location: location,
+        description: description,
+        startDate: startDate,
+        endDate: endDate,
+        logoURL: logoURL,
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
-}
 
   Map<String, dynamic> toMap() {
     return {
@@ -66,7 +66,10 @@ class Experience {
   Future<void> create() async {
     try {
       final id = const Uuid().v4();
-      await FirebaseFirestore.instance.collection('Experience').doc(id).set(toMap());
+      await FirebaseFirestore.instance
+          .collection('Experience')
+          .doc(id)
+          .set(toMap());
     } catch (e) {
       log('Error creating experience document: $e');
     }
@@ -87,10 +90,12 @@ class Experience {
 
   Future<void> delete() async {
     try {
-      await FirebaseFirestore.instance.collection('Experience').doc(peid).delete();
+      await FirebaseFirestore.instance
+          .collection('Experience')
+          .doc(peid)
+          .delete();
     } catch (e) {
       log('Error deleting experience document: $e');
     }
   }
-
 }

@@ -14,7 +14,6 @@ class LandingPage extends StatefulWidget {
 }
 
 class LandingPageState extends State<LandingPage> {
-
   final LandingPageController _landingPageController =
       LandingPageController(UserRepoService());
 

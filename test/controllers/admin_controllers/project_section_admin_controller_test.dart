@@ -28,12 +28,12 @@ void main() {
 
     when(pp2.ppid).thenReturn('mockid2');
     when(pp2.name).thenReturn('mock name2');
-
   });
 
   group('Project section admin controller tests', () {
     test('getAllProjects returns a list of  projects', () async {
-      when(mockRepoService.getAllProjects()).thenAnswer((_) async => [pp1, pp2]);
+      when(mockRepoService.getAllProjects())
+          .thenAnswer((_) async => [pp1, pp2]);
 
       final projects = await controller.getProjectList();
       expect(projects?.length, 2);
@@ -46,18 +46,20 @@ void main() {
     });
 
     test('getAllProjects returns null on error', () async {
-      when(mockRepoService.getAllProjects()).thenThrow(Exception('Test Exception'));
+      when(mockRepoService.getAllProjects())
+          .thenThrow(Exception('Test Exception'));
 
       final projects = await controller.getProjectList();
       expect(projects, null);
     });
 
     test('updateProjectData returns true on successful update', () async {
-      when(mockRepoService.getAllProjects()).thenAnswer((_) async
-        => [pp1, pp2]);
+      when(mockRepoService.getAllProjects())
+          .thenAnswer((_) async => [pp1, pp2]);
       when(pp1.update()).thenAnswer((_) async => true);
 
-      final updateResult = await controller.updateProjectData(0,
+      final updateResult = await controller.updateProjectData(
+        0,
         Project(
           ppid: 'mockId1',
           name: 'Updated Project',
@@ -73,7 +75,8 @@ void main() {
     test('updateProjectData returns false when  project is empty', () async {
       when(mockRepoService.getAllProjects()).thenAnswer((_) async => null);
 
-      final updateResult = await controller.updateProjectData(0,
+      final updateResult = await controller.updateProjectData(
+        0,
         Project(
           ppid: 'mockId1',
           name: 'Updated Project',

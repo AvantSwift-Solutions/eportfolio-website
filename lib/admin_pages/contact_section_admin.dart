@@ -48,15 +48,17 @@ class ContactSectionAdmin extends StatelessWidget {
                   children: [
                     TextField(
                       controller: contactEmailController,
-                      onChanged: (value) => contactSectionData.contactEmail = value,
-                      decoration: const InputDecoration(labelText: 'Contact Email'),
+                      onChanged: (value) =>
+                          contactSectionData.contactEmail = value,
+                      decoration:
+                          const InputDecoration(labelText: 'Contact Email'),
                     ),
                     TextField(
                       controller: linkedinURLController,
                       onChanged: (value) =>
                           contactSectionData.linkedinURL = value,
-                      decoration: const InputDecoration(
-                          labelText: 'LinkedIn URL'),
+                      decoration:
+                          const InputDecoration(labelText: 'LinkedIn URL'),
                     )
                   ],
                 ),
@@ -69,8 +71,8 @@ class ContactSectionAdmin extends StatelessWidget {
                         false;
                     if (isSuccess) {
                       Navigator.of(dialogContext).pop();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Contact info updated')));
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('Contact info updated')));
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           content: Text('Failed to update contact info')));
@@ -91,5 +93,4 @@ class ContactSectionAdmin extends StatelessWidget {
       },
     );
   }
-  
 }

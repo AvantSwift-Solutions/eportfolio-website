@@ -16,6 +16,5 @@ void main() {
       expect(iskillMap['isid'], 'iskill123');
       expect(iskillMap['name'], 'mockISkill');
     });
-
   });
 }

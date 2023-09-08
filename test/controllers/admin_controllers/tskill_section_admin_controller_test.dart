@@ -26,18 +26,16 @@ void main() {
     when(mockTSkill2.tsid).thenReturn('mockTsid2');
     when(mockTSkill2.name).thenReturn('Mock Tskill 2');
     when(mockTSkill2.imageURL).thenReturn('http://example.com/mock_image2.jpg');
-    
+
     mockRepoService = MockTSkillRepoService();
     controller = TSkillSectionAdminController(mockRepoService);
   });
 
   group('TSkill section admin controller tests', () {
-
     test('getTSkillSectionData returns correct data when tskill is not null',
         () async {
-
-      when(mockRepoService.getAllTSkill()).thenAnswer((_) async
-        => [mockTSkill1, mockTSkill2]);
+      when(mockRepoService.getAllTSkill())
+          .thenAnswer((_) async => [mockTSkill1, mockTSkill2]);
       final allTSkill = await controller.getTSkillSectionData();
 
       // Make assertions on the returned data
@@ -53,27 +51,29 @@ void main() {
       expect(tskill2.tsid, mockTSkill2.tsid);
       expect(tskill2.name, mockTSkill2.name);
       expect(tskill2.imageURL, mockTSkill2.imageURL);
-
     });
 
-    test('getTSkillSectionData returns null data when tskill is null', () async {
+    test('getTSkillSectionData returns null data when tskill is null',
+        () async {
       when(mockRepoService.getAllTSkill()).thenAnswer((_) async => null);
       final tskillSectionData = await controller.getTSkillSectionData();
       expect(tskillSectionData, null);
     });
 
     test('getTSkillSectionData returns null data on exception', () async {
-      when(mockRepoService.getAllTSkill()).thenThrow(Exception('Test Exception'));
+      when(mockRepoService.getAllTSkill())
+          .thenThrow(Exception('Test Exception'));
       final tskillSectionData = await controller.getTSkillSectionData();
       expect(tskillSectionData, null);
     });
 
     test('updateTSkillSectionData returns true on successful update', () async {
-      when(mockRepoService.getAllTSkill()).thenAnswer((_) async
-        => [mockTSkill1, mockTSkill2]);
+      when(mockRepoService.getAllTSkill())
+          .thenAnswer((_) async => [mockTSkill1, mockTSkill2]);
       when(mockTSkill1.update()).thenAnswer((_) async => true);
 
-      final updateResult = await controller.updateTSkillSectionData(0,
+      final updateResult = await controller.updateTSkillSectionData(
+        0,
         TSkill(
           tsid: 'mockTsid1',
           name: 'Mock Tskill 1',
@@ -91,7 +91,8 @@ void main() {
     test('updateTSkillSectionData returns false when user is null', () async {
       when(mockRepoService.getAllTSkill()).thenAnswer((_) async => null);
 
-      final updateResult = await controller.updateTSkillSectionData(0,
+      final updateResult = await controller.updateTSkillSectionData(
+        0,
         TSkill(
           tsid: 'mockTsid1',
           name: 'Mock Tskill 1',

@@ -27,7 +27,7 @@ class TSkillSectionAdminController {
 
       if (allTSkill!.isNotEmpty) {
         allTSkill[index].name = newTSkill.name;
-        allTSkill[index].imageURL = newTSkill.imageURL;       
+        allTSkill[index].imageURL = newTSkill.imageURL;
         bool updateSuccess = await allTSkill[index].update() ?? false;
         return updateSuccess;
       } else {
@@ -52,5 +52,4 @@ class TSkillSectionAdminController {
       return null;
     }
   }
-
 }

@@ -22,6 +22,5 @@ void main() {
       expect(recommendationMap['description'], 'This is a recommendation');
       expect(recommendationMap['imageURL'], 'https://example.com/image.jpg');
     });
-
   });
 }

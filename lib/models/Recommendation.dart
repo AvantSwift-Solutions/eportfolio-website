@@ -8,7 +8,7 @@ class Recommendation {
   String? colleagueName;
   String? colleagueJobTitle;
   String? description;
-  String? imageURL; 
+  String? imageURL;
 
   Recommendation({
     required this.rid,
@@ -19,24 +19,24 @@ class Recommendation {
   });
 
   factory Recommendation.fromDocumentSnapshot(DocumentSnapshot snapshot) {
-  try {
-    final data = snapshot.data() as Map<String, dynamic>;
-    final colleagueName = data['colleagueName'];
-    final colleagueJobTitle = data['colleagueJobTitle'];
-    final description = data['description'];
-    final imageURL = data['imageURL'];
+    try {
+      final data = snapshot.data() as Map<String, dynamic>;
+      final colleagueName = data['colleagueName'];
+      final colleagueJobTitle = data['colleagueJobTitle'];
+      final description = data['description'];
+      final imageURL = data['imageURL'];
 
-    return Recommendation(
-      rid: snapshot.id,
-      colleagueName: colleagueName,
-      colleagueJobTitle: colleagueJobTitle,
-      description: description,
-      imageURL: imageURL,
-    );
-  } catch (e) {
-    rethrow;
+      return Recommendation(
+        rid: snapshot.id,
+        colleagueName: colleagueName,
+        colleagueJobTitle: colleagueJobTitle,
+        description: description,
+        imageURL: imageURL,
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
-}
 
   Map<String, dynamic> toMap() {
     return {
@@ -51,7 +51,10 @@ class Recommendation {
   Future<void> create() async {
     try {
       final id = const Uuid().v4();
-      await FirebaseFirestore.instance.collection('Recommendation').doc(id).set(toMap());
+      await FirebaseFirestore.instance
+          .collection('Recommendation')
+          .doc(id)
+          .set(toMap());
     } catch (e) {
       log('Error creating recommendation document: $e');
     }
@@ -72,10 +75,12 @@ class Recommendation {
 
   Future<void> delete() async {
     try {
-      await FirebaseFirestore.instance.collection('Recommendation').doc(rid).delete();
+      await FirebaseFirestore.instance
+          .collection('Recommendation')
+          .doc(rid)
+          .delete();
     } catch (e) {
       log('Error deleting recommendation document: $e');
     }
   }
-
 }

@@ -54,8 +54,9 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _isSending ? null : _sendEmail,
-              child:
-                  _isSending ? const CircularProgressIndicator() : const Text('Send Email'),
+              child: _isSending
+                  ? const CircularProgressIndicator()
+                  : const Text('Send Email'),
             ),
           ],
         ),

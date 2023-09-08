@@ -22,7 +22,8 @@ void main() {
     when(mockEducation1.eid).thenReturn('mockEid1');
     when(mockEducation1.startDate).thenReturn(Timestamp.now());
     when(mockEducation1.endDate).thenReturn(Timestamp.now());
-    when(mockEducation1.logoURL).thenReturn('http://example.com/mock_image1.jpg');
+    when(mockEducation1.logoURL)
+        .thenReturn('http://example.com/mock_image1.jpg');
     when(mockEducation1.schoolName).thenReturn('Mock School1');
     when(mockEducation1.degree).thenReturn('Mock Degree1');
     when(mockEducation1.description).thenReturn('Mock Description1');
@@ -31,22 +32,22 @@ void main() {
     when(mockEducation2.eid).thenReturn('mockEid2');
     when(mockEducation2.startDate).thenReturn(Timestamp.now());
     when(mockEducation2.endDate).thenReturn(Timestamp.now());
-    when(mockEducation2.logoURL).thenReturn('http://example.com/mock_image2.jpg');
+    when(mockEducation2.logoURL)
+        .thenReturn('http://example.com/mock_image2.jpg');
     when(mockEducation2.schoolName).thenReturn('Mock School2');
     when(mockEducation2.degree).thenReturn('Mock Degree2');
     when(mockEducation2.description).thenReturn('Mock Description2');
-    
+
     mockRepoService = MockEducationRepoService();
     controller = EducationSectionAdminController(mockRepoService);
   });
 
   group('Education section admin controller tests', () {
-
-    test('getEducationSectionData returns correct data when education is not null',
+    test(
+        'getEducationSectionData returns correct data when education is not null',
         () async {
-
-      when(mockRepoService.getAllEducation()).thenAnswer((_) async
-        => [mockEducation1, mockEducation2]);
+      when(mockRepoService.getAllEducation())
+          .thenAnswer((_) async => [mockEducation1, mockEducation2]);
       final allEducation = await controller.getEducationSectionData();
 
       // Make assertions on the returned data
@@ -70,27 +71,30 @@ void main() {
       expect(edu2.schoolName, mockEducation2.schoolName);
       expect(edu2.degree, mockEducation2.degree);
       expect(edu2.description, mockEducation2.description);
-
     });
 
-    test('getEducationSectionData returns null data when education is null', () async {
+    test('getEducationSectionData returns null data when education is null',
+        () async {
       when(mockRepoService.getAllEducation()).thenAnswer((_) async => null);
       final educationSectionData = await controller.getEducationSectionData();
       expect(educationSectionData, null);
     });
 
     test('getEducationSectionData returns null data on exception', () async {
-      when(mockRepoService.getAllEducation()).thenThrow(Exception('Test Exception'));
+      when(mockRepoService.getAllEducation())
+          .thenThrow(Exception('Test Exception'));
       final educationSectionData = await controller.getEducationSectionData();
       expect(educationSectionData, null);
     });
 
-    test('updateEducationSectionData returns true on successful update', () async {
-      when(mockRepoService.getAllEducation()).thenAnswer((_) async
-        => [mockEducation1, mockEducation2]);
+    test('updateEducationSectionData returns true on successful update',
+        () async {
+      when(mockRepoService.getAllEducation())
+          .thenAnswer((_) async => [mockEducation1, mockEducation2]);
       when(mockEducation1.update()).thenAnswer((_) async => true);
 
-      final updateResult = await controller.updateEducationSectionData(0,
+      final updateResult = await controller.updateEducationSectionData(
+        0,
         Education(
           eid: 'mockEid1',
           startDate: Timestamp(1234567890, 0),
@@ -113,10 +117,12 @@ void main() {
       verify(mockEducation1.update()); // Verify that the method was called
     });
 
-    test('updateEducationSectionData returns false when user is null', () async {
+    test('updateEducationSectionData returns false when user is null',
+        () async {
       when(mockRepoService.getAllEducation()).thenAnswer((_) async => null);
 
-      final updateResult = await controller.updateEducationSectionData(0,
+      final updateResult = await controller.updateEducationSectionData(
+        0,
         Education(
           eid: 'mockEid1',
           startDate: Timestamp(1234567890, 0),

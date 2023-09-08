@@ -10,8 +10,9 @@ class ISkillRepoService {
       QuerySnapshot snapshot =
           await FirebaseFirestore.instance.collection('ISkill').get();
       if (snapshot.docs.isNotEmpty) {
-        return snapshot.docs.map((doc) => ISkill.fromDocumentSnapshot(doc))
-          .toList();
+        return snapshot.docs
+            .map((doc) => ISkill.fromDocumentSnapshot(doc))
+            .toList();
       } else {
         return null;
       }

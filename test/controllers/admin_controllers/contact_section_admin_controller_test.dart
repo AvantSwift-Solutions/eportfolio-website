@@ -32,7 +32,6 @@ void main() {
   });
 
   group('Contact Section Admin Controller tests', () {
-
     test('getContactSectionData returns correct data when user is not null',
         () async {
       when(mockRepoService.getFirstUser()).thenAnswer((_) async => mockUser);
@@ -44,7 +43,8 @@ void main() {
       expect(contactSectionData.linkedinURL, mockUser.linkedinURL);
     });
 
-    test('getContactSectionData returns default data when user is null', () async {
+    test('getContactSectionData returns default data when user is null',
+        () async {
       when(mockRepoService.getFirstUser()).thenAnswer((_) async => null);
 
       final contactSectionData = await controller.getContactSectionData();
@@ -55,7 +55,8 @@ void main() {
     });
 
     test('getContactSectionData returns error data on exception', () async {
-      when(mockRepoService.getFirstUser()).thenThrow(Exception('Test Exception'));
+      when(mockRepoService.getFirstUser())
+          .thenThrow(Exception('Test Exception'));
 
       final contactSectionData = await controller.getContactSectionData();
 
@@ -64,7 +65,8 @@ void main() {
       expect(contactSectionData.linkedinURL, 'Error');
     });
 
-    test('updateContactSectionData returns true on successful update', () async {
+    test('updateContactSectionData returns true on successful update',
+        () async {
       when(mockRepoService.getFirstUser()).thenAnswer((_) async => mockUser);
       when(mockUser.update()).thenAnswer((_) async => true);
 

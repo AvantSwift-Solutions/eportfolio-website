@@ -33,7 +33,6 @@ void main() {
   });
 
   group('Landing page admin controller tests', () {
-
     test('getLandingPageData returns correct data when user is not null',
         () async {
       when(mockRepoService.getFirstUser()).thenAnswer((_) async => mockUser);
@@ -55,12 +54,14 @@ void main() {
 
       expect(landingPageData!.name, 'Unknown');
       expect(landingPageData.landingPageTitle, 'Welcome');
-      expect(landingPageData.landingPageDescription, 'No description available');
+      expect(
+          landingPageData.landingPageDescription, 'No description available');
       expect(landingPageData.imageURL, 'https://example.com/default_image.jpg');
     });
 
     test('getLandingPageData returns error data on exception', () async {
-      when(mockRepoService.getFirstUser()).thenThrow(Exception('Test Exception'));
+      when(mockRepoService.getFirstUser())
+          .thenThrow(Exception('Test Exception'));
 
       final landingPageData = await controller.getLandingPageData();
 

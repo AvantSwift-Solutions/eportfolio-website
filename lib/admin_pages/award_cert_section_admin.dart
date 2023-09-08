@@ -22,7 +22,8 @@ class AwardCertSectionAdmin extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
               onPressed: () async {
-                _showEditDialog(context, await _adminController.getAwardCertList());
+                _showEditDialog(
+                    context, await _adminController.getAwardCertList());
               },
               child: const Text('Edit AwardCert'),
             ),
@@ -32,54 +33,55 @@ class AwardCertSectionAdmin extends StatelessWidget {
     );
   }
 
-
-  void _showEditDialog(BuildContext context, List<AwardCert>? awardCerts) async {
-      showDialog(
-        context: context,
-        builder: (BuildContext dialogContext) {
-          return AlertDialog(
-            title: const Text('Edit AwardCert'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ElevatedButton(
-                  onPressed: ()  {
-                    Navigator.of(dialogContext).pop();
-                    _showAddAwardCertDialog(context, awardCerts!);
-                  },
-                  child: const Text('Add AwardCert'),
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                    Navigator.of(dialogContext).pop();
-                    _showExistingAwardCertDialog(context, awardCerts!);
-                  },
-                  child: const Text('Update Existing AwardCert'),
-                ),
-              ],
-            ),
-            actions: <Widget>[
-              TextButton(
+  void _showEditDialog(
+      BuildContext context, List<AwardCert>? awardCerts) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text('Edit AwardCert'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ElevatedButton(
                 onPressed: () {
                   Navigator.of(dialogContext).pop();
+                  _showAddAwardCertDialog(context, awardCerts!);
                 },
-                child: const Text('Cancel'),
+                child: const Text('Add AwardCert'),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  Navigator.of(dialogContext).pop();
+                  _showExistingAwardCertDialog(context, awardCerts!);
+                },
+                child: const Text('Update Existing AwardCert'),
               ),
             ],
-          );
-        },
-      );
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
-
-  void _showAddAwardCertDialog(BuildContext context, List<AwardCert> awardCerts) {
+  void _showAddAwardCertDialog(
+      BuildContext context, List<AwardCert> awardCerts) {
     TextEditingController nameController = TextEditingController();
     // TextEditingController imageURLController = TextEditingController();
     TextEditingController linkController = TextEditingController();
     TextEditingController sourceController = TextEditingController();
-    
+
     Uint8List? pickedImageBytes;
-    AwardCert newAwardCert = AwardCert(acid: '', name: '', link: '', source: '');
+    AwardCert newAwardCert =
+        AwardCert(acid: '', name: '', link: '', source: '');
 
     showDialog(
       context: context,
@@ -94,26 +96,19 @@ class AwardCertSectionAdmin extends StatelessWidget {
                   TextField(
                     controller: nameController,
                     onChanged: (value) => newAwardCert.name = value,
-                    decoration: const InputDecoration(
-                      labelText: 'Name'),
+                    decoration: const InputDecoration(labelText: 'Name'),
                   ),
                   TextField(
                     controller: linkController,
-                    onChanged: (value) =>
-                    newAwardCert.link = value,
-                    decoration: const InputDecoration(
-                      labelText: 'Link'),
+                    onChanged: (value) => newAwardCert.link = value,
+                    decoration: const InputDecoration(labelText: 'Link'),
                   ),
                   TextField(
                     controller: sourceController,
-                    onChanged: (value) =>
-                    newAwardCert.source = value,
-                    decoration: const InputDecoration(
-                      labelText: 'Source'),
+                    onChanged: (value) => newAwardCert.source = value,
+                    decoration: const InputDecoration(labelText: 'Source'),
                   ),
-
-                  if (pickedImageBytes != null)
-                    Image.memory(pickedImageBytes!),
+                  if (pickedImageBytes != null) Image.memory(pickedImageBytes!),
                   ElevatedButton(
                     onPressed: () async {
                       Uint8List? imageBytes = await _pickImage();
@@ -128,9 +123,10 @@ class AwardCertSectionAdmin extends StatelessWidget {
               ),
               actions: <Widget>[
                 TextButton(
-                  onPressed: () async {                    
+                  onPressed: () async {
                     if (pickedImageBytes != null) {
-                      String? imageURL = await _adminController.uploadImageAndGetURL(
+                      String? imageURL =
+                          await _adminController.uploadImageAndGetURL(
                         pickedImageBytes!,
                         'selected_image.jpg',
                       );
@@ -163,8 +159,8 @@ class AwardCertSectionAdmin extends StatelessWidget {
     );
   }
 
-
-  void _showExistingAwardCertDialog(BuildContext context, List<AwardCert> awardCerts) {
+  void _showExistingAwardCertDialog(
+      BuildContext context, List<AwardCert> awardCerts) {
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -205,7 +201,7 @@ class AwardCertSectionAdmin extends StatelessWidget {
                     },
                   )
                 : const Text('No AwardCert available'),
-          ), 
+          ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -219,14 +215,16 @@ class AwardCertSectionAdmin extends StatelessWidget {
     );
   }
 
-
   void _showUpdateAwardCertDialog(BuildContext context, int i) async {
     final awardCerts = await _adminController.getAwardCertList();
     final selectedAwardCert = awardCerts?[i];
 
-    TextEditingController nameController = TextEditingController(text: selectedAwardCert?.name);
-    TextEditingController linkController = TextEditingController(text: selectedAwardCert?.link);
-    TextEditingController sourceController = TextEditingController(text: selectedAwardCert?.source);
+    TextEditingController nameController =
+        TextEditingController(text: selectedAwardCert?.name);
+    TextEditingController linkController =
+        TextEditingController(text: selectedAwardCert?.link);
+    TextEditingController sourceController =
+        TextEditingController(text: selectedAwardCert?.source);
     Uint8List? pickedImageBytes;
 
     showDialog(
@@ -242,25 +240,19 @@ class AwardCertSectionAdmin extends StatelessWidget {
                   TextField(
                     controller: nameController,
                     onChanged: (value) => awardCerts?[i].name = value,
-                    decoration: const InputDecoration(
-                      labelText: 'Name'),
+                    decoration: const InputDecoration(labelText: 'Name'),
                   ),
                   TextField(
                     controller: linkController,
-                    onChanged: (value) =>
-                    awardCerts?[i].link = value,
-                    decoration: const InputDecoration(
-                      labelText: 'Link'),
+                    onChanged: (value) => awardCerts?[i].link = value,
+                    decoration: const InputDecoration(labelText: 'Link'),
                   ),
                   TextField(
                     controller: sourceController,
-                    onChanged: (value) =>
-                    awardCerts?[i].source = value,
-                    decoration: const InputDecoration(
-                      labelText: 'Source'),
+                    onChanged: (value) => awardCerts?[i].source = value,
+                    decoration: const InputDecoration(labelText: 'Source'),
                   ),
-                  if (pickedImageBytes != null)
-                    Image.memory(pickedImageBytes!),
+                  if (pickedImageBytes != null) Image.memory(pickedImageBytes!),
                   ElevatedButton(
                     onPressed: () async {
                       Uint8List? imageBytes = await _pickImage();
@@ -277,7 +269,8 @@ class AwardCertSectionAdmin extends StatelessWidget {
                 TextButton(
                   onPressed: () async {
                     if (pickedImageBytes != null) {
-                      String? imageURL = await _adminController.uploadImageAndGetURL(
+                      String? imageURL =
+                          await _adminController.uploadImageAndGetURL(
                         pickedImageBytes!,
                         'selected_image.jpg',
                       );
@@ -286,16 +279,21 @@ class AwardCertSectionAdmin extends StatelessWidget {
                       }
                     }
 
-                    bool isSuccess = await _adminController.updateAwardCertData(i, awardCerts![i]) ?? false;
+                    bool isSuccess = await _adminController.updateAwardCertData(
+                            i, awardCerts![i]) ??
+                        false;
                     if (isSuccess) {
                       setState(() {});
                       Navigator.of(dialogContext).pop();
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Updated an existing AwardCert')),
+                        const SnackBar(
+                            content: Text('Updated an existing AwardCert')),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Failed to update an existing AwardCert')),
+                        const SnackBar(
+                            content:
+                                Text('Failed to update an existing AwardCert')),
                       );
                     }
                   },
@@ -315,8 +313,7 @@ class AwardCertSectionAdmin extends StatelessWidget {
     );
   }
 
-
-  void _showDeleteDialog(BuildContext context, int i) async { 
+  void _showDeleteDialog(BuildContext context, int i) async {
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -324,7 +321,8 @@ class AwardCertSectionAdmin extends StatelessWidget {
           builder: (context, setState) {
             return AlertDialog(
               title: const Text('Confirm Deletion'),
-              content: const Text('Are you sure you want to delete this AwardCert?'),
+              content:
+                  const Text('Are you sure you want to delete this AwardCert?'),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
@@ -336,15 +334,17 @@ class AwardCertSectionAdmin extends StatelessWidget {
                   onPressed: () async {
                     final deleted = await _adminController.deleteAwardCert(i);
                     Navigator.of(dialogContext).pop(); // Close the dialog.
-                    
+
                     if (deleted) {
                       setState(() {});
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('AwardCert deleted successfully')),
+                        const SnackBar(
+                            content: Text('AwardCert deleted successfully')),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Failed to delete the AwardCert')),
+                        const SnackBar(
+                            content: Text('Failed to delete the AwardCert')),
                       );
                     }
                   },
@@ -357,7 +357,6 @@ class AwardCertSectionAdmin extends StatelessWidget {
       },
     );
   }
-
 
   Future<Uint8List?> _pickImage() async {
     final result = await FilePicker.platform.pickFiles(

@@ -55,5 +55,4 @@ void main() {
     expect(landingPageData.landingPageDescription, 'Error');
     expect(landingPageData.imageURL, 'https://example.com/error.jpg');
   });
-  
 }

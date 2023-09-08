@@ -24,18 +24,16 @@ void main() {
     mockISkill2 = MockISkill();
     when(mockISkill2.isid).thenReturn('mockIsid2');
     when(mockISkill2.name).thenReturn('Mock ISkill 2');
-    
+
     mockRepoService = MockISkillRepoService();
     controller = ISkillSectionAdminController(mockRepoService);
   });
 
   group('ISkill section admin controller tests', () {
-
     test('getISkillSectionData returns correct data when iskill is not null',
         () async {
-
-      when(mockRepoService.getAllISkill()).thenAnswer((_) async
-        => [mockISkill1, mockISkill2]);
+      when(mockRepoService.getAllISkill())
+          .thenAnswer((_) async => [mockISkill1, mockISkill2]);
       final allISkill = await controller.getISkillSectionData();
 
       // Make assertions on the returned data
@@ -49,27 +47,29 @@ void main() {
 
       expect(iskill2.isid, mockISkill2.isid);
       expect(iskill2.name, mockISkill2.name);
-
     });
 
-    test('getISkillSectionData returns null data when iskill is null', () async {
+    test('getISkillSectionData returns null data when iskill is null',
+        () async {
       when(mockRepoService.getAllISkill()).thenAnswer((_) async => null);
       final iskillSectionData = await controller.getISkillSectionData();
       expect(iskillSectionData, null);
     });
 
     test('getISkillSectionData returns null data on exception', () async {
-      when(mockRepoService.getAllISkill()).thenThrow(Exception('Test Exception'));
+      when(mockRepoService.getAllISkill())
+          .thenThrow(Exception('Test Exception'));
       final iskillSectionData = await controller.getISkillSectionData();
       expect(iskillSectionData, null);
     });
 
     test('updateISkillSectionData returns true on successful update', () async {
-      when(mockRepoService.getAllISkill()).thenAnswer((_) async
-        => [mockISkill1, mockISkill2]);
+      when(mockRepoService.getAllISkill())
+          .thenAnswer((_) async => [mockISkill1, mockISkill2]);
       when(mockISkill1.update()).thenAnswer((_) async => true);
 
-      final updateResult = await controller.updateISkillSectionData(0,
+      final updateResult = await controller.updateISkillSectionData(
+        0,
         ISkill(
           isid: 'mockIsid1',
           name: 'Mock ISkill 1',
@@ -85,7 +85,8 @@ void main() {
     test('updateISkillSectionData returns false when user is null', () async {
       when(mockRepoService.getAllISkill()).thenAnswer((_) async => null);
 
-      final updateResult = await controller.updateISkillSectionData(0,
+      final updateResult = await controller.updateISkillSectionData(
+        0,
         ISkill(
           isid: 'mockIsid1',
           name: 'Mock ISkill 1',

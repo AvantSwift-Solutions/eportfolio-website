@@ -23,7 +23,8 @@ class ProjectSectionAdmin extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
               onPressed: () async {
-                _showEditDialog(context, await _adminController.getProjectList());
+                _showEditDialog(
+                    context, await _adminController.getProjectList());
               },
               child: const Text('Edit  Project'),
             ),
@@ -33,51 +34,50 @@ class ProjectSectionAdmin extends StatelessWidget {
     );
   }
 
-
   void _showEditDialog(BuildContext context, List<Project>? projects) async {
-      showDialog(
-        context: context,
-        builder: (BuildContext dialogContext) {
-          return AlertDialog(
-            title: const Text('Edit  Project'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ElevatedButton(
-                  onPressed: ()  {
-                    Navigator.of(dialogContext).pop();
-                    _showAddProjectDialog(context, projects!);
-                  },
-                  child: const Text('Add  Project'),
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                    Navigator.of(dialogContext).pop();
-                    _showExistingProjectsDialog(context, projects!);
-                  },
-                  child: const Text('Update Existing Project'),
-                ),
-              ],
-            ),
-            actions: <Widget>[
-              TextButton(
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text('Edit  Project'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ElevatedButton(
                 onPressed: () {
                   Navigator.of(dialogContext).pop();
+                  _showAddProjectDialog(context, projects!);
                 },
-                child: const Text('Cancel'),
+                child: const Text('Add  Project'),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  Navigator.of(dialogContext).pop();
+                  _showExistingProjectsDialog(context, projects!);
+                },
+                child: const Text('Update Existing Project'),
               ),
             ],
-          );
-        },
-      );
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
   }
-
 
   void _showAddProjectDialog(BuildContext context, List<Project> projects) {
     TextEditingController nameController = TextEditingController();
     TextEditingController descriptionController = TextEditingController();
     Uint8List? pickedImageBytes;
-    Project newProject = Project(ppid: '', name: '', creationTimestamp: Timestamp.now());
+    Project newProject =
+        Project(ppid: '', name: '', creationTimestamp: Timestamp.now());
 
     showDialog(
       context: context,
@@ -92,18 +92,14 @@ class ProjectSectionAdmin extends StatelessWidget {
                   TextField(
                     controller: nameController,
                     onChanged: (value) => newProject.name = value,
-                    decoration: const InputDecoration(
-                      labelText: 'Name'),
+                    decoration: const InputDecoration(labelText: 'Name'),
                   ),
                   TextField(
                     controller: descriptionController,
-                    onChanged: (value) =>
-                    newProject.description = value,
-                    decoration: const InputDecoration(
-                      labelText: 'Description'),
+                    onChanged: (value) => newProject.description = value,
+                    decoration: const InputDecoration(labelText: 'Description'),
                   ),
-                  if (pickedImageBytes != null)
-                    Image.memory(pickedImageBytes!),
+                  if (pickedImageBytes != null) Image.memory(pickedImageBytes!),
                   ElevatedButton(
                     onPressed: () async {
                       Uint8List? imageBytes = await _pickImage();
@@ -119,13 +115,15 @@ class ProjectSectionAdmin extends StatelessWidget {
               actions: <Widget>[
                 TextButton(
                   onPressed: () async {
-                    if (nameController.text.isEmpty || descriptionController.text.isEmpty) {
+                    if (nameController.text.isEmpty ||
+                        descriptionController.text.isEmpty) {
                       log('Name or description is empty');
                       return;
                     }
-                    
+
                     if (pickedImageBytes != null) {
-                      String? imageURL = await _adminController.uploadImageAndGetURL(
+                      String? imageURL =
+                          await _adminController.uploadImageAndGetURL(
                         pickedImageBytes!,
                         'selected_image.jpg',
                       );
@@ -159,8 +157,8 @@ class ProjectSectionAdmin extends StatelessWidget {
     );
   }
 
-
-  void _showExistingProjectsDialog(BuildContext context, List<Project> projects) {
+  void _showExistingProjectsDialog(
+      BuildContext context, List<Project> projects) {
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -202,7 +200,7 @@ class ProjectSectionAdmin extends StatelessWidget {
                     },
                   )
                 : const Text('No projects available'),
-          ), 
+          ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -216,13 +214,14 @@ class ProjectSectionAdmin extends StatelessWidget {
     );
   }
 
-
   void _showUpdateProjectDialog(BuildContext context, int i) async {
     final projects = await _adminController.getProjectList();
     final selectedProject = projects?[i];
 
-    TextEditingController nameController = TextEditingController(text: selectedProject?.name);
-    TextEditingController descriptionController = TextEditingController(text: selectedProject?.description);
+    TextEditingController nameController =
+        TextEditingController(text: selectedProject?.name);
+    TextEditingController descriptionController =
+        TextEditingController(text: selectedProject?.description);
     Uint8List? pickedImageBytes;
 
     showDialog(
@@ -238,18 +237,14 @@ class ProjectSectionAdmin extends StatelessWidget {
                   TextField(
                     controller: nameController,
                     onChanged: (value) => projects?[i].name = value,
-                    decoration: const InputDecoration(
-                      labelText: 'Name'),
+                    decoration: const InputDecoration(labelText: 'Name'),
                   ),
                   TextField(
                     controller: descriptionController,
-                    onChanged: (value) =>
-                    projects?[i].description = value,
-                    decoration: const InputDecoration(
-                      labelText: 'Description'),
+                    onChanged: (value) => projects?[i].description = value,
+                    decoration: const InputDecoration(labelText: 'Description'),
                   ),
-                  if (pickedImageBytes != null)
-                    Image.memory(pickedImageBytes!),
+                  if (pickedImageBytes != null) Image.memory(pickedImageBytes!),
                   ElevatedButton(
                     onPressed: () async {
                       Uint8List? imageBytes = await _pickImage();
@@ -265,12 +260,14 @@ class ProjectSectionAdmin extends StatelessWidget {
               actions: <Widget>[
                 TextButton(
                   onPressed: () async {
-                    if (nameController.text.isEmpty || descriptionController.text.isEmpty) {
+                    if (nameController.text.isEmpty ||
+                        descriptionController.text.isEmpty) {
                       log('Name or description is empty');
                       return;
                     }
                     if (pickedImageBytes != null) {
-                      String? imageURL = await _adminController.uploadImageAndGetURL(
+                      String? imageURL =
+                          await _adminController.uploadImageAndGetURL(
                         pickedImageBytes!,
                         'selected_image.jpg',
                       );
@@ -279,16 +276,21 @@ class ProjectSectionAdmin extends StatelessWidget {
                       }
                     }
 
-                    bool isSuccess = await _adminController.updateProjectData(i, projects![i]) ?? false;
+                    bool isSuccess = await _adminController.updateProjectData(
+                            i, projects![i]) ??
+                        false;
                     if (isSuccess) {
                       setState(() {});
                       Navigator.of(dialogContext).pop();
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Updated an existing  project')),
+                        const SnackBar(
+                            content: Text('Updated an existing  project')),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Failed to update an existing  project')),
+                        const SnackBar(
+                            content:
+                                Text('Failed to update an existing  project')),
                       );
                     }
                   },
@@ -308,8 +310,7 @@ class ProjectSectionAdmin extends StatelessWidget {
     );
   }
 
-
-  void _showDeleteDialog(BuildContext context, int i) async { 
+  void _showDeleteDialog(BuildContext context, int i) async {
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -317,7 +318,8 @@ class ProjectSectionAdmin extends StatelessWidget {
           builder: (context, setState) {
             return AlertDialog(
               title: const Text('Confirm Deletion'),
-              content: const Text('Are you sure you want to delete this project?'),
+              content:
+                  const Text('Are you sure you want to delete this project?'),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
@@ -329,15 +331,17 @@ class ProjectSectionAdmin extends StatelessWidget {
                   onPressed: () async {
                     final deleted = await _adminController.deleteProject(i);
                     Navigator.of(dialogContext).pop(); // Close the dialog.
-                    
+
                     if (deleted) {
                       setState(() {});
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Project deleted successfully')),
+                        const SnackBar(
+                            content: Text('Project deleted successfully')),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Failed to delete the project')),
+                        const SnackBar(
+                            content: Text('Failed to delete the project')),
                       );
                     }
                   },
@@ -350,7 +354,6 @@ class ProjectSectionAdmin extends StatelessWidget {
       },
     );
   }
-
 
   Future<Uint8List?> _pickImage() async {
     final result = await FilePicker.platform.pickFiles(
@@ -366,4 +369,3 @@ class ProjectSectionAdmin extends StatelessWidget {
     return null;
   }
 }
-

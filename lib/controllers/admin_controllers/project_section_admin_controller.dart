@@ -10,7 +10,7 @@ class ProjectSectionAdminController {
 
   ProjectSectionAdminController(this.projectRepoService); // Constructor
 
-  Future <List<Project>?> getProjectList() async {
+  Future<List<Project>?> getProjectList() async {
     try {
       List<Project>? projects = await projectRepoService.getAllProjects();
       return projects;
@@ -20,7 +20,6 @@ class ProjectSectionAdminController {
     }
   }
 
-  
   Future<bool>? updateProjectData(int index, Project newProject) async {
     try {
       List<Project>? projects = await projectRepoService.getAllProjects();
@@ -37,7 +36,6 @@ class ProjectSectionAdminController {
     }
   }
 
-
   Future<bool> deleteProject(int index) async {
     try {
       List<Project>? projects = await projectRepoService.getAllProjects();
@@ -49,9 +47,8 @@ class ProjectSectionAdminController {
     }
   }
 
-
-
-  Future<String?> uploadImageAndGetURL(Uint8List imageBytes, String fileName) async {
+  Future<String?> uploadImageAndGetURL(
+      Uint8List imageBytes, String fileName) async {
     try {
       final ref = FirebaseStorage.instance.ref().child('images/$fileName');
       final uploadTask = ref.putData(imageBytes);

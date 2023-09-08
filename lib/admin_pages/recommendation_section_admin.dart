@@ -19,9 +19,12 @@ class RecommendationSectionAdmin extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
-              child: ElevatedButton(
+            child: ElevatedButton(
               onPressed: () async {
-                _showRecommendationList(context, await _adminController.getRecommendationSectionData() ?? []);
+                _showRecommendationList(
+                    context,
+                    await _adminController.getRecommendationSectionData() ??
+                        []);
               },
               child: const Text('Edit Recommendation Info'),
             ),
@@ -31,7 +34,8 @@ class RecommendationSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showRecommendationList(BuildContext context, List<Recommendation> recommendationList) {
+  void _showRecommendationList(
+      BuildContext context, List<Recommendation> recommendationList) {
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -73,9 +77,8 @@ class RecommendationSectionAdmin extends StatelessWidget {
     );
   }
 
-  
-  void _showAddNewDialog(BuildContext context, List<Recommendation> recommendationList) async {
-
+  void _showAddNewDialog(
+      BuildContext context, List<Recommendation> recommendationList) async {
     final recommendation = Recommendation(
       rid: '',
       colleagueName: '',
@@ -84,34 +87,32 @@ class RecommendationSectionAdmin extends StatelessWidget {
       imageURL: null,
     );
 
-    _showRecommendationDialog(context, recommendation,
-      (recc) async {
-        recc.create();
-        return true;
-      });
+    _showRecommendationDialog(context, recommendation, (recc) async {
+      recc.create();
+      return true;
+    });
   }
 
   void _showEditDialog(BuildContext context, int i) async {
-
-    final recommendationSectionData
-      = await _adminController.getRecommendationSectionData();
+    final recommendationSectionData =
+        await _adminController.getRecommendationSectionData();
     final experience = recommendationSectionData![i];
 
-    _showRecommendationDialog(context, experience,
-      (recc) async {
-        return await _adminController.updateRecommendationSectionData(i, recc)
-          ?? false;
-      });
+    _showRecommendationDialog(context, experience, (recc) async {
+      return await _adminController.updateRecommendationSectionData(i, recc) ??
+          false;
+    });
   }
 
-  void _showRecommendationDialog(BuildContext context, Recommendation recommendation,
-    Future<bool> Function(Recommendation) onRecommendationUpdated) {
-      
-    TextEditingController colleagueNameController = 
+  void _showRecommendationDialog(
+      BuildContext context,
+      Recommendation recommendation,
+      Future<bool> Function(Recommendation) onRecommendationUpdated) {
+    TextEditingController colleagueNameController =
         TextEditingController(text: recommendation.colleagueName);
-    TextEditingController colleagueJobTitleController = 
+    TextEditingController colleagueJobTitleController =
         TextEditingController(text: recommendation.colleagueJobTitle);
-    TextEditingController descriptionController = 
+    TextEditingController descriptionController =
         TextEditingController(text: recommendation.description);
 
     Uint8List? pickedImageBytes;
@@ -122,10 +123,9 @@ class RecommendationSectionAdmin extends StatelessWidget {
       title = 'Add new peer recommendation information';
       newRecommendation = true;
     } else {
-      title = 'Edit your peer recommendation information for ${recommendation.description}';
+      title =
+          'Edit your peer recommendation information for ${recommendation.description}';
     }
-
-    
 
     Navigator.of(context).pop();
     showDialog(
@@ -140,22 +140,26 @@ class RecommendationSectionAdmin extends StatelessWidget {
                   children: [
                     TextField(
                       controller: colleagueNameController,
-                      onChanged: (value) => recommendation.colleagueName = value,
-                      decoration: const InputDecoration(labelText: 'Name of Colleague'),
+                      onChanged: (value) =>
+                          recommendation.colleagueName = value,
+                      decoration:
+                          const InputDecoration(labelText: 'Name of Colleague'),
                     ),
                     TextField(
                       controller: colleagueJobTitleController,
                       onChanged: (value) =>
                           recommendation.colleagueJobTitle = value,
-                      decoration: const InputDecoration(labelText: 'Job Title of Colleague'),
+                      decoration: const InputDecoration(
+                          labelText: 'Job Title of Colleague'),
                     ),
                     TextField(
                       controller: descriptionController,
-                      onChanged: (value) =>
-                          recommendation.description = value,
-                      decoration: const InputDecoration(labelText: 'Description of Recommendation'),
+                      onChanged: (value) => recommendation.description = value,
+                      decoration: const InputDecoration(
+                          labelText: 'Description of Recommendation'),
                     ),
-                    if (pickedImageBytes != null) Image.memory(pickedImageBytes!),
+                    if (pickedImageBytes != null)
+                      Image.memory(pickedImageBytes!),
                     ElevatedButton(
                       onPressed: () async {
                         Uint8List? imageBytes = await _pickImage();
@@ -175,8 +179,8 @@ class RecommendationSectionAdmin extends StatelessWidget {
                     onPressed: () async {
                       final name = recommendation.colleagueName;
                       recommendation.delete();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Reccomendatiom from $name deleted')));
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('Reccomendatiom from $name deleted')));
                       Navigator.pop(dialogContext);
                     },
                     child: const Text('Delete'),
@@ -191,13 +195,15 @@ class RecommendationSectionAdmin extends StatelessWidget {
                         recommendation.imageURL = imageURL;
                       }
                     }
-                    bool isSuccess = await onRecommendationUpdated(recommendation);
+                    bool isSuccess =
+                        await onRecommendationUpdated(recommendation);
                     if (isSuccess) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Peer recommendation info updated')));
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('Peer recommendation info updated')));
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Error updating peer recommendation info')));
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content:
+                              Text('Error updating peer recommendation info')));
                     }
                     Navigator.pop(dialogContext);
                   },
@@ -230,5 +236,4 @@ class RecommendationSectionAdmin extends StatelessWidget {
 
     return null;
   }
-
 }

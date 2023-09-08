@@ -30,6 +30,5 @@ void main() {
       expect(experienceMap['logoURL'], 'https://example.com/image.jpg');
       expect(experienceMap['description'], 'This is my job');
     });
-
   });
 }

@@ -9,10 +9,10 @@ class ExperienceRepoService {
           await FirebaseFirestore.instance.collection('Experience').get();
       final tmp = snapshot.docs
           .map((doc) => Experience.fromDocumentSnapshot(doc))
-          .toList();  
+          .toList();
       return tmp;
     } catch (e) {
-      log('Error getting all experiences: $e');  
+      log('Error getting all experiences: $e');
       return null;
     }
   }

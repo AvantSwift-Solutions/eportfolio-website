@@ -9,7 +9,6 @@ class Project {
   String? description;
   Timestamp? creationTimestamp;
   String? imageURL;
-  
 
   Project({
     required this.ppid,
@@ -48,7 +47,10 @@ class Project {
   Future<void> create() async {
     try {
       final ppid = const Uuid().v4();
-      await FirebaseFirestore.instance.collection('Project').doc(ppid).set(toMap());
+      await FirebaseFirestore.instance
+          .collection('Project')
+          .doc(ppid)
+          .set(toMap());
     } catch (e) {
       log('Error creating project document: $e');
     }

@@ -7,11 +7,13 @@ import '../../reposervice/recommendation_repo_services.dart';
 class RecommendationSectionAdminController {
   final RecommendationRepoService recommendationRepoService;
 
-  RecommendationSectionAdminController(this.recommendationRepoService); // Constructor
+  RecommendationSectionAdminController(
+      this.recommendationRepoService); // Constructor
 
   Future<List<Recommendation>?>? getRecommendationSectionData() async {
     try {
-      List<Recommendation>? allRecommendations = await recommendationRepoService.getAllRecommendations();
+      List<Recommendation>? allRecommendations =
+          await recommendationRepoService.getAllRecommendations();
       return allRecommendations;
     } catch (e) {
       log('Error getting Recommendation list: $e');
@@ -19,16 +21,20 @@ class RecommendationSectionAdminController {
     }
   }
 
-  Future<bool>? updateRecommendationSectionData(int index, Recommendation newRecommendation) async {
+  Future<bool>? updateRecommendationSectionData(
+      int index, Recommendation newRecommendation) async {
     try {
-      List<Recommendation>? allRecommendations = await recommendationRepoService.getAllRecommendations();
+      List<Recommendation>? allRecommendations =
+          await recommendationRepoService.getAllRecommendations();
 
       if (allRecommendations!.isNotEmpty) {
-        allRecommendations[index].colleagueName = newRecommendation.colleagueName;
-        allRecommendations[index].colleagueJobTitle = newRecommendation.colleagueJobTitle;
+        allRecommendations[index].colleagueName =
+            newRecommendation.colleagueName;
+        allRecommendations[index].colleagueJobTitle =
+            newRecommendation.colleagueJobTitle;
         allRecommendations[index].description = newRecommendation.description;
         allRecommendations[index].imageURL = newRecommendation.imageURL;
-        
+
         bool updateSuccess = await allRecommendations[index].update() ?? false;
         return updateSuccess; // Return true if update is successful
       } else {
@@ -53,5 +59,4 @@ class RecommendationSectionAdminController {
       return null;
     }
   }
-
 }

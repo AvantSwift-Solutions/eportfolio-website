@@ -56,10 +56,7 @@ class ISkill {
 
   Future<void> delete() async {
     try {
-      await FirebaseFirestore.instance
-          .collection('ISkill')
-          .doc(isid)
-          .delete();
+      await FirebaseFirestore.instance.collection('ISkill').doc(isid).delete();
     } catch (e) {
       log('Error deleting ISkill document: $e');
     }

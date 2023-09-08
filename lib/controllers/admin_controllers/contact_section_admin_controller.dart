@@ -13,28 +13,24 @@ class ContactSectionAdminController {
       User? user = await userRepoService.getFirstUser();
       if (user != null) {
         return ContactSectionDTO(
-          name: user.name,
-          contactEmail: user.contactEmail,
-          linkedinURL: user.linkedinURL
-        );
+            name: user.name,
+            contactEmail: user.contactEmail,
+            linkedinURL: user.linkedinURL);
       } else {
-        return ContactSectionDTO (
-          name: 'Unknown',
-          contactEmail: 'No email available',
-          linkedinURL: 'No LinkedIn available'
-        );
+        return ContactSectionDTO(
+            name: 'Unknown',
+            contactEmail: 'No email available',
+            linkedinURL: 'No LinkedIn available');
       }
     } catch (e) {
       log('Error getting contact section data: $e');
       return ContactSectionDTO(
-        name: 'Error',
-        contactEmail: 'Error',
-        linkedinURL: 'Error'
-      );
+          name: 'Error', contactEmail: 'Error', linkedinURL: 'Error');
     }
   }
 
-  Future<bool>? updateContactSectionData(ContactSectionDTO contactSectionData) async {
+  Future<bool>? updateContactSectionData(
+      ContactSectionDTO contactSectionData) async {
     try {
       User? user = await userRepoService.getFirstUser();
 
@@ -52,5 +48,4 @@ class ContactSectionAdminController {
       return false;
     }
   }
-
 }

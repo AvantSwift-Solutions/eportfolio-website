@@ -11,7 +11,8 @@ class ExperienceSectionAdminController {
 
   Future<List<Experience>?>? getExperienceSectionData() async {
     try {
-      List<Experience>? allExperiences = await experienceRepoService.getAllExperiences();
+      List<Experience>? allExperiences =
+          await experienceRepoService.getAllExperiences();
       return allExperiences;
     } catch (e) {
       log('Error getting Experience list: $e');
@@ -19,9 +20,11 @@ class ExperienceSectionAdminController {
     }
   }
 
-  Future<bool>? updateExperienceSectionData(int index, Experience newExperience) async {
+  Future<bool>? updateExperienceSectionData(
+      int index, Experience newExperience) async {
     try {
-      List<Experience>? allExperiences = await experienceRepoService.getAllExperiences();
+      List<Experience>? allExperiences =
+          await experienceRepoService.getAllExperiences();
 
       if (allExperiences!.isNotEmpty) {
         allExperiences[index].jobTitle = newExperience.jobTitle;
@@ -31,7 +34,7 @@ class ExperienceSectionAdminController {
         allExperiences[index].startDate = newExperience.startDate;
         allExperiences[index].endDate = newExperience.endDate;
         allExperiences[index].description = newExperience.description;
-        
+
         bool updateSuccess = await allExperiences[index].update() ?? false;
         return updateSuccess; // Return true if update is successful
       } else {
@@ -56,5 +59,4 @@ class ExperienceSectionAdminController {
       return null;
     }
   }
-
 }

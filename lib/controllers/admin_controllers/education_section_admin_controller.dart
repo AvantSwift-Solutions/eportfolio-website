@@ -13,7 +13,8 @@ class EducationSectionAdminController {
 
   Future<List<Education>?>? getEducationSectionData() async {
     try {
-      List<Education>? allEducation = await educationRepoService.getAllEducation();
+      List<Education>? allEducation =
+          await educationRepoService.getAllEducation();
       return allEducation;
     } catch (e) {
       log('Error getting Education list: $e');
@@ -21,9 +22,11 @@ class EducationSectionAdminController {
     }
   }
 
-  Future<bool>? updateEducationSectionData(int index, Education newEducation) async {
+  Future<bool>? updateEducationSectionData(
+      int index, Education newEducation) async {
     try {
-      List<Education>? allEducation = await educationRepoService.getAllEducation();
+      List<Education>? allEducation =
+          await educationRepoService.getAllEducation();
 
       if (allEducation!.isNotEmpty) {
         allEducation[index].startDate = newEducation.startDate;
@@ -32,7 +35,7 @@ class EducationSectionAdminController {
         allEducation[index].schoolName = newEducation.schoolName;
         allEducation[index].degree = newEducation.degree;
         allEducation[index].description = newEducation.description;
-        
+
         bool updateSuccess = await allEducation[index].update() ?? false;
         return updateSuccess;
       } else {
@@ -57,5 +60,4 @@ class EducationSectionAdminController {
       return null;
     }
   }
-
 }

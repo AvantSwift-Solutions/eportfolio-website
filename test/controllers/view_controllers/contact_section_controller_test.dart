@@ -33,7 +33,8 @@ void main() {
     expect(contactSectionData.linkedinURL, mockUser.linkedinURL);
   });
 
-  test('getContactSectionData returns default data when user is null', () async {
+  test('getContactSectionData returns default data when user is null',
+      () async {
     when(mockRepoService.getFirstUser()).thenAnswer((_) async => null);
     final contactSectionData = await controller.getContactSectionData();
 
@@ -69,7 +70,7 @@ void main() {
   //   );
 
   //   expect(response, true);
-    
+
   // });
 
   // test('sendEmail returns false for invalid contactEmail', () async {
@@ -89,7 +90,6 @@ void main() {
   //   );
 
   //   expect(response, false);
-    
-  // });
 
+  // });
 }

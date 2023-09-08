@@ -22,27 +22,29 @@ void main() {
     when(mockRecommendation1.colleagueName).thenReturn('Mock Name1');
     when(mockRecommendation1.colleagueJobTitle).thenReturn('Mock Job Title1');
     when(mockRecommendation1.description).thenReturn('Mock Location1');
-    when(mockRecommendation1.imageURL).thenReturn('http://example.com/mock_image1.jpg');
+    when(mockRecommendation1.imageURL)
+        .thenReturn('http://example.com/mock_image1.jpg');
 
     mockRecommendation2 = MockRecommendation();
     when(mockRecommendation2.rid).thenReturn('mockrid2');
     when(mockRecommendation2.colleagueName).thenReturn('Mock Name2');
     when(mockRecommendation2.colleagueJobTitle).thenReturn('Mock Job Title2');
     when(mockRecommendation2.description).thenReturn('Mock Location1');
-    when(mockRecommendation2.imageURL).thenReturn('http://example.com/mock_image1.jpg');
-    
+    when(mockRecommendation2.imageURL)
+        .thenReturn('http://example.com/mock_image1.jpg');
+
     mockRepoService = MockRecommendationRepoService();
     controller = RecommendationSectionAdminController(mockRepoService);
   });
 
   group('Recommendation section admin controller tests', () {
-
-    test('getRecommendationSectionData returns correct data when recommendation is not null',
+    test(
+        'getRecommendationSectionData returns correct data when recommendation is not null',
         () async {
-
-      when(mockRepoService.getAllRecommendations()).thenAnswer((_) async
-        => [mockRecommendation1, mockRecommendation2]);
-      final getAllRecommendations = await controller.getRecommendationSectionData();
+      when(mockRepoService.getAllRecommendations())
+          .thenAnswer((_) async => [mockRecommendation1, mockRecommendation2]);
+      final getAllRecommendations =
+          await controller.getRecommendationSectionData();
 
       // Make assertions on the returned data
       expect(getAllRecommendations!.length, 2);
@@ -61,27 +63,35 @@ void main() {
       expect(rec2.colleagueJobTitle, mockRecommendation2.colleagueJobTitle);
       expect(rec2.description, mockRecommendation2.description);
       expect(rec2.imageURL, mockRecommendation2.imageURL);
-
     });
 
-    test('getRecommendationSectionData returns null data when recommendation is null', () async {
-      when(mockRepoService.getAllRecommendations()).thenAnswer((_) async => null);
-      final recommendationSectionData = await controller.getRecommendationSectionData();
+    test(
+        'getRecommendationSectionData returns null data when recommendation is null',
+        () async {
+      when(mockRepoService.getAllRecommendations())
+          .thenAnswer((_) async => null);
+      final recommendationSectionData =
+          await controller.getRecommendationSectionData();
       expect(recommendationSectionData, null);
     });
 
-    test('getRecommendationSectionData returns null data on exception', () async {
-      when(mockRepoService.getAllRecommendations()).thenThrow(Exception('Test Exception'));
-      final recommendationSectionData = await controller.getRecommendationSectionData();
+    test('getRecommendationSectionData returns null data on exception',
+        () async {
+      when(mockRepoService.getAllRecommendations())
+          .thenThrow(Exception('Test Exception'));
+      final recommendationSectionData =
+          await controller.getRecommendationSectionData();
       expect(recommendationSectionData, null);
     });
 
-    test('updateRecommendationSectionData returns true on successful update', () async {
-      when(mockRepoService.getAllRecommendations()).thenAnswer((_) async
-        => [mockRecommendation1, mockRecommendation2]);
+    test('updateRecommendationSectionData returns true on successful update',
+        () async {
+      when(mockRepoService.getAllRecommendations())
+          .thenAnswer((_) async => [mockRecommendation1, mockRecommendation2]);
       when(mockRecommendation1.update()).thenAnswer((_) async => true);
 
-      final updateResult = await controller.updateRecommendationSectionData(0,
+      final updateResult = await controller.updateRecommendationSectionData(
+        0,
         Recommendation(
           rid: 'rid1',
           colleagueName: 'New Mock Name1',
@@ -95,15 +105,19 @@ void main() {
       verify(mockRecommendation1.colleagueName = 'New Mock Name1');
       verify(mockRecommendation1.colleagueJobTitle = 'New Mock Job Title1');
       verify(mockRecommendation1.description = 'New Mock Description1');
-      verify(mockRecommendation1.imageURL = 'http://example.com/new_mock_image1.jpg');
+      verify(mockRecommendation1.imageURL =
+          'http://example.com/new_mock_image1.jpg');
 
       verify(mockRecommendation1.update()); // Verify that the method was called
     });
 
-    test('updateRecommendationSectionData returns false when user is null', () async {
-      when(mockRepoService.getAllRecommendations()).thenAnswer((_) async => null);
+    test('updateRecommendationSectionData returns false when user is null',
+        () async {
+      when(mockRepoService.getAllRecommendations())
+          .thenAnswer((_) async => null);
 
-      final updateResult = await controller.updateRecommendationSectionData(0,
+      final updateResult = await controller.updateRecommendationSectionData(
+        0,
         Recommendation(
           rid: 'rid1',
           colleagueName: 'New Mock Name1',
