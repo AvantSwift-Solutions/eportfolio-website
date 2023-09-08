@@ -1,10 +1,10 @@
-import 'package:avantswift_portfolio/admin_pages/award_cert_admin.dart';
+import 'package:avantswift_portfolio/admin_pages/award_cert_section_admin.dart';
 import 'package:avantswift_portfolio/admin_pages/education_section_admin.dart';
 import 'package:avantswift_portfolio/admin_pages/landing_page_admin.dart';
 import 'package:avantswift_portfolio/admin_pages/about_me_section_admin.dart';
 import 'package:avantswift_portfolio/admin_pages/contact_section_admin.dart';
-import 'package:avantswift_portfolio/admin_pages/personal_project_section_admin.dart';
-import 'package:avantswift_portfolio/admin_pages/professional_experience_section_admin.dart';
+import 'package:avantswift_portfolio/admin_pages/project_section_admin.dart';
+import 'package:avantswift_portfolio/admin_pages/experience_section_admin.dart';
 import 'package:avantswift_portfolio/admin_pages/recommendation_section_admin.dart';
 import 'package:avantswift_portfolio/admin_pages/tskill_section_admin.dart';
 import 'package:avantswift_portfolio/models/User.dart';
@@ -37,14 +37,12 @@ class DefaultPage extends StatelessWidget {
               ),
               LandingPageAdmin(), // Placing the LandingPageAdmin widget here
               AboutMeSectionAdmin(),
-              ProfessionalExperienceSectionAdmin(),
+              ExperienceSectionAdmin(),
+              EducationSectionAdmin(),
               TSkillSectionAdmin(),
               ISkillSectionAdmin(),
-              ProfessionalExperienceSectionAdmin(),
-              ContactSectionAdmin(),
-              EducationSectionAdmin(),
-              PersonalProjectSectionAdmin(),
-              AwardCertAdmin(),
+              ProjectSectionAdmin(),
+              AwardCertSectionAdmin(),
               RecommendationSectionAdmin(),
               ContactSectionAdmin(),
             ],

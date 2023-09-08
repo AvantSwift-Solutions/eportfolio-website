@@ -1,15 +1,15 @@
 // ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
 import 'dart:typed_data';
-import 'package:avantswift_portfolio/reposervice/personal_project_repo_services.dart';
+import 'package:avantswift_portfolio/reposervice/project_repo_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import '../controllers/admin_controllers/personal_project_section_admin_controller.dart';
-import '../models/PersonalProject.dart';
+import '../controllers/admin_controllers/project_section_admin_controller.dart';
+import '../models/Project.dart';
 
-class PersonalProjectSectionAdmin extends StatelessWidget {
-  final PersonalProjectSectionAdminController _adminController =
-      PersonalProjectSectionAdminController(PersonalProjectRepoService());
+class ProjectSectionAdmin extends StatelessWidget {
+  final ProjectSectionAdminController _adminController =
+      ProjectSectionAdminController(ProjectRepoService());
   
 
   @override
@@ -21,9 +21,9 @@ class PersonalProjectSectionAdmin extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
               onPressed: () async {
-                _showEditDialog(context, await _adminController.getPersonalProjectList());
+                _showEditDialog(context, await _adminController.getProjectList());
               },
-              child: const Text('Edit Personal Project'),
+              child: const Text('Edit  Project'),
             ),
           ),
         ],
@@ -32,26 +32,26 @@ class PersonalProjectSectionAdmin extends StatelessWidget {
   }
 
 
-  void _showEditDialog(BuildContext context, List<PersonalProject>? personalProjects) async {
+  void _showEditDialog(BuildContext context, List<Project>? Projects) async {
       showDialog(
         context: context,
         builder: (BuildContext dialogContext) {
           return AlertDialog(
-            title: const Text('Edit Personal Project'),
+            title: const Text('Edit  Project'),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 ElevatedButton(
                   onPressed: ()  {
                     Navigator.of(dialogContext).pop();
-                    _showAddProjectDialog(context, personalProjects!);
+                    _showAddProjectDialog(context, Projects!);
                   },
-                  child: const Text('Add Personal Project'),
+                  child: const Text('Add  Project'),
                 ),
                 ElevatedButton(
                   onPressed: () async {
                     Navigator.of(dialogContext).pop();
-                    _showExistingProjectsDialog(context, personalProjects!);
+                    _showExistingProjectsDialog(context, Projects!);
                   },
                   child: const Text('Update Existing Project'),
                 ),
@@ -71,11 +71,11 @@ class PersonalProjectSectionAdmin extends StatelessWidget {
   }
 
 
-  void _showAddProjectDialog(BuildContext context, List<PersonalProject> personalProjects) {
+  void _showAddProjectDialog(BuildContext context, List<Project> Projects) {
     TextEditingController nameController = TextEditingController();
     TextEditingController descriptionController = TextEditingController();
     Uint8List? pickedImageBytes;
-    PersonalProject newProject = PersonalProject(ppid: '', name: '', creationTimestamp: Timestamp.now());
+    Project newProject = Project(ppid: '', name: '', creationTimestamp: Timestamp.now());
 
     showDialog(
       context: context,
@@ -83,7 +83,7 @@ class PersonalProjectSectionAdmin extends StatelessWidget {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: const Text('Add Personal Project'),
+              title: const Text('Add  Project'),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -132,13 +132,13 @@ class PersonalProjectSectionAdmin extends StatelessWidget {
                       }
                     }
 
-                    // await _adminController.addPersonalProject(newProject);
+                    // await _adminController.addProject(newProject);
                     newProject.create();
-                    personalProjects.add(newProject);
+                    Projects.add(newProject);
                     Navigator.of(dialogContext).pop();
                     setState(() {});
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Added a new personal project')),
+                      SnackBar(content: Text('Added a new  project')),
                     );
                   },
                   child: const Text('Add'),
@@ -158,7 +158,7 @@ class PersonalProjectSectionAdmin extends StatelessWidget {
   }
 
 
-  void _showExistingProjectsDialog(BuildContext context, List<PersonalProject> personalProjects) {
+  void _showExistingProjectsDialog(BuildContext context, List<Project> Projects) {
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -167,15 +167,15 @@ class PersonalProjectSectionAdmin extends StatelessWidget {
           content: SizedBox(
             width: 300,
             height: 300,
-            child: personalProjects.isNotEmpty
+            child: Projects.isNotEmpty
                 ? ListView.builder(
                     shrinkWrap: true,
-                    itemCount: personalProjects.length,
+                    itemCount: Projects.length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        title: Text(personalProjects[index].name!),
-                        // subtitle: Text(personalProjects[index].description),
-                        // leading: Image.network(personalProjects[index].imageURL),
+                        title: Text(Projects[index].name!),
+                        // subtitle: Text(Projects[index].description),
+                        // leading: Image.network(Projects[index].imageURL),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -216,8 +216,8 @@ class PersonalProjectSectionAdmin extends StatelessWidget {
 
 
   void _showUpdateProjectDialog(BuildContext context, int i) async {
-    final personalProjects = await _adminController.getPersonalProjectList();
-    final selectedProject = personalProjects?[i];
+    final Projects = await _adminController.getProjectList();
+    final selectedProject = Projects?[i];
 
     TextEditingController nameController = TextEditingController(text: selectedProject?.name);
     TextEditingController descriptionController = TextEditingController(text: selectedProject?.description);
@@ -235,14 +235,14 @@ class PersonalProjectSectionAdmin extends StatelessWidget {
                 children: [
                   TextField(
                     controller: nameController,
-                    onChanged: (value) => personalProjects?[i].name = value,
+                    onChanged: (value) => Projects?[i].name = value,
                     decoration: const InputDecoration(
                       labelText: 'Name'),
                   ),
                   TextField(
                     controller: descriptionController,
                     onChanged: (value) =>
-                    personalProjects?[i].description = value,
+                    Projects?[i].description = value,
                     decoration: const InputDecoration(
                       labelText: 'Description'),
                   ),
@@ -277,16 +277,16 @@ class PersonalProjectSectionAdmin extends StatelessWidget {
                       }
                     }
 
-                    bool isSuccess = await _adminController.updatePersonalProjectData(i, personalProjects![i]) ?? false;
+                    bool isSuccess = await _adminController.updateProjectData(i, Projects![i]) ?? false;
                     if (isSuccess) {
                       setState(() {});
                       Navigator.of(dialogContext).pop();
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Updated an existing personal project')),
+                        const SnackBar(content: Text('Updated an existing  project')),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Failed to update an existing personal project')),
+                        const SnackBar(content: Text('Failed to update an existing  project')),
                       );
                     }
                   },
@@ -325,7 +325,7 @@ class PersonalProjectSectionAdmin extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () async {
-                    final deleted = await _adminController.deletePersonalProject(i);
+                    final deleted = await _adminController.deleteProject(i);
                     Navigator.of(dialogContext).pop(); // Close the dialog.
                     
                     if (deleted) {

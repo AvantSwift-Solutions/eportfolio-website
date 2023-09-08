@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
-class ProfessionalExperience {
+class Experience {
   final String? peid;
   String? jobTitle;
   String? companyName;
@@ -11,7 +11,7 @@ class ProfessionalExperience {
   String? description;
   String? logoURL; 
 
-  ProfessionalExperience({
+  Experience({
     required this.peid,
     required this.jobTitle,
     required this.companyName,
@@ -22,7 +22,7 @@ class ProfessionalExperience {
     this.logoURL,
   });
 
-  factory ProfessionalExperience.fromDocumentSnapshot(DocumentSnapshot snapshot) {
+  factory Experience.fromDocumentSnapshot(DocumentSnapshot snapshot) {
   try {
     final data = snapshot.data() as Map<String, dynamic>;
     final jobTitle = data['jobTitle'];
@@ -33,7 +33,7 @@ class ProfessionalExperience {
     final endDate = data['endDate'];
     final logoURL = data['logoURL'];
 
-    return ProfessionalExperience(
+    return Experience(
       peid: snapshot.id,
       jobTitle: jobTitle,
       companyName: companyName,
@@ -64,17 +64,17 @@ class ProfessionalExperience {
   Future<void> create() async {
     try {
       final id = const Uuid().v4();
-      await FirebaseFirestore.instance.collection('ProfessionalExperience').doc(id).set(toMap());
-      print('Professional experience document created');
+      await FirebaseFirestore.instance.collection('Experience').doc(id).set(toMap());
+      print(' experience document created');
     } catch (e) {
-      print('Error creating Professional experience document: $e');
+      print('Error creating  experience document: $e');
     }
   }
 
   Future<bool>? update() async {
     try {
       await FirebaseFirestore.instance
-          .collection('ProfessionalExperience')
+          .collection('Experience')
           .doc(peid)
           .update(toMap());
       return true;
@@ -85,7 +85,7 @@ class ProfessionalExperience {
 
   Future<void> delete() async {
     try {
-      await FirebaseFirestore.instance.collection('ProfessionalExperience').doc(peid).delete();
+      await FirebaseFirestore.instance.collection('Experience').doc(peid).delete();
       print('User document deleted');
     } catch (e) {
       print('Error deleting user document: $e');

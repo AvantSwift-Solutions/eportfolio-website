@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 import '../models/AwardCert.dart';
 
-class AwardCertAdmin extends StatelessWidget {
+class AwardCertSectionAdmin extends StatelessWidget {
   final AwardCertAdminController _adminController =
       AwardCertAdminController(AwardCertRepoService());
   

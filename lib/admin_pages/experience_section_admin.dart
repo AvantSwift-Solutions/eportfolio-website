@@ -3,14 +3,14 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import '../controllers/admin_controllers/professional_experience_section_admin_controller.dart';
-import '../models/ProfessionalExperience.dart';
-import '../reposervice/professional_experience_repo_services.dart';
+import '../controllers/admin_controllers/experience_section_admin_controller.dart';
+import '../models/Experience.dart';
+import '../reposervice/experience_repo_services.dart';
 import 'package:intl/intl.dart';
 
-class ProfessionalExperienceSectionAdmin extends StatelessWidget {
-  final ProfessionalExperienceSectionAdminController _adminController =
-      ProfessionalExperienceSectionAdminController(ProfessionalExperienceRepoService());
+class ExperienceSectionAdmin extends StatelessWidget {
+  final ExperienceSectionAdminController _adminController =
+      ExperienceSectionAdminController(ExperienceRepoService());
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +21,9 @@ class ProfessionalExperienceSectionAdmin extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
               onPressed: () async {
-                _showProfessionalExperienceList(context, await _adminController.getProfessionalExperienceSectionData() ?? []);
+                _showExperienceList(context, await _adminController.getExperienceSectionData() ?? []);
               },
-              child: const Text('Edit Professional Experience Info'),
+              child: const Text('Edit  Experience Info'),
             ),
           ),
         ],
@@ -31,28 +31,28 @@ class ProfessionalExperienceSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showProfessionalExperienceList(BuildContext context, List<ProfessionalExperience> professionalExperienceList) {
+  void _showExperienceList(BuildContext context, List<Experience> ExperienceList) {
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: const Text('Professional Experience List'),
+          title: const Text(' Experience List'),
           content: SizedBox(
             width: 200,
-            child: professionalExperienceList.isNotEmpty
+            child: ExperienceList.isNotEmpty
                 ? ListView.builder(
                     shrinkWrap: true,
-                    itemCount: professionalExperienceList.length,
+                    itemCount: ExperienceList.length,
                     itemBuilder: (BuildContext context, int index) {
                       return ElevatedButton(
                         onPressed: () {
                           _showEditDialog(context, index);
                         },
-                        child: Text(professionalExperienceList[index].jobTitle!),
+                        child: Text(ExperienceList[index].jobTitle!),
                       );
                     },
                   )
-                : const Text('No professional experience data available.'),
+                : const Text('No  experience data available.'),
           ),
           actions: <Widget>[
             TextButton(
@@ -63,9 +63,9 @@ class ProfessionalExperienceSectionAdmin extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                _showAddNewDialog(context, professionalExperienceList);
+                _showAddNewDialog(context, ExperienceList);
               },
-              child: const Text('Add New Professional Experience'),
+              child: const Text('Add New  Experience'),
             ),
           ],
         );
@@ -74,9 +74,9 @@ class ProfessionalExperienceSectionAdmin extends StatelessWidget {
   }
 
   
-  void _showAddNewDialog(BuildContext context, List<ProfessionalExperience> professionalExperienceList) async {
+  void _showAddNewDialog(BuildContext context, List<Experience> ExperienceList) async {
 
-    final professionalExperience = ProfessionalExperience(
+    final experience = Experience(
       peid: '',
       jobTitle: '',
       companyName: '',
@@ -87,7 +87,7 @@ class ProfessionalExperienceSectionAdmin extends StatelessWidget {
       logoURL: null,
     );
 
-    _showProfessionalExperienceDialog(context, professionalExperience,
+    _showExperienceDialog(context, experience,
       (exp) async {
         exp.create();
         return true;
@@ -96,19 +96,19 @@ class ProfessionalExperienceSectionAdmin extends StatelessWidget {
 
   void _showEditDialog(BuildContext context, int i) async {
 
-    final professionalExperienceSectionData
-      = await _adminController.getProfessionalExperienceSectionData();
-    final experience = professionalExperienceSectionData![i];
+    final ExperienceSectionData
+      = await _adminController.getExperienceSectionData();
+    final experience = ExperienceSectionData![i];
 
-    _showProfessionalExperienceDialog(context, experience,
+    _showExperienceDialog(context, experience,
       (exp) async {
-        return await _adminController.updateProfessionalExperienceSectionData(i, exp)
+        return await _adminController.updateExperienceSectionData(i, exp)
           ?? false;
       });
   }
 
-  void _showProfessionalExperienceDialog(BuildContext context, ProfessionalExperience experience,
-    Future<bool> Function(ProfessionalExperience) onProfessionalExperienceUpdated) {
+  void _showExperienceDialog(BuildContext context, Experience experience,
+    Future<bool> Function(Experience) onExperienceUpdated) {
       
     TextEditingController jobTitleController = 
         TextEditingController(text: experience.jobTitle);
@@ -126,12 +126,12 @@ class ProfessionalExperienceSectionAdmin extends StatelessWidget {
     Uint8List? pickedImageBytes;
 
     String title;
-    var newProfessionalExperience = false;
+    var newExperience = false;
     if (experience.jobTitle == '') {
-      title = 'Add new professional experience information';
-      newProfessionalExperience = true;
+      title = 'Add new  experience information';
+      newExperience = true;
     } else {
-      title = 'Edit your professional experience information for ${experience.jobTitle}';
+      title = 'Edit your  experience information for ${experience.jobTitle}';
     }
 
     
@@ -237,13 +237,13 @@ class ProfessionalExperienceSectionAdmin extends StatelessWidget {
                 ),
               ),
               actions: <Widget>[
-                if (!newProfessionalExperience)
+                if (!newExperience)
                   TextButton(
                     onPressed: () async {
                       final name = experience.jobTitle;
                       experience.delete();
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Professional experience info for $name deleted')));
+                        SnackBar(content: Text(' experience info for $name deleted')));
                       Navigator.pop(dialogContext);
                     },
                     child: const Text('Delete'),
@@ -258,13 +258,13 @@ class ProfessionalExperienceSectionAdmin extends StatelessWidget {
                         experience.logoURL = imageURL;
                       }
                     }
-                    bool isSuccess = await onProfessionalExperienceUpdated(experience);
+                    bool isSuccess = await onExperienceUpdated(experience);
                     if (isSuccess) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Professional experience info updated')));
+                        const SnackBar(content: Text(' experience info updated')));
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Error updating professional experience info')));
+                        const SnackBar(content: Text('Error updating  experience info')));
                     }
                     Navigator.pop(dialogContext);
                   },

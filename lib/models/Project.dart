@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
-class PersonalProject {
+class Project {
   final String? ppid;
   String? name;
   String? description;
@@ -9,7 +9,7 @@ class PersonalProject {
   String? imageURL;
   
 
-  PersonalProject({
+  Project({
     required this.ppid,
     required this.name,
     this.description,
@@ -17,14 +17,14 @@ class PersonalProject {
     this.imageURL,
   });
 
-  factory PersonalProject.fromDocumentSnapshot(DocumentSnapshot snapshot) {
+  factory Project.fromDocumentSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;
     final name = data['name'];
     final description = data['description'];
     final creationTimestamp = data['creationTimestamp'];
     final imageUrl = data['imageURL'];
 
-    return PersonalProject(
+    return Project(
       ppid: snapshot.id,
       name: name,
       description: description,
@@ -46,17 +46,17 @@ class PersonalProject {
   Future<void> create() async {
     try {
       final ppid = const Uuid().v4();
-      await FirebaseFirestore.instance.collection('PersonalProject').doc(ppid).set(toMap());
-      print('Personal project document created');
+      await FirebaseFirestore.instance.collection('Project').doc(ppid).set(toMap());
+      print(' project document created');
     } catch (e) {
-      print('Error creating personal project document: $e');
+      print('Error creating  project document: $e');
     }
   }
 
   Future<bool>? update() async {
     try {
       await FirebaseFirestore.instance
-          .collection('PersonalProject')
+          .collection('Project')
           .doc(ppid)
           .update(toMap());
       return true;
@@ -67,10 +67,10 @@ class PersonalProject {
 
   Future<void> delete() async {
     try {
-      await FirebaseFirestore.instance.collection('PersonalProject').doc(ppid).delete();
-      print('Personal project document deleted');
+      await FirebaseFirestore.instance.collection('Project').doc(ppid).delete();
+      print(' project document deleted');
     } catch (e) {
-      print('Error deleting personal project document: $e');
+      print('Error deleting  project document: $e');
     }
   }
 }
