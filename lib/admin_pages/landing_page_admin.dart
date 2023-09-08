@@ -9,6 +9,8 @@ class LandingPageAdmin extends StatelessWidget {
   final LandingPageAdminController _adminController =
       LandingPageAdminController(UserRepoService());
 
+  LandingPageAdmin({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

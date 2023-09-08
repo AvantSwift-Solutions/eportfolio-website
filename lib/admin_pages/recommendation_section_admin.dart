@@ -10,6 +10,8 @@ class RecommendationSectionAdmin extends StatelessWidget {
   final RecommendationSectionAdminController _adminController =
       RecommendationSectionAdminController(RecommendationRepoService());
 
+  RecommendationSectionAdmin({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

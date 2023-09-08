@@ -25,13 +25,13 @@ void main() async {
 class MyApp extends StatefulWidget {
   final AuthState authState;
 
-  MyApp({required this.authState, Key? key}) : super(key: key);
+  const MyApp({required this.authState, Key? key}) : super(key: key);
 
   @override
-  _MyAppState createState() => _MyAppState();
+  MyAppState createState() => MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class MyAppState extends State<MyApp> {
   final LoginController loginController = LoginController();
 
   @override

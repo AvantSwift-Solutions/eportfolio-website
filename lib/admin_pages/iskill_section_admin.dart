@@ -8,6 +8,8 @@ class ISkillSectionAdmin extends StatelessWidget {
   final ISkillSectionAdminController _adminController =
       ISkillSectionAdminController(ISkillRepoService());
 
+  ISkillSectionAdmin({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

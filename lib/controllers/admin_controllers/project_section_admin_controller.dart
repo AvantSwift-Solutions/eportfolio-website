@@ -12,8 +12,8 @@ class ProjectSectionAdminController {
 
   Future <List<Project>?> getProjectList() async {
     try {
-      List<Project>? Projects = await projectRepoService.getAllProjects();
-      return Projects;
+      List<Project>? projects = await projectRepoService.getAllProjects();
+      return projects;
     } catch (e) {
       log('Error getting  project list: $e');
       return null;
@@ -23,13 +23,13 @@ class ProjectSectionAdminController {
   
   Future<bool>? updateProjectData(int index, Project newProject) async {
     try {
-      List<Project>? Projects = await projectRepoService.getAllProjects();
+      List<Project>? projects = await projectRepoService.getAllProjects();
 
-      Projects?[index].name = newProject.name;
-      Projects?[index].description = newProject.description;
-      Projects?[index].imageURL = newProject.imageURL;
+      projects?[index].name = newProject.name;
+      projects?[index].description = newProject.description;
+      projects?[index].imageURL = newProject.imageURL;
 
-      bool? updateSuccess = await Projects?[index].update() ?? false;
+      bool? updateSuccess = await projects?[index].update() ?? false;
       return updateSuccess;
     } catch (e) {
       log('Error updating  project: $e');
@@ -40,8 +40,8 @@ class ProjectSectionAdminController {
 
   Future<bool> deleteProject(int index) async {
     try {
-      List<Project>? Projects = await projectRepoService.getAllProjects();
-      await Projects?[index].delete();
+      List<Project>? projects = await projectRepoService.getAllProjects();
+      await projects?[index].delete();
       return true;
     } catch (e) {
       log('Error deleting  project: $e');

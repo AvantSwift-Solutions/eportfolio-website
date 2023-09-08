@@ -19,16 +19,16 @@ void main() {
         logoURL: 'https://example.com/image.jpg',
         description: 'This is my job',
       );
-      final ExperienceMap = experience.toMap();
+      final experienceMap = experience.toMap();
 
-      expect(ExperienceMap['peid'], 'exp123');
-      expect(ExperienceMap['jobTitle'], 'Scrum Master');
-      expect(ExperienceMap['companyName'], 'TikTok');
-      expect(ExperienceMap['location'], 'New York');
-      expect(ExperienceMap['startDate'], Timestamp(1234567890, 0));
-      expect(ExperienceMap['endDate'], Timestamp(1234567890, 0));
-      expect(ExperienceMap['logoURL'], 'https://example.com/image.jpg');
-      expect(ExperienceMap['description'], 'This is my job');
+      expect(experienceMap['peid'], 'exp123');
+      expect(experienceMap['jobTitle'], 'Scrum Master');
+      expect(experienceMap['companyName'], 'TikTok');
+      expect(experienceMap['location'], 'New York');
+      expect(experienceMap['startDate'], Timestamp(1234567890, 0));
+      expect(experienceMap['endDate'], Timestamp(1234567890, 0));
+      expect(experienceMap['logoURL'], 'https://example.com/image.jpg');
+      expect(experienceMap['description'], 'This is my job');
     });
 
   });

@@ -10,7 +10,8 @@ import '../models/AwardCert.dart';
 class AwardCertSectionAdmin extends StatelessWidget {
   final AwardCertAdminController _adminController =
       AwardCertAdminController(AwardCertRepoService());
-  
+
+  AwardCertSectionAdmin({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +144,7 @@ class AwardCertSectionAdmin extends StatelessWidget {
                     Navigator.of(dialogContext).pop();
                     setState(() {});
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Added a new AwardCert')),
+                      const SnackBar(content: Text('Added a new AwardCert')),
                     );
                   },
                   child: const Text('Add'),

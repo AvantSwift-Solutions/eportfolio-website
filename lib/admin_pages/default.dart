@@ -14,7 +14,7 @@ import 'iskill_section_admin.dart';
 class DefaultPage extends StatelessWidget {
   final User user;
 
-  DefaultPage({required this.user});
+  const DefaultPage({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {

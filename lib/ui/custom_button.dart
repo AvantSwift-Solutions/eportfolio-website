@@ -6,7 +6,7 @@ class CustomButton extends StatelessWidget {
   final double width;
   final double height;
 
-  CustomButton({
+  const CustomButton({super.key, 
     required this.text,
     required this.onPressed,
     this.width = 60.0, // Default width
@@ -21,7 +21,7 @@ class CustomButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: Color.fromARGB(255, 0, 0, 0), // Navy blue color
+          backgroundColor: const Color.fromARGB(255, 0, 0, 0), // Navy blue color
           shape: ContinuousRectangleBorder(
             borderRadius: BorderRadius.circular(8.0), // Sharp rectangle shape
           ),

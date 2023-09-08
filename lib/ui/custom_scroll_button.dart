@@ -4,7 +4,7 @@ class CustomScrollButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
 
-  CustomScrollButton({required this.text, required this.onPressed});
+  const CustomScrollButton({super.key, required this.text, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {

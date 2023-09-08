@@ -7,10 +7,10 @@ class AboutMeSection extends StatefulWidget {
   const AboutMeSection({super.key});
 
   @override
-  _AboutMeSectionState createState() => _AboutMeSectionState();
+  AboutMeSectionState createState() => AboutMeSectionState();
 }
 
-class _AboutMeSectionState extends State<AboutMeSection> {
+class AboutMeSectionState extends State<AboutMeSection> {
   final AboutMeSectionController _aboutMeSectionController =
       AboutMeSectionController(UserRepoService());
 

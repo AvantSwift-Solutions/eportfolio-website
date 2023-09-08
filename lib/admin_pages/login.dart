@@ -9,13 +9,13 @@ class LoginPage extends StatefulWidget {
   final Function(model.User) onLoginSuccess;
   final AuthState authState;
 
-  LoginPage({required this.onLoginSuccess, required this.authState});
+  const LoginPage({super.key, required this.onLoginSuccess, required this.authState});
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  LoginPageState createState() => LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -166,7 +166,7 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           ),

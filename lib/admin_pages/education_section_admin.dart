@@ -12,6 +12,8 @@ class EducationSectionAdmin extends StatelessWidget {
   final EducationSectionAdminController _adminController =
       EducationSectionAdminController(EducationRepoService());
 
+  EducationSectionAdmin({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

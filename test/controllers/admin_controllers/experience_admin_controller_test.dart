@@ -78,14 +78,14 @@ void main() {
 
     test('getExperienceSectionData returns null data when  experience is null', () async {
       when(mockRepoService.getAllExperiences()).thenAnswer((_) async => null);
-      final ExperienceSectionData = await controller.getExperienceSectionData();
-      expect(ExperienceSectionData, null);
+      final experienceSectionData = await controller.getExperienceSectionData();
+      expect(experienceSectionData, null);
     });
 
     test('getExperienceSectionData returns null data on exception', () async {
       when(mockRepoService.getAllExperiences()).thenThrow(Exception('Test Exception'));
-      final ExperienceSectionData = await controller.getExperienceSectionData();
-      expect(ExperienceSectionData, null);
+      final experienceSectionData = await controller.getExperienceSectionData();
+      expect(experienceSectionData, null);
     });
 
     test('updateExperienceSectionData returns true on successful update', () async {

@@ -7,6 +7,8 @@ class ContactSectionAdmin extends StatelessWidget {
   final ContactSectionAdminController _adminController =
       ContactSectionAdminController(UserRepoService());
 
+  ContactSectionAdmin({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

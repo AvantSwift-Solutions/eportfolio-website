@@ -12,6 +12,8 @@ class ExperienceSectionAdmin extends StatelessWidget {
   final ExperienceSectionAdminController _adminController =
       ExperienceSectionAdminController(ExperienceRepoService());
 
+  ExperienceSectionAdmin({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -31,7 +33,7 @@ class ExperienceSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showExperienceList(BuildContext context, List<Experience> ExperienceList) {
+  void _showExperienceList(BuildContext context, List<Experience> experienceList) {
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -39,16 +41,16 @@ class ExperienceSectionAdmin extends StatelessWidget {
           title: const Text(' Experience List'),
           content: SizedBox(
             width: 200,
-            child: ExperienceList.isNotEmpty
+            child: experienceList.isNotEmpty
                 ? ListView.builder(
                     shrinkWrap: true,
-                    itemCount: ExperienceList.length,
+                    itemCount: experienceList.length,
                     itemBuilder: (BuildContext context, int index) {
                       return ElevatedButton(
                         onPressed: () {
                           _showEditDialog(context, index);
                         },
-                        child: Text(ExperienceList[index].jobTitle!),
+                        child: Text(experienceList[index].jobTitle!),
                       );
                     },
                   )
@@ -63,7 +65,7 @@ class ExperienceSectionAdmin extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                _showAddNewDialog(context, ExperienceList);
+                _showAddNewDialog(context, experienceList);
               },
               child: const Text('Add New  Experience'),
             ),
@@ -74,7 +76,7 @@ class ExperienceSectionAdmin extends StatelessWidget {
   }
 
   
-  void _showAddNewDialog(BuildContext context, List<Experience> ExperienceList) async {
+  void _showAddNewDialog(BuildContext context, List<Experience> experienceList) async {
 
     final experience = Experience(
       peid: '',
@@ -96,9 +98,9 @@ class ExperienceSectionAdmin extends StatelessWidget {
 
   void _showEditDialog(BuildContext context, int i) async {
 
-    final ExperienceSectionData
+    final experienceSectionData
       = await _adminController.getExperienceSectionData();
-    final experience = ExperienceSectionData![i];
+    final experience = experienceSectionData![i];
 
     _showExperienceDialog(context, experience,
       (exp) async {

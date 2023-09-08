@@ -9,6 +9,8 @@ class AboutMeSectionAdmin extends StatelessWidget {
   final AboutMeSectionAdminController _adminController =
       AboutMeSectionAdminController(UserRepoService());
 
+  AboutMeSectionAdmin({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

@@ -10,6 +10,8 @@ class TSkillSectionAdmin extends StatelessWidget {
   final TSkillSectionAdminController _adminController =
       TSkillSectionAdminController(TSkillRepoService());
 
+  TSkillSectionAdmin({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
