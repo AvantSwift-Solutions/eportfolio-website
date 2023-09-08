@@ -119,12 +119,12 @@ class _LandingPageState extends State<LandingPage> {
                 Expanded(
                   flex: 1,
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 100.0),
+                    padding: const EdgeInsets.only(left: 20.0),
                     child: Image.network(
                       landingPageData?.imageURL ??
                           'https://example.com/default_image.jpg',
-                      width: 200,
-                      height: 400,
+                      width: 300,
+                      height: 600,
                       fit: BoxFit.cover,
                     ),
                   ),

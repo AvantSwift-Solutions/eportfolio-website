@@ -1,4 +1,4 @@
-import 'package:avantswift_portfolio/controller/admin_controllers/contact_section_admin_controller.dart';
+import 'package:avantswift_portfolio/controllers/admin_controllers/contact_section_admin_controller.dart';
 import 'package:avantswift_portfolio/dto/contact_section_dto.dart';
 import 'package:avantswift_portfolio/reposervice/user_repo_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,7 +7,8 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:avantswift_portfolio/models/User.dart';
 
-import 'contact_section_admin_controller_test.mocks.dart';
+import '../controllers/admin_controllers/mocks/about_me_section_admin_controller_test.mocks.dart';
+
 
 @GenerateMocks([UserRepoService])
 class MockUser extends Mock implements User {}
