@@ -14,32 +14,26 @@ class ContactSectionController {
       User? user = await userRepoService.getFirstUser();
       if (user != null) {
         return ContactSectionDTO(
-          name: user.name,
-          contactEmail: user.contactEmail,
-          linkedinURL: user.linkedinURL
-        );
+            name: user.name,
+            contactEmail: user.contactEmail,
+            linkedinURL: user.linkedinURL);
       } else {
         return ContactSectionDTO(
-          name: 'Unknown',
-          contactEmail: 'No email avaliable',
-          linkedinURL: 'No LinkedIn avaliable'
-        );
+            name: 'Unknown',
+            contactEmail: 'No email avaliable',
+            linkedinURL: 'No LinkedIn avaliable');
       }
     } catch (e) {
       return ContactSectionDTO(
-        name: 'Error',
-        contactEmail: 'Error',
-        linkedinURL: 'Error'
-      );
+          name: 'Error', contactEmail: 'Error', linkedinURL: 'Error');
     }
   }
 
-  Future<bool> sendEmail(ContactSectionDTO? contactSectionData,
-    Map<String, String> fields) async {
-
+  Future<bool> sendEmail(
+      ContactSectionDTO? contactSectionData, Map<String, String> fields) async {
     final toName = contactSectionData?.name;
     final toEmail = contactSectionData?.contactEmail;
-    
+
     const serviceId = 'service_wp59pl6';
     const templateId = 'template_6atjqpb';
     const userId = 'ydMCRddLc0NvkjQM5';
@@ -69,7 +63,5 @@ class ContactSectionController {
     );
 
     return response.body == 'OK';
-
   }
-
 }

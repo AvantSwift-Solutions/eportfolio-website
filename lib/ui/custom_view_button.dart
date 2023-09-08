@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 
-class CustomScrollButton extends StatelessWidget {
+class CustomViewButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
 
-  CustomScrollButton({required this.text, required this.onPressed});
+  CustomViewButton({required this.text, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        backgroundColor: Colors.green, // Customize the button color
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+        backgroundColor:
+            const Color.fromRGBO(79, 147, 122, 1), // Customize the button color
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
@@ -28,9 +29,10 @@ class CustomScrollButton extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 8), // Add space between text and arrow
-          const Icon(
-            Icons.arrow_forward,
-            color: Colors.white,
+          Image.asset(
+            'send_view_button.png',
+            width: 20,
+            height: 50,
           ),
         ],
       ),
