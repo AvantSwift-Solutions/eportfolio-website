@@ -100,6 +100,7 @@ class LandingPageAdmin extends StatelessWidget {
                             .updateLandingPageData(landingPageData) ??
                         false;
                     if (isSuccess) {
+                      
                       Navigator.of(dialogContext).pop();
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('User info updated')));
@@ -123,6 +124,7 @@ class LandingPageAdmin extends StatelessWidget {
       },
     );
   }
+
 
   Future<Uint8List?> _pickImage() async {
     final result = await FilePicker.platform.pickFiles(
