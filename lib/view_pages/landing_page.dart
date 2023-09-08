@@ -33,7 +33,7 @@ class _LandingPageState extends State<LandingPage> {
         final screenWidth = MediaQuery.of(context).size.width;
 
         double titleFontSize = screenWidth * 0.05;
-        double descriptionFontSize = screenWidth * 0.01;
+        double descriptionFontSize = screenWidth * 0.015;
 
         return Center(
           child: Padding(

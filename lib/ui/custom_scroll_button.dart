@@ -24,7 +24,7 @@ class CustomScrollButton extends StatelessWidget {
             text,
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 16,
+              fontSize: 24,
             ),
           ),
           const SizedBox(width: 8), // Add space between text and arrow

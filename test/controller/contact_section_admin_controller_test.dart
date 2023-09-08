@@ -7,7 +7,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:avantswift_portfolio/models/User.dart';
 
-import 'landing_page_admin_controller_test.mocks.dart';
+import 'contact_section_admin_controller_test.mocks.dart';
 
 @GenerateMocks([UserRepoService])
 class MockUser extends Mock implements User {}
@@ -34,32 +34,32 @@ void main() {
   test('getContactSectionData returns correct data when user is not null',
       () async {
     when(mockRepoService.getFirstUser()).thenAnswer((_) async => mockUser);
-    final landingPageData = await controller.getContactSectionData();
+    final contactSectionData = await controller.getContactSectionData();
 
     // Make assertions on the returned data
-    expect(landingPageData!.name, mockUser.name);
-    expect(landingPageData.contactEmail, mockUser.contactEmail);
-    expect(landingPageData.linkedinURL, mockUser.linkedinURL);
+    expect(contactSectionData!.name, mockUser.name);
+    expect(contactSectionData.contactEmail, mockUser.contactEmail);
+    expect(contactSectionData.linkedinURL, mockUser.linkedinURL);
   });
 
   test('getContactSectionData returns default data when user is null', () async {
     when(mockRepoService.getFirstUser()).thenAnswer((_) async => null);
 
-    final landingPageData = await controller.getContactSectionData();
+    final contactSectionData = await controller.getContactSectionData();
 
-    expect(landingPageData!.name, 'Unknown');
-    expect(landingPageData.contactEmail, 'No email available');
-    expect(landingPageData.linkedinURL, 'No LinkedIn available');
+    expect(contactSectionData!.name, 'Unknown');
+    expect(contactSectionData.contactEmail, 'No email available');
+    expect(contactSectionData.linkedinURL, 'No LinkedIn available');
   });
 
   test('getContactSectionData returns error data on exception', () async {
     when(mockRepoService.getFirstUser()).thenThrow(Exception('Test Exception'));
 
-    final landingPageData = await controller.getContactSectionData();
+    final contactSectionData = await controller.getContactSectionData();
 
-    expect(landingPageData!.name, 'Error');
-    expect(landingPageData.contactEmail, 'Error');
-    expect(landingPageData.linkedinURL, 'Error');
+    expect(contactSectionData!.name, 'Error');
+    expect(contactSectionData.contactEmail, 'Error');
+    expect(contactSectionData.linkedinURL, 'Error');
   });
 
   test('updateContactSectionData returns true on successful update', () async {
