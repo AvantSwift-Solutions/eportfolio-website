@@ -1,10 +1,10 @@
-import 'package:avantswift_portfolio/controller/admin_controllers/personal_project_admin_controller.dart';
+import 'package:avantswift_portfolio/controller/admin_controllers/personal_project_section_admin_controller.dart';
 import 'package:avantswift_portfolio/models/PersonalProject.dart';
 import 'package:avantswift_portfolio/reposervice/personal_project_repo_services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'personal_project_admin_controller_test.mocks.dart';
+import 'personal_project_section_admin_controller_test.mocks.dart';
 
 @GenerateMocks([PersonalProjectRepoService])
 class MockPersonalProject extends Mock implements PersonalProject {}
@@ -13,7 +13,7 @@ class MockPersonalProject extends Mock implements PersonalProject {}
     late PersonalProject pp1;
     late PersonalProject pp2;
 
-    late PersonalProjectAdminController controller;
+    late PersonalProjectSectionAdminController controller;
     late MockPersonalProjectRepoService mockRepoService;
 
     setUp(() {

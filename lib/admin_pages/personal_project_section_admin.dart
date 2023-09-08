@@ -4,10 +4,10 @@ import 'package:avantswift_portfolio/reposervice/personal_project_repo_services.
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import '../controller/admin_controllers/personal_project_admin_controller.dart';
+import '../controller/admin_controllers/personal_project_section_admin_controller.dart';
 import '../models/PersonalProject.dart';
 
-class PersonalProjectAdmin extends StatelessWidget {
+class PersonalProjectSectionAdmin extends StatelessWidget {
   final PersonalProjectAdminController _adminController =
       PersonalProjectAdminController(PersonalProjectRepoService());
   

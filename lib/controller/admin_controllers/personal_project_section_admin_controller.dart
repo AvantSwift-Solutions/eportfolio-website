@@ -4,10 +4,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import '../../models/PersonalProject.dart';
 import '../../reposervice/personal_project_repo_services.dart'; // Import the PersonalProject class
 
-class PersonalProjectAdminController {
+class PersonalProjectSectionAdminController {
   final PersonalProjectRepoService personalProjectRepoService;
 
-  PersonalProjectAdminController(this.personalProjectRepoService); // Constructor
+  PersonalProjectSectionAdminController(this.personalProjectRepoService); // Constructor
 
   Future <List<PersonalProject>?> getPersonalProjectList() async {
     try {
