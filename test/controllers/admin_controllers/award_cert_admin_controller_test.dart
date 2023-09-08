@@ -1,4 +1,4 @@
-import 'package:avantswift_portfolio/controller/admin_controllers/award_cert_admin_controller.dart';
+import 'package:avantswift_portfolio/controllers/admin_controllers/award_cert_admin_controller.dart';
 import 'package:avantswift_portfolio/models/AwardCert.dart';
 import 'package:avantswift_portfolio/reposervice/award_cert_repo_services.dart';
 import 'package:flutter_test/flutter_test.dart';

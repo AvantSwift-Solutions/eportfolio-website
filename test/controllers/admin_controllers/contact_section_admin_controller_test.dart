@@ -1,4 +1,4 @@
-import 'package:avantswift_portfolio/controller/admin_controllers/contact_section_admin_controller.dart';
+import 'package:avantswift_portfolio/controllers/admin_controllers/contact_section_admin_controller.dart';
 import 'package:avantswift_portfolio/dto/contact_section_dto.dart';
 import 'package:avantswift_portfolio/reposervice/user_repo_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

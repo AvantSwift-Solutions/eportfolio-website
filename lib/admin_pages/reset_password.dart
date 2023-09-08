@@ -1,4 +1,4 @@
-import 'package:avantswift_portfolio/controller/admin_controllers/reset_password_controller.dart';
+import 'package:avantswift_portfolio/controllers/admin_controllers/reset_password_controller.dart';
 import 'package:flutter/material.dart';
 
 class ResetPasswordScreen extends StatefulWidget {

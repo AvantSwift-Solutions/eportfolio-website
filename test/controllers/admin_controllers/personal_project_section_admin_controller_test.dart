@@ -1,4 +1,4 @@
-import 'package:avantswift_portfolio/controller/admin_controllers/personal_project_section_admin_controller.dart';
+import 'package:avantswift_portfolio/controllers/admin_controllers/personal_project_section_admin_controller.dart';
 import 'package:avantswift_portfolio/models/PersonalProject.dart';
 import 'package:avantswift_portfolio/reposervice/personal_project_repo_services.dart';
 import 'package:flutter_test/flutter_test.dart';

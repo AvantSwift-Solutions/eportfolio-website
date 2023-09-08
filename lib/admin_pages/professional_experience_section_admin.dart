@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import '../controller/admin_controllers/professional_experience_section_admin_controller.dart';
+import '../controllers/admin_controllers/professional_experience_section_admin_controller.dart';
 import '../models/ProfessionalExperience.dart';
 import '../reposervice/professional_experience_repo_services.dart';
 import 'package:intl/intl.dart';

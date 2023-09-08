@@ -1,4 +1,4 @@
-import 'package:avantswift_portfolio/controller/view_controllers/contact_section_controller.dart';
+import 'package:avantswift_portfolio/controllers/view_controllers/contact_section_controller.dart';
 // import 'package:avantswift_portfolio/dto/contact_section_dto.dart';
 import 'package:avantswift_portfolio/reposervice/user_repo_services.dart';
 import 'package:flutter_test/flutter_test.dart';

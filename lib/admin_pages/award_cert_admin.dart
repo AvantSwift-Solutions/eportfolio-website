@@ -1,6 +1,6 @@
 // ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
 import 'dart:typed_data';
-import 'package:avantswift_portfolio/controller/admin_controllers/award_cert_admin_controller.dart';
+import 'package:avantswift_portfolio/controllers/admin_controllers/award_cert_admin_controller.dart';
 import 'package:avantswift_portfolio/reposervice/award_cert_repo_services.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';

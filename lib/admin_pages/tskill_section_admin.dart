@@ -2,7 +2,7 @@
 import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import '../controller/admin_controllers/tskill_section_admin_controller.dart';
+import '../controllers/admin_controllers/tskill_section_admin_controller.dart';
 import '../models/TSkill.dart';
 import '../reposervice/tskill_repo_services.dart';
 

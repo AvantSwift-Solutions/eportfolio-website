@@ -1,6 +1,6 @@
 // ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
 import 'package:flutter/material.dart';
-import '../controller/admin_controllers/iskill_section_admin_controller.dart';
+import '../controllers/admin_controllers/iskill_section_admin_controller.dart';
 import '../models/ISkill.dart';
 import '../reposervice/iskill_repo_services.dart';
 

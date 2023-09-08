@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../controller/view_controllers/about_me_section_controller.dart';
+import '../controllers/view_controllers/about_me_section_controller.dart';
 import '../reposervice/user_repo_services.dart';
 import '../ui/custom_texts/public_view_text_styles.dart';
 

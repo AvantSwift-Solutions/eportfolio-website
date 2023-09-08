@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:avantswift_portfolio/controller/admin_controllers/landing_page_admin_controller.dart';
+import 'package:avantswift_portfolio/controllers/admin_controllers/landing_page_admin_controller.dart';
 import 'package:avantswift_portfolio/dto/landing_page_dto.dart';
 import 'package:avantswift_portfolio/models/User.dart';
 

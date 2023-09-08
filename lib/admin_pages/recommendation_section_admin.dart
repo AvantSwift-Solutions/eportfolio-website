@@ -2,7 +2,7 @@
 import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import '../controller/admin_controllers/recommendation_section_admin_controller.dart';
+import '../controllers/admin_controllers/recommendation_section_admin_controller.dart';
 import '../models/Recommendation.dart';
 import '../reposervice/recommendation_repo_services.dart';
 

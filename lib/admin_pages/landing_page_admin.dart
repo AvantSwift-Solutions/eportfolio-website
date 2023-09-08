@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:avantswift_portfolio/reposervice/user_repo_services.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import '../controller/admin_controllers/landing_page_admin_controller.dart';
+import '../controllers/admin_controllers/landing_page_admin_controller.dart';
 
 class LandingPageAdmin extends StatelessWidget {
   final LandingPageAdminController _adminController =

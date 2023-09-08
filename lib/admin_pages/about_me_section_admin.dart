@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:avantswift_portfolio/reposervice/user_repo_services.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import '../controller/admin_controllers/about_me_section_admin_controller.dart';
+import '../controllers/admin_controllers/about_me_section_admin_controller.dart';
 
 class AboutMeSectionAdmin extends StatelessWidget {
   final AboutMeSectionAdminController _adminController =

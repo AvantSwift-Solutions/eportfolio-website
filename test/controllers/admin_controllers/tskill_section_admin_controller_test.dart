@@ -3,7 +3,7 @@ import 'package:avantswift_portfolio/reposervice/tskill_repo_services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:avantswift_portfolio/controller/admin_controllers/tskill_section_admin_controller.dart';
+import 'package:avantswift_portfolio/controllers/admin_controllers/tskill_section_admin_controller.dart';
 import 'mocks/tskill_section_admin_controller_test.mocks.dart';
 
 @GenerateMocks([TSkillRepoService])

@@ -1,4 +1,4 @@
-import 'package:avantswift_portfolio/controller/login_controller.dart';
+import 'package:avantswift_portfolio/controllers/login_controller.dart';
 import 'package:avantswift_portfolio/models/User.dart';
 import 'package:avantswift_portfolio/admin_pages/default.dart';
 import 'package:avantswift_portfolio/admin_pages/login.dart';
