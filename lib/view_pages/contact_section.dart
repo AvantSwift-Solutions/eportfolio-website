@@ -1,5 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
-import '../controller/view_controllers/contact_section_controller.dart';
+import '../controllers/view_controllers/contact_section_controller.dart';
 import '../reposervice/user_repo_services.dart';
 import '../ui/custom_view_button.dart';
 import '../ui/custom_texts/public_view_text_styles.dart';
@@ -8,13 +10,13 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ContactSection extends StatefulWidget {
-  ContactSection({Key? key}) : super(key: key);
+  const ContactSection({Key? key}) : super(key: key);
 
   @override
-  _ContactSectionState createState() => _ContactSectionState();
+  ContactSectionState createState() => ContactSectionState();
 }
 
-class _ContactSectionState extends State<ContactSection> {
+class ContactSectionState extends State<ContactSection> {
   final ContactSectionController _contactSectionController =
       ContactSectionController(UserRepoService());
   final _formKey = GlobalKey<FormState>();

@@ -34,7 +34,7 @@ jobs:
         run: sudo apt-get update > /dev/null && sudo apt-get install lcov > /dev/null
 
       - name: Run tests with coverage
-        run: flutter test --coverage test/controller test/models || true
+        run: flutter test --coverage || true
 
       - name: Check if coverage threshold is above 30%
         run: |

@@ -7,6 +7,8 @@ class SinglePageView extends StatelessWidget {
   final ScrollController _scrollController = ScrollController();
   final GlobalKey _contactKey = GlobalKey();
 
+  SinglePageView({super.key});
+
   void _scrollToContact() {
     final context = _contactKey.currentContext;
     if (context != null) {
@@ -21,8 +23,7 @@ class SinglePageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Container(
+      body: SizedBox(
         height: MediaQuery.of(context).size.height -
             kToolbarHeight -
             kBottomNavigationBarHeight, // Adjust height as needed
@@ -34,7 +35,7 @@ class SinglePageView extends StatelessWidget {
                 scrollToBottom: _scrollToContact, // Scroll to contact
               ),
               const SizedBox(height: 500), // Add some spacing
-              AboutMeSection(),
+              const AboutMeSection(),
               const SizedBox(height: 500), // Add some spacing
               ContactSection(
                   key: _contactKey), // Placeholder for contact section

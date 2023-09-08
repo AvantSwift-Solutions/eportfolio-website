@@ -4,7 +4,8 @@ class CustomViewButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
 
-  CustomViewButton({required this.text, required this.onPressed});
+  const CustomViewButton(
+      {super.key, required this.text, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {

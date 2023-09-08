@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:avantswift_portfolio/models/User.dart';
 
 void main() {
-  group('User class tests', () {
+  group('User Model tests', () {
     // Could not test fromDocumentSnapshot because it uses a
     // DocumentSnapshot which is a final class and cannot be extended?
 
@@ -33,7 +33,6 @@ void main() {
           userMap['linkedinURL'], 'https://www.linkedin.com/in/example-user/');
       expect(userMap['aboutMe'], 'This is about me');
     });
-
     // Write more tests for other methods (create, update, delete, getFirstUser)
   });
 }

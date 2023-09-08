@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import '../controller/admin_controllers/education_section_admin_controller.dart';
+import '../controllers/admin_controllers/education_section_admin_controller.dart';
 import '../models/Education.dart';
 import '../reposervice/education_repo_services.dart';
 import 'package:intl/intl.dart';
@@ -12,6 +12,8 @@ class EducationSectionAdmin extends StatelessWidget {
   final EducationSectionAdminController _adminController =
       EducationSectionAdminController(EducationRepoService());
 
+  EducationSectionAdmin({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -19,9 +21,10 @@ class EducationSectionAdmin extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
-              child: ElevatedButton(
+            child: ElevatedButton(
               onPressed: () async {
-                _showEducationList(context, await _adminController.getEducationSectionData() ?? []);
+                _showEducationList(context,
+                    await _adminController.getEducationSectionData() ?? []);
               },
               child: const Text('Edit Education Info'),
             ),
@@ -73,9 +76,8 @@ class EducationSectionAdmin extends StatelessWidget {
     );
   }
 
-  
-  void _showAddNewDialog(BuildContext context, List<Education> educationList) async {
-
+  void _showAddNewDialog(
+      BuildContext context, List<Education> educationList) async {
     final education = Education(
       eid: '',
       startDate: Timestamp.now(),
@@ -86,41 +88,34 @@ class EducationSectionAdmin extends StatelessWidget {
       description: '',
     );
 
-    _showEducationDialog(context, education,
-      (edu) async {
-        edu.create();
-        return true;
-      });
-
+    _showEducationDialog(context, education, (edu) async {
+      edu.create();
+      return true;
+    });
   }
 
   void _showEditDialog(BuildContext context, int i) async {
-
-    final educationSectionData
-      = await _adminController.getEducationSectionData();
+    final educationSectionData =
+        await _adminController.getEducationSectionData();
     final education = educationSectionData![i];
 
-    _showEducationDialog(context, education,
-      (edu) async {
-        return await _adminController.updateEducationSectionData(i, edu)
-          ?? false;
-      });
-
+    _showEducationDialog(context, education, (edu) async {
+      return await _adminController.updateEducationSectionData(i, edu) ?? false;
+    });
   }
 
   void _showEducationDialog(BuildContext context, Education education,
-    Future<bool> Function(Education) onEducationUpdated) {
-      
-    TextEditingController schoolNameController = 
+      Future<bool> Function(Education) onEducationUpdated) {
+    TextEditingController schoolNameController =
         TextEditingController(text: education.schoolName);
-    TextEditingController degreeController = 
+    TextEditingController degreeController =
         TextEditingController(text: education.degree);
-    TextEditingController descriptionController = 
+    TextEditingController descriptionController =
         TextEditingController(text: education.description);
-    TextEditingController startDateController
-      = TextEditingController(text: DateFormat('MMMM d, y').format(education.startDate!.toDate()));
-    TextEditingController endDateController
-      = TextEditingController(text: DateFormat('MMMM d, y').format(education.endDate!.toDate()));
+    TextEditingController startDateController = TextEditingController(
+        text: DateFormat('MMMM d, y').format(education.startDate!.toDate()));
+    TextEditingController endDateController = TextEditingController(
+        text: DateFormat('MMMM d, y').format(education.endDate!.toDate()));
 
     Uint8List? pickedImageBytes;
 
@@ -132,8 +127,6 @@ class EducationSectionAdmin extends StatelessWidget {
     } else {
       title = 'Edit your education information for ${education.schoolName}';
     }
-
-    
 
     Navigator.of(context).pop();
     showDialog(
@@ -149,26 +142,27 @@ class EducationSectionAdmin extends StatelessWidget {
                     TextField(
                       controller: schoolNameController,
                       onChanged: (value) => education.schoolName = value,
-                      decoration: const InputDecoration(labelText: 'School Name'),
+                      decoration:
+                          const InputDecoration(labelText: 'School Name'),
                     ),
                     TextField(
                       controller: degreeController,
-                      onChanged: (value) =>
-                          education.degree = value,
+                      onChanged: (value) => education.degree = value,
                       decoration: const InputDecoration(labelText: 'Degree'),
                     ),
                     TextField(
                       controller: descriptionController,
-                      onChanged: (value) =>
-                          education.description = value,
-                      decoration: const InputDecoration(labelText: 'Description'),
+                      onChanged: (value) => education.description = value,
+                      decoration:
+                          const InputDecoration(labelText: 'Description'),
                     ),
                     Row(
                       children: [
                         Expanded(
                           child: TextField(
                             controller: startDateController,
-                            decoration: const InputDecoration(labelText: 'Start Date'),
+                            decoration:
+                                const InputDecoration(labelText: 'Start Date'),
                           ),
                         ),
                         IconButton(
@@ -180,9 +174,11 @@ class EducationSectionAdmin extends StatelessWidget {
                               lastDate: DateTime(2100),
                             );
                             if (pickedDate != null) {
-                              final formattedDate = DateFormat('MMMM d, y').format(pickedDate);
+                              final formattedDate =
+                                  DateFormat('MMMM d, y').format(pickedDate);
                               startDateController.text = formattedDate;
-                              education.startDate = Timestamp.fromDate(pickedDate);
+                              education.startDate =
+                                  Timestamp.fromDate(pickedDate);
                             }
                           },
                           icon: const Icon(Icons.calendar_today),
@@ -194,7 +190,8 @@ class EducationSectionAdmin extends StatelessWidget {
                         Expanded(
                           child: TextField(
                             controller: endDateController,
-                            decoration: const InputDecoration(labelText: 'End Date'),
+                            decoration:
+                                const InputDecoration(labelText: 'End Date'),
                           ),
                         ),
                         IconButton(
@@ -206,16 +203,19 @@ class EducationSectionAdmin extends StatelessWidget {
                               lastDate: DateTime(2100),
                             );
                             if (pickedDate != null) {
-                              final formattedDate = DateFormat('MMMM d, y').format(pickedDate);
+                              final formattedDate =
+                                  DateFormat('MMMM d, y').format(pickedDate);
                               endDateController.text = formattedDate;
-                              education.endDate = Timestamp.fromDate(pickedDate);
+                              education.endDate =
+                                  Timestamp.fromDate(pickedDate);
                             }
                           },
                           icon: const Icon(Icons.calendar_today),
                         ),
                       ],
                     ),
-                    if (pickedImageBytes != null) Image.memory(pickedImageBytes!),
+                    if (pickedImageBytes != null)
+                      Image.memory(pickedImageBytes!),
                     ElevatedButton(
                       onPressed: () async {
                         Uint8List? imageBytes = await _pickImage();
@@ -235,8 +235,8 @@ class EducationSectionAdmin extends StatelessWidget {
                     onPressed: () async {
                       final name = education.schoolName;
                       education.delete();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Education info for $name deleted')));
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('Education info for $name deleted')));
                       Navigator.pop(dialogContext);
                     },
                     child: const Text('Delete'),
@@ -253,11 +253,11 @@ class EducationSectionAdmin extends StatelessWidget {
                     }
                     bool isSuccess = await onEducationUpdated(education);
                     if (isSuccess) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Education info updated')));
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('Education info updated')));
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Error updating education info')));
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('Error updating education info')));
                     }
                     Navigator.pop(dialogContext);
                   },
@@ -290,5 +290,4 @@ class EducationSectionAdmin extends StatelessWidget {
 
     return null;
   }
-
 }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthState {
@@ -15,7 +17,7 @@ class AuthState {
         password: password,
       );
     } catch (e) {
-      print('Login Error: $e');
+      log('Login Error: $e');
       return null;
     }
   }

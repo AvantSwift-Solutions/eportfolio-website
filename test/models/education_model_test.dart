@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:avantswift_portfolio/models/Education.dart';
 
 void main() {
-  group('Education class tests', () {
+  group('Education Model tests', () {
     // Could not test fromDocumentSnapshot because it uses a
     // DocumentSnapshot which is a final class and cannot be extended?
 
@@ -28,6 +28,5 @@ void main() {
       expect(educationMap['degree'], 'Degree name');
       expect(educationMap['description'], 'This is a degree');
     });
-
   });
 }

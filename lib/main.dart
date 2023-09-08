@@ -1,4 +1,4 @@
-import 'package:avantswift_portfolio/controller/login_controller.dart';
+import 'package:avantswift_portfolio/controllers/login_controller.dart';
 import 'package:avantswift_portfolio/models/User.dart';
 import 'package:avantswift_portfolio/admin_pages/default.dart';
 import 'package:avantswift_portfolio/admin_pages/login.dart';
@@ -25,13 +25,13 @@ void main() async {
 class MyApp extends StatefulWidget {
   final AuthState authState;
 
-  MyApp({required this.authState, Key? key}) : super(key: key);
+  const MyApp({required this.authState, Key? key}) : super(key: key);
 
   @override
-  _MyAppState createState() => _MyAppState();
+  MyAppState createState() => MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class MyAppState extends State<MyApp> {
   final LoginController loginController = LoginController();
 
   @override
@@ -62,7 +62,7 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
       ),
-      initialRoute: '/landing-page',
+      initialRoute: '/login',
       routes: {
         '/landing-page': (context) => SinglePageView(),
         '/login': (context) => LoginPage(

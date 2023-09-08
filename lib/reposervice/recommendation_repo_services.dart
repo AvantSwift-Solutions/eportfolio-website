@@ -9,10 +9,10 @@ class RecommendationRepoService {
           await FirebaseFirestore.instance.collection('Recommendation').get();
       final tmp = snapshot.docs
           .map((doc) => Recommendation.fromDocumentSnapshot(doc))
-          .toList();  
+          .toList();
       return tmp;
     } catch (e) {
-      log('error: $e');  
+      log('Error getting all recommendations: $e');
       return null;
     }
   }

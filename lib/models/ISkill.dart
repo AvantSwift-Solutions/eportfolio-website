@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
@@ -34,9 +36,8 @@ class ISkill {
           .collection('ISkill')
           .doc(isid)
           .set(toMap());
-      print('ISkill document created');
     } catch (e) {
-      print('Error creating ISkill document: $e');
+      log('Error creating ISkill document: $e');
     }
   }
 
@@ -48,20 +49,16 @@ class ISkill {
           .update(toMap());
       return true;
     } catch (e) {
-      print('Error updating ISkill document: $e');
+      log('Error updating ISkill document: $e');
       return false;
     }
   }
 
   Future<void> delete() async {
     try {
-      await FirebaseFirestore.instance
-          .collection('ISkill')
-          .doc(isid)
-          .delete();
-      print('ISkill document deleted');
+      await FirebaseFirestore.instance.collection('ISkill').doc(isid).delete();
     } catch (e) {
-      print('Error deleting ISkill document: $e');
+      log('Error deleting ISkill document: $e');
     }
   }
 }
