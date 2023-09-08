@@ -32,81 +32,58 @@ void main() {
   });
 
   group('Project section admin controller tests', () {
-  test('getAllProjects returns a list of  projects', () async {
-    when(mockRepoService.getAllProjects()).thenAnswer((_) async => [pp1, pp2]);
+    test('getAllProjects returns a list of  projects', () async {
+      when(mockRepoService.getAllProjects()).thenAnswer((_) async => [pp1, pp2]);
 
-    final projects = await controller.getProjectList();
+      final projects = await controller.getProjectList();
+      expect(projects?.length, 2);
+      var project1 = projects?[0];
+      var project2 = projects?[1];
+      expect(project1?.ppid, pp1.ppid);
+      expect(project1?.name, pp1.name);
+      expect(project2?.ppid, pp2.ppid);
+      expect(project2?.name, pp2.name);
+    });
 
-    // expect(Projects, isA<List<Project>>());
-    expect(projects?.length, equals(2));
-  });
+    test('getAllProjects returns null on error', () async {
+      when(mockRepoService.getAllProjects()).thenThrow(Exception('Test Exception'));
 
-  test('getAllProjects returns null on error', () async {
-    when(mockRepoService.getAllProjects()).thenThrow(Exception('Test Exception'));
+      final projects = await controller.getProjectList();
+      expect(projects, null);
+    });
 
-    final projects = await controller.getProjectList();
+    test('updateProjectData returns true on successful update', () async {
+      when(mockRepoService.getAllProjects()).thenAnswer((_) async
+        => [pp1, pp2]);
+      when(pp1.update()).thenAnswer((_) async => true);
 
-    // expect(Projects, isA<List<Project>>());
-    expect(projects, null);
-  });
+      final updateResult = await controller.updateProjectData(0,
+        Project(
+          ppid: 'mockId1',
+          name: 'Updated Project',
+        ),
+      );
 
-  test('updateProjectData returns true on successful update', () async {
-    when(mockRepoService.getAllProjects()).thenAnswer((_) async
-      => [pp1, pp2]);
-    when(pp1.update()).thenAnswer((_) async => true);
+      expect(updateResult, true);
+      verify(pp1.name = 'Updated Project');
 
-    final updateResult = await controller.updateProjectData(0,
-      Project(
-        ppid: 'mockId1',
-        name: 'Updated Project',
-      ),
-    );
+      verify(pp1.update()); // Verify that the method was called
+    });
 
-    expect(updateResult, true);
-    verify(pp1.name = 'Updated Project');
+    test('updateProjectData returns false when  project is empty', () async {
+      when(mockRepoService.getAllProjects()).thenAnswer((_) async => null);
 
-    verify(pp1.update()); // Verify that the method was called
-  });
+      final updateResult = await controller.updateProjectData(0,
+        Project(
+          ppid: 'mockId1',
+          name: 'Updated Project',
+        ),
+      );
 
-  test('updateProjectData returns false when  project is empty', () async {
-    when(mockRepoService.getAllProjects()).thenAnswer((_) async => null);
+      expect(updateResult, false);
 
-    final updateResult = await controller.updateProjectData(0,
-      Project(
-        ppid: 'mockId1',
-        name: 'Updated Project',
-      ),
-    );
-
-    expect(updateResult, false);
-
-    verifyNever(pp1.update());
-    verifyNever(pp2.update());
-  });
-
-  // test('deleteProject deletes an existing  project', () async {
-  //   final mockProjects = [pp1,pp2];
-  //   const indexToDelete = 1;
-
-  //   when(mockRepoService.getAllProjects()).thenAnswer((_) async => mockProjects);
-  //   when(mockProjects[indexToDelete].delete()).thenAnswer((_) async {});
-
-  //   final deletedResult = await controller.deleteProject(indexToDelete);
-
-  //   expect(deletedResult, isTrue);
-  //   verify(mockProjects[indexToDelete].delete());
-  // });
-
-  // test('deleteProject returns false on error', () async {
-  //   final mockProjects = [pp1];
-  //   const indexToDelete = 0;
-
-  //   when(mockRepoService.getAllProjects()).thenAnswer((_) async => mockProjects);
-  //   when(mockProjects[indexToDelete].delete()).thenThrow(Exception('Test Exception'));
-
-  //   final deleteResult = await controller.deleteProject(indexToDelete);
-
-  //   expect(deleteResult, isFalse);
-  // });
+      verifyNever(pp1.update());
+      verifyNever(pp2.update());
+    });
   });
 }
