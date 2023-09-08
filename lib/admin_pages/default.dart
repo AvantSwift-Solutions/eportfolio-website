@@ -1,3 +1,4 @@
+import 'package:avantswift_portfolio/admin_pages/award_cert_admin.dart';
 import 'package:avantswift_portfolio/admin_pages/education_section_admin.dart';
 import 'package:avantswift_portfolio/admin_pages/landing_page_admin.dart';
 import 'package:avantswift_portfolio/admin_pages/about_me_section_admin.dart';
@@ -39,8 +40,11 @@ class DefaultPage extends StatelessWidget {
               ProfessionalExperienceSectionAdmin(),
               TSkillSectionAdmin(),
               ISkillSectionAdmin(),
+              ProfessionalExperienceSectionAdmin(),
+              ContactSectionAdmin(),
               EducationSectionAdmin(),
               PersonalProjectSectionAdmin(),
+              AwardCertAdmin(),
               RecommendationSectionAdmin(),
               ContactSectionAdmin(),
             ],

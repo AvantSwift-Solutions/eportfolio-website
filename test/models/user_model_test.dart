@@ -33,7 +33,6 @@ void main() {
           userMap['linkedinURL'], 'https://www.linkedin.com/in/example-user/');
       expect(userMap['aboutMe'], 'This is about me');
     });
-
     // Write more tests for other methods (create, update, delete, getFirstUser)
   });
 }

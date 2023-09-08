@@ -62,7 +62,7 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
       ),
-      initialRoute: '/landing-page',
+      initialRoute: '/login',
       routes: {
         '/landing-page': (context) => SinglePageView(),
         '/login': (context) => LoginPage(
