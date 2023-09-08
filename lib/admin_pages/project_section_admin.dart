@@ -12,8 +12,6 @@ class ProjectSectionAdmin extends StatelessWidget {
   final ProjectSectionAdminController _adminController =
       ProjectSectionAdminController(ProjectRepoService());
 
-  ProjectSectionAdmin({super.key});
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -26,7 +24,7 @@ class ProjectSectionAdmin extends StatelessWidget {
                 _showEditDialog(
                     context, await _adminController.getProjectList());
               },
-              child: const Text('Edit  Project'),
+              child: const Text('Edit Project'),
             ),
           ),
         ],
@@ -39,7 +37,7 @@ class ProjectSectionAdmin extends StatelessWidget {
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: const Text('Edit  Project'),
+          title: const Text('Edit Project'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -48,7 +46,7 @@ class ProjectSectionAdmin extends StatelessWidget {
                   Navigator.of(dialogContext).pop();
                   _showAddProjectDialog(context, projects!);
                 },
-                child: const Text('Add  Project'),
+                child: const Text('Add Project'),
               ),
               ElevatedButton(
                 onPressed: () async {
@@ -85,7 +83,7 @@ class ProjectSectionAdmin extends StatelessWidget {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: const Text('Add  Project'),
+              title: const Text('Add Project'),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -138,7 +136,7 @@ class ProjectSectionAdmin extends StatelessWidget {
                     Navigator.of(dialogContext).pop();
                     setState(() {});
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Added a new  project')),
+                      const SnackBar(content: Text('Added a new project')),
                     );
                   },
                   child: const Text('Add'),
@@ -284,13 +282,13 @@ class ProjectSectionAdmin extends StatelessWidget {
                       Navigator.of(dialogContext).pop();
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                            content: Text('Updated an existing  project')),
+                            content: Text('Updated an existing project')),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                             content:
-                                Text('Failed to update an existing  project')),
+                                Text('Failed to update an existing project')),
                       );
                     }
                   },

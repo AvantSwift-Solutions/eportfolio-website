@@ -26,7 +26,7 @@ class ExperienceSectionAdmin extends StatelessWidget {
                 _showExperienceList(context,
                     await _adminController.getExperienceSectionData() ?? []);
               },
-              child: const Text('Edit  Experience Info'),
+              child: const Text('Edit Experience Info'),
             ),
           ),
         ],
@@ -40,7 +40,7 @@ class ExperienceSectionAdmin extends StatelessWidget {
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: const Text(' Experience List'),
+          title: const Text('Experience List'),
           content: SizedBox(
             width: 200,
             child: experienceList.isNotEmpty
@@ -56,7 +56,7 @@ class ExperienceSectionAdmin extends StatelessWidget {
                       );
                     },
                   )
-                : const Text('No  experience data available.'),
+                : const Text('No experience data available.'),
           ),
           actions: <Widget>[
             TextButton(
@@ -69,7 +69,7 @@ class ExperienceSectionAdmin extends StatelessWidget {
               onPressed: () {
                 _showAddNewDialog(context, experienceList);
               },
-              child: const Text('Add New  Experience'),
+              child: const Text('Add New Experience'),
             ),
           ],
         );
@@ -127,10 +127,10 @@ class ExperienceSectionAdmin extends StatelessWidget {
     String title;
     var newExperience = false;
     if (experience.jobTitle == '') {
-      title = 'Add new  experience information';
+      title = 'Add new experience information';
       newExperience = true;
     } else {
-      title = 'Edit your  experience information for ${experience.jobTitle}';
+      title = 'Edit your experience information for ${experience.jobTitle}';
     }
 
     Navigator.of(context).pop();
@@ -246,7 +246,7 @@ class ExperienceSectionAdmin extends StatelessWidget {
                       final name = experience.jobTitle;
                       experience.delete();
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(' experience info for $name deleted')));
+                          content: Text('Experience info for $name deleted')));
                       Navigator.pop(dialogContext);
                     },
                     child: const Text('Delete'),
@@ -264,10 +264,10 @@ class ExperienceSectionAdmin extends StatelessWidget {
                     bool isSuccess = await onExperienceUpdated(experience);
                     if (isSuccess) {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text(' experience info updated')));
+                          content: Text('Experience info updated')));
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text('Error updating  experience info')));
+                          content: Text('Error updating experience info')));
                     }
                     Navigator.pop(dialogContext);
                   },
