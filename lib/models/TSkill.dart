@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
@@ -39,9 +41,8 @@ class TSkill {
           .collection('TSkill')
           .doc(tsid)
           .set(toMap());
-      print('TSkill document created');
     } catch (e) {
-      print('Error creating TSkill document: $e');
+      log('Error creating TSkill document: $e');
     }
   }
 
@@ -53,7 +54,7 @@ class TSkill {
           .update(toMap());
       return true;
     } catch (e) {
-      print('Error updating TSkill document: $e');
+      log('Error updating TSkill document: $e');
       return false;
     }
   }
@@ -64,9 +65,8 @@ class TSkill {
           .collection('TSkill')
           .doc(tsid)
           .delete();
-      print('TSkill document deleted');
     } catch (e) {
-      print('Error deleting TSkill document: $e');
+      log('Error deleting TSkill document: $e');
     }
   }
 }

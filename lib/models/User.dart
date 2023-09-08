@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
@@ -50,6 +52,7 @@ class User {
           linkedinURL: linkedinURL,
           aboutMe: aboutMe);
     } catch (e) {
+      log('Error creating User from document snapshot: $e');
       rethrow;
     }
   }
@@ -72,9 +75,8 @@ class User {
   Future<void> create() async {
     try {
       await FirebaseFirestore.instance.collection('User').doc(uid).set(toMap());
-      print('User document created');
     } catch (e) {
-      print('Error creating user document: $e');
+      log('Error creating user document: $e');
     }
   }
 
@@ -86,6 +88,7 @@ class User {
           .update(toMap());
       return true;
     } catch (e) {
+      log('Error updating user document: $e');
       return false;
     }
   }
@@ -93,9 +96,8 @@ class User {
   Future<void> delete() async {
     try {
       await FirebaseFirestore.instance.collection('User').doc(uid).delete();
-      print('User document deleted');
     } catch (e) {
-      print('Error deleting user document: $e');
+      log('Error deleting user document: $e');
     }
   }
 }

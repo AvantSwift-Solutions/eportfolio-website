@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
@@ -50,9 +52,8 @@ class Recommendation {
     try {
       final id = const Uuid().v4();
       await FirebaseFirestore.instance.collection('Recommendation').doc(id).set(toMap());
-      print('Recommendation document created');
     } catch (e) {
-      print('Error creating recommendation document: $e');
+      log('Error creating recommendation document: $e');
     }
   }
 
@@ -64,6 +65,7 @@ class Recommendation {
           .update(toMap());
       return true;
     } catch (e) {
+      log('Error updating recommendation document: $e');
       return false;
     }
   }
@@ -71,9 +73,8 @@ class Recommendation {
   Future<void> delete() async {
     try {
       await FirebaseFirestore.instance.collection('Recommendation').doc(rid).delete();
-      print('Recommendation document deleted');
     } catch (e) {
-      print('Error deleting recommendation document: $e');
+      log('Error deleting recommendation document: $e');
     }
   }
 

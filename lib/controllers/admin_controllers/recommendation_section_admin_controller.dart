@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
 import '../../models/Recommendation.dart';
@@ -13,6 +14,7 @@ class RecommendationSectionAdminController {
       List<Recommendation>? allRecommendations = await recommendationRepoService.getAllRecommendations();
       return allRecommendations;
     } catch (e) {
+      log('Error getting Recommendation list: $e');
       return null;
     }
   }
@@ -33,6 +35,7 @@ class RecommendationSectionAdminController {
         return false;
       }
     } catch (e) {
+      log('Error updating Recommendation: $e');
       return false;
     }
   }
@@ -46,7 +49,7 @@ class RecommendationSectionAdminController {
       final imageURL = await snapshot.ref.getDownloadURL();
       return imageURL;
     } catch (e) {
-      print('Error uploading image: $e');
+      log('Error uploading image: $e');
       return null;
     }
   }

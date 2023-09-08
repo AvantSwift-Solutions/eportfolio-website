@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import '../../dto/landing_page_dto.dart';
 import '../../models/User.dart';
 import '../../reposervice/user_repo_services.dart';
@@ -27,6 +29,7 @@ class LandingPageController {
         );
       }
     } catch (e) {
+      log('Error getting landing page data: $e');
       return LandingPageDTO(
         name: 'Error',
         landingPageTitle: 'Error',

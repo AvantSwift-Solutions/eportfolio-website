@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:avantswift_portfolio/reposervice/tskill_repo_services.dart';
@@ -15,6 +16,7 @@ class TSkillSectionAdminController {
       List<TSkill>? allTSkill = await tSkillRepoService.getAllTSkill();
       return allTSkill;
     } catch (e) {
+      log('Error getting TSkill list: $e');
       return null;
     }
   }
@@ -32,6 +34,7 @@ class TSkillSectionAdminController {
         return false;
       }
     } catch (e) {
+      log('Error updating TSkill: $e');
       return false;
     }
   }
@@ -45,7 +48,7 @@ class TSkillSectionAdminController {
       final imageURL = await snapshot.ref.getDownloadURL();
       return imageURL;
     } catch (e) {
-      print('Error uploading image: $e');
+      log('Error uploading image: $e');
       return null;
     }
   }

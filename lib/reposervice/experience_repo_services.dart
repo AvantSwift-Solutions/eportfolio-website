@@ -12,7 +12,7 @@ class ExperienceRepoService {
           .toList();  
       return tmp;
     } catch (e) {
-      log('error: $e');  
+      log('Error getting all experiences: $e');  
       return null;
     }
   }

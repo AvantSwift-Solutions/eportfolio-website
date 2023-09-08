@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -22,7 +24,7 @@ class ResetPasswordController {
       }
       return false; // No user found in the collection
     } catch (e) {
-      print("Error sending password reset email: $e");
+      log("Error sending password reset email: $e");
       return false; // Email sending failed
     }
   }

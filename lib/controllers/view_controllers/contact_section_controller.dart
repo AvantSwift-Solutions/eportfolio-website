@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '../../dto/contact_section_dto.dart';
 import '../../models/User.dart';
 import '../../reposervice/user_repo_services.dart';
@@ -26,6 +28,7 @@ class ContactSectionController {
         );
       }
     } catch (e) {
+      log('Error getting contact section data: $e');
       return ContactSectionDTO(
         name: 'Error',
         contactEmail: 'Error',
@@ -67,6 +70,10 @@ class ContactSectionController {
         },
       }),
     );
+
+    if (response.body != 'OK') {
+      log('Error sending email: ${response.body}');
+    }
 
     return response.body == 'OK';
 

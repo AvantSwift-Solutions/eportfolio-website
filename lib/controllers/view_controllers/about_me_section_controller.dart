@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '../../dto/about_me_section_dto.dart';
 import '../../models/User.dart';
 import '../../reposervice/user_repo_services.dart';
@@ -22,6 +24,7 @@ class AboutMeSectionController {
         );
       }
     } catch (e) {
+      log('Error getting about me section data: $e');
       return AboutMeSectionDTO(
         aboutMe: 'Error',
         imageURL: 'https://example.com/error.jpg',

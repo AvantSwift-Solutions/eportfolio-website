@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
@@ -47,9 +49,8 @@ class Project {
     try {
       final ppid = const Uuid().v4();
       await FirebaseFirestore.instance.collection('Project').doc(ppid).set(toMap());
-      print(' project document created');
     } catch (e) {
-      print('Error creating  project document: $e');
+      log('Error creating project document: $e');
     }
   }
 
@@ -61,6 +62,7 @@ class Project {
           .update(toMap());
       return true;
     } catch (e) {
+      log('Error updating project document: $e');
       return false;
     }
   }
@@ -68,9 +70,8 @@ class Project {
   Future<void> delete() async {
     try {
       await FirebaseFirestore.instance.collection('Project').doc(ppid).delete();
-      print(' project document deleted');
     } catch (e) {
-      print('Error deleting  project document: $e');
+      log('Error deleting project document: $e');
     }
   }
 }

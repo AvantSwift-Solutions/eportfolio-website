@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
@@ -59,9 +61,8 @@ class Education {
           .collection('Education')
           .doc(eid)
           .set(toMap());
-      print('Education document created');
     } catch (e) {
-      print('Error creating education document: $e');
+      log('Error creating education document: $e');
     }
   }
 
@@ -73,7 +74,7 @@ class Education {
           .update(toMap());
       return true;
     } catch (e) {
-      print('Error updating education document: $e');
+      log('Error updating education document: $e');
       return false;
     }
   }
@@ -84,9 +85,8 @@ class Education {
           .collection('Education')
           .doc(eid)
           .delete();
-      print('Education document deleted');
     } catch (e) {
-      print('Error deleting education document: $e');
+      log('Error deleting education document: $e');
     }
   }
 }

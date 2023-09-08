@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
@@ -65,9 +67,8 @@ class Experience {
     try {
       final id = const Uuid().v4();
       await FirebaseFirestore.instance.collection('Experience').doc(id).set(toMap());
-      print(' experience document created');
     } catch (e) {
-      print('Error creating  experience document: $e');
+      log('Error creating experience document: $e');
     }
   }
 
@@ -79,6 +80,7 @@ class Experience {
           .update(toMap());
       return true;
     } catch (e) {
+      log('Error updating experience document: $e');
       return false;
     }
   }
@@ -86,9 +88,8 @@ class Experience {
   Future<void> delete() async {
     try {
       await FirebaseFirestore.instance.collection('Experience').doc(peid).delete();
-      print('User document deleted');
     } catch (e) {
-      print('Error deleting user document: $e');
+      log('Error deleting experience document: $e');
     }
   }
 

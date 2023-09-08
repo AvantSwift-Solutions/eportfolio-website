@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -14,7 +15,7 @@ class AwardCertAdminController {
       List<AwardCert>? awardCerts = await awardCertRepoService.getAllAwardCert();
       return awardCerts;
     } catch (e) {
-      print('Error getting AwardCert list: $e');
+      log('Error getting AwardCert list: $e');
       return null;
     }
   }
@@ -33,7 +34,7 @@ class AwardCertAdminController {
       bool updateSuccess = await awardCerts?[index].update() ?? false;
       return updateSuccess;
     } catch (e) {
-      print('Error updating awardCert: $e');
+      log('Error updating awardCert: $e');
       return false;
     }
   }
@@ -45,7 +46,7 @@ class AwardCertAdminController {
       await awardCerts?[index].delete();
       return true;
     } catch (e) {
-      print('Error deleting award cert: $e');
+      log('Error deleting award cert: $e');
       return false;
     }
   }
@@ -60,7 +61,7 @@ class AwardCertAdminController {
       final imageURL = await snapshot.ref.getDownloadURL();
       return imageURL;
     } catch (e) {
-      print('Error uploading image: $e');
+      log('Error uploading image: $e');
       return null;
     }
   }

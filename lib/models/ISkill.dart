@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
@@ -34,9 +36,8 @@ class ISkill {
           .collection('ISkill')
           .doc(isid)
           .set(toMap());
-      print('ISkill document created');
     } catch (e) {
-      print('Error creating ISkill document: $e');
+      log('Error creating ISkill document: $e');
     }
   }
 
@@ -48,7 +49,7 @@ class ISkill {
           .update(toMap());
       return true;
     } catch (e) {
-      print('Error updating ISkill document: $e');
+      log('Error updating ISkill document: $e');
       return false;
     }
   }
@@ -59,9 +60,8 @@ class ISkill {
           .collection('ISkill')
           .doc(isid)
           .delete();
-      print('ISkill document deleted');
     } catch (e) {
-      print('Error deleting ISkill document: $e');
+      log('Error deleting ISkill document: $e');
     }
   }
 }

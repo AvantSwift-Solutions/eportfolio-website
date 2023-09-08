@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:avantswift_portfolio/reposervice/iskill_repo_services.dart';
 import '../../models/ISkill.dart';
 
@@ -11,6 +12,7 @@ class ISkillSectionAdminController {
       List<ISkill>? allISkill = await iSkillRepoService.getAllISkill();
       return allISkill;
     } catch (e) {
+      log('Error getting ISkill list: $e');
       return null;
     }
   }
@@ -27,6 +29,7 @@ class ISkillSectionAdminController {
         return false;
       }
     } catch (e) {
+      log('Error updating ISkill: $e');
       return false;
     }
   }

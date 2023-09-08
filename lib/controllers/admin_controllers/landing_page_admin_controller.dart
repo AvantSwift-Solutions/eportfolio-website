@@ -1,6 +1,6 @@
+import 'dart:developer';
 import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
-
 import '../../dto/landing_page_dto.dart';
 import '../../models/User.dart';
 import '../../reposervice/user_repo_services.dart'; // Import the User class
@@ -29,6 +29,7 @@ class LandingPageAdminController {
         );
       }
     } catch (e) {
+      log('Error getting landing page data: $e');
       return LandingPageDTO(
         name: 'Error',
         landingPageTitle: 'Error',
@@ -57,6 +58,7 @@ class LandingPageAdminController {
         return false;
       }
     } catch (e) {
+      log('Error updating landing page data: $e');
       return false;
     }
   }
@@ -70,7 +72,7 @@ class LandingPageAdminController {
       final imageURL = await snapshot.ref.getDownloadURL();
       return imageURL;
     } catch (e) {
-      print('Error uploading image: $e');
+      log('Error uploading image: $e');
       return null;
     }
   }

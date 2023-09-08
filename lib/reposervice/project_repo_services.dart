@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../models/Project.dart';
@@ -14,7 +16,7 @@ class ProjectRepoService {
         return [];
       }
     } catch (e) {
-      print('Error fetching all projects: $e');
+      log('Error getting all projects: $e');
       return [];
     }
   }

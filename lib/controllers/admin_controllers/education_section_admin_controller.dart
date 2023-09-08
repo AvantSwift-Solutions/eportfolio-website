@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
@@ -15,6 +16,7 @@ class EducationSectionAdminController {
       List<Education>? allEducation = await educationRepoService.getAllEducation();
       return allEducation;
     } catch (e) {
+      log('Error getting Education list: $e');
       return null;
     }
   }
@@ -37,6 +39,7 @@ class EducationSectionAdminController {
         return false;
       }
     } catch (e) {
+      log('Error updating Education: $e');
       return false;
     }
   }
@@ -50,7 +53,7 @@ class EducationSectionAdminController {
       final imageURL = await snapshot.ref.getDownloadURL();
       return imageURL;
     } catch (e) {
-      print('Error uploading image: $e');
+      log('Error uploading image: $e');
       return null;
     }
   }

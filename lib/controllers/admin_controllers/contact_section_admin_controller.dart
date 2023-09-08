@@ -1,3 +1,4 @@
+import 'dart:developer';
 import '../../dto/contact_section_dto.dart';
 import '../../models/User.dart';
 import '../../reposervice/user_repo_services.dart'; // Import the User class
@@ -24,6 +25,7 @@ class ContactSectionAdminController {
         );
       }
     } catch (e) {
+      log('Error getting contact section data: $e');
       return ContactSectionDTO(
         name: 'Error',
         contactEmail: 'Error',
@@ -46,6 +48,7 @@ class ContactSectionAdminController {
         return false;
       }
     } catch (e) {
+      log('Error updating contact section data: $e');
       return false;
     }
   }

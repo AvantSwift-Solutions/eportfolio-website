@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../models/AwardCert.dart';
@@ -14,7 +16,7 @@ class AwardCertRepoService {
         return [];
       }
     } catch (e) {
-      print('Error fetching all AwardCert: $e');
+      log('Error fetching all AwardCert: $e');
       return [];
     }
   }

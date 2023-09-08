@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -14,7 +15,7 @@ class ProjectSectionAdminController {
       List<Project>? Projects = await projectRepoService.getAllProjects();
       return Projects;
     } catch (e) {
-      print('Error getting  project list: $e');
+      log('Error getting  project list: $e');
       return null;
     }
   }
@@ -31,7 +32,7 @@ class ProjectSectionAdminController {
       bool? updateSuccess = await Projects?[index].update() ?? false;
       return updateSuccess;
     } catch (e) {
-      print('Error updating  project: $e');
+      log('Error updating  project: $e');
       return false;
     }
   }
@@ -43,7 +44,7 @@ class ProjectSectionAdminController {
       await Projects?[index].delete();
       return true;
     } catch (e) {
-      print('Error deleting  project: $e');
+      log('Error deleting  project: $e');
       return false;
     }
   }
@@ -58,7 +59,7 @@ class ProjectSectionAdminController {
       final imageURL = await snapshot.ref.getDownloadURL();
       return imageURL;
     } catch (e) {
-      print('Error uploading image: $e');
+      log('Error uploading image: $e');
       return null;
     }
   }

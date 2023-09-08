@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
 import '../../models/Experience.dart';
@@ -13,6 +14,7 @@ class ExperienceSectionAdminController {
       List<Experience>? allExperiences = await experienceRepoService.getAllExperiences();
       return allExperiences;
     } catch (e) {
+      log('Error getting Experience list: $e');
       return null;
     }
   }
@@ -36,6 +38,7 @@ class ExperienceSectionAdminController {
         return false;
       }
     } catch (e) {
+      log('Error updating Experience: $e');
       return false;
     }
   }
@@ -49,7 +52,7 @@ class ExperienceSectionAdminController {
       final imageURL = await snapshot.ref.getDownloadURL();
       return imageURL;
     } catch (e) {
-      print('Error uploading image: $e');
+      log('Error uploading image: $e');
       return null;
     }
   }

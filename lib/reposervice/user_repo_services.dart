@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../models/User.dart';
@@ -13,6 +15,7 @@ class UserRepoService {
         return null;
       }
     } catch (e) {
+      log('Error getting first user: $e');
       return null;
     }
   }
