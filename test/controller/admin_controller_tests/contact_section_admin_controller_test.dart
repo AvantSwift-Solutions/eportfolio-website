@@ -7,7 +7,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:avantswift_portfolio/models/User.dart';
 
-import 'contact_section_admin_controller_test.mocks.dart';
+import 'mocks/contact_section_admin_controller_test.mocks.dart';
 
 @GenerateMocks([UserRepoService])
 class MockUser extends Mock implements User {}

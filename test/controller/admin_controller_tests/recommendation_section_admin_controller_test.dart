@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:avantswift_portfolio/controller/admin_controllers/recommendation_section_admin_controller.dart';
-import 'recommendation_section_admin_controller_test.mocks.dart';
+import 'mocks/recommendation_section_admin_controller_test.mocks.dart';
 
 @GenerateMocks([RecommendationRepoService])
 class MockRecommendation extends Mock implements Recommendation {}

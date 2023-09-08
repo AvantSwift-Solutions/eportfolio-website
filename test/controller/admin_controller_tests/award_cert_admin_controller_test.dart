@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'award_cert_admin_controller_test.mocks.dart';
+import 'mocks/award_cert_admin_controller_test.mocks.dart';
 
 @GenerateMocks([AwardCertRepoService])
 class MockAwardCert extends Mock implements AwardCert {}

@@ -4,9 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:avantswift_portfolio/models/User.dart';
-
-import 'landing_page_admin_controller_test.dart';
-import 'landing_page_admin_controller_test.mocks.dart';
+import 'mocks/landing_page_controller_test.mocks.dart';
 
 @GenerateMocks([UserRepoService, User])
 void main() {

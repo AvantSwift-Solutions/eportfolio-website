@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:avantswift_portfolio/controller/admin_controllers/professional_experience_section_admin_controller.dart';
-import 'professional_experience_admin_controller_test.mocks.dart';
+import 'mocks/professional_experience_admin_controller_test.mocks.dart';
 
 @GenerateMocks([ProfessionalExperienceRepoService])
 class MockProfessionalExperience extends Mock implements ProfessionalExperience {}

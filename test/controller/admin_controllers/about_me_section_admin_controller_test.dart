@@ -7,7 +7,7 @@ import 'package:avantswift_portfolio/controller/admin_controllers/about_me_secti
 import 'package:avantswift_portfolio/dto/about_me_section_dto.dart';
 import 'package:avantswift_portfolio/models/User.dart';
 
-import 'about_me_section_admin_controller_test.mocks.dart';
+import 'mocks/about_me_section_admin_controller_test.mocks.dart';
 
 @GenerateMocks([UserRepoService])
 class MockUser extends Mock implements User {}

@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:avantswift_portfolio/controller/admin_controllers/iskill_section_admin_controller.dart';
-import 'iskill_section_admin_controller_test.mocks.dart';
+import 'mocks/iskill_section_admin_controller_test.mocks.dart';
 
 @GenerateMocks([ISkillRepoService])
 class MockISkill extends Mock implements ISkill {}

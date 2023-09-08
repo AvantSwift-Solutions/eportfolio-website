@@ -4,7 +4,7 @@ import 'package:avantswift_portfolio/reposervice/personal_project_repo_services.
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'personal_project_section_admin_controller_test.mocks.dart';
+import 'mocks/personal_project_section_admin_controller_test.mocks.dart';
 
 @GenerateMocks([PersonalProjectRepoService])
 class MockPersonalProject extends Mock implements PersonalProject {}
