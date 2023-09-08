@@ -1,11 +1,13 @@
 // ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
 import 'package:avantswift_portfolio/reposervice/user_repo_services.dart';
 import 'package:flutter/material.dart';
-import '../controller/admin_controllers/contact_section_admin_controller.dart';
+import '../controllers/admin_controllers/contact_section_admin_controller.dart';
 
 class ContactSectionAdmin extends StatelessWidget {
   final ContactSectionAdminController _adminController =
       ContactSectionAdminController(UserRepoService());
+
+  ContactSectionAdmin({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,15 +48,17 @@ class ContactSectionAdmin extends StatelessWidget {
                   children: [
                     TextField(
                       controller: contactEmailController,
-                      onChanged: (value) => contactSectionData.contactEmail = value,
-                      decoration: const InputDecoration(labelText: 'Contact Email'),
+                      onChanged: (value) =>
+                          contactSectionData.contactEmail = value,
+                      decoration:
+                          const InputDecoration(labelText: 'Contact Email'),
                     ),
                     TextField(
                       controller: linkedinURLController,
                       onChanged: (value) =>
                           contactSectionData.linkedinURL = value,
-                      decoration: const InputDecoration(
-                          labelText: 'LinkedIn URL'),
+                      decoration:
+                          const InputDecoration(labelText: 'LinkedIn URL'),
                     )
                   ],
                 ),
@@ -67,8 +71,8 @@ class ContactSectionAdmin extends StatelessWidget {
                         false;
                     if (isSuccess) {
                       Navigator.of(dialogContext).pop();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Contact info updated')));
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('Contact info updated')));
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           content: Text('Failed to update contact info')));
@@ -89,5 +93,4 @@ class ContactSectionAdmin extends StatelessWidget {
       },
     );
   }
-  
 }

@@ -1,5 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
-import '../controller/view_controllers/contact_section_controller.dart';
+import '../controllers/view_controllers/contact_section_controller.dart';
 import '../reposervice/user_repo_services.dart';
 import '../ui/custom_scroll_button.dart';
 import '../ui/custom_texts/public_view_text_styles.dart';
@@ -8,13 +10,13 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ContactSection extends StatefulWidget {
-  ContactSection({Key? key}) : super(key: key);
+  const ContactSection({Key? key}) : super(key: key);
 
   @override
-  _ContactSectionState createState() => _ContactSectionState();
+  ContactSectionState createState() => ContactSectionState();
 }
 
-class _ContactSectionState extends State<ContactSection> {
+class ContactSectionState extends State<ContactSection> {
   final ContactSectionController _contactSectionController =
       ContactSectionController(UserRepoService());
   final _formKey = GlobalKey<FormState>();
@@ -74,7 +76,7 @@ class _ContactSectionState extends State<ContactSection> {
                 Text(
                   'Let\'s Get in Touch',
                   style: PublicViewTextStyles.generalHeading.copyWith(
-                    fontSize: titleFontSize*1.2,
+                    fontSize: titleFontSize * 1.2,
                   ),
                 ),
                 const SizedBox(height: 60),
@@ -92,7 +94,8 @@ class _ContactSectionState extends State<ContactSection> {
                             children: [
                               Text(
                                 'Send a Message',
-                                style: PublicViewTextStyles.generalSubHeading.copyWith(
+                                style: PublicViewTextStyles.generalSubHeading
+                                    .copyWith(
                                   fontSize: titleFontSize,
                                 ),
                               ),
@@ -102,28 +105,36 @@ class _ContactSectionState extends State<ContactSection> {
                                 controller: _nameController,
                                 decoration: const InputDecoration(
                                   enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0),
+                                    ),
                                     borderSide: BorderSide(
                                       color: Colors.black,
                                       width: 1.0,
                                     ),
                                   ),
                                   focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0),
+                                    ),
                                     borderSide: BorderSide(
                                       color: Colors.black,
                                       width: 1.0,
                                     ),
                                   ),
                                   errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0),
+                                    ),
                                     borderSide: BorderSide(
                                       color: Colors.red,
                                       width: 1.0,
                                     ),
                                   ),
                                   focusedErrorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0),
+                                    ),
                                     borderSide: BorderSide(
                                       color: Colors.red,
                                       width: 1.0,
@@ -143,28 +154,36 @@ class _ContactSectionState extends State<ContactSection> {
                                 controller: _emailController,
                                 decoration: const InputDecoration(
                                   enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0),
+                                    ),
                                     borderSide: BorderSide(
                                       color: Colors.black,
                                       width: 1.0,
                                     ),
                                   ),
                                   focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0),
+                                    ),
                                     borderSide: BorderSide(
                                       color: Colors.black,
                                       width: 1.0,
                                     ),
                                   ),
                                   errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0),
+                                    ),
                                     borderSide: BorderSide(
                                       color: Colors.red,
                                       width: 1.0,
                                     ),
                                   ),
                                   focusedErrorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0),
+                                    ),
                                     borderSide: BorderSide(
                                       color: Colors.red,
                                       width: 1.0,
@@ -187,28 +206,36 @@ class _ContactSectionState extends State<ContactSection> {
                                 controller: _subjectController,
                                 decoration: const InputDecoration(
                                   enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0),
+                                    ),
                                     borderSide: BorderSide(
                                       color: Colors.black,
                                       width: 1.0,
                                     ),
                                   ),
                                   focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0),
+                                    ),
                                     borderSide: BorderSide(
                                       color: Colors.black,
                                       width: 1.0,
                                     ),
                                   ),
                                   errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0),
+                                    ),
                                     borderSide: BorderSide(
                                       color: Colors.red,
                                       width: 1.0,
                                     ),
                                   ),
                                   focusedErrorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0),
+                                    ),
                                     borderSide: BorderSide(
                                       color: Colors.red,
                                       width: 1.0,
@@ -229,28 +256,36 @@ class _ContactSectionState extends State<ContactSection> {
                                 maxLines: 10,
                                 decoration: const InputDecoration(
                                   enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0),
+                                    ),
                                     borderSide: BorderSide(
                                       color: Colors.black,
                                       width: 1.0,
                                     ),
                                   ),
                                   focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0),
+                                    ),
                                     borderSide: BorderSide(
                                       color: Colors.black,
                                       width: 1.0,
                                     ),
                                   ),
                                   errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0),
+                                    ),
                                     borderSide: BorderSide(
                                       color: Colors.red,
                                       width: 1.0,
                                     ),
                                   ),
                                   focusedErrorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0),
+                                    ),
                                     borderSide: BorderSide(
                                       color: Colors.red,
                                       width: 1.0,
@@ -279,22 +314,25 @@ class _ContactSectionState extends State<ContactSection> {
                                       ),
                                     );
                                     final res = await _contactSectionController
-                                      .sendEmail(contactSectionData, fields);
-                                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                        .sendEmail(contactSectionData, fields);
+                                    ScaffoldMessenger.of(context)
+                                        .hideCurrentSnackBar();
                                     if (res) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
                                         const SnackBar(
-                                          content: Text('Email sent successfully'),
+                                          content:
+                                              Text('Email sent successfully'),
                                         ),
                                       );
                                     } else {
-                                      ScaffoldMessenger.of(context).showSnackBar(
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
                                         const SnackBar(
                                           content: Text('Error sending email'),
                                         ),
                                       );
                                     }
-                                    
                                   }
                                 },
                               ),
@@ -304,7 +342,8 @@ class _ContactSectionState extends State<ContactSection> {
                       ),
                     ),
                     // Dummy coloumn for formatting
-                    const Expanded(flex: 1, child: Padding(padding: EdgeInsets.all(0))),
+                    const Expanded(
+                        flex: 1, child: Padding(padding: EdgeInsets.all(0))),
                     Expanded(
                       flex: 2,
                       child: Padding(
@@ -314,7 +353,8 @@ class _ContactSectionState extends State<ContactSection> {
                           children: [
                             Text(
                               'Connect Further',
-                              style: PublicViewTextStyles.generalSubHeading.copyWith(
+                              style: PublicViewTextStyles.generalSubHeading
+                                  .copyWith(
                                 fontSize: titleFontSize,
                               ),
                             ),
@@ -325,7 +365,8 @@ class _ContactSectionState extends State<ContactSection> {
                                 const SizedBox(width: 96),
                                 Text(
                                   'Email',
-                                  style: PublicViewTextStyles.generalBodyText.copyWith(
+                                  style: PublicViewTextStyles.generalBodyText
+                                      .copyWith(
                                     fontSize: titleFontSize / 2,
                                   ),
                                 ),
@@ -340,8 +381,10 @@ class _ContactSectionState extends State<ContactSection> {
                                 ),
                                 const SizedBox(width: 12),
                                 Text(
-                                  contactSectionData?.contactEmail ?? 'No email avaliable',
-                                  style: PublicViewTextStyles.generalSubHeading.copyWith(
+                                  contactSectionData?.contactEmail ??
+                                      'No email avaliable',
+                                  style: PublicViewTextStyles.generalSubHeading
+                                      .copyWith(
                                     fontSize: titleFontSize / 2,
                                   ),
                                 ),
@@ -354,7 +397,8 @@ class _ContactSectionState extends State<ContactSection> {
                                 const SizedBox(width: 96),
                                 Text(
                                   'LinkedIn',
-                                  style: PublicViewTextStyles.generalBodyText.copyWith(
+                                  style: PublicViewTextStyles.generalBodyText
+                                      .copyWith(
                                     fontSize: titleFontSize / 2,
                                   ),
                                 ),
@@ -370,11 +414,15 @@ class _ContactSectionState extends State<ContactSection> {
                                 const SizedBox(width: 12),
                                 GestureDetector(
                                   onTap: () {
-                                    launchUrl(Uri.parse(contactSectionData?.linkedinURL ?? 'https://www.linkedin.com/'));
+                                    launchUrl(Uri.parse(
+                                        contactSectionData?.linkedinURL ??
+                                            'https://www.linkedin.com/'));
                                   },
                                   child: Text(
                                     '@${contactSectionData?.name}',
-                                    style: PublicViewTextStyles.generalSubHeading.copyWith(
+                                    style: PublicViewTextStyles
+                                        .generalSubHeading
+                                        .copyWith(
                                       fontSize: titleFontSize / 2,
                                     ),
                                   ),
@@ -395,5 +443,4 @@ class _ContactSectionState extends State<ContactSection> {
       },
     );
   }
-
 }

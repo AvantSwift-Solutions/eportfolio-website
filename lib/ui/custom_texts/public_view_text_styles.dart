@@ -2,8 +2,7 @@
 import 'package:flutter/material.dart';
 
 class PublicViewTextStyles {
-
-   static Widget styledLogo() {
+  static Widget styledLogo() {
     return RichText(
       text: const TextSpan(
         children: [
@@ -68,16 +67,21 @@ class PublicViewTextStyles {
     color: Color(0xFFFFFFFF),
   );
 
-  static TextStyle aboutMeBodyText = generalBodyText.copyWith(fontSize: 20, fontWeight: FontWeight.normal);
+  static TextStyle aboutMeBodyText =
+      generalBodyText.copyWith(fontSize: 20, fontWeight: FontWeight.normal);
 
-  static TextStyle professionalExperienceHeading = generalSubHeading.copyWith(fontSize: 40, color:const Color(0xFFE6AA68));
+  static TextStyle professionalExperienceHeading =
+      generalSubHeading.copyWith(fontSize: 40, color: const Color(0xFFE6AA68));
 
-  static TextStyle professionalExperienceSubHeading = generalSubHeading.copyWith(fontSize: 24, color:const Color(0xFFE6AA68));
+  static TextStyle professionalExperienceSubHeading =
+      generalSubHeading.copyWith(fontSize: 24, color: const Color(0xFFE6AA68));
 
-  static TextStyle educationBasicInfo = generalSubHeading.copyWith(fontSize: 14);
+  static TextStyle educationBasicInfo =
+      generalSubHeading.copyWith(fontSize: 14);
 
-  static TextStyle educationDescription = generalBodyText.copyWith(fontSize: 12);
+  static TextStyle educationDescription =
+      generalBodyText.copyWith(fontSize: 12);
 
-  static TextStyle personalProjectName = generalSubHeading.copyWith(fontSize: 20);
-
+  static TextStyle personalProjectName =
+      generalSubHeading.copyWith(fontSize: 20);
 }

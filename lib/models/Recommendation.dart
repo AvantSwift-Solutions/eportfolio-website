@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
@@ -6,7 +8,7 @@ class Recommendation {
   String? colleagueName;
   String? colleagueJobTitle;
   String? description;
-  String? imageURL; 
+  String? imageURL;
 
   Recommendation({
     required this.rid,
@@ -17,24 +19,24 @@ class Recommendation {
   });
 
   factory Recommendation.fromDocumentSnapshot(DocumentSnapshot snapshot) {
-  try {
-    final data = snapshot.data() as Map<String, dynamic>;
-    final colleagueName = data['colleagueName'];
-    final colleagueJobTitle = data['colleagueJobTitle'];
-    final description = data['description'];
-    final imageURL = data['imageURL'];
+    try {
+      final data = snapshot.data() as Map<String, dynamic>;
+      final colleagueName = data['colleagueName'];
+      final colleagueJobTitle = data['colleagueJobTitle'];
+      final description = data['description'];
+      final imageURL = data['imageURL'];
 
-    return Recommendation(
-      rid: snapshot.id,
-      colleagueName: colleagueName,
-      colleagueJobTitle: colleagueJobTitle,
-      description: description,
-      imageURL: imageURL,
-    );
-  } catch (e) {
-    rethrow;
+      return Recommendation(
+        rid: snapshot.id,
+        colleagueName: colleagueName,
+        colleagueJobTitle: colleagueJobTitle,
+        description: description,
+        imageURL: imageURL,
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
-}
 
   Map<String, dynamic> toMap() {
     return {
@@ -49,10 +51,12 @@ class Recommendation {
   Future<void> create() async {
     try {
       final id = const Uuid().v4();
-      await FirebaseFirestore.instance.collection('Recommendation').doc(id).set(toMap());
-      print('Recommendation document created');
+      await FirebaseFirestore.instance
+          .collection('Recommendation')
+          .doc(id)
+          .set(toMap());
     } catch (e) {
-      print('Error creating recommendation document: $e');
+      log('Error creating recommendation document: $e');
     }
   }
 
@@ -64,17 +68,19 @@ class Recommendation {
           .update(toMap());
       return true;
     } catch (e) {
+      log('Error updating recommendation document: $e');
       return false;
     }
   }
 
   Future<void> delete() async {
     try {
-      await FirebaseFirestore.instance.collection('Recommendation').doc(rid).delete();
-      print('Recommendation document deleted');
+      await FirebaseFirestore.instance
+          .collection('Recommendation')
+          .doc(rid)
+          .delete();
     } catch (e) {
-      print('Error deleting recommendation document: $e');
+      log('Error deleting recommendation document: $e');
     }
   }
-
 }

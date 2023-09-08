@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../controller/view_controllers/landing_page_controller.dart';
+import '../controllers/view_controllers/landing_page_controller.dart';
 import '../reposervice/user_repo_services.dart';
 import '../ui/custom_scroll_button.dart';
 import '../ui/custom_texts/public_view_text_styles.dart';
@@ -7,14 +7,13 @@ import '../ui/custom_texts/public_view_text_styles.dart';
 class LandingPage extends StatefulWidget {
   final Function scrollToBottom;
 
-  LandingPage({required this.scrollToBottom});
+  const LandingPage({super.key, required this.scrollToBottom});
 
   @override
-  _LandingPageState createState() => _LandingPageState();
+  LandingPageState createState() => LandingPageState();
 }
 
-class _LandingPageState extends State<LandingPage> {
-
+class LandingPageState extends State<LandingPage> {
   final LandingPageController _landingPageController =
       LandingPageController(UserRepoService());
 

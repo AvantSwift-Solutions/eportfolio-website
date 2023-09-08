@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
@@ -8,7 +10,6 @@ class AwardCert {
   String? link;
   String? source;
   Timestamp? creationTimestamp;
-  
 
   AwardCert({
     required this.acid,
@@ -51,10 +52,12 @@ class AwardCert {
   Future<void> create() async {
     try {
       final acid = const Uuid().v4();
-      await FirebaseFirestore.instance.collection('AwardCert').doc(acid).set(toMap());
-      print('AwardCert document created');
+      await FirebaseFirestore.instance
+          .collection('AwardCert')
+          .doc(acid)
+          .set(toMap());
     } catch (e) {
-      print('Error creating AwardCert document: $e');
+      log('Error creating AwardCert document: $e');
     }
   }
 
@@ -66,16 +69,19 @@ class AwardCert {
           .update(toMap());
       return true;
     } catch (e) {
+      log('Error updating AwardCert document: $e');
       return false;
     }
   }
 
   Future<void> delete() async {
     try {
-      await FirebaseFirestore.instance.collection('AwardCert').doc(acid).delete();
-      print('AwardCert document deleted');
+      await FirebaseFirestore.instance
+          .collection('AwardCert')
+          .doc(acid)
+          .delete();
     } catch (e) {
-      print('Error deleting AwardCert document: $e');
+      log('Error deleting AwardCert document: $e');
     }
   }
 }

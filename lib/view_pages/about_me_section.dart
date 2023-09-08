@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../controller/view_controllers/about_me_section_controller.dart';
+import '../controllers/view_controllers/about_me_section_controller.dart';
 import '../reposervice/user_repo_services.dart';
 import '../ui/custom_texts/public_view_text_styles.dart';
 
@@ -7,10 +7,10 @@ class AboutMeSection extends StatefulWidget {
   const AboutMeSection({super.key});
 
   @override
-  _AboutMeSectionState createState() => _AboutMeSectionState();
+  AboutMeSectionState createState() => AboutMeSectionState();
 }
 
-class _AboutMeSectionState extends State<AboutMeSection> {
+class AboutMeSectionState extends State<AboutMeSection> {
   final AboutMeSectionController _aboutMeSectionController =
       AboutMeSectionController(UserRepoService());
 
@@ -46,9 +46,8 @@ class _AboutMeSectionState extends State<AboutMeSection> {
                       Text(
                         'A Bit About Myself...',
                         style: PublicViewTextStyles.generalHeading.copyWith(
-                          fontSize: titleFontSize * 0.8,
-                          fontWeight: FontWeight.bold
-                        ),
+                            fontSize: titleFontSize * 0.8,
+                            fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 20),
                       Text(

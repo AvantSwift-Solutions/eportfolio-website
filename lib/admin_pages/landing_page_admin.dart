@@ -3,11 +3,13 @@ import 'dart:typed_data';
 import 'package:avantswift_portfolio/reposervice/user_repo_services.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import '../controller/admin_controllers/landing_page_admin_controller.dart';
+import '../controllers/admin_controllers/landing_page_admin_controller.dart';
 
 class LandingPageAdmin extends StatelessWidget {
   final LandingPageAdminController _adminController =
       LandingPageAdminController(UserRepoService());
+
+  LandingPageAdmin({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +102,6 @@ class LandingPageAdmin extends StatelessWidget {
                             .updateLandingPageData(landingPageData) ??
                         false;
                     if (isSuccess) {
-                      
                       Navigator.of(dialogContext).pop();
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('User info updated')));
@@ -124,7 +125,6 @@ class LandingPageAdmin extends StatelessWidget {
       },
     );
   }
-
 
   Future<Uint8List?> _pickImage() async {
     final result = await FilePicker.platform.pickFiles(
