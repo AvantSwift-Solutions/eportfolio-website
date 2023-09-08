@@ -18,7 +18,7 @@ class MockPersonalProject extends Mock implements PersonalProject {}
 
     setUp(() {
       mockRepoService = MockPersonalProjectRepoService();
-      controller = PersonalProjectAdminController(mockRepoService);
+      controller = PersonalProjectSectionAdminController(mockRepoService);
 
       pp1 = MockPersonalProject();
       pp2 = MockPersonalProject();

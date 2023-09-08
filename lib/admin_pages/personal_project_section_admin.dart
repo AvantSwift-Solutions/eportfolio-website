@@ -8,8 +8,8 @@ import '../controller/admin_controllers/personal_project_section_admin_controlle
 import '../models/PersonalProject.dart';
 
 class PersonalProjectSectionAdmin extends StatelessWidget {
-  final PersonalProjectAdminController _adminController =
-      PersonalProjectAdminController(PersonalProjectRepoService());
+  final PersonalProjectSectionAdminController _adminController =
+      PersonalProjectSectionAdminController(PersonalProjectRepoService());
   
 
   @override
