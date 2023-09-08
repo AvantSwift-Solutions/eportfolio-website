@@ -3,6 +3,7 @@ import 'package:avantswift_portfolio/admin_pages/education_section_admin.dart';
 import 'package:avantswift_portfolio/admin_pages/landing_page_admin.dart';
 import 'package:avantswift_portfolio/admin_pages/about_me_section_admin.dart';
 import 'package:avantswift_portfolio/admin_pages/contact_section_admin.dart';
+import 'package:avantswift_portfolio/admin_pages/personal_project_section_admin.dart';
 import 'package:avantswift_portfolio/admin_pages/professional_experience_section_admin.dart';
 import 'package:avantswift_portfolio/admin_pages/recommendation_section_admin.dart';
 import 'package:avantswift_portfolio/admin_pages/tskill_section_admin.dart';
@@ -34,15 +35,18 @@ class DefaultPage extends StatelessWidget {
                 'You are logged in as an admin',
                 style: TextStyle(fontSize: 16),
               ),
-              LandingPageAdmin(),
+              LandingPageAdmin(), // Placing the LandingPageAdmin widget here
               AboutMeSectionAdmin(),
+              ProfessionalExperienceSectionAdmin(),
               TSkillSectionAdmin(),
               ISkillSectionAdmin(),
               ProfessionalExperienceSectionAdmin(),
               ContactSectionAdmin(),
-              AwardCertAdmin(),
               EducationSectionAdmin(),
+              PersonalProjectSectionAdmin(),
+              AwardCertAdmin(),
               RecommendationSectionAdmin(),
+              ContactSectionAdmin(),
             ],
           ),
         ),
