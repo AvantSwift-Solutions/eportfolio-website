@@ -31,69 +31,72 @@ void main() {
     controller = ContactSectionAdminController(mockRepoService);
   });
 
-  test('getContactSectionData returns correct data when user is not null',
-      () async {
-    when(mockRepoService.getFirstUser()).thenAnswer((_) async => mockUser);
-    final contactSectionData = await controller.getContactSectionData();
+  group('Contact Section Admin Controller tests', () {
 
-    // Make assertions on the returned data
-    expect(contactSectionData!.name, mockUser.name);
-    expect(contactSectionData.contactEmail, mockUser.contactEmail);
-    expect(contactSectionData.linkedinURL, mockUser.linkedinURL);
-  });
+    test('getContactSectionData returns correct data when user is not null',
+        () async {
+      when(mockRepoService.getFirstUser()).thenAnswer((_) async => mockUser);
+      final contactSectionData = await controller.getContactSectionData();
 
-  test('getContactSectionData returns default data when user is null', () async {
-    when(mockRepoService.getFirstUser()).thenAnswer((_) async => null);
+      // Make assertions on the returned data
+      expect(contactSectionData!.name, mockUser.name);
+      expect(contactSectionData.contactEmail, mockUser.contactEmail);
+      expect(contactSectionData.linkedinURL, mockUser.linkedinURL);
+    });
 
-    final contactSectionData = await controller.getContactSectionData();
+    test('getContactSectionData returns default data when user is null', () async {
+      when(mockRepoService.getFirstUser()).thenAnswer((_) async => null);
 
-    expect(contactSectionData!.name, 'Unknown');
-    expect(contactSectionData.contactEmail, 'No email available');
-    expect(contactSectionData.linkedinURL, 'No LinkedIn available');
-  });
+      final contactSectionData = await controller.getContactSectionData();
 
-  test('getContactSectionData returns error data on exception', () async {
-    when(mockRepoService.getFirstUser()).thenThrow(Exception('Test Exception'));
+      expect(contactSectionData!.name, 'Unknown');
+      expect(contactSectionData.contactEmail, 'No email available');
+      expect(contactSectionData.linkedinURL, 'No LinkedIn available');
+    });
 
-    final contactSectionData = await controller.getContactSectionData();
+    test('getContactSectionData returns error data on exception', () async {
+      when(mockRepoService.getFirstUser()).thenThrow(Exception('Test Exception'));
 
-    expect(contactSectionData!.name, 'Error');
-    expect(contactSectionData.contactEmail, 'Error');
-    expect(contactSectionData.linkedinURL, 'Error');
-  });
+      final contactSectionData = await controller.getContactSectionData();
 
-  test('updateContactSectionData returns true on successful update', () async {
-    when(mockRepoService.getFirstUser()).thenAnswer((_) async => mockUser);
-    when(mockUser.update()).thenAnswer((_) async => true);
+      expect(contactSectionData!.name, 'Error');
+      expect(contactSectionData.contactEmail, 'Error');
+      expect(contactSectionData.linkedinURL, 'Error');
+    });
 
-    final updateResult = await controller.updateContactSectionData(
-      ContactSectionDTO(
-        name: 'New Name',
-        contactEmail: 'New Email',
-        linkedinURL: 'New LinkedIn',
-      ),
-    );
+    test('updateContactSectionData returns true on successful update', () async {
+      when(mockRepoService.getFirstUser()).thenAnswer((_) async => mockUser);
+      when(mockUser.update()).thenAnswer((_) async => true);
 
-    expect(updateResult, true);
-    // Doesn't update name
-    verify(mockUser.contactEmail = 'New Email');
-    verify(mockUser.linkedinURL = 'New LinkedIn');
-    verify(mockUser.update()); // Verify that the method was called
-  });
+      final updateResult = await controller.updateContactSectionData(
+        ContactSectionDTO(
+          name: 'New Name',
+          contactEmail: 'New Email',
+          linkedinURL: 'New LinkedIn',
+        ),
+      );
 
-  test('updateContactSectionData returns false when user is null', () async {
-    when(mockRepoService.getFirstUser()).thenAnswer((_) async => null);
+      expect(updateResult, true);
+      // Doesn't update name
+      verify(mockUser.contactEmail = 'New Email');
+      verify(mockUser.linkedinURL = 'New LinkedIn');
+      verify(mockUser.update()); // Verify that the method was called
+    });
 
-    final updateResult = await controller.updateContactSectionData(
-      ContactSectionDTO(
-        name: 'New Name',
-        contactEmail: 'New Email',
-        linkedinURL: 'New LinkedIn',
-      ),
-    );
+    test('updateContactSectionData returns false when user is null', () async {
+      when(mockRepoService.getFirstUser()).thenAnswer((_) async => null);
 
-    expect(updateResult, false);
+      final updateResult = await controller.updateContactSectionData(
+        ContactSectionDTO(
+          name: 'New Name',
+          contactEmail: 'New Email',
+          linkedinURL: 'New LinkedIn',
+        ),
+      );
 
-    verifyNever(mockUser.update());
+      expect(updateResult, false);
+
+      verifyNever(mockUser.update());
+    });
   });
 }

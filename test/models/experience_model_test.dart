@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:avantswift_portfolio/models/Experience.dart';
 
 void main() {
-  group('Experience class tests', () {
+  group('Experience Model tests', () {
     // Could not test fromDocumentSnapshot because it uses a
     // DocumentSnapshot which is a final class and cannot be extended?
 

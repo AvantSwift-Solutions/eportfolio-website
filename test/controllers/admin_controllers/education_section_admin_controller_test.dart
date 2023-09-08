@@ -40,95 +40,98 @@ void main() {
     controller = EducationSectionAdminController(mockRepoService);
   });
 
-  test('getEducationSectionData returns correct data when education is not null',
-      () async {
+  group('Education section admin controller tests', () {
 
-    when(mockRepoService.getAllEducation()).thenAnswer((_) async
-      => [mockEducation1, mockEducation2]);
-    final allEducation = await controller.getEducationSectionData();
+    test('getEducationSectionData returns correct data when education is not null',
+        () async {
 
-    // Make assertions on the returned data
-    expect(allEducation!.length, 2);
+      when(mockRepoService.getAllEducation()).thenAnswer((_) async
+        => [mockEducation1, mockEducation2]);
+      final allEducation = await controller.getEducationSectionData();
 
-    var edu1 = allEducation[0];
-    var edu2 = allEducation[1];
+      // Make assertions on the returned data
+      expect(allEducation!.length, 2);
 
-    expect(edu1.eid, mockEducation1.eid);
-    expect(edu1.startDate, mockEducation1.startDate);
-    expect(edu1.endDate, mockEducation1.endDate);
-    expect(edu1.logoURL, mockEducation1.logoURL);
-    expect(edu1.schoolName, mockEducation1.schoolName);
-    expect(edu1.degree, mockEducation1.degree);
-    expect(edu1.description, mockEducation1.description);
+      var edu1 = allEducation[0];
+      var edu2 = allEducation[1];
 
-    expect(edu2.eid, mockEducation2.eid);
-    expect(edu2.startDate, mockEducation2.startDate);
-    expect(edu2.endDate, mockEducation2.endDate);
-    expect(edu2.logoURL, mockEducation2.logoURL);
-    expect(edu2.schoolName, mockEducation2.schoolName);
-    expect(edu2.degree, mockEducation2.degree);
-    expect(edu2.description, mockEducation2.description);
+      expect(edu1.eid, mockEducation1.eid);
+      expect(edu1.startDate, mockEducation1.startDate);
+      expect(edu1.endDate, mockEducation1.endDate);
+      expect(edu1.logoURL, mockEducation1.logoURL);
+      expect(edu1.schoolName, mockEducation1.schoolName);
+      expect(edu1.degree, mockEducation1.degree);
+      expect(edu1.description, mockEducation1.description);
 
-  });
+      expect(edu2.eid, mockEducation2.eid);
+      expect(edu2.startDate, mockEducation2.startDate);
+      expect(edu2.endDate, mockEducation2.endDate);
+      expect(edu2.logoURL, mockEducation2.logoURL);
+      expect(edu2.schoolName, mockEducation2.schoolName);
+      expect(edu2.degree, mockEducation2.degree);
+      expect(edu2.description, mockEducation2.description);
 
-  test('getEducationSectionData returns null data when education is null', () async {
-    when(mockRepoService.getAllEducation()).thenAnswer((_) async => null);
-    final educationSectionData = await controller.getEducationSectionData();
-    expect(educationSectionData, null);
-  });
+    });
 
-  test('getEducationSectionData returns null data on exception', () async {
-    when(mockRepoService.getAllEducation()).thenThrow(Exception('Test Exception'));
-    final educationSectionData = await controller.getEducationSectionData();
-    expect(educationSectionData, null);
-  });
+    test('getEducationSectionData returns null data when education is null', () async {
+      when(mockRepoService.getAllEducation()).thenAnswer((_) async => null);
+      final educationSectionData = await controller.getEducationSectionData();
+      expect(educationSectionData, null);
+    });
 
-  test('updateEducationSectionData returns true on successful update', () async {
-    when(mockRepoService.getAllEducation()).thenAnswer((_) async
-      => [mockEducation1, mockEducation2]);
-    when(mockEducation1.update()).thenAnswer((_) async => true);
+    test('getEducationSectionData returns null data on exception', () async {
+      when(mockRepoService.getAllEducation()).thenThrow(Exception('Test Exception'));
+      final educationSectionData = await controller.getEducationSectionData();
+      expect(educationSectionData, null);
+    });
 
-    final updateResult = await controller.updateEducationSectionData(0,
-      Education(
-        eid: 'mockEid1',
-        startDate: Timestamp(1234567890, 0),
-        endDate: Timestamp(1234567890, 0),
-        logoURL: 'http://example.com/new_mock_image1.jpg',
-        schoolName: 'New Mock School1',
-        degree: 'New Mock Degree1',
-        description: 'New Mock Description1',
-      ),
-    );
+    test('updateEducationSectionData returns true on successful update', () async {
+      when(mockRepoService.getAllEducation()).thenAnswer((_) async
+        => [mockEducation1, mockEducation2]);
+      when(mockEducation1.update()).thenAnswer((_) async => true);
 
-    expect(updateResult, true);
-    verify(mockEducation1.startDate = Timestamp(1234567890, 0));
-    verify(mockEducation1.endDate = Timestamp(1234567890, 0));
-    verify(mockEducation1.logoURL = 'http://example.com/new_mock_image1.jpg');
-    verify(mockEducation1.schoolName = 'New Mock School1');
-    verify(mockEducation1.degree = 'New Mock Degree1');
-    verify(mockEducation1.description = 'New Mock Description1');
+      final updateResult = await controller.updateEducationSectionData(0,
+        Education(
+          eid: 'mockEid1',
+          startDate: Timestamp(1234567890, 0),
+          endDate: Timestamp(1234567890, 0),
+          logoURL: 'http://example.com/new_mock_image1.jpg',
+          schoolName: 'New Mock School1',
+          degree: 'New Mock Degree1',
+          description: 'New Mock Description1',
+        ),
+      );
 
-    verify(mockEducation1.update()); // Verify that the method was called
-  });
+      expect(updateResult, true);
+      verify(mockEducation1.startDate = Timestamp(1234567890, 0));
+      verify(mockEducation1.endDate = Timestamp(1234567890, 0));
+      verify(mockEducation1.logoURL = 'http://example.com/new_mock_image1.jpg');
+      verify(mockEducation1.schoolName = 'New Mock School1');
+      verify(mockEducation1.degree = 'New Mock Degree1');
+      verify(mockEducation1.description = 'New Mock Description1');
 
-  test('updateEducationSectionData returns false when user is null', () async {
-    when(mockRepoService.getAllEducation()).thenAnswer((_) async => null);
+      verify(mockEducation1.update()); // Verify that the method was called
+    });
 
-    final updateResult = await controller.updateEducationSectionData(0,
-      Education(
-        eid: 'mockEid1',
-        startDate: Timestamp(1234567890, 0),
-        endDate: Timestamp(1234567890, 0),
-        logoURL: 'http://example.com/new_mock_image1.jpg',
-        schoolName: 'New Mock School1',
-        degree: 'New Mock Degree1',
-        description: 'New Mock Description1',
-      ),
-    );
+    test('updateEducationSectionData returns false when user is null', () async {
+      when(mockRepoService.getAllEducation()).thenAnswer((_) async => null);
 
-    expect(updateResult, false);
+      final updateResult = await controller.updateEducationSectionData(0,
+        Education(
+          eid: 'mockEid1',
+          startDate: Timestamp(1234567890, 0),
+          endDate: Timestamp(1234567890, 0),
+          logoURL: 'http://example.com/new_mock_image1.jpg',
+          schoolName: 'New Mock School1',
+          degree: 'New Mock Degree1',
+          description: 'New Mock Description1',
+        ),
+      );
 
-    verifyNever(mockEducation1.update());
-    verifyNever(mockEducation2.update());
+      expect(updateResult, false);
+
+      verifyNever(mockEducation1.update());
+      verifyNever(mockEducation2.update());
+    });
   });
 }

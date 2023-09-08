@@ -32,77 +32,80 @@ void main() {
     controller = LandingPageAdminController(mockRepoService);
   });
 
-  test('getLandingPageData returns correct data when user is not null',
-      () async {
-    when(mockRepoService.getFirstUser()).thenAnswer((_) async => mockUser);
-    final landingPageData = await controller.getLandingPageData();
+  group('Landing page admin controller tests', () {
 
-    // Make assertions on the returned data
-    expect(landingPageData!.name, mockUser.name);
-    expect(landingPageData.landingPageTitle, mockUser.landingPageTitle);
-    expect(landingPageData.landingPageDescription,
-        mockUser.landingPageDescription);
-    expect(landingPageData.imageURL, mockUser.imageURL);
-    // Add more assertions as needed
-  });
+    test('getLandingPageData returns correct data when user is not null',
+        () async {
+      when(mockRepoService.getFirstUser()).thenAnswer((_) async => mockUser);
+      final landingPageData = await controller.getLandingPageData();
 
-  test('getLandingPageData returns default data when user is null', () async {
-    when(mockRepoService.getFirstUser()).thenAnswer((_) async => null);
+      // Make assertions on the returned data
+      expect(landingPageData!.name, mockUser.name);
+      expect(landingPageData.landingPageTitle, mockUser.landingPageTitle);
+      expect(landingPageData.landingPageDescription,
+          mockUser.landingPageDescription);
+      expect(landingPageData.imageURL, mockUser.imageURL);
+      // Add more assertions as needed
+    });
 
-    final landingPageData = await controller.getLandingPageData();
+    test('getLandingPageData returns default data when user is null', () async {
+      when(mockRepoService.getFirstUser()).thenAnswer((_) async => null);
 
-    expect(landingPageData!.name, 'Unknown');
-    expect(landingPageData.landingPageTitle, 'Welcome');
-    expect(landingPageData.landingPageDescription, 'No description available');
-    expect(landingPageData.imageURL, 'https://example.com/default_image.jpg');
-  });
+      final landingPageData = await controller.getLandingPageData();
 
-  test('getLandingPageData returns error data on exception', () async {
-    when(mockRepoService.getFirstUser()).thenThrow(Exception('Test Exception'));
+      expect(landingPageData!.name, 'Unknown');
+      expect(landingPageData.landingPageTitle, 'Welcome');
+      expect(landingPageData.landingPageDescription, 'No description available');
+      expect(landingPageData.imageURL, 'https://example.com/default_image.jpg');
+    });
 
-    final landingPageData = await controller.getLandingPageData();
+    test('getLandingPageData returns error data on exception', () async {
+      when(mockRepoService.getFirstUser()).thenThrow(Exception('Test Exception'));
 
-    expect(landingPageData!.name, 'Error');
-    expect(landingPageData.landingPageTitle, 'Error');
-    expect(landingPageData.landingPageDescription, 'Error');
-    expect(landingPageData.imageURL, 'https://example.com/error.jpg');
-  });
+      final landingPageData = await controller.getLandingPageData();
 
-  test('updateLandingPageData returns true on successful update', () async {
-    when(mockRepoService.getFirstUser()).thenAnswer((_) async => mockUser);
-    when(mockUser.update()).thenAnswer((_) async => true);
+      expect(landingPageData!.name, 'Error');
+      expect(landingPageData.landingPageTitle, 'Error');
+      expect(landingPageData.landingPageDescription, 'Error');
+      expect(landingPageData.imageURL, 'https://example.com/error.jpg');
+    });
 
-    final updateResult = await controller.updateLandingPageData(
-      LandingPageDTO(
-        name: 'New Name',
-        landingPageTitle: 'New Title',
-        landingPageDescription: 'New Description',
-        imageURL: 'http://example.com/new_image.jpg',
-      ),
-    );
+    test('updateLandingPageData returns true on successful update', () async {
+      when(mockRepoService.getFirstUser()).thenAnswer((_) async => mockUser);
+      when(mockUser.update()).thenAnswer((_) async => true);
 
-    expect(updateResult, true);
-    verify(mockUser.name = 'New Name');
-    verify(mockUser.landingPageTitle = 'New Title');
-    verify(mockUser.landingPageDescription = 'New Description');
-    verify(mockUser.imageURL = 'http://example.com/new_image.jpg');
-    verify(mockUser.update()); // Verify that the method was called
-  });
+      final updateResult = await controller.updateLandingPageData(
+        LandingPageDTO(
+          name: 'New Name',
+          landingPageTitle: 'New Title',
+          landingPageDescription: 'New Description',
+          imageURL: 'http://example.com/new_image.jpg',
+        ),
+      );
 
-  test('updateLandingPageData returns false when user is null', () async {
-    when(mockRepoService.getFirstUser()).thenAnswer((_) async => null);
+      expect(updateResult, true);
+      verify(mockUser.name = 'New Name');
+      verify(mockUser.landingPageTitle = 'New Title');
+      verify(mockUser.landingPageDescription = 'New Description');
+      verify(mockUser.imageURL = 'http://example.com/new_image.jpg');
+      verify(mockUser.update()); // Verify that the method was called
+    });
 
-    final updateResult = await controller.updateLandingPageData(
-      LandingPageDTO(
-        name: 'New Name',
-        landingPageTitle: 'New Title',
-        landingPageDescription: 'New Description',
-        imageURL: 'http://example.com/new_image.jpg',
-      ),
-    );
+    test('updateLandingPageData returns false when user is null', () async {
+      when(mockRepoService.getFirstUser()).thenAnswer((_) async => null);
 
-    expect(updateResult, false);
+      final updateResult = await controller.updateLandingPageData(
+        LandingPageDTO(
+          name: 'New Name',
+          landingPageTitle: 'New Title',
+          landingPageDescription: 'New Description',
+          imageURL: 'http://example.com/new_image.jpg',
+        ),
+      );
 
-    verifyNever(mockUser.update());
+      expect(updateResult, false);
+
+      verifyNever(mockUser.update());
+    });
   });
 }

@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:avantswift_portfolio/models/AwardCert.dart'; // Update this import based on your project structure
 
 void main() {
-  group('AwardCert class tests', () {
+  group('AwardCert Model tests', () {
     // Could not test fromDocumentSnapshot because it uses a
     // DocumentSnapshot which is a final class and cannot be extended?
 

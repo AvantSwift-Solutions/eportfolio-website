@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:avantswift_portfolio/models/TSkill.dart';
 
 void main() {
-  group('Technical Skill class tests', () {
+  group('TSkill Model tests', () {
     // Could not test fromDocumentSnapshot because it uses a
     // DocumentSnapshot which is a final class and cannot be extended?
 

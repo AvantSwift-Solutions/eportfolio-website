@@ -29,70 +29,73 @@ void main() {
     controller = ISkillSectionAdminController(mockRepoService);
   });
 
-  test('getISkillSectionData returns correct data when iskill is not null',
-      () async {
+  group('ISkill section admin controller tests', () {
 
-    when(mockRepoService.getAllISkill()).thenAnswer((_) async
-      => [mockISkill1, mockISkill2]);
-    final allISkill = await controller.getISkillSectionData();
+    test('getISkillSectionData returns correct data when iskill is not null',
+        () async {
 
-    // Make assertions on the returned data
-    expect(allISkill!.length, 2);
+      when(mockRepoService.getAllISkill()).thenAnswer((_) async
+        => [mockISkill1, mockISkill2]);
+      final allISkill = await controller.getISkillSectionData();
 
-    var iskill1 = allISkill[0];
-    var iskill2 = allISkill[1];
+      // Make assertions on the returned data
+      expect(allISkill!.length, 2);
 
-    expect(iskill1.isid, mockISkill1.isid);
-    expect(iskill1.name, mockISkill1.name);
+      var iskill1 = allISkill[0];
+      var iskill2 = allISkill[1];
 
-    expect(iskill2.isid, mockISkill2.isid);
-    expect(iskill2.name, mockISkill2.name);
+      expect(iskill1.isid, mockISkill1.isid);
+      expect(iskill1.name, mockISkill1.name);
 
-  });
+      expect(iskill2.isid, mockISkill2.isid);
+      expect(iskill2.name, mockISkill2.name);
 
-  test('getISkillSectionData returns null data when iskill is null', () async {
-    when(mockRepoService.getAllISkill()).thenAnswer((_) async => null);
-    final iskillSectionData = await controller.getISkillSectionData();
-    expect(iskillSectionData, null);
-  });
+    });
 
-  test('getISkillSectionData returns null data on exception', () async {
-    when(mockRepoService.getAllISkill()).thenThrow(Exception('Test Exception'));
-    final iskillSectionData = await controller.getISkillSectionData();
-    expect(iskillSectionData, null);
-  });
+    test('getISkillSectionData returns null data when iskill is null', () async {
+      when(mockRepoService.getAllISkill()).thenAnswer((_) async => null);
+      final iskillSectionData = await controller.getISkillSectionData();
+      expect(iskillSectionData, null);
+    });
 
-  test('updateISkillSectionData returns true on successful update', () async {
-    when(mockRepoService.getAllISkill()).thenAnswer((_) async
-      => [mockISkill1, mockISkill2]);
-    when(mockISkill1.update()).thenAnswer((_) async => true);
+    test('getISkillSectionData returns null data on exception', () async {
+      when(mockRepoService.getAllISkill()).thenThrow(Exception('Test Exception'));
+      final iskillSectionData = await controller.getISkillSectionData();
+      expect(iskillSectionData, null);
+    });
 
-    final updateResult = await controller.updateISkillSectionData(0,
-      ISkill(
-        isid: 'mockIsid1',
-        name: 'Mock ISkill 1',
-      ),
-    );
+    test('updateISkillSectionData returns true on successful update', () async {
+      when(mockRepoService.getAllISkill()).thenAnswer((_) async
+        => [mockISkill1, mockISkill2]);
+      when(mockISkill1.update()).thenAnswer((_) async => true);
 
-    expect(updateResult, true);
-    verify(mockISkill1.name = 'Mock ISkill 1');
+      final updateResult = await controller.updateISkillSectionData(0,
+        ISkill(
+          isid: 'mockIsid1',
+          name: 'Mock ISkill 1',
+        ),
+      );
 
-    verify(mockISkill1.update()); // Verify that the method was called
-  });
+      expect(updateResult, true);
+      verify(mockISkill1.name = 'Mock ISkill 1');
 
-  test('updateISkillSectionData returns false when user is null', () async {
-    when(mockRepoService.getAllISkill()).thenAnswer((_) async => null);
+      verify(mockISkill1.update()); // Verify that the method was called
+    });
 
-    final updateResult = await controller.updateISkillSectionData(0,
-      ISkill(
-        isid: 'mockIsid1',
-        name: 'Mock ISkill 1',
-      ),
-    );
+    test('updateISkillSectionData returns false when user is null', () async {
+      when(mockRepoService.getAllISkill()).thenAnswer((_) async => null);
 
-    expect(updateResult, false);
+      final updateResult = await controller.updateISkillSectionData(0,
+        ISkill(
+          isid: 'mockIsid1',
+          name: 'Mock ISkill 1',
+        ),
+      );
 
-    verifyNever(mockISkill1.update());
-    verifyNever(mockISkill2.update());
+      expect(updateResult, false);
+
+      verifyNever(mockISkill1.update());
+      verifyNever(mockISkill2.update());
+    });
   });
 }
