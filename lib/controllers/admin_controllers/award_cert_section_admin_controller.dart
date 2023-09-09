@@ -5,10 +5,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import '../../models/AwardCert.dart';
 import '../../reposervice/award_cert_repo_services.dart'; // Import the AwardCert class
 
-class AwardCertAdminController {
+class AwardCertSectionAdminController {
   final AwardCertRepoService awardCertRepoService;
 
-  AwardCertAdminController(this.awardCertRepoService); // Constructor
+  AwardCertSectionAdminController(this.awardCertRepoService); // Constructor
 
   Future<List<AwardCert>?> getAwardCertList() async {
     try {

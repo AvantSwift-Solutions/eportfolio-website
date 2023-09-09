@@ -1,4 +1,4 @@
-import 'package:avantswift_portfolio/controllers/admin_controllers/award_cert_admin_controller.dart';
+import 'package:avantswift_portfolio/controllers/admin_controllers/award_cert_section_admin_controller.dart';
 import 'package:avantswift_portfolio/models/AwardCert.dart';
 import 'package:avantswift_portfolio/reposervice/award_cert_repo_services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -13,12 +13,12 @@ void main() {
   late AwardCert ac1;
   late AwardCert ac2;
 
-  late AwardCertAdminController controller;
+  late AwardCertSectionAdminController controller;
   late MockAwardCertRepoService mockRepoService;
 
   setUp(() {
     mockRepoService = MockAwardCertRepoService();
-    controller = AwardCertAdminController(mockRepoService);
+    controller = AwardCertSectionAdminController(mockRepoService);
 
     ac1 = MockAwardCert();
     ac2 = MockAwardCert();
