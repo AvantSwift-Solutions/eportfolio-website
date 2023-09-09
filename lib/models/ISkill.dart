@@ -29,15 +29,17 @@ class ISkill {
     };
   }
 
-  Future<void> create() async {
+  Future<bool> create() async {
     try {
       final isid = const Uuid().v4();
       await FirebaseFirestore.instance
           .collection('ISkill')
           .doc(isid)
           .set(toMap());
+      return true;
     } catch (e) {
       log('Error creating ISkill document: $e');
+      return false;
     }
   }
 
@@ -54,11 +56,13 @@ class ISkill {
     }
   }
 
-  Future<void> delete() async {
+  Future<bool> delete() async {
     try {
       await FirebaseFirestore.instance.collection('ISkill').doc(isid).delete();
+      return true;
     } catch (e) {
       log('Error deleting ISkill document: $e');
+      return false;
     }
   }
 }

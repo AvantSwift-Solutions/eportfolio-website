@@ -25,7 +25,7 @@ class AwardCertSectionAdmin extends StatelessWidget {
                 _showEditDialog(
                     context, await _adminController.getAwardCertList());
               },
-              child: const Text('Edit AwardCert'),
+              child: const Text('Edit Awards & Certifications Info'),
             ),
           ),
         ],

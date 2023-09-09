@@ -26,7 +26,7 @@ class RecommendationSectionAdmin extends StatelessWidget {
                     await _adminController.getRecommendationSectionData() ??
                         []);
               },
-              child: const Text('Edit Recommendation Info'),
+              child: const Text('Edit Peer Recommendation Info'),
             ),
           ),
         ],

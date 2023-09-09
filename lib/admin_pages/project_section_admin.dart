@@ -26,7 +26,7 @@ class ProjectSectionAdmin extends StatelessWidget {
                 _showEditDialog(
                     context, await _adminController.getProjectList());
               },
-              child: const Text('Edit Project'),
+              child: const Text('Edit Personal Project Info'),
             ),
           ),
         ],
@@ -174,8 +174,7 @@ class ProjectSectionAdmin extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return ListTile(
                         title: Text(projects[index].name!),
-                        // subtitle: Text(Projects[index].description),
-                        // leading: Image.network(Projects[index].imageURL),
+                        subtitle: Text(projects[index].description!),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [

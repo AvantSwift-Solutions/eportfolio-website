@@ -22,7 +22,7 @@ class AboutMeSectionAdmin extends StatelessWidget {
               onPressed: () {
                 _showEditDialog(context);
               },
-              child: const Text('Edit About Me'),
+              child: const Text('Edit About Me Info'),
             ),
           ),
         ],
