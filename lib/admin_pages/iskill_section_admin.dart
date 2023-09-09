@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import '../controllers/admin_controllers/iskill_section_admin_controller.dart';
 import '../models/ISkill.dart';
 import '../reposervice/iskill_repo_services.dart';
@@ -98,14 +99,14 @@ class ISkillSectionAdmin extends StatelessWidget {
   }
 
   void _showAddNewDialog(BuildContext context, List<ISkill> iskillList) async {
-    
+    final id = const Uuid().v4();
     final iskill = ISkill(
-      isid: '',
+      isid: id,
       name: '',
     );
 
     _showISkillDialog(context, iskill, (skill) async {
-      return await skill.create();
+      return await skill.create(id);
     });
 
   }
@@ -116,7 +117,7 @@ class ISkillSectionAdmin extends StatelessWidget {
     final iskill = iskillSectionData![i];
 
     _showISkillDialog(context, iskill, (skill) async {
-      return await _adminController.updateISkillSectionData(i, skill) ?? false;
+      return await skill.update() ?? false;
     });
 
   }

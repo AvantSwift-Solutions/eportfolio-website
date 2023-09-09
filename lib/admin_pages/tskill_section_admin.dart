@@ -2,27 +2,30 @@
 import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import '../controllers/admin_controllers/tskill_section_admin_controller.dart';
 import '../models/TSkill.dart';
 import '../reposervice/tskill_repo_services.dart';
 
 class TSkillSectionAdmin extends StatelessWidget {
+
   final TSkillSectionAdminController _adminController =
       TSkillSectionAdminController(TSkillRepoService());
+  late final BuildContext parentContext;
 
   TSkillSectionAdmin({super.key});
 
   @override
   Widget build(BuildContext context) {
+    parentContext = context;
     return SingleChildScrollView(
       child: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
-              onPressed: () async {
-                _showTSkillList(context,
-                    await _adminController.getTSkillSectionData() ?? []);
+              onPressed: () {
+                _showList(context);
               },
               child: const Text('Edit Technical Skill Info'),
             ),
@@ -32,41 +35,64 @@ class TSkillSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showTSkillList(BuildContext context, List<TSkill> tskillList) {
+  Future<void> _showList(BuildContext context) async {
+    List<TSkill> tskills = await _adminController.getTSkillSectionData() ?? [];
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
           title: const Text('Technical Skill List'),
           content: SizedBox(
-            width: 200,
-            child: tskillList.isNotEmpty
-                ? ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: tskillList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return ElevatedButton(
-                        onPressed: () {
-                          _showEditDialog(context, index);
+            width: 300,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                tskills.isEmpty
+                    ? const Text('No Technical Skills available')
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: tskills.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(tskills[index].name!),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.edit),
+                                  onPressed: () {
+                                    _showEditDialog(context, index);
+                                  },
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.delete),
+                                  onPressed: () {
+                                    _showDeleteDialog(context, tskills[index]);
+                                  },
+                                ),
+                              ],
+                            ),
+                            onTap: () {
+                              _showEditDialog(context, index);
+                            },
+                          );
                         },
-                        child: Text(tskillList[index].name!),
-                      );
-                    },
-                  )
-                : const Text('No technical skill data available.'),
+                      ),
+                TextButton(
+                  onPressed: () {
+                    _showAddNewDialog(context, tskills);
+                  },
+                  child: const Text('Add New Technical Skill'),
+                ),
+              ],
+            ),
           ),
           actions: <Widget>[
-            TextButton(
+            ElevatedButton(
               onPressed: () {
                 Navigator.of(dialogContext).pop();
               },
-              child: const Text('Close'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _showAddNewDialog(context, tskillList);
-              },
-              child: const Text('Add New Technical Skill'),
+              child: const Text('OK'),
             ),
           ],
         );
@@ -75,45 +101,50 @@ class TSkillSectionAdmin extends StatelessWidget {
   }
 
   void _showAddNewDialog(BuildContext context, List<TSkill> tskillList) async {
+    final id = const Uuid().v4();
     final tskill = TSkill(
-      tsid: '',
+      tsid: id,
       name: '',
+      imageURL: '',
     );
 
     _showTSkillDialog(context, tskill, (skill) async {
-      skill.create();
-      return true;
+      return await skill.create(id);
     });
+
   }
 
   void _showEditDialog(BuildContext context, int i) async {
+
     final tskillSectionData = await _adminController.getTSkillSectionData();
     final tskill = tskillSectionData![i];
 
     _showTSkillDialog(context, tskill, (skill) async {
-      return await _adminController.updateTSkillSectionData(i, skill) ?? false;
+      return await skill.update() ?? false;
     });
+
   }
 
   void _showTSkillDialog(BuildContext context, TSkill tskill,
       Future<bool> Function(TSkill) onTSkillUpdated) {
+
     TextEditingController nameController =
         TextEditingController(text: tskill.name);
-
     Uint8List? pickedImageBytes;
 
-    String title;
-    var newTSkill = false;
+    String title, successMessage, errorMessage;
     if (tskill.name == '') {
-      title = 'Add new technical skill information';
-      newTSkill = true;
+      title = 'Add new Technical Skill information';
+      successMessage = 'Technical Skill info added successfully';
+      errorMessage = 'Error adding new Technical Skill info';
     } else {
-      title = 'Edit your technical skill information for ${tskill.name}';
+      title = 'Edit your Technical Skill information for ${tskill.name}';
+      successMessage = 'Technical Skill info updated successfully';
+      errorMessage = 'Error updating Technical Skill info';
     }
 
-    Navigator.of(context).pop();
     showDialog(
-      context: context,
+      context: parentContext, // Use the parent context instead of the current context
       builder: (BuildContext dialogContext) {
         return StatefulBuilder(
           builder: (context, setState) {
@@ -144,19 +175,7 @@ class TSkillSectionAdmin extends StatelessWidget {
                 ),
               ),
               actions: <Widget>[
-                if (!newTSkill)
-                  TextButton(
-                    onPressed: () async {
-                      final name = tskill.name;
-                      tskill.delete();
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content:
-                              Text('Technical skill info for $name deleted')));
-                      Navigator.pop(dialogContext);
-                    },
-                    child: const Text('Delete'),
-                  ),
-                TextButton(
+                ElevatedButton(
                   onPressed: () async {
                     if (pickedImageBytes != null) {
                       String? imageURL =
@@ -168,20 +187,70 @@ class TSkillSectionAdmin extends StatelessWidget {
                     }
                     bool isSuccess = await onTSkillUpdated(tskill);
                     if (isSuccess) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text('Technical skill info updated')));
+                      ScaffoldMessenger.of(parentContext).showSnackBar(
+                        SnackBar(content: Text(successMessage)),
+                      );
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content:
-                              Text('Error updating technical skill info')));
+                      ScaffoldMessenger.of(parentContext).showSnackBar(
+                        SnackBar(content: Text(errorMessage)),
+                      );
                     }
-                    Navigator.pop(dialogContext);
+                    Navigator.of(dialogContext).pop(); // Close update dialog
+                    Navigator.of(parentContext).pop(); // Close old list dialog
+                    _showList(parentContext); // Show new list dialog
                   },
                   child: const Text('OK'),
                 ),
                 TextButton(
                   onPressed: () async {
-                    Navigator.pop(dialogContext);
+                    Navigator.of(dialogContext).pop();
+                  },
+                  child: const Text('Cancel'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _showDeleteDialog(BuildContext context, TSkill skill) async {
+
+    final name = skill.name ?? 'Technical Skill';
+
+    showDialog(
+      context: parentContext,
+      builder: (BuildContext dialogContext) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Text('Confirm Deletion'),
+              content: Text('Are you sure you want to delete $name?'),
+              actions: <Widget>[
+                ElevatedButton(
+                  onPressed: () async {
+                    final deleted = await skill.delete();
+                    if (deleted) {
+                      setState(() {});
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                            content: Text('$name deleted successfully')),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Failed to delete $name')),
+                      );
+                    }
+                    Navigator.of(dialogContext).pop(); // Close delete dialog
+                    Navigator.of(parentContext).pop(); // Close old list dialog
+                    _showList(parentContext); // Show new list dialog
+                  },
+                  child: const Text('Delete'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(dialogContext).pop();
                   },
                   child: const Text('Cancel'),
                 ),
@@ -206,4 +275,5 @@ class TSkillSectionAdmin extends StatelessWidget {
 
     return null;
   }
+
 }

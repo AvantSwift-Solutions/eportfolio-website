@@ -1,7 +1,6 @@
 // ignore_for_file: file_names
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:uuid/uuid.dart';
 
 class TSkill {
   final String? tsid;
@@ -34,15 +33,16 @@ class TSkill {
     };
   }
 
-  Future<void> create() async {
+  Future<bool> create(String id) async {
     try {
-      final tsid = const Uuid().v4();
       await FirebaseFirestore.instance
           .collection('TSkill')
-          .doc(tsid)
+          .doc(id)
           .set(toMap());
+      return true;
     } catch (e) {
       log('Error creating TSkill document: $e');
+      return false;
     }
   }
 
@@ -59,11 +59,13 @@ class TSkill {
     }
   }
 
-  Future<void> delete() async {
+  Future<bool> delete() async {
     try {
       await FirebaseFirestore.instance.collection('TSkill').doc(tsid).delete();
+      return true;
     } catch (e) {
       log('Error deleting TSkill document: $e');
+      return false;
     }
   }
 }
