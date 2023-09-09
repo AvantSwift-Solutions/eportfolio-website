@@ -10,7 +10,7 @@ class AwardCertSectionAdminController {
 
   AwardCertSectionAdminController(this.awardCertRepoService); // Constructor
 
-  Future<List<AwardCert>?> getAwardCertList() async {
+  Future<List<AwardCert>?> getAwardCertSectionData() async {
     try {
       List<AwardCert>? awardCerts =
           await awardCertRepoService.getAllAwardCert();

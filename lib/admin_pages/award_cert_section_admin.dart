@@ -1,31 +1,32 @@
 // ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
 import 'dart:typed_data';
-import 'package:avantswift_portfolio/controllers/admin_controllers/award_cert_section_admin_controller.dart';
-import 'package:avantswift_portfolio/reposervice/award_cert_repo_services.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-
+import 'package:uuid/uuid.dart';
+import '../controllers/admin_controllers/award_cert_section_admin_controller.dart';
 import '../models/AwardCert.dart';
+import '../reposervice/award_cert_repo_services.dart';
 
 class AwardCertSectionAdmin extends StatelessWidget {
   final AwardCertSectionAdminController _adminController =
       AwardCertSectionAdminController(AwardCertRepoService());
+  late final BuildContext parentContext;
 
   AwardCertSectionAdmin({super.key});
 
   @override
   Widget build(BuildContext context) {
+    parentContext = context;
     return SingleChildScrollView(
       child: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
-              onPressed: () async {
-                _showEditDialog(
-                    context, await _adminController.getAwardCertList());
+              onPressed: () {
+                _showList(context);
               },
-              child: const Text('Edit Awards & Certifications Info'),
+              child: const Text('Edit Award & Certification Info'),
             ),
           ),
         ],
@@ -33,181 +34,66 @@ class AwardCertSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showEditDialog(
-      BuildContext context, List<AwardCert>? awardCerts) async {
+  Future<void> _showList(BuildContext context) async {
+    List<AwardCert> awardcerts =
+        await _adminController.getAwardCertSectionData() ?? [];
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: const Text('Edit AwardCert'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(dialogContext).pop();
-                  _showAddAwardCertDialog(context, awardCerts!);
-                },
-                child: const Text('Add AwardCert'),
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  Navigator.of(dialogContext).pop();
-                  _showExistingAwardCertDialog(context, awardCerts!);
-                },
-                child: const Text('Update Existing AwardCert'),
-              ),
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _showAddAwardCertDialog(
-      BuildContext context, List<AwardCert> awardCerts) {
-    TextEditingController nameController = TextEditingController();
-    // TextEditingController imageURLController = TextEditingController();
-    TextEditingController linkController = TextEditingController();
-    TextEditingController sourceController = TextEditingController();
-
-    Uint8List? pickedImageBytes;
-    AwardCert newAwardCert =
-        AwardCert(acid: '', name: '', link: '', source: '');
-
-    showDialog(
-      context: context,
-      builder: (BuildContext dialogContext) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: const Text('Add AwardCert'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextField(
-                    controller: nameController,
-                    onChanged: (value) => newAwardCert.name = value,
-                    decoration: const InputDecoration(labelText: 'Name'),
-                  ),
-                  TextField(
-                    controller: linkController,
-                    onChanged: (value) => newAwardCert.link = value,
-                    decoration: const InputDecoration(labelText: 'Link'),
-                  ),
-                  TextField(
-                    controller: sourceController,
-                    onChanged: (value) => newAwardCert.source = value,
-                    decoration: const InputDecoration(labelText: 'Source'),
-                  ),
-                  if (pickedImageBytes != null) Image.memory(pickedImageBytes!),
-                  ElevatedButton(
-                    onPressed: () async {
-                      Uint8List? imageBytes = await _pickImage();
-                      if (imageBytes != null) {
-                        pickedImageBytes = imageBytes;
-                        setState(() {});
-                      }
-                    },
-                    child: const Text('Pick an Image'),
-                  ),
-                ],
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () async {
-                    if (pickedImageBytes != null) {
-                      String? imageURL =
-                          await _adminController.uploadImageAndGetURL(
-                        pickedImageBytes!,
-                        'selected_image.jpg',
-                      );
-                      if (imageURL != null) {
-                        newAwardCert.imageURL = imageURL;
-                      }
-                    }
-
-                    newAwardCert.create();
-                    awardCerts.add(newAwardCert);
-                    Navigator.of(dialogContext).pop();
-                    setState(() {});
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Added a new AwardCert')),
-                    );
-                  },
-                  child: const Text('Add'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(dialogContext).pop();
-                  },
-                  child: const Text('Cancel'),
-                ),
-              ],
-            );
-          },
-        );
-      },
-    );
-  }
-
-  void _showExistingAwardCertDialog(
-      BuildContext context, List<AwardCert> awardCerts) {
-    showDialog(
-      context: context,
-      builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          title: const Text('AwardCert List'),
+          title: const Text('Award & Certification List'),
           content: SizedBox(
             width: 300,
-            height: 300,
-            child: awardCerts.isNotEmpty
-                ? ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: awardCerts.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(awardCerts[index].name!),
-                        // leading: Image.network(awardCerts[index].imageURL),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.edit),
-                              onPressed: () {
-                                _showUpdateAwardCertDialog(context, index);
-                              },
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                awardcerts.isEmpty
+                    ? const Text('No Award & Certifications available')
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: awardcerts.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(awardcerts[index].name!),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.edit),
+                                  onPressed: () {
+                                    _showEditDialog(context, index);
+                                  },
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.delete),
+                                  onPressed: () {
+                                    _showDeleteDialog(
+                                        context, awardcerts[index]);
+                                  },
+                                ),
+                              ],
                             ),
-                            IconButton(
-                              icon: const Icon(Icons.delete),
-                              onPressed: () {
-                                _showDeleteDialog(context, index);
-                              },
-                            ),
-                          ],
-                        ),
-                        onTap: () {
-                          _showUpdateAwardCertDialog(context, index);
+                            onTap: () {
+                              _showEditDialog(context, index);
+                            },
+                          );
                         },
-                      );
-                    },
-                  )
-                : const Text('No AwardCert available'),
+                      ),
+                TextButton(
+                  onPressed: () {
+                    _showAddNewDialog(context, awardcerts);
+                  },
+                  child: const Text('Add New Award & Certification'),
+                ),
+              ],
+            ),
           ),
           actions: <Widget>[
-            TextButton(
+            ElevatedButton(
               onPressed: () {
                 Navigator.of(dialogContext).pop();
               },
-              child: const Text('Cancel'),
+              child: const Text('OK'),
             ),
           ],
         );
@@ -215,92 +101,125 @@ class AwardCertSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showUpdateAwardCertDialog(BuildContext context, int i) async {
-    final awardCerts = await _adminController.getAwardCertList();
-    final selectedAwardCert = awardCerts?[i];
+  void _showAddNewDialog(
+      BuildContext context, List<AwardCert> awardcertList) async {
+    final id = const Uuid().v4();
+    final awardcert = AwardCert(
+      acid: id,
+      name: '',
+      link: '',
+      source: '',
+      imageURL: '',
+    );
 
+    _showAwardCertDialog(context, awardcert, (a) async {
+      return await a.create(id);
+    });
+  }
+
+  void _showEditDialog(BuildContext context, int i) async {
+    final awardcertSectionData =
+        await _adminController.getAwardCertSectionData();
+    final awardcert = awardcertSectionData![i];
+
+    _showAwardCertDialog(context, awardcert, (a) async {
+      return await a.update() ?? false;
+    });
+  }
+
+  void _showAwardCertDialog(BuildContext context, AwardCert awardcert,
+      Future<bool> Function(AwardCert) onAwardCertUpdated) {
     TextEditingController nameController =
-        TextEditingController(text: selectedAwardCert?.name);
+        TextEditingController(text: awardcert.name);
     TextEditingController linkController =
-        TextEditingController(text: selectedAwardCert?.link);
+        TextEditingController(text: awardcert.link);
     TextEditingController sourceController =
-        TextEditingController(text: selectedAwardCert?.source);
+        TextEditingController(text: awardcert.source);
     Uint8List? pickedImageBytes;
 
+    String title, successMessage, errorMessage;
+    if (awardcert.name == '') {
+      title = 'Add new Award & Certification information';
+      successMessage = 'Award & Certification info added successfully';
+      errorMessage = 'Error adding new Award & Certification info';
+    } else {
+      title =
+          'Edit your Award & Certification information for ${awardcert.name}';
+      successMessage = 'Award & Certification info updated successfully';
+      errorMessage = 'Error updating Award & Certification info';
+    }
+
     showDialog(
-      context: context,
+      context:
+          parentContext, // Use the parent context instead of the current context
       builder: (BuildContext dialogContext) {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: const Text('Update Existing AwardCert'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextField(
-                    controller: nameController,
-                    onChanged: (value) => awardCerts?[i].name = value,
-                    decoration: const InputDecoration(labelText: 'Name'),
-                  ),
-                  TextField(
-                    controller: linkController,
-                    onChanged: (value) => awardCerts?[i].link = value,
-                    decoration: const InputDecoration(labelText: 'Link'),
-                  ),
-                  TextField(
-                    controller: sourceController,
-                    onChanged: (value) => awardCerts?[i].source = value,
-                    decoration: const InputDecoration(labelText: 'Source'),
-                  ),
-                  if (pickedImageBytes != null) Image.memory(pickedImageBytes!),
-                  ElevatedButton(
-                    onPressed: () async {
-                      Uint8List? imageBytes = await _pickImage();
-                      if (imageBytes != null) {
-                        pickedImageBytes = imageBytes;
-                        setState(() {});
-                      }
-                    },
-                    child: const Text('Pick an Image'),
-                  ),
-                ],
+              title: Text(title),
+              content: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    TextField(
+                      controller: nameController,
+                      onChanged: (value) => awardcert.name = value,
+                      decoration: const InputDecoration(
+                          labelText: 'Award/Certification Name'),
+                    ),
+                    TextField(
+                      controller: linkController,
+                      onChanged: (value) => awardcert.link = value,
+                      decoration: const InputDecoration(labelText: 'Link'),
+                    ),
+                    TextField(
+                      controller: sourceController,
+                      onChanged: (value) => awardcert.source = value,
+                      decoration: const InputDecoration(labelText: 'Source'),
+                    ),
+                    if (pickedImageBytes != null)
+                      Image.memory(pickedImageBytes!),
+                    ElevatedButton(
+                      onPressed: () async {
+                        Uint8List? imageBytes = await _pickImage();
+                        if (imageBytes != null) {
+                          pickedImageBytes = imageBytes;
+                          setState(() {});
+                        }
+                      },
+                      child: const Text('Pick an Image'),
+                    ),
+                  ],
+                ),
               ),
               actions: <Widget>[
-                TextButton(
+                ElevatedButton(
                   onPressed: () async {
                     if (pickedImageBytes != null) {
                       String? imageURL =
                           await _adminController.uploadImageAndGetURL(
-                        pickedImageBytes!,
-                        'selected_image.jpg',
-                      );
+                              pickedImageBytes!, 'selected_image.jpg');
                       if (imageURL != null) {
-                        selectedAwardCert?.imageURL = imageURL;
+                        awardcert.imageURL = imageURL;
                       }
                     }
-
-                    bool isSuccess = await _adminController.updateAwardCertData(
-                            i, awardCerts![i]) ??
-                        false;
+                    bool isSuccess = await onAwardCertUpdated(awardcert);
                     if (isSuccess) {
-                      setState(() {});
-                      Navigator.of(dialogContext).pop();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text('Updated an existing AwardCert')),
+                      ScaffoldMessenger.of(parentContext).showSnackBar(
+                        SnackBar(content: Text(successMessage)),
                       );
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content:
-                                Text('Failed to update an existing AwardCert')),
+                      ScaffoldMessenger.of(parentContext).showSnackBar(
+                        SnackBar(content: Text(errorMessage)),
                       );
                     }
+                    Navigator.of(dialogContext).pop(); // Close update dialog
+                    Navigator.of(parentContext).pop(); // Close old list dialog
+                    _showList(parentContext); // Show new list dialog
                   },
-                  child: const Text('Update'),
+                  child: const Text('OK'),
                 ),
                 TextButton(
-                  onPressed: () {
+                  onPressed: () async {
                     Navigator.of(dialogContext).pop();
                   },
                   child: const Text('Cancel'),
@@ -313,42 +232,42 @@ class AwardCertSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showDeleteDialog(BuildContext context, int i) async {
+  void _showDeleteDialog(BuildContext context, AwardCert awardcert) async {
+    final name = awardcert.name ?? 'Award & Certification';
+
     showDialog(
-      context: context,
+      context: parentContext,
       builder: (BuildContext dialogContext) {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
               title: const Text('Confirm Deletion'),
-              content:
-                  const Text('Are you sure you want to delete this AwardCert?'),
+              content: Text('Are you sure you want to delete $name?'),
               actions: <Widget>[
+                ElevatedButton(
+                  onPressed: () async {
+                    final deleted = await awardcert.delete();
+                    if (deleted) {
+                      setState(() {});
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('$name deleted successfully')),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Failed to delete $name')),
+                      );
+                    }
+                    Navigator.of(dialogContext).pop(); // Close delete dialog
+                    Navigator.of(parentContext).pop(); // Close old list dialog
+                    _showList(parentContext); // Show new list dialog
+                  },
+                  child: const Text('Delete'),
+                ),
                 TextButton(
                   onPressed: () {
                     Navigator.of(dialogContext).pop();
                   },
                   child: const Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () async {
-                    final deleted = await _adminController.deleteAwardCert(i);
-                    Navigator.of(dialogContext).pop(); // Close the dialog.
-
-                    if (deleted) {
-                      setState(() {});
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text('AwardCert deleted successfully')),
-                      );
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text('Failed to delete the AwardCert')),
-                      );
-                    }
-                  },
-                  child: const Text('Delete'),
                 ),
               ],
             );

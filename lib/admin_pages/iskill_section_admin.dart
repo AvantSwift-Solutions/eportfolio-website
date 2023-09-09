@@ -6,7 +6,6 @@ import '../models/ISkill.dart';
 import '../reposervice/iskill_repo_services.dart';
 
 class ISkillSectionAdmin extends StatelessWidget {
-
   final ISkillSectionAdminController _adminController =
       ISkillSectionAdminController(ISkillRepoService());
   late final BuildContext parentContext;
@@ -108,23 +107,19 @@ class ISkillSectionAdmin extends StatelessWidget {
     _showISkillDialog(context, iskill, (skill) async {
       return await skill.create(id);
     });
-
   }
 
   void _showEditDialog(BuildContext context, int i) async {
-
     final iskillSectionData = await _adminController.getISkillSectionData();
     final iskill = iskillSectionData![i];
 
     _showISkillDialog(context, iskill, (skill) async {
       return await skill.update() ?? false;
     });
-
   }
 
   void _showISkillDialog(BuildContext context, ISkill iskill,
       Future<bool> Function(ISkill) onISkillUpdated) {
-
     TextEditingController nameController =
         TextEditingController(text: iskill.name);
 
@@ -140,7 +135,8 @@ class ISkillSectionAdmin extends StatelessWidget {
     }
 
     showDialog(
-      context: parentContext, // Use the parent context instead of the current context
+      context:
+          parentContext, // Use the parent context instead of the current context
       builder: (BuildContext dialogContext) {
         return StatefulBuilder(
           builder: (context, setState) {
@@ -192,7 +188,6 @@ class ISkillSectionAdmin extends StatelessWidget {
   }
 
   void _showDeleteDialog(BuildContext context, ISkill skill) async {
-
     final name = skill.name ?? 'Interpersonal Skill';
 
     showDialog(
@@ -210,8 +205,7 @@ class ISkillSectionAdmin extends StatelessWidget {
                     if (deleted) {
                       setState(() {});
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                            content: Text('$name deleted successfully')),
+                        SnackBar(content: Text('$name deleted successfully')),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -237,5 +231,4 @@ class ISkillSectionAdmin extends StatelessWidget {
       },
     );
   }
-
 }

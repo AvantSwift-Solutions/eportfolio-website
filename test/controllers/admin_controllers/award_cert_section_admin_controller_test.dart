@@ -39,7 +39,7 @@ void main() {
       when(mockRepoService.getAllAwardCert())
           .thenAnswer((_) async => [ac1, ac2]);
 
-      final awardCerts = await controller.getAwardCertList();
+      final awardCerts = await controller.getAwardCertSectionData();
 
       expect(awardCerts?.length, 2);
 
@@ -57,7 +57,7 @@ void main() {
       when(mockRepoService.getAllAwardCert())
           .thenThrow(Exception('Test Exception'));
 
-      final awardCerts = await controller.getAwardCertList();
+      final awardCerts = await controller.getAwardCertSectionData();
 
       expect(awardCerts, null);
     });

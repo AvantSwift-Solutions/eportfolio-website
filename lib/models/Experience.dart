@@ -1,7 +1,6 @@
 // ignore_for_file: file_names
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:uuid/uuid.dart';
 
 class Experience {
   final String? peid;
@@ -63,15 +62,16 @@ class Experience {
     };
   }
 
-  Future<void> create() async {
+  Future<bool> create(String id) async {
     try {
-      final id = const Uuid().v4();
       await FirebaseFirestore.instance
           .collection('Experience')
           .doc(id)
           .set(toMap());
+      return true;
     } catch (e) {
       log('Error creating experience document: $e');
+      return false;
     }
   }
 
@@ -88,14 +88,16 @@ class Experience {
     }
   }
 
-  Future<void> delete() async {
+  Future<bool> delete() async {
     try {
       await FirebaseFirestore.instance
           .collection('Experience')
           .doc(peid)
           .delete();
+      return true;
     } catch (e) {
       log('Error deleting experience document: $e');
+      return false;
     }
   }
 }

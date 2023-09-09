@@ -8,7 +8,6 @@ import '../models/TSkill.dart';
 import '../reposervice/tskill_repo_services.dart';
 
 class TSkillSectionAdmin extends StatelessWidget {
-
   final TSkillSectionAdminController _adminController =
       TSkillSectionAdminController(TSkillRepoService());
   late final BuildContext parentContext;
@@ -111,23 +110,19 @@ class TSkillSectionAdmin extends StatelessWidget {
     _showTSkillDialog(context, tskill, (skill) async {
       return await skill.create(id);
     });
-
   }
 
   void _showEditDialog(BuildContext context, int i) async {
-
     final tskillSectionData = await _adminController.getTSkillSectionData();
     final tskill = tskillSectionData![i];
 
     _showTSkillDialog(context, tskill, (skill) async {
       return await skill.update() ?? false;
     });
-
   }
 
   void _showTSkillDialog(BuildContext context, TSkill tskill,
       Future<bool> Function(TSkill) onTSkillUpdated) {
-
     TextEditingController nameController =
         TextEditingController(text: tskill.name);
     Uint8List? pickedImageBytes;
@@ -144,7 +139,8 @@ class TSkillSectionAdmin extends StatelessWidget {
     }
 
     showDialog(
-      context: parentContext, // Use the parent context instead of the current context
+      context:
+          parentContext, // Use the parent context instead of the current context
       builder: (BuildContext dialogContext) {
         return StatefulBuilder(
           builder: (context, setState) {
@@ -216,7 +212,6 @@ class TSkillSectionAdmin extends StatelessWidget {
   }
 
   void _showDeleteDialog(BuildContext context, TSkill skill) async {
-
     final name = skill.name ?? 'Technical Skill';
 
     showDialog(
@@ -234,8 +229,7 @@ class TSkillSectionAdmin extends StatelessWidget {
                     if (deleted) {
                       setState(() {});
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                            content: Text('$name deleted successfully')),
+                        SnackBar(content: Text('$name deleted successfully')),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -275,5 +269,4 @@ class TSkillSectionAdmin extends StatelessWidget {
 
     return null;
   }
-
 }

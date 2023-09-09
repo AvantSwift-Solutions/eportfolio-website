@@ -3,28 +3,30 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 import '../controllers/admin_controllers/education_section_admin_controller.dart';
 import '../models/Education.dart';
 import '../reposervice/education_repo_services.dart';
-import 'package:intl/intl.dart';
 
 class EducationSectionAdmin extends StatelessWidget {
   final EducationSectionAdminController _adminController =
       EducationSectionAdminController(EducationRepoService());
+  late final BuildContext parentContext;
 
   EducationSectionAdmin({super.key});
 
   @override
   Widget build(BuildContext context) {
+    parentContext = context;
     return SingleChildScrollView(
       child: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
-              onPressed: () async {
-                _showEducationList(context,
-                    await _adminController.getEducationSectionData() ?? []);
+              onPressed: () {
+                _showList(context);
               },
               child: const Text('Edit Education Info'),
             ),
@@ -34,41 +36,66 @@ class EducationSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showEducationList(BuildContext context, List<Education> educationList) {
+  Future<void> _showList(BuildContext context) async {
+    List<Education> educations =
+        await _adminController.getEducationSectionData() ?? [];
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
           title: const Text('Education List'),
           content: SizedBox(
-            width: 200,
-            child: educationList.isNotEmpty
-                ? ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: educationList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return ElevatedButton(
-                        onPressed: () {
-                          _showEditDialog(context, index);
+            width: 300,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                educations.isEmpty
+                    ? const Text('No Educations available')
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: educations.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(educations[index].schoolName!),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.edit),
+                                  onPressed: () {
+                                    _showEditDialog(context, index);
+                                  },
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.delete),
+                                  onPressed: () {
+                                    _showDeleteDialog(
+                                        context, educations[index]);
+                                  },
+                                ),
+                              ],
+                            ),
+                            onTap: () {
+                              _showEditDialog(context, index);
+                            },
+                          );
                         },
-                        child: Text(educationList[index].schoolName!),
-                      );
-                    },
-                  )
-                : const Text('No education data available.'),
+                      ),
+                TextButton(
+                  onPressed: () {
+                    _showAddNewDialog(context, educations);
+                  },
+                  child: const Text('Add New Education'),
+                ),
+              ],
+            ),
           ),
           actions: <Widget>[
-            TextButton(
+            ElevatedButton(
               onPressed: () {
                 Navigator.of(dialogContext).pop();
               },
-              child: const Text('Close'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _showAddNewDialog(context, educationList);
-              },
-              child: const Text('Add New Education'),
+              child: const Text('OK'),
             ),
           ],
         );
@@ -78,8 +105,9 @@ class EducationSectionAdmin extends StatelessWidget {
 
   void _showAddNewDialog(
       BuildContext context, List<Education> educationList) async {
+    final id = const Uuid().v4();
     final education = Education(
-      eid: '',
+      eid: id,
       startDate: Timestamp.now(),
       endDate: Timestamp.now(),
       logoURL: null,
@@ -88,9 +116,8 @@ class EducationSectionAdmin extends StatelessWidget {
       description: '',
     );
 
-    _showEducationDialog(context, education, (edu) async {
-      edu.create();
-      return true;
+    _showEducationDialog(context, education, (education) async {
+      return await education.create(id);
     });
   }
 
@@ -99,14 +126,14 @@ class EducationSectionAdmin extends StatelessWidget {
         await _adminController.getEducationSectionData();
     final education = educationSectionData![i];
 
-    _showEducationDialog(context, education, (edu) async {
-      return await _adminController.updateEducationSectionData(i, edu) ?? false;
+    _showEducationDialog(context, education, (a) async {
+      return await a.update() ?? false;
     });
   }
 
   void _showEducationDialog(BuildContext context, Education education,
       Future<bool> Function(Education) onEducationUpdated) {
-    TextEditingController schoolNameController =
+    TextEditingController nameController =
         TextEditingController(text: education.schoolName);
     TextEditingController degreeController =
         TextEditingController(text: education.degree);
@@ -116,21 +143,22 @@ class EducationSectionAdmin extends StatelessWidget {
         text: DateFormat('MMMM d, y').format(education.startDate!.toDate()));
     TextEditingController endDateController = TextEditingController(
         text: DateFormat('MMMM d, y').format(education.endDate!.toDate()));
-
     Uint8List? pickedImageBytes;
 
-    String title;
-    var newEducation = false;
+    String title, successMessage, errorMessage;
     if (education.schoolName == '') {
-      title = 'Add new education information';
-      newEducation = true;
+      title = 'Add new Education information';
+      successMessage = 'Education info added successfully';
+      errorMessage = 'Error adding new Education info';
     } else {
-      title = 'Edit your education information for ${education.schoolName}';
+      title = 'Edit your Education information for ${education.schoolName}';
+      successMessage = 'Education info updated successfully';
+      errorMessage = 'Error updating Education info';
     }
 
-    Navigator.of(context).pop();
     showDialog(
-      context: context,
+      context:
+          parentContext, // Use the parent context instead of the current context
       builder: (BuildContext dialogContext) {
         return StatefulBuilder(
           builder: (context, setState) {
@@ -140,7 +168,7 @@ class EducationSectionAdmin extends StatelessWidget {
                 child: Column(
                   children: [
                     TextField(
-                      controller: schoolNameController,
+                      controller: nameController,
                       onChanged: (value) => education.schoolName = value,
                       decoration:
                           const InputDecoration(labelText: 'School Name'),
@@ -230,18 +258,7 @@ class EducationSectionAdmin extends StatelessWidget {
                 ),
               ),
               actions: <Widget>[
-                if (!newEducation)
-                  TextButton(
-                    onPressed: () async {
-                      final name = education.schoolName;
-                      education.delete();
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text('Education info for $name deleted')));
-                      Navigator.pop(dialogContext);
-                    },
-                    child: const Text('Delete'),
-                  ),
-                TextButton(
+                ElevatedButton(
                   onPressed: () async {
                     if (pickedImageBytes != null) {
                       String? imageURL =
@@ -253,19 +270,68 @@ class EducationSectionAdmin extends StatelessWidget {
                     }
                     bool isSuccess = await onEducationUpdated(education);
                     if (isSuccess) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text('Education info updated')));
+                      ScaffoldMessenger.of(parentContext).showSnackBar(
+                        SnackBar(content: Text(successMessage)),
+                      );
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text('Error updating education info')));
+                      ScaffoldMessenger.of(parentContext).showSnackBar(
+                        SnackBar(content: Text(errorMessage)),
+                      );
                     }
-                    Navigator.pop(dialogContext);
+                    Navigator.of(dialogContext).pop(); // Close update dialog
+                    Navigator.of(parentContext).pop(); // Close old list dialog
+                    _showList(parentContext); // Show new list dialog
                   },
                   child: const Text('OK'),
                 ),
                 TextButton(
                   onPressed: () async {
-                    Navigator.pop(dialogContext);
+                    Navigator.of(dialogContext).pop();
+                  },
+                  child: const Text('Cancel'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _showDeleteDialog(BuildContext context, Education education) async {
+    final name = education.schoolName ?? 'Education';
+
+    showDialog(
+      context: parentContext,
+      builder: (BuildContext dialogContext) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Text('Confirm Deletion'),
+              content: Text('Are you sure you want to delete $name?'),
+              actions: <Widget>[
+                ElevatedButton(
+                  onPressed: () async {
+                    final deleted = await education.delete();
+                    if (deleted) {
+                      setState(() {});
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('$name deleted successfully')),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Failed to delete $name')),
+                      );
+                    }
+                    Navigator.of(dialogContext).pop(); // Close delete dialog
+                    Navigator.of(parentContext).pop(); // Close old list dialog
+                    _showList(parentContext); // Show new list dialog
+                  },
+                  child: const Text('Delete'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(dialogContext).pop();
                   },
                   child: const Text('Cancel'),
                 ),

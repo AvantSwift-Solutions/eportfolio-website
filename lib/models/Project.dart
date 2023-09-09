@@ -1,7 +1,6 @@
 // ignore_for_file: file_names
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:uuid/uuid.dart';
 
 class Project {
   final String? ppid;
@@ -44,15 +43,16 @@ class Project {
     };
   }
 
-  Future<void> create() async {
+  Future<bool> create(String id) async {
     try {
-      final ppid = const Uuid().v4();
       await FirebaseFirestore.instance
           .collection('Project')
-          .doc(ppid)
+          .doc(id)
           .set(toMap());
+      return true;
     } catch (e) {
       log('Error creating project document: $e');
+      return false;
     }
   }
 
@@ -69,11 +69,13 @@ class Project {
     }
   }
 
-  Future<void> delete() async {
+  Future<bool> delete() async {
     try {
       await FirebaseFirestore.instance.collection('Project').doc(ppid).delete();
+      return true;
     } catch (e) {
       log('Error deleting project document: $e');
+      return false;
     }
   }
 }

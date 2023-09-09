@@ -35,7 +35,7 @@ void main() {
       when(mockRepoService.getAllProjects())
           .thenAnswer((_) async => [pp1, pp2]);
 
-      final projects = await controller.getProjectList();
+      final projects = await controller.getProjectSectionData();
       expect(projects?.length, 2);
       var project1 = projects?[0];
       var project2 = projects?[1];
@@ -49,7 +49,7 @@ void main() {
       when(mockRepoService.getAllProjects())
           .thenThrow(Exception('Test Exception'));
 
-      final projects = await controller.getProjectList();
+      final projects = await controller.getProjectSectionData();
       expect(projects, null);
     });
 

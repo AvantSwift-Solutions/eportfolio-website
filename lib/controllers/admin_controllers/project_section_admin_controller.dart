@@ -10,7 +10,7 @@ class ProjectSectionAdminController {
 
   ProjectSectionAdminController(this.projectRepoService); // Constructor
 
-  Future<List<Project>?> getProjectList() async {
+  Future<List<Project>?> getProjectSectionData() async {
     try {
       List<Project>? projects = await projectRepoService.getAllProjects();
       return projects;

@@ -3,30 +3,32 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 import '../controllers/admin_controllers/experience_section_admin_controller.dart';
 import '../models/Experience.dart';
 import '../reposervice/experience_repo_services.dart';
-import 'package:intl/intl.dart';
 
 class ExperienceSectionAdmin extends StatelessWidget {
   final ExperienceSectionAdminController _adminController =
       ExperienceSectionAdminController(ExperienceRepoService());
+  late final BuildContext parentContext;
 
   ExperienceSectionAdmin({super.key});
 
   @override
   Widget build(BuildContext context) {
+    parentContext = context;
     return SingleChildScrollView(
       child: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
-              onPressed: () async {
-                _showExperienceList(context,
-                    await _adminController.getExperienceSectionData() ?? []);
+              onPressed: () {
+                _showList(context);
               },
-              child: const Text('Edit Experience Info'),
+              child: const Text('Edit Professional Experience Info'),
             ),
           ),
         ],
@@ -34,42 +36,66 @@ class ExperienceSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showExperienceList(
-      BuildContext context, List<Experience> experienceList) {
+  Future<void> _showList(BuildContext context) async {
+    List<Experience> experiences =
+        await _adminController.getExperienceSectionData() ?? [];
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: const Text('Experience List'),
+          title: const Text('Professional Experience List'),
           content: SizedBox(
-            width: 200,
-            child: experienceList.isNotEmpty
-                ? ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: experienceList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return ElevatedButton(
-                        onPressed: () {
-                          _showEditDialog(context, index);
+            width: 300,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                experiences.isEmpty
+                    ? const Text('No Professional Experiences available')
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: experiences.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(experiences[index].companyName!),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.edit),
+                                  onPressed: () {
+                                    _showEditDialog(context, index);
+                                  },
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.delete),
+                                  onPressed: () {
+                                    _showDeleteDialog(
+                                        context, experiences[index]);
+                                  },
+                                ),
+                              ],
+                            ),
+                            onTap: () {
+                              _showEditDialog(context, index);
+                            },
+                          );
                         },
-                        child: Text(experienceList[index].jobTitle!),
-                      );
-                    },
-                  )
-                : const Text('No experience data available.'),
+                      ),
+                TextButton(
+                  onPressed: () {
+                    _showAddNewDialog(context, experiences);
+                  },
+                  child: const Text('Add New Professional Experience'),
+                ),
+              ],
+            ),
           ),
           actions: <Widget>[
-            TextButton(
+            ElevatedButton(
               onPressed: () {
                 Navigator.of(dialogContext).pop();
               },
-              child: const Text('Close'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _showAddNewDialog(context, experienceList);
-              },
-              child: const Text('Add New Experience'),
+              child: const Text('OK'),
             ),
           ],
         );
@@ -79,20 +105,19 @@ class ExperienceSectionAdmin extends StatelessWidget {
 
   void _showAddNewDialog(
       BuildContext context, List<Experience> experienceList) async {
+    final id = const Uuid().v4();
     final experience = Experience(
-      peid: '',
+      peid: id,
       jobTitle: '',
       companyName: '',
       location: '',
       startDate: Timestamp.now(),
       endDate: Timestamp.now(),
       description: '',
-      logoURL: null,
     );
 
-    _showExperienceDialog(context, experience, (exp) async {
-      exp.create();
-      return true;
+    _showExperienceDialog(context, experience, (a) async {
+      return await a.create(id);
     });
   }
 
@@ -101,41 +126,42 @@ class ExperienceSectionAdmin extends StatelessWidget {
         await _adminController.getExperienceSectionData();
     final experience = experienceSectionData![i];
 
-    _showExperienceDialog(context, experience, (exp) async {
-      return await _adminController.updateExperienceSectionData(i, exp) ??
-          false;
+    _showExperienceDialog(context, experience, (a) async {
+      return await a.update() ?? false;
     });
   }
 
   void _showExperienceDialog(BuildContext context, Experience experience,
       Future<bool> Function(Experience) onExperienceUpdated) {
+    TextEditingController nameController =
+        TextEditingController(text: experience.companyName);
     TextEditingController jobTitleController =
         TextEditingController(text: experience.jobTitle);
-    TextEditingController companyNameController =
-        TextEditingController(text: experience.companyName);
     TextEditingController locationController =
         TextEditingController(text: experience.location);
-    TextEditingController descriptionController =
-        TextEditingController(text: experience.description);
     TextEditingController startDateController = TextEditingController(
         text: DateFormat('MMMM d, y').format(experience.startDate!.toDate()));
     TextEditingController endDateController = TextEditingController(
         text: DateFormat('MMMM d, y').format(experience.endDate!.toDate()));
-
+    TextEditingController descriptionController =
+        TextEditingController(text: experience.description);
     Uint8List? pickedImageBytes;
 
-    String title;
-    var newExperience = false;
-    if (experience.jobTitle == '') {
-      title = 'Add new experience information';
-      newExperience = true;
+    String title, successMessage, errorMessage;
+    if (experience.companyName == '') {
+      title = 'Add new Professional Experience information';
+      successMessage = 'Professional Experience info added successfully';
+      errorMessage = 'Error adding new Professional Experience info';
     } else {
-      title = 'Edit your experience information for ${experience.jobTitle}';
+      title =
+          'Edit your Professional Experience information for ${experience.companyName}';
+      successMessage = 'Professional Experience info updated successfully';
+      errorMessage = 'Error updating Professional Experience info';
     }
 
-    Navigator.of(context).pop();
     showDialog(
-      context: context,
+      context:
+          parentContext, // Use the parent context instead of the current context
       builder: (BuildContext dialogContext) {
         return StatefulBuilder(
           builder: (context, setState) {
@@ -145,26 +171,20 @@ class ExperienceSectionAdmin extends StatelessWidget {
                 child: Column(
                   children: [
                     TextField(
-                      controller: jobTitleController,
-                      onChanged: (value) => experience.jobTitle = value,
-                      decoration: const InputDecoration(labelText: 'Job Title'),
-                    ),
-                    TextField(
-                      controller: companyNameController,
+                      controller: nameController,
                       onChanged: (value) => experience.companyName = value,
                       decoration:
                           const InputDecoration(labelText: 'Company Name'),
                     ),
                     TextField(
+                      controller: jobTitleController,
+                      onChanged: (value) => experience.jobTitle = value,
+                      decoration: const InputDecoration(labelText: 'Job Title'),
+                    ),
+                    TextField(
                       controller: locationController,
                       onChanged: (value) => experience.location = value,
                       decoration: const InputDecoration(labelText: 'Location'),
-                    ),
-                    TextField(
-                      controller: descriptionController,
-                      onChanged: (value) => experience.description = value,
-                      decoration:
-                          const InputDecoration(labelText: 'Description'),
                     ),
                     Row(
                       children: [
@@ -224,6 +244,12 @@ class ExperienceSectionAdmin extends StatelessWidget {
                         ),
                       ],
                     ),
+                    TextField(
+                      controller: descriptionController,
+                      onChanged: (value) => experience.description = value,
+                      decoration:
+                          const InputDecoration(labelText: 'Description'),
+                    ),
                     if (pickedImageBytes != null)
                       Image.memory(pickedImageBytes!),
                     ElevatedButton(
@@ -240,18 +266,7 @@ class ExperienceSectionAdmin extends StatelessWidget {
                 ),
               ),
               actions: <Widget>[
-                if (!newExperience)
-                  TextButton(
-                    onPressed: () async {
-                      final name = experience.jobTitle;
-                      experience.delete();
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text('Experience info for $name deleted')));
-                      Navigator.pop(dialogContext);
-                    },
-                    child: const Text('Delete'),
-                  ),
-                TextButton(
+                ElevatedButton(
                   onPressed: () async {
                     if (pickedImageBytes != null) {
                       String? imageURL =
@@ -263,19 +278,68 @@ class ExperienceSectionAdmin extends StatelessWidget {
                     }
                     bool isSuccess = await onExperienceUpdated(experience);
                     if (isSuccess) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text('Experience info updated')));
+                      ScaffoldMessenger.of(parentContext).showSnackBar(
+                        SnackBar(content: Text(successMessage)),
+                      );
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text('Error updating experience info')));
+                      ScaffoldMessenger.of(parentContext).showSnackBar(
+                        SnackBar(content: Text(errorMessage)),
+                      );
                     }
-                    Navigator.pop(dialogContext);
+                    Navigator.of(dialogContext).pop(); // Close update dialog
+                    Navigator.of(parentContext).pop(); // Close old list dialog
+                    _showList(parentContext); // Show new list dialog
                   },
                   child: const Text('OK'),
                 ),
                 TextButton(
                   onPressed: () async {
-                    Navigator.pop(dialogContext);
+                    Navigator.of(dialogContext).pop();
+                  },
+                  child: const Text('Cancel'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _showDeleteDialog(BuildContext context, Experience experience) async {
+    final name = experience.companyName ?? 'Experience';
+
+    showDialog(
+      context: parentContext,
+      builder: (BuildContext dialogContext) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Text('Confirm Deletion'),
+              content: Text('Are you sure you want to delete $name?'),
+              actions: <Widget>[
+                ElevatedButton(
+                  onPressed: () async {
+                    final deleted = await experience.delete();
+                    if (deleted) {
+                      setState(() {});
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('$name deleted successfully')),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Failed to delete $name')),
+                      );
+                    }
+                    Navigator.of(dialogContext).pop(); // Close delete dialog
+                    Navigator.of(parentContext).pop(); // Close old list dialog
+                    _showList(parentContext); // Show new list dialog
+                  },
+                  child: const Text('Delete'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(dialogContext).pop();
                   },
                   child: const Text('Cancel'),
                 ),
