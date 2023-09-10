@@ -30,6 +30,7 @@ class AboutMeSectionState extends State<AboutMeSection> {
 
         double titleFontSize = screenWidth * 0.05;
         double descriptionFontSize = screenWidth * 0.01;
+        double spacing = screenWidth * 0.15;
 
         return Center(
           child: Padding(
@@ -50,10 +51,13 @@ class AboutMeSectionState extends State<AboutMeSection> {
                             fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 20),
-                      Text(
-                        aboutMeSectionData?.aboutMe ?? 'Default Description',
-                        style: PublicViewTextStyles.generalBodyText.copyWith(
-                          fontSize: descriptionFontSize * 1.3,
+                      Padding(
+                        padding: EdgeInsets.only(right: spacing),
+                        child: Text(
+                          aboutMeSectionData?.aboutMe ?? 'Default Description',
+                          style: PublicViewTextStyles.generalBodyText.copyWith(
+                            fontSize: descriptionFontSize * 1.3,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 20),

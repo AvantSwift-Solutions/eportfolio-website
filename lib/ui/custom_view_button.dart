@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
-class CustomScrollButton extends StatelessWidget {
+class CustomViewButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
+  final String sendViewButton =
+      'https://firebasestorage.googleapis.com/v0/b/avantswiftsolutions.appspot.com/o/buttons%2Fsend_view_button.png?alt=media&token=1d8f7358-8800-4681-81b4-de5ccf855038';
 
-  const CustomScrollButton(
+  const CustomViewButton(
       {super.key, required this.text, required this.onPressed});
 
   @override
@@ -12,8 +14,9 @@ class CustomScrollButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        backgroundColor: Colors.green, // Customize the button color
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+        backgroundColor:
+            const Color.fromRGBO(79, 147, 122, 1), // Customize the button color
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
@@ -29,9 +32,10 @@ class CustomScrollButton extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 8), // Add space between text and arrow
-          const Icon(
-            Icons.arrow_forward,
-            color: Colors.white,
+          Image.network(
+            sendViewButton,
+            width: 20,
+            height: 50,
           ),
         ],
       ),

@@ -12,6 +12,8 @@ class ProjectSectionAdmin extends StatelessWidget {
   final ProjectSectionAdminController _adminController =
       ProjectSectionAdminController(ProjectRepoService());
 
+  ProjectSectionAdmin({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

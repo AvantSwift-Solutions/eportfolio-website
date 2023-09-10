@@ -56,10 +56,10 @@ class MockUser extends _i1.Mock implements _i4.User {
         returnValueForMissingStub: null,
       );
   @override
-  set landingPageTitle(String? _landingPageTitle) => super.noSuchMethod(
+  set nickname(String? _nickname) => super.noSuchMethod(
         Invocation.setter(
-          #landingPageTitle,
-          _landingPageTitle,
+          #nickname,
+          _nickname,
         ),
         returnValueForMissingStub: null,
       );
