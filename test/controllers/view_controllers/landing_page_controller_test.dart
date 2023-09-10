@@ -14,8 +14,8 @@ void main() {
 
   setUp(() {
     mockUser = MockUser();
-    when(mockUser.name).thenReturn('Mock User');
-    when(mockUser.landingPageTitle).thenReturn('Mock Title');
+    when(mockUser.name).thenReturn('Name1 Name2');
+    when(mockUser.nickname).thenReturn('Nick');
     when(mockUser.landingPageDescription).thenReturn('Mock Description');
     when(mockUser.imageURL).thenReturn('http://example.com/mock_image.jpg');
 
@@ -28,8 +28,8 @@ void main() {
     when(mockRepoService.getFirstUser()).thenAnswer((_) async => mockUser);
     final landingPageData = await controller.getLandingPageData();
 
-    expect(landingPageData!.name, mockUser.name);
-    expect(landingPageData.landingPageTitle, mockUser.landingPageTitle);
+    expect(landingPageData!.name, 'Name1');
+    expect(landingPageData.nickname, 'Nick');
     expect(landingPageData.landingPageDescription,
         mockUser.landingPageDescription);
     expect(landingPageData.imageURL, mockUser.imageURL);
@@ -40,7 +40,7 @@ void main() {
     final landingPageData = await controller.getLandingPageData();
 
     expect(landingPageData!.name, 'Unknown');
-    expect(landingPageData.landingPageTitle, 'Welcome');
+    expect(landingPageData.nickname, 'Welcome');
     expect(landingPageData.landingPageDescription, 'No description available');
     expect(landingPageData.imageURL, 'https://example.com/default_image.jpg');
   });
@@ -51,7 +51,7 @@ void main() {
     final landingPageData = await controller.getLandingPageData();
 
     expect(landingPageData!.name, 'Error');
-    expect(landingPageData.landingPageTitle, 'Error');
+    expect(landingPageData.nickname, 'Error');
     expect(landingPageData.landingPageDescription, 'Error');
     expect(landingPageData.imageURL, 'https://example.com/error.jpg');
   });

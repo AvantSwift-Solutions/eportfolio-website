@@ -12,17 +12,18 @@ class LandingPageController {
   Future<LandingPageDTO>? getLandingPageData() async {
     try {
       User? user = await userRepoService.getFirstUser();
+      String? firstName = user?.name?.split(' ').first; // Only shows firstname
       if (user != null) {
         return LandingPageDTO(
-          name: user.name,
-          landingPageTitle: user.landingPageTitle,
+          name: firstName ?? 'Unknown',
+          nickname: user.nickname,
           landingPageDescription: user.landingPageDescription,
           imageURL: user.imageURL,
         );
       } else {
         return LandingPageDTO(
           name: 'Unknown',
-          landingPageTitle: 'Welcome',
+          nickname: 'Welcome',
           landingPageDescription: 'No description available',
           imageURL: 'https://example.com/default_image.jpg',
         );
@@ -31,7 +32,7 @@ class LandingPageController {
       log('Error getting landing page data: $e');
       return LandingPageDTO(
         name: 'Error',
-        landingPageTitle: 'Error',
+        nickname: 'Error',
         landingPageDescription: 'Error',
         imageURL: 'https://example.com/error.jpg',
       );

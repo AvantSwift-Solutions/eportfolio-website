@@ -16,7 +16,8 @@ void main() {
     mockUser = MockUser();
     when(mockUser.aboutMe).thenReturn('Mock About Me');
     when(mockUser.imageURL).thenReturn('http://example.com/mock_image.jpg');
-
+    when(mockUser.aboutMeURL)
+        .thenReturn('http://example.com/mock_abt_me_image.jpg');
     mockRepoService = MockUserRepoService();
     controller = AboutMeSectionController(mockRepoService);
   });
@@ -27,7 +28,7 @@ void main() {
     final aboutmeSectionData = await controller.getAboutMeSectionData();
 
     expect(aboutmeSectionData!.aboutMe, mockUser.aboutMe);
-    expect(aboutmeSectionData.imageURL, mockUser.imageURL);
+    expect(aboutmeSectionData.imageURL, mockUser.aboutMeURL);
   });
 
   test('getAboutMeSectionData returns default data when user is null',

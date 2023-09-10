@@ -7,9 +7,10 @@ class User {
   final String? email;
   String? name;
   final Timestamp? creationTimestamp;
-  String? landingPageTitle;
+  String? nickname;
   String? landingPageDescription;
   String? imageURL;
+  String? aboutMeURL;
   String? contactEmail;
   String? linkedinURL;
   String? aboutMe;
@@ -19,11 +20,12 @@ class User {
       required this.email,
       required this.name,
       required this.creationTimestamp,
-      required this.landingPageTitle,
+      required this.nickname,
       required this.landingPageDescription,
       required this.imageURL,
       required this.contactEmail,
       required this.linkedinURL,
+      required this.aboutMeURL,
       required this.aboutMe});
 
   factory User.fromDocumentSnapshot(DocumentSnapshot snapshot) {
@@ -33,23 +35,25 @@ class User {
       final email = data['email'] as String;
       final name = data['name'] as String;
       final creationTimestamp = data['creationTimestamp'] as Timestamp;
-      final landingPageTitle = data['landingPageTitle'] as String;
+      final nickname = data['nickname'] as String;
       final imageUrl = data['imageURL'] as String;
       final landingPageDescription = data['landingPageDescription'] as String;
       final contactEmail = data['contactEmail'] as String;
       final linkedinURL = data['linkedinURL'] as String;
       final aboutMe = data['aboutMe'] as String;
+      final aboutMeURL = data['aboutMeURL'] as String;
 
       return User(
           creationTimestamp: creationTimestamp,
           uid: uid,
           email: email,
           name: name,
-          landingPageTitle: landingPageTitle,
+          nickname: nickname,
           landingPageDescription: landingPageDescription,
           imageURL: imageUrl,
           contactEmail: contactEmail,
           linkedinURL: linkedinURL,
+          aboutMeURL: aboutMeURL,
           aboutMe: aboutMe);
     } catch (e) {
       log('Error creating User from document snapshot: $e');
@@ -63,12 +67,13 @@ class User {
       'email': email,
       'name': name,
       'creationTimestamp': creationTimestamp,
-      'landingPageTitle': landingPageTitle,
+      'nickname': nickname,
       'landingPageDescription': landingPageDescription,
       'imageURL': imageURL,
       'contactEmail': contactEmail,
       'linkedinURL': linkedinURL,
-      'aboutMe': aboutMe
+      'aboutMe': aboutMe,
+      'aboutMeURL': aboutMeURL,
     };
   }
 

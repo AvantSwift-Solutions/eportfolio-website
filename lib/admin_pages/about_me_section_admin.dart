@@ -72,9 +72,8 @@ class AboutMeSectionAdmin extends StatelessWidget {
                 TextButton(
                   onPressed: () async {
                     if (pickedImageBytes != null) {
-                      String? imageURL =
-                          await _adminController.uploadImageAndGetURL(
-                              pickedImageBytes!, 'selected_image.jpg');
+                      String? imageURL = await _adminController
+                          .uploadImageAndGetURL(pickedImageBytes!, 'about_me');
                       if (imageURL != null) {
                         aboutMeSectionData.imageURL = imageURL;
                       }
