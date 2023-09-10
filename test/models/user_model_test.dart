@@ -26,7 +26,7 @@ void main() {
       expect(userMap['uid'], 'user123');
       expect(userMap['email'], 'user@example.com');
       expect(userMap['name'], 'John Doe');
-      expect(userMap['landingPageTitle'], 'Welcome to my page');
+      expect(userMap['nickname'], 'Welcome to my page');
       expect(userMap['landingPageDescription'], 'This is my landing page');
       expect(userMap['imageURL'], 'https://example.com/image.jpg');
       expect(userMap['contactEmail'], 'differentEmail@example.com');

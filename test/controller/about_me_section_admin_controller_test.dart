@@ -9,7 +9,6 @@ import 'package:avantswift_portfolio/models/User.dart';
 
 import '../controllers/admin_controllers/mocks/about_me_section_admin_controller_test.mocks.dart';
 
-
 @GenerateMocks([UserRepoService])
 class MockUser extends Mock implements User {}
 
@@ -27,6 +26,7 @@ void main() {
     when(mockUser.nickname).thenReturn('Mock Title');
     when(mockUser.landingPageDescription).thenReturn('Mock Description');
     when(mockUser.imageURL).thenReturn('http://example.com/mock_image.jpg');
+    when(mockUser.aboutMeURL).thenReturn('http://example.com/mock_abt_me_image.jpg');
     when(mockUser.aboutMe).thenReturn('Mock About Me');
 
     mockRepoService = MockUserRepoService();
@@ -40,7 +40,7 @@ void main() {
 
     // Make assertions on the returned data
     expect(aboutMeSectionData!.aboutMe, mockUser.aboutMe);
-    expect(aboutMeSectionData.imageURL, mockUser.imageURL);
+    expect(aboutMeSectionData.imageURL, mockUser.aboutMeURL);
     // Add more assertions as needed
   });
 
@@ -77,7 +77,7 @@ void main() {
 
     expect(updateResult, true);
     verify(mockUser.aboutMe = 'New About Me');
-    verify(mockUser.imageURL = 'http://example.com/new_image.jpg');
+    verify(mockUser.aboutMeURL = 'http://example.com/new_image.jpg');
     verify(mockUser.update()); // Verify that the method was called
   });
 

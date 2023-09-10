@@ -50,3 +50,4 @@ android/local.properties
 macos/Flutter/GeneratedPluginRegistrant.swift
 pubspec.lock
 .dart_tool/package_config.json
+.flutter-plugins-dependencies
