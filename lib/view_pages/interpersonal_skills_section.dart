@@ -1,3 +1,7 @@
+// ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api
+
+import 'package:avantswift_portfolio/controllers/view_controllers/interpersonal_skills_section_controller.dart';
+import 'package:avantswift_portfolio/reposervice/iskill_repo_services.dart';
 import 'package:avantswift_portfolio/ui/custom_texts/public_view_text_styles.dart';
 import 'package:flutter/material.dart';
 
@@ -8,26 +12,42 @@ class InterpersonalSkillsWidget extends StatefulWidget {
 }
 
 class _InterpersonalSkillsWidgetState extends State<InterpersonalSkillsWidget> {
-  final List<List<String>> skills = [
-    ["Skill 1", "Skill 2", "Skill 3", "Skill 4", "Skill 5", "Skill 6"],
-    ["Skill 7", "Skill 8", "Skill 9", "Skill 10", "Skill 11", "Skill 12"],
-    ["Skill 13", "Skill 14"],
-  ];
+  List<String> skills = [];
 
-  PageController _pageController = PageController();
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    final InterpersonalSkillsController interpersonalSkillsController =
+        InterpersonalSkillsController(ISkillRepoService());
+
+    // Assuming getIPersonalSkills is an async function that returns a List<String>
+    final skillsData = await interpersonalSkillsController.getIPersonalSkills();
+
+    if (skillsData != null) {
+      setState(() {
+        skills = skillsData;
+      });
+    }
+  }
+
+  final PageController _pageController = PageController();
   int _currentPage = 0;
 
   @override
   Widget build(BuildContext context) {
     double maxWidgetWidth = 400;
 
-    return Container(
+    return SizedBox(
       width: maxWidgetWidth,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -43,7 +63,7 @@ class _InterpersonalSkillsWidgetState extends State<InterpersonalSkillsWidget> {
               ],
             ),
           ),
-          Container(
+          SizedBox(
             width: double.infinity, // Expand to the maximum available width
             height: 180,
             child: SizedBox(
@@ -55,29 +75,41 @@ class _InterpersonalSkillsWidgetState extends State<InterpersonalSkillsWidget> {
                     _currentPage = page;
                   });
                 },
-                itemCount: skills.length,
+                itemCount: ((skills.length + 5) / 6)
+                    .floor(), // Display up to 6 skills per page
                 itemBuilder: (context, pageIndex) {
-                  final pageSkills = skills[pageIndex];
+                  final startIndex = pageIndex * 6;
+                  final endIndex = (startIndex + 6).clamp(0, skills.length);
+                  final pageSkills = skills.sublist(startIndex, endIndex);
                   const numColumns = 2;
-                  final skillsPerColumn = pageSkills.length ~/ numColumns;
+                  final skillsPerColumn =
+                      (pageSkills.length / numColumns).ceil();
                   return ListView.builder(
-                    padding: const EdgeInsets.all(5),
+                    padding:
+                        EdgeInsets.zero, // Remove padding around the ListTile
                     itemCount: skillsPerColumn,
                     itemBuilder: (context, index) {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           for (int i = 0; i < numColumns; i++)
-                            Flexible(
-                              child: ListTile(
-                                leading: Icon(Icons.circle_outlined, size: 10),
-                                title: Text(
-                                  pageSkills[index * numColumns + i],
-                                  textAlign: TextAlign
-                                      .left, // Align the text to the right
+                            if (index * numColumns + i < pageSkills.length)
+                              Flexible(
+                                child: Container(
+                                  padding: const EdgeInsets.all(
+                                      4.0), // Adjust padding as needed
+                                  child: ListTile(
+                                    contentPadding: EdgeInsets
+                                        .zero, // Remove ListTile's default content padding
+                                    leading: const Icon(Icons.circle_outlined,
+                                        size: 13),
+                                    title: Text(
+                                      pageSkills[index * numColumns + i],
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
                         ],
                       );
                     },
@@ -86,23 +118,23 @@ class _InterpersonalSkillsWidgetState extends State<InterpersonalSkillsWidget> {
               ),
             ),
           ),
-          if (skills.length > 1)
+          if (skills.length > 6)
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: List<Widget>.generate(
-                skills.length,
+                ((skills.length + 5) / 6).floor(),
                 (index) => GestureDetector(
                   onTap: () {
                     _pageController.animateToPage(
                       index,
-                      duration: Duration(milliseconds: 500),
+                      duration: const Duration(milliseconds: 500),
                       curve: Curves.easeInOut,
                     );
                   },
                   child: Container(
                     width: 10,
                     height: 10,
-                    margin: EdgeInsets.symmetric(horizontal: 5),
+                    margin: const EdgeInsets.symmetric(horizontal: 5),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: _currentPage == index
