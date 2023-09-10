@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 class CustomViewButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
+  final String sendViewButton =
+      'https://firebasestorage.googleapis.com/v0/b/avantswiftsolutions.appspot.com/o/buttons%2Fsend_view_button.png?alt=media&token=1d8f7358-8800-4681-81b4-de5ccf855038';
 
   const CustomViewButton(
       {super.key, required this.text, required this.onPressed});
@@ -30,8 +32,8 @@ class CustomViewButton extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 8), // Add space between text and arrow
-          Image.asset(
-            'send_view_button.png',
+          Image.network(
+            sendViewButton,
             width: 20,
             height: 50,
           ),

@@ -26,7 +26,8 @@ void main() {
     when(mockUser.nickname).thenReturn('Mock Title');
     when(mockUser.landingPageDescription).thenReturn('Mock Description');
     when(mockUser.imageURL).thenReturn('http://example.com/mock_image.jpg');
-    when(mockUser.aboutMeURL).thenReturn('http://example.com/mock_abt_me_image.jpg');
+    when(mockUser.aboutMeURL)
+        .thenReturn('http://example.com/mock_abt_me_image.jpg');
     when(mockUser.aboutMe).thenReturn('Mock About Me');
 
     mockRepoService = MockUserRepoService();

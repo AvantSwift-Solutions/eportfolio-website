@@ -9,7 +9,6 @@ import 'package:avantswift_portfolio/models/User.dart';
 
 import '../controllers/admin_controllers/mocks/about_me_section_admin_controller_test.mocks.dart';
 
-
 @GenerateMocks([UserRepoService])
 class MockUser extends Mock implements User {}
 
@@ -43,7 +42,8 @@ void main() {
     expect(contactSectionData.linkedinURL, mockUser.linkedinURL);
   });
 
-  test('getContactSectionData returns default data when user is null', () async {
+  test('getContactSectionData returns default data when user is null',
+      () async {
     when(mockRepoService.getFirstUser()).thenAnswer((_) async => null);
 
     final contactSectionData = await controller.getContactSectionData();
