@@ -10,6 +10,7 @@ class User {
   String? nickname;
   String? landingPageDescription;
   String? imageURL;
+  String? aboutMeURL;
   String? contactEmail;
   String? linkedinURL;
   String? aboutMe;
@@ -24,6 +25,7 @@ class User {
       required this.imageURL,
       required this.contactEmail,
       required this.linkedinURL,
+      required this.aboutMeURL,
       required this.aboutMe});
 
   factory User.fromDocumentSnapshot(DocumentSnapshot snapshot) {
@@ -39,6 +41,7 @@ class User {
       final contactEmail = data['contactEmail'] as String;
       final linkedinURL = data['linkedinURL'] as String;
       final aboutMe = data['aboutMe'] as String;
+      final aboutMeURL = data['aboutMeURL'] as String;
 
       return User(
           creationTimestamp: creationTimestamp,
@@ -50,6 +53,7 @@ class User {
           imageURL: imageUrl,
           contactEmail: contactEmail,
           linkedinURL: linkedinURL,
+          aboutMeURL: aboutMeURL,
           aboutMe: aboutMe);
     } catch (e) {
       log('Error creating User from document snapshot: $e');
@@ -68,7 +72,8 @@ class User {
       'imageURL': imageURL,
       'contactEmail': contactEmail,
       'linkedinURL': linkedinURL,
-      'aboutMe': aboutMe
+      'aboutMe': aboutMe,
+      'aboutMeURL': aboutMeURL,
     };
   }
 

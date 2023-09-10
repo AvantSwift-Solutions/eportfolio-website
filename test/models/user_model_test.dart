@@ -19,6 +19,7 @@ void main() {
           imageURL: 'https://example.com/image.jpg',
           contactEmail: 'differentEmail@example.com',
           linkedinURL: 'https://www.linkedin.com/in/example-user/',
+          aboutMeURL: 'https://example.com/aboutme',
           aboutMe: 'This is about me');
       final userMap = user.toMap();
 
@@ -32,6 +33,7 @@ void main() {
       expect(
           userMap['linkedinURL'], 'https://www.linkedin.com/in/example-user/');
       expect(userMap['aboutMe'], 'This is about me');
+      expect(userMap['aboutMeURL'], 'https://example.com/aboutme');
     });
     // Write more tests for other methods (create, update, delete, getFirstUser)
   });

@@ -59,10 +59,8 @@ class LandingPageAdmin extends StatelessWidget {
                     ),
                     TextField(
                       controller: titleController,
-                      onChanged: (value) =>
-                          landingPageData.nickname = value,
-                      decoration: const InputDecoration(
-                          labelText: 'Nickname'),
+                      onChanged: (value) => landingPageData.nickname = value,
+                      decoration: const InputDecoration(labelText: 'Nickname'),
                     ),
                     TextField(
                       controller: descriptionController,
@@ -92,7 +90,7 @@ class LandingPageAdmin extends StatelessWidget {
                     if (pickedImageBytes != null) {
                       String? imageURL =
                           await _adminController.uploadImageAndGetURL(
-                              pickedImageBytes!, 'selected_image.jpg');
+                              pickedImageBytes!, 'landing_page');
                       if (imageURL != null) {
                         landingPageData.imageURL = imageURL;
                       }
