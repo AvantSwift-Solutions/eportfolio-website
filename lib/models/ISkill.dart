@@ -4,19 +4,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ISkill {
   final String? isid;
+  int? index;
   String? name;
 
   ISkill({
     required this.isid,
+    required this.index,
     required this.name,
   });
 
   factory ISkill.fromDocumentSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;
+    final index = data['index'];
     final name = data['name'];
 
     return ISkill(
       isid: snapshot.id,
+      index: index,
       name: name,
     );
   }
@@ -24,6 +28,7 @@ class ISkill {
   Map<String, dynamic> toMap() {
     return {
       'isid': isid,
+      'index': index,
       'name': name,
     };
   }

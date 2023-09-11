@@ -1,4 +1,5 @@
 // ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
+import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import '../controllers/admin_controllers/iskill_section_admin_controller.dart';
@@ -33,7 +34,7 @@ class ISkillSectionAdmin extends StatelessWidget {
   }
 
   Future<void> _showList(BuildContext context) async {
-    List<ISkill> iskills = await _adminController.getISkillSectionData() ?? [];
+    List<ISkill> iskills = await _adminController.getSectionData() ?? [];
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -85,6 +86,11 @@ class ISkillSectionAdmin extends StatelessWidget {
             ),
           ),
           actions: <Widget>[
+            ReorderDialog(controller: _adminController, onReorder: () {
+              Navigator.of(dialogContext).pop(); // Close reorder dialog
+              Navigator.of(parentContext).pop(); // Close old list dialog
+              _showList(parentContext); // Show new list dialog
+            },),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(dialogContext).pop();
@@ -101,6 +107,7 @@ class ISkillSectionAdmin extends StatelessWidget {
     final id = const Uuid().v4();
     final iskill = ISkill(
       isid: id,
+      index: iskillList.length,
       name: '',
     );
 
@@ -110,7 +117,7 @@ class ISkillSectionAdmin extends StatelessWidget {
   }
 
   void _showEditDialog(BuildContext context, int i) async {
-    final iskillSectionData = await _adminController.getISkillSectionData();
+    final iskillSectionData = await _adminController.getSectionData();
     final iskill = iskillSectionData![i];
 
     _showISkillDialog(context, iskill, (skill) async {

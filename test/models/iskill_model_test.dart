@@ -9,11 +9,13 @@ void main() {
     test('ISkill.toMap should convert iskill to a map', () {
       final iskill = ISkill(
         isid: 'iskill123',
+        index: 0,
         name: 'mockISkill',
       );
       final iskillMap = iskill.toMap();
 
       expect(iskillMap['isid'], 'iskill123');
+      expect(iskillMap['index'], 0);
       expect(iskillMap['name'], 'mockISkill');
     });
   });

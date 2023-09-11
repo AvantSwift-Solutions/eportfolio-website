@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:avantswift_portfolio/reposervice/iskill_repo_services.dart';
+import 'package:tuple/tuple.dart';
 import '../../models/ISkill.dart';
 
 class ISkillSectionAdminController {
@@ -7,7 +8,7 @@ class ISkillSectionAdminController {
 
   ISkillSectionAdminController(this.iSkillRepoService); // Constructor
 
-  Future<List<ISkill>?>? getISkillSectionData() async {
+  Future<List<ISkill>?>? getSectionData() async {
     try {
       List<ISkill>? allISkill = await iSkillRepoService.getAllISkill();
       return allISkill;
@@ -17,20 +18,29 @@ class ISkillSectionAdminController {
     }
   }
 
-  Future<bool>? updateISkillSectionData(int index, ISkill newISkill) async {
-    try {
-      List<ISkill>? allISkill = await iSkillRepoService.getAllISkill();
+  String getSectionName() {
+    return 'Interpersonal Skill';
+  }
 
-      if (allISkill!.isNotEmpty) {
-        allISkill[index].name = newISkill.name;
-        bool updateSuccess = await allISkill[index].update() ?? false;
-        return updateSuccess;
-      } else {
-        return false;
+  Future<List<Tuple2<int, String>>> getSectionTitles() async {
+    List<ISkill>? skills = await getSectionData();
+    var ret = <Tuple2<int, String>>[];
+    if (skills != null) {
+      for (var i = 0; i < skills.length; i++) {
+        ret.add(Tuple2(skills[i].index!, skills[i].name!));
       }
-    } catch (e) {
-      log('Error updating ISkill: $e');
-      return false;
+    }
+    return ret;
+  }
+
+  Future<void> updateSectionOrder(List<Tuple2<int, String>> items) async {
+    List<ISkill>? skills = await getSectionData();
+    if (skills == null) return;
+    for (var i = 0; i < items.length; i++) {
+      var skill = skills[items[i].item1];
+      skill.index = i;
+      await skill.update();
     }
   }
+
 }
