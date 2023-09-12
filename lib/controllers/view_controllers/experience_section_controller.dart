@@ -5,12 +5,12 @@ import 'package:avantswift_portfolio/reposervice/experience_repo_services.dart';
 import '../../dto/experience_dto.dart';
 import '../../models/Experience.dart';
 
-class ExperiencePageController {
+class ExperienceSectionController {
   final ExperienceRepoService experienceRepoService;
 
-  ExperiencePageController(this.experienceRepoService); // Constructor
+  ExperienceSectionController(this.experienceRepoService); // Constructor
 
-  Future<List<ExperienceDTO>?>? getExperiencePageData() async {
+  Future<List<ExperienceDTO>?>? getExperienceSectionData() async {
     try {
       List<Experience>? experiences =
           await experienceRepoService.getAllExperiences();
@@ -52,6 +52,34 @@ class ExperiencePageController {
           logoURL: 'Error',
         )
       ];
+    }
+  }
+
+  Future<ExperienceDTO?> getExperienceData(int experienceIndex) async {
+    try {
+      List<Experience>? experiences =
+          await experienceRepoService.getAllExperiences();
+
+      if (experiences != null &&
+          experienceIndex >= 0 &&
+          experienceIndex < experiences.length) {
+        final experience = experiences[experienceIndex];
+
+        return ExperienceDTO(
+          jobTitle: experience.jobTitle,
+          companyName: experience.companyName,
+          location: experience.location,
+          startDate: experience.startDate,
+          endDate: experience.endDate,
+          description: experience.description,
+          logoURL: experience.logoURL,
+        );
+      } else {
+        return null; // Return null if the index is out of bounds or experiences is null
+      }
+    } catch (e) {
+      log('Error getting experience by index: $e');
+      return null; // Return null in case of an error
     }
   }
 }
