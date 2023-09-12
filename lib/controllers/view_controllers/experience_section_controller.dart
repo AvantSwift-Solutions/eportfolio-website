@@ -5,10 +5,23 @@ import 'package:avantswift_portfolio/reposervice/experience_repo_services.dart';
 import '../../dto/experience_dto.dart';
 import '../../models/Experience.dart';
 
+import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class ExperienceSectionController {
   final ExperienceRepoService experienceRepoService;
 
   ExperienceSectionController(this.experienceRepoService); // Constructor
+
+  // Function to format Timestamp to "Month Year" format
+  String formatTimestamp(Timestamp? timestamp) {
+    if (Timestamp == Null) {
+      return "Null Timestamp";
+    }
+    final DateTime dateTime = (timestamp as Timestamp).toDate();
+    final String formattedDate = DateFormat.yMMM().format(dateTime);
+    return formattedDate;
+  }
 
   Future<List<ExperienceDTO>?>? getExperienceSectionData() async {
     try {
@@ -20,8 +33,8 @@ class ExperienceSectionController {
             jobTitle: experience.jobTitle,
             companyName: experience.companyName,
             location: experience.location,
-            startDate: experience.startDate,
-            endDate: experience.endDate,
+            startDate: formatTimestamp(experience.startDate),
+            endDate: formatTimestamp(experience.endDate),
             description: experience.description,
             logoURL: experience.logoURL,
           );
@@ -32,8 +45,8 @@ class ExperienceSectionController {
             jobTitle: 'unknown',
             companyName: 'unknown',
             location: 'unknown',
-            startDate: null, // or Timestamp.fromDate(DateTime(2000, 1, 1))
-            endDate: null, // or Timestamp.fromDate(DateTime(2000, 1, 1))
+            startDate: 'unknown',
+            endDate: 'unknown', 
             description: 'unknown',
             logoURL: 'unknown',
           )
@@ -46,8 +59,8 @@ class ExperienceSectionController {
           jobTitle: 'Error',
           companyName: 'Error',
           location: 'Error',
-          startDate: null,
-          endDate: null,
+          startDate: 'Error',
+          endDate: 'Error',
           description: 'Error',
           logoURL: 'Error',
         )
@@ -69,8 +82,8 @@ class ExperienceSectionController {
           jobTitle: experience.jobTitle,
           companyName: experience.companyName,
           location: experience.location,
-          startDate: experience.startDate,
-          endDate: experience.endDate,
+          startDate: formatTimestamp(experience.startDate),
+          endDate: formatTimestamp(experience.endDate),
           description: experience.description,
           logoURL: experience.logoURL,
         );

@@ -1,11 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class ExperienceDTO {
   String? jobTitle;
   String? companyName;
   String? location;
-  Timestamp? startDate;
-  Timestamp? endDate;
+  String? startDate;
+  String? endDate;
   String? description;
   String? logoURL;
 

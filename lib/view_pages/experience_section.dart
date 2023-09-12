@@ -39,13 +39,23 @@ class ExperienceSectionState extends State<ExperienceSection> {
 
         double titleFontSize = screenWidth * 0.03;
 
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ExperienceWidget(experienceIndex: 0),
-              ExperienceWidget(experienceIndex: 1),
-            ],
+        return Padding(
+          padding:
+              const EdgeInsets.all(16.0), // Adjust the outer padding as needed
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.black, // Border color
+                width: 1.0, // Border width
+              ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                ExperienceWidget(experienceIndex: 0),
+                ExperienceWidget(experienceIndex: 1),
+              ],
+            ),
           ),
         );
 
@@ -118,60 +128,117 @@ class ExperienceWidgetState extends State<ExperienceWidget> {
         double titleFontSize = screenWidth * 0.03;
 
         return Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Job Title: ${experienceDTO.jobTitle}',
-                style: TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
+          padding: const EdgeInsets.all(25.0),
+          child: Center(
+            child: Row(
+              mainAxisAlignment:
+                  MainAxisAlignment.start, // Center the Row horizontally
+              children: [
+                ExperienceWidgetLeft(
+                    endDate: experienceDTO.endDate as String,
+                    startDate: experienceDTO.startDate as String,
+                    name: experienceDTO.companyName as String,
+                    location: experienceDTO.location as String,
+                    imageUrl: experienceDTO.logoURL as String),
+                SizedBox(width: 20.0),
+
+                Container(
+                  width: 16.0,
+                  height: 16.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.blue, // You can change the color as needed
+                  ),
                 ),
-              ),
-              SizedBox(height: 8.0),
-              Text(
-                'Company: ${experienceDTO.companyName}',
-                style: TextStyle(
-                  fontSize: 16.0,
+
+                SizedBox(width: 16.0),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Job Title: ${experienceDTO.jobTitle}',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 8.0),
+                      Text(
+                        'Description: ${experienceDTO.description}',
+                        style: TextStyle(
+                          fontSize: 14.0,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(height: 8.0),
-              Text(
-                'Location: ${experienceDTO.location}',
-                style: TextStyle(
-                  fontSize: 14.0,
-                  color: Colors.grey,
-                ),
-              ),
-              SizedBox(height: 8.0),
-              Text(
-                'Start Date: ${experienceDTO.startDate?.toDate().toString() ?? "Unknown"}',
-                style: TextStyle(
-                  fontSize: 14.0,
-                  color: Colors.grey,
-                ),
-              ),
-              SizedBox(height: 8.0),
-              Text(
-                'End Date: ${experienceDTO.endDate?.toDate().toString() ?? "Unknown"}',
-                style: TextStyle(
-                  fontSize: 14.0,
-                  color: Colors.grey,
-                ),
-              ),
-              SizedBox(height: 8.0),
-              Text(
-                'Description: ${experienceDTO.description}',
-                style: TextStyle(
-                  fontSize: 14.0,
-                ),
-              ),
-              SizedBox(height: 16.0),
-            ],
+              ],
+            ),
           ),
         );
       },
+    );
+  }
+}
+
+class ExperienceWidgetLeft extends StatelessWidget {
+  final String name;
+  final String location;
+  final String startDate;
+  final String endDate;
+  final String imageUrl;
+
+  ExperienceWidgetLeft({
+    required this.name,
+    required this.location,
+    required this.startDate,
+    required this.endDate,
+    required this.imageUrl,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Container(
+                width: 100.0, // Width of the image container
+                height: 100.0, // Height of the image container
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(imageUrl),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              SizedBox(width: 16.0), // Space between image and event details
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    '$name, $location',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 8.0),
+                  Text(
+                    '$startDate - $endDate',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
