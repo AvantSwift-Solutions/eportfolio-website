@@ -23,6 +23,16 @@ class ExperienceSectionState extends State<ExperienceSection> {
   final ExperienceSectionController _experienceSectionController =
       ExperienceSectionController(ExperienceRepoService());
 
+  // Variable to track whether to show all experiences or not
+  bool showAllExperiences = false;
+
+  void dispose() {
+    // Dispose of your controllers or any other resources here
+    // _experienceSectionController.dis
+
+    super.dispose(); // Call super.dispose() at the end
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -39,14 +49,13 @@ class ExperienceSectionState extends State<ExperienceSection> {
 
         double titleFontSize = screenWidth * 0.05;
 
-        bool showAll = false;
-
+        // Determine the number of experiences to display based on showAllExperiences
         int numExperiences;
 
-        if (showAll != false) {
-          numExperiences = 3;
-        } else {
+        if (showAllExperiences) {
           numExperiences = experienceSectionData?.length as int;
+        } else {
+          numExperiences = 3; // You can change this to any desired limit
         }
 
         return Center(
@@ -83,19 +92,59 @@ class ExperienceSectionState extends State<ExperienceSection> {
                     return Column(
                       children: [
                         ExperienceWidget(experienceIndex: index),
-                        SizedBox(
-                            height:
-                                16.0), // Adjust the spacing between widgets as needed
+                        // SizedBox(
+                        //     height:
+                        //         16.0), // Adjust the spacing between widgets as needed
                       ],
                     );
                   },
                 ),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        showAllExperiences = !showAllExperiences;
+                      });
+                    },
+                    child: Text(
+                      showAllExperiences ? 'Show Less' : 'Show All',
+                    ),
+                  ),
+                )
+
+                // Button to toggle showing all experiences or a limited number
               ],
             ),
           ),
         );
       },
     );
+  }
+}
+
+class DashedLinePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.black // Adjust the color of the dashed line
+      ..strokeWidth = 1 // Adjust the width of the dashed line
+      ..style = PaintingStyle.stroke;
+
+    final dashWidth = 5; // Adjust the width of each dash
+    final dashSpace = 5; // Adjust the space between dashes
+
+    double startY = 0;
+
+    while (startY < size.height) {
+      canvas.drawLine(Offset(size.width / 2, startY),
+          Offset(size.width / 2, startY + dashWidth), paint);
+      startY += dashWidth + dashSpace;
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
   }
 }
 
@@ -179,13 +228,19 @@ class ExperienceWidgetState extends State<ExperienceWidget> {
                 ),
                 Expanded(
                   child: Container(
-                    padding: const EdgeInsets.all(10),
+                    // padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.purpleAccent)),
                     child: Column(
                       children: [
                         Row(
                           children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: Colors.amberAccent)),
+                              width: 10,
+                            ),
                             Container(
                               decoration: BoxDecoration(
                                   border:
@@ -230,6 +285,11 @@ class ExperienceWidgetState extends State<ExperienceWidget> {
                         ),
                         Row(
                           children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.lightGreen)),
+                              width: 10,
+                            ),
                             Container(
                               decoration: BoxDecoration(
                                   border: Border.all(color: Colors.lightGreen)),
