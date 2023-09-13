@@ -9,7 +9,7 @@ class ExperienceSectionAdminController {
 
   ExperienceSectionAdminController(this.experienceRepoService); // Constructor
 
-  Future<List<Experience>?>? getExperienceSectionData() async {
+  Future<List<Experience>?>? getSectionData() async {
     try {
       List<Experience>? allExperiences =
           await experienceRepoService.getAllExperiences();
@@ -20,7 +20,7 @@ class ExperienceSectionAdminController {
     }
   }
 
-  Future<bool>? updateExperienceSectionData(
+  Future<bool>? updateSectionData(
       int index, Experience newExperience) async {
     try {
       List<Experience>? allExperiences =
@@ -59,4 +59,5 @@ class ExperienceSectionAdminController {
       return null;
     }
   }
+
 }
