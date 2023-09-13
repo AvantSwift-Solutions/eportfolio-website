@@ -37,34 +37,63 @@ class ExperienceSectionState extends State<ExperienceSection> {
         final experienceSectionData = snapshot.data;
         final screenWidth = MediaQuery.of(context).size.width;
 
-        double titleFontSize = screenWidth * 0.03;
+        double titleFontSize = screenWidth * 0.05;
 
-        return Padding(
-          padding:
-              const EdgeInsets.all(16.0), // Adjust the outer padding as needed
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.black, // Border color
-                width: 1.0, // Border width
-              ),
-            ),
+        bool showAll = false;
+
+        int numExperiences;
+
+        if (showAll != false) {
+          numExperiences = 3;
+        } else {
+          numExperiences = experienceSectionData?.length as int;
+        }
+
+        return Center(
+          child: Padding(
+            padding: const EdgeInsets.all(50.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                ExperienceWidget(experienceIndex: 0),
-                ExperienceWidget(experienceIndex: 1),
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Divider(),
+                RichText(
+                  text: TextSpan(
+                    style: PublicViewTextStyles.generalHeading.copyWith(
+                        fontSize: titleFontSize * 0.8,
+                        fontWeight: FontWeight.bold),
+                    children: const [
+                      TextSpan(
+                        text: 'Professional\n',
+                      ),
+                      TextSpan(
+                        text: 'Experience',
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 60.0),
+
+                // Use ListView.builder to dynamically create ExperienceWidgets
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: numExperiences,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        ExperienceWidget(experienceIndex: index),
+                        SizedBox(
+                            height:
+                                16.0), // Adjust the spacing between widgets as needed
+                      ],
+                    );
+                  },
+                ),
               ],
             ),
           ),
         );
-
-        // return Center(
-        //   child: Padding(
-        //       padding: const EdgeInsets.all(50.0),
-        //       child: ExperienceWidget(experienceIndex: 0),
-        //       ),
-        // );
       },
     );
   }
@@ -125,120 +154,315 @@ class ExperienceWidgetState extends State<ExperienceWidget> {
 
         final screenWidth = MediaQuery.of(context).size.width;
 
+        final selectedColor = getColorFromNumber(widget.experienceIndex);
+
         double titleFontSize = screenWidth * 0.03;
 
-        return Padding(
-          padding: const EdgeInsets.all(25.0),
-          child: Center(
+        return Column(children: [
+          Container(
+            decoration:
+                BoxDecoration(border: Border.all(color: Colors.blueAccent)),
             child: Row(
-              mainAxisAlignment:
-                  MainAxisAlignment.start, // Center the Row horizontally
               children: [
-                ExperienceWidgetLeft(
-                    endDate: experienceDTO.endDate as String,
-                    startDate: experienceDTO.startDate as String,
-                    name: experienceDTO.companyName as String,
-                    location: experienceDTO.location as String,
-                    imageUrl: experienceDTO.logoURL as String),
-                SizedBox(width: 20.0),
-
+                SizedBox(
+                  width: 80,
+                ),
                 Container(
-                  width: 16.0,
-                  height: 16.0,
+                  width: 75.0, // Width of the image container
+                  height: 75.0, // Height of the image container
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.blue, // You can change the color as needed
+                    image: DecorationImage(
+                      image: NetworkImage(experienceDTO.logoURL as String),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-
-                SizedBox(width: 16.0),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Job Title: ${experienceDTO.jobTitle}',
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.purpleAccent)),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: Colors.amberAccent)),
+                              width: 400,
+                              child: Text(
+                                '${experienceDTO.companyName as String}, ${experienceDTO.location as String}',
+                                style: PublicViewTextStyles
+                                    .professionalExperienceHeading
+                                    .copyWith(color: selectedColor),
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: Colors.amberAccent)),
+                              width: 40,
+                            ),
+                            Container(
+                                decoration: BoxDecoration(
+                                    border:
+                                        Border.all(color: Colors.amberAccent)),
+                                width: 50,
+                                child: ColoredCircle(
+                                  selectedColor: selectedColor,
+                                )),
+                            Container(
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: Colors.amberAccent)),
+                              width: 85,
+                            ),
+                            Expanded(
+                              child: Text(
+                                experienceDTO.jobTitle as String,
+                                style: PublicViewTextStyles
+                                    .professionalExperienceHeading
+                                    .copyWith(color: selectedColor),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      SizedBox(height: 8.0),
-                      Text(
-                        'Description: ${experienceDTO.description}',
-                        style: TextStyle(
-                          fontSize: 14.0,
+                        Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.lightGreen)),
+                              width: 440,
+                              child: Text(
+                                '${experienceDTO.startDate as String} - ${experienceDTO.endDate as String}',
+                                style: PublicViewTextStyles
+                                    .professionalExperienceSubHeading
+                                    .copyWith(color: selectedColor),
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.lightGreen)),
+                              width: 135,
+                            ),
+                            Expanded(
+                              child: Text(
+                                '${experienceDTO.startDate as String} - ${experienceDTO.endDate as String}',
+                                style: PublicViewTextStyles
+                                    .professionalExperienceSubHeading
+                                    .copyWith(color: selectedColor),
+                              ),
+                            )
+                          ],
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ],
             ),
           ),
-        );
+          Container(
+            padding: const EdgeInsets.all(5),
+            decoration: BoxDecoration(border: Border.all(color: Colors.red)),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 735,
+                ),
+                Expanded(
+                    child: Text(experienceDTO.description as String,
+                        style: PublicViewTextStyles.generalBodyText))
+              ],
+            ),
+          ),
+        ]);
+
+        // return Row(
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   crossAxisAlignment: CrossAxisAlignment.start,
+        //   children: <Widget>[
+        //     Container(
+        //       color: Colors.transparent,
+        //       width: 80,
+        //     ),
+        //     Expanded(
+        //       child: ExperienceWidgetLeft(
+        //         endDate: experienceDTO.endDate as String,
+        //         startDate: experienceDTO.startDate as String,
+        //         companyName: experienceDTO.companyName as String,
+        //         location: experienceDTO.location as String,
+        //         imageUrl: experienceDTO.logoURL as String,
+        //         selectedColor: selectedColor,
+        //       ),
+        //     ),
+        //     Container(
+        //       width: 80,
+        //       height: 60,
+        // decoration:
+        //     BoxDecoration(border: Border.all(color: Colors.blueAccent)),
+        //       child: Center(
+        //         child: ColoredCircle(
+        //           selectedColor: selectedColor,
+        //         ),
+        //       ),
+        //     ),
+
+        //     // Expanded(
+
+        //     // ),
+        //     Expanded(
+        //       child: ExperienceWidgetRight(
+        //         jobTitle: experienceDTO.jobTitle as String,
+        //         description: experienceDTO.description as String,
+        //         selectedColor: selectedColor,
+        //       ),
+        //     ),
+        //     Container(
+        //       color: Colors.transparent,
+        //       width: 80,
+        //     ),
+        //   ],
+        // );
       },
     );
   }
 }
 
 class ExperienceWidgetLeft extends StatelessWidget {
-  final String name;
+  final String companyName;
   final String location;
   final String startDate;
   final String endDate;
   final String imageUrl;
+  final Color selectedColor;
 
   ExperienceWidgetLeft({
-    required this.name,
+    required this.companyName,
     required this.location,
     required this.startDate,
     required this.endDate,
     required this.imageUrl,
+    required this.selectedColor,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Container(
-                width: 100.0, // Width of the image container
-                height: 100.0, // Height of the image container
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(imageUrl),
-                    fit: BoxFit.cover,
-                  ),
+    // return Expanded(
+    return Column(
+      // child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              width: 70.0, // Width of the image container
+              height: 70.0, // Height of the image container
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(imageUrl),
+                  fit: BoxFit.cover,
                 ),
               ),
-              SizedBox(width: 16.0), // Space between image and event details
-              Column(
+            ),
+            SizedBox(width: 16.0), // Space between image and event details
+            Expanded(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
+                children: [
                   Text(
-                    '$name, $location',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    '$companyName, $location',
+                    style: PublicViewTextStyles.professionalExperienceHeading
+                        .copyWith(color: selectedColor),
                   ),
                   SizedBox(height: 8.0),
                   Text(
                     '$startDate - $endDate',
                     style: TextStyle(
                       fontSize: 16.0,
+                      color: selectedColor,
                     ),
                   ),
                 ],
               ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        )
+      ],
+      // ),
+    );
+  }
+}
+
+class ExperienceWidgetRight extends StatelessWidget {
+  final String jobTitle;
+  final String description;
+  final Color selectedColor;
+
+  ExperienceWidgetRight({
+    required this.jobTitle,
+    required this.description,
+    required this.selectedColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          jobTitle,
+          // style: TextStyle(
+          //   fontSize: 18.0,
+          //   fontWeight: FontWeight.bold,
+          //   color: selectedColor,
+          // ),
+          style: PublicViewTextStyles.professionalExperienceHeading
+              .copyWith(color: selectedColor),
+        ),
+        SizedBox(height: 8.0),
+        Text(
+          description,
+          style: PublicViewTextStyles.educationDescription,
+        ),
+      ],
+    );
+  }
+}
+
+class ColoredCircle extends StatelessWidget {
+  final Color selectedColor;
+
+  ColoredCircle({required this.selectedColor});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 26.0, // Define the width of the circle
+      height: 26.0, // Define the height of the circle
+      decoration: BoxDecoration(
+        shape: BoxShape.circle, // This makes the container a circle
+        color: selectedColor, // Specify the color you want
       ),
     );
   }
+}
+
+Color getColorFromNumber(int number) {
+  const List<Color> colorList = [
+    Colors.green,
+    Colors.blue,
+    Colors.red,
+    Colors.orange,
+    Colors.yellow,
+    // Add more colors as needed
+  ];
+
+  // Use modulo to wrap around the colors if the number is too large
+  final int index = number % colorList.length;
+
+  return colorList[index];
 }

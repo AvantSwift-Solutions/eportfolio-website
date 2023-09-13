@@ -75,6 +75,7 @@ class PublicViewTextStyles {
 
   static TextStyle professionalExperienceSubHeading =
       generalSubHeading.copyWith(fontSize: 24, color: const Color(0xFFE6AA68));
+      
 
   static TextStyle educationBasicInfo =
       generalSubHeading.copyWith(fontSize: 14);
