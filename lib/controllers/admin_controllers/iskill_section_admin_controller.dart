@@ -42,5 +42,4 @@ class ISkillSectionAdminController {
       await skill.update();
     }
   }
-
 }

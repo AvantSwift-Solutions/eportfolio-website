@@ -54,8 +54,7 @@ void main() {
       expect(iskill2.name, mockISkill2.name);
     });
 
-    test('getSectionData returns null data when iskill is null',
-        () async {
+    test('getSectionData returns null data when iskill is null', () async {
       when(mockRepoService.getAllISkill()).thenAnswer((_) async => null);
       final iskillSectionData = await controller.getSectionData();
       expect(iskillSectionData, null);
@@ -81,10 +80,10 @@ void main() {
 
     test('returns list of titles when section data is not null', () async {
       when(controller.getSectionData()).thenAnswer((_) => Future.value([
-        ISkill(index: 1, name: 'Skill 1', isid: ''),
-        ISkill(index: 2, name: 'Skill 2', isid: ''),
-        ISkill(index: 3, name: 'Skill 3', isid: ''),
-      ]));
+            ISkill(index: 1, name: 'Skill 1', isid: ''),
+            ISkill(index: 2, name: 'Skill 2', isid: ''),
+            ISkill(index: 3, name: 'Skill 3', isid: ''),
+          ]));
       final titles = await controller.getSectionTitles();
       expect(titles, [
         const Tuple2(1, 'Skill 1'),
@@ -92,9 +91,5 @@ void main() {
         const Tuple2(3, 'Skill 3'),
       ]);
     });
-
   });
-  
 }
-
-    
