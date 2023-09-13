@@ -35,8 +35,10 @@ class SinglePageView extends StatelessWidget {
               LandingPage(
                 scrollToBottom: _scrollToContact, // Scroll to contact
               ),
-              const SizedBox(height: 500), // Add some spacing
-              const MenuSection(),
+              //const SizedBox(height: 500), // Add some spacing
+              MenuSection(
+                scrollToBottom: _scrollToContact,
+              ),
               const AboutMeSection(),
               const SizedBox(height: 500), // Add some spacing
               ContactSection(
