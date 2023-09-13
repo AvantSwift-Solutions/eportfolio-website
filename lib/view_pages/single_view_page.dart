@@ -2,6 +2,7 @@ import 'package:avantswift_portfolio/view_pages/about_me_section.dart';
 import 'package:flutter/material.dart';
 import 'contact_section.dart';
 import 'landing_page.dart';
+import 'menu_section.dart';
 
 class SinglePageView extends StatelessWidget {
   final ScrollController _scrollController = ScrollController();
@@ -35,6 +36,7 @@ class SinglePageView extends StatelessWidget {
                 scrollToBottom: _scrollToContact, // Scroll to contact
               ),
               const SizedBox(height: 500), // Add some spacing
+              const MenuSection(),
               const AboutMeSection(),
               const SizedBox(height: 500), // Add some spacing
               ContactSection(
