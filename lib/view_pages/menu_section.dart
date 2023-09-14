@@ -24,6 +24,13 @@ class MenuSectionState extends State<MenuSection> {
 
     return Column (
       children: [
+        Divider(
+          color: Color(0xFFBABAB3),
+          thickness: 1.0,
+          indent: 60,
+          endIndent: 60,
+        ),
+        SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -31,8 +38,8 @@ class MenuSectionState extends State<MenuSection> {
               padding: EdgeInsets.only(left: 50.0, right: 20.0),
               child: CustomMenuButton(
                 onPressed: () {
-                          widget.scrollToSection(widget.sectionKeys['landing']!);
-                        }, // Set onPressed to null for Button 1
+                          widget.scrollToSection(widget.sectionKeys['experience']!);
+                        },
                 text: "Experience",
               ),
             ),
@@ -44,8 +51,8 @@ class MenuSectionState extends State<MenuSection> {
               padding: EdgeInsets.only(left: 20.0, right: 20.0),
               child: CustomMenuButton(
                 onPressed: () {
-                          widget.scrollToSection(widget.sectionKeys['contact']!);
-                        }, // Set onPressed to null for Button 1
+                          widget.scrollToSection(widget.sectionKeys['skills_edu']!);
+                        }, 
                 text: "Skills & Education",
               ),
             ),
@@ -57,8 +64,8 @@ class MenuSectionState extends State<MenuSection> {
               padding: EdgeInsets.only(left: 20.0, right: 20.0),
               child: CustomMenuButton(
                 onPressed: () {
-                          widget.scrollToSection(widget.sectionKeys['experience']!);
-                        }, // Set onPressed to null for Button 1
+                          widget.scrollToSection(widget.sectionKeys['projects']!);
+                        }, 
                 text: "Projects",
               ),
             ),
@@ -72,25 +79,19 @@ class MenuSectionState extends State<MenuSection> {
               padding: EdgeInsets.only(left: 50.0, right: 20.0),
               child: CustomMenuButton(
                 onPressed: () {
-                          widget.scrollToSection(widget.sectionKeys['experience']!);
-                        }, // Set onPressed to null for Button 1
-                text: "Awards & Certifications",
-              ),
-            ),
-            Text(
-              '/',
-              style: PublicViewTextStyles.navBarText,
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 20.0, right: 20.0),
-              child: CustomMenuButton(
-                onPressed: () {
-                          widget.scrollToSection(widget.sectionKeys['experience']!);
-                        }, // Set onPressed to null for Button 1
-                text: "Recommendations",
+                          widget.scrollToSection(widget.sectionKeys['awards_certs']!);
+                        }, 
+                text: "Awards, Certifications & Peer Recommendations",
               ),
             ),
           ],
+        ),
+        SizedBox(height: 20),
+        Divider(
+          color: Color(0xFFBABAB3),
+          thickness: 1.0,
+          indent: 60,
+          endIndent: 60,
         ),
       ],
     );

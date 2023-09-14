@@ -9,23 +9,22 @@ class SinglePageView extends StatelessWidget {
   final ScrollController _scrollController = ScrollController();
   final GlobalKey _contactKey = GlobalKey();
   final GlobalKey _experienceKey = GlobalKey();
-  final GlobalKey _skillsKey = GlobalKey();
+  final GlobalKey _skillsEduKey = GlobalKey();
   final GlobalKey _projectsKey = GlobalKey();
-  final GlobalKey _awardsKey = GlobalKey();
-  final GlobalKey _landingkey = GlobalKey();
+  final GlobalKey _awardsCertsKey = GlobalKey();
 
   SinglePageView({super.key});
 
-  // void _scrollToContact() {
-  //   final context = _contactKey.currentContext;
-  //   if (context != null) {
-  //     _scrollController.animateTo(
-  //       _scrollController.position.maxScrollExtent,
-  //       duration: const Duration(milliseconds: 500),
-  //       curve: Curves.easeInOut,
-  //     );
-  //   }
-  // }
+  void _scrollToContact() {
+    final context = _contactKey.currentContext;
+    if (context != null) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
 
 
   void _scrollToSection(GlobalKey sectionKey) {
@@ -44,11 +43,10 @@ class SinglePageView extends StatelessWidget {
 
     final sectionKeys = {
       'experience': _experienceKey,
-      'skills': _skillsKey,
+      'skills_edu': _skillsEduKey,
       'projects': _projectsKey,
-      'awards': _awardsKey,
-      'contact': _contactKey,
-      'landing': _landingkey
+      'awards_certs': _awardsCertsKey,
+      'contact': _contactKey
     };
 
     return Scaffold(
@@ -61,8 +59,7 @@ class SinglePageView extends StatelessWidget {
           child: Column(
             children: [
               LandingPage(
-                key: _landingkey,
-                scrollToBottom: _scrollToSection//_scrollToContact,
+                scrollToBottom: _scrollToContact,
               ),
               MenuSection(
                 scrollToSection: _scrollToSection,
@@ -71,10 +68,6 @@ class SinglePageView extends StatelessWidget {
               const AboutMeSection(),
               const SizedBox(height: 500),
               ContactSection(key: _contactKey),
-              // Add your other sections here with their respective GlobalKey
-              // Example: MySkillsSection(key: _skillsKey),
-              // Example: MyProjectsSection(key: _projectsKey),
-              // Example: MyAwardsSection(key: _awardsKey),
             ],
           ),
         ),
