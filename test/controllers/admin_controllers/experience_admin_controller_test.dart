@@ -20,6 +20,7 @@ void main() {
   setUp(() {
     mockExperience1 = MockExperience();
     when(mockExperience1.peid).thenReturn('mockId1');
+    when(mockExperience1.index).thenReturn(1);
     when(mockExperience1.jobTitle).thenReturn('Mock JobTitle1');
     when(mockExperience1.companyName).thenReturn('Mock CompanyName1');
     when(mockExperience1.location).thenReturn('Mock Location1');
@@ -31,6 +32,7 @@ void main() {
 
     mockExperience2 = MockExperience();
     when(mockExperience2.peid).thenReturn('mockId2');
+    when(mockExperience2.index).thenReturn(2);
     when(mockExperience2.jobTitle).thenReturn('Mock JobTitle2');
     when(mockExperience2.companyName).thenReturn('Mock CompanyName2');
     when(mockExperience2.location).thenReturn('Mock Location2');
@@ -59,6 +61,7 @@ void main() {
       var exp2 = getAllExperiences[1];
 
       expect(exp1.peid, mockExperience1.peid);
+      expect(exp1.index, mockExperience1.index);
       expect(exp1.jobTitle, mockExperience1.jobTitle);
       expect(exp1.companyName, mockExperience1.companyName);
       expect(exp1.location, mockExperience1.location);
@@ -68,6 +71,7 @@ void main() {
       expect(exp1.description, mockExperience1.description);
 
       expect(exp2.peid, mockExperience2.peid);
+      expect(exp2.index, mockExperience2.index);
       expect(exp2.jobTitle, mockExperience2.jobTitle);
       expect(exp2.companyName, mockExperience2.companyName);
       expect(exp2.location, mockExperience2.location);

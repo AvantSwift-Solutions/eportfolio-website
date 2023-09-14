@@ -6,7 +6,8 @@ class ExperienceRepoService {
   Future<List<Experience>?> getAllExperiences() async {
     try {
       QuerySnapshot snapshot =
-          await FirebaseFirestore.instance.collection('Experience').orderBy('endDate').get();
+          await FirebaseFirestore.instance.collection('Experience')
+            .orderBy('index').get();
       final tmp = snapshot.docs
           .map((doc) => Experience.fromDocumentSnapshot(doc))
           .toList();

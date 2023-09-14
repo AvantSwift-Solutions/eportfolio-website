@@ -1,6 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 import 'dart:typed_data';
-
+import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
@@ -78,7 +78,7 @@ class ExperienceSectionAdmin extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(vertical: 8),
                               child: ListTile(
                                 tileColor: Colors.white,
-                                title: Text(experiences[index].companyName!,
+                                title: Text('${experiences[index].jobTitle} at ${experiences[index].companyName}',
                                     style: AdminViewDialogStyles.listTextStyle),
                                 trailing: Row(
                                   mainAxisSize: MainAxisSize.min,
@@ -117,6 +117,14 @@ class ExperienceSectionAdmin extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    ReorderDialog(
+                      controller: _adminController,
+                      onReorder: () {
+                        Navigator.of(dialogContext).pop(); // Close reorder
+                        Navigator.of(parentContext).pop(); // Close old list
+                        _showList(parentContext); // Show new list dialog
+                      },
+                    ),
                     ElevatedButton(
                       style: AdminViewDialogStyles.elevatedButtonStyle,
                       onPressed: () {
@@ -141,6 +149,7 @@ class ExperienceSectionAdmin extends StatelessWidget {
     final id = const Uuid().v4();
     final experience = Experience(
       peid: id,
+      index: experienceList.length,
       jobTitle: '',
       companyName: '',
       location: '',
@@ -175,7 +184,7 @@ class ExperienceSectionAdmin extends StatelessWidget {
       successMessage = 'Professional Experience info added successfully';
       errorMessage = 'Error adding new Professional Experience info';
     } else {
-      title = 'Edit info for \'${experience.companyName}\'';
+      title = 'Edit info for \'${experience.jobTitle} at ${experience.companyName}\'';
       successMessage = 'Professional Experience info updated successfully';
       errorMessage = 'Error updating Professional Experience info';
     }
@@ -236,20 +245,42 @@ class ExperienceSectionAdmin extends StatelessWidget {
                               },
                             ),
                             AdminViewDialogStyles.spacer,
-                            const Text('Company Name*', textAlign: TextAlign.left),
+                            const Text('Job Title*', textAlign: TextAlign.left),
                             AdminViewDialogStyles.interTitleField,
                             TextFormField(
                               style: AdminViewDialogStyles.inputTextStyle,
-                              initialValue: experience.companyName,
+                              initialValue: experience.jobTitle,
                               decoration: AdminViewDialogStyles.inputDecoration,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter a company name';
+                                  return 'Please enter a job title';
                                 }
                                 return null;
                               },
                               onSaved: (value) {
-                                experience.companyName = value;
+                                experience.jobTitle = value;
+                              },
+                            ),
+                            AdminViewDialogStyles.spacer,
+                            const Text('Location', textAlign: TextAlign.left),
+                            AdminViewDialogStyles.interTitleField,
+                            TextFormField(
+                              style: AdminViewDialogStyles.inputTextStyle,
+                              initialValue: experience.location,
+                              decoration: AdminViewDialogStyles.inputDecoration,
+                              onSaved: (value) {
+                                experience.location = value;
+                              },
+                            ),
+                            AdminViewDialogStyles.spacer,
+                            const Text('Description', textAlign: TextAlign.left),
+                            AdminViewDialogStyles.interTitleField,
+                            TextFormField(
+                              style: AdminViewDialogStyles.inputTextStyle,
+                              initialValue: experience.description,
+                              decoration: AdminViewDialogStyles.inputDecoration,
+                              onSaved: (value) {
+                                experience.description = value;
                               },
                             ),
                             AdminViewDialogStyles.spacer,

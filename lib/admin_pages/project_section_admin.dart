@@ -14,8 +14,6 @@ class ProjectSectionAdmin extends StatelessWidget {
 
   ProjectSectionAdmin({super.key});
 
-  ProjectSectionAdmin({super.key});
-
   @override
   Widget build(BuildContext context) {
     parentContext = context;

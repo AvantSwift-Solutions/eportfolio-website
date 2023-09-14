@@ -11,6 +11,7 @@ void main() {
     test('Experience.toMap should convert Experience to a map', () {
       final experience = Experience(
         peid: 'exp123',
+        index: 1,
         jobTitle: 'Scrum Master',
         companyName: 'TikTok',
         location: 'New York',
@@ -22,6 +23,7 @@ void main() {
       final experienceMap = experience.toMap();
 
       expect(experienceMap['peid'], 'exp123');
+      expect(experienceMap['index'], 1);
       expect(experienceMap['jobTitle'], 'Scrum Master');
       expect(experienceMap['companyName'], 'TikTok');
       expect(experienceMap['location'], 'New York');

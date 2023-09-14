@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Experience {
   final String? peid;
+  int? index;
   String? jobTitle;
   String? companyName;
   String? location;
@@ -14,6 +15,7 @@ class Experience {
 
   Experience({
     required this.peid,
+    required this.index,
     required this.jobTitle,
     required this.companyName,
     this.location,
@@ -26,6 +28,7 @@ class Experience {
   factory Experience.fromDocumentSnapshot(DocumentSnapshot snapshot) {
     try {
       final data = snapshot.data() as Map<String, dynamic>;
+      final index = data['index'];
       final jobTitle = data['jobTitle'];
       final companyName = data['companyName'];
       final location = data['location'];
@@ -36,6 +39,7 @@ class Experience {
 
       return Experience(
         peid: snapshot.id,
+        index: index,
         jobTitle: jobTitle,
         companyName: companyName,
         location: location,
@@ -52,6 +56,7 @@ class Experience {
   Map<String, dynamic> toMap() {
     return {
       'peid': peid,
+      'index': index,
       'jobTitle': jobTitle,
       'companyName': companyName,
       'location': location,

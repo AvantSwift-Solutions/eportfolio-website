@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:tuple/tuple.dart';
 import '../../models/Experience.dart';
 import '../../reposervice/experience_repo_services.dart';
 
@@ -20,48 +21,47 @@ class ExperienceSectionAdminController {
     }
   }
 
-  Future<bool>? updateSectionData(
-      int index, Experience newExperience) async {
-    try {
-      List<Experience>? allExperiences =
-          await experienceRepoService.getAllExperiences();
+  String getSectionName() {
+    return 'Interpersonal Skill';
+  }
 
-      if (allExperiences!.isNotEmpty) {
-        allExperiences[index].jobTitle = newExperience.jobTitle;
-        allExperiences[index].companyName = newExperience.companyName;
-        allExperiences[index].logoURL = newExperience.logoURL;
-        allExperiences[index].location = newExperience.location;
-        allExperiences[index].startDate = newExperience.startDate;
-        allExperiences[index].endDate = newExperience.endDate;
-        allExperiences[index].description = newExperience.description;
-
-        bool updateSuccess = await allExperiences[index].update() ?? false;
-        return updateSuccess; // Return true if update is successful
-      } else {
-        return false;
+  Future<List<Tuple2<int, String>>> getSectionTitles() async {
+    List<Experience>? exps = await getSectionData();
+    var ret = <Tuple2<int, String>>[];
+    if (exps != null) {
+      for (var i = 0; i < exps.length; i++) {
+        ret.add(Tuple2(exps[i].index!, '${exps[i].jobTitle} at ${exps[i].companyName}'));
       }
-    } catch (e) {
-      log('Error updating Experience: $e');
-      return false;
+    }
+    return ret;
+  }
+
+  Future<void> updateSectionOrder(List<Tuple2<int, String>> items) async {
+    List<Experience>? exps = await getSectionData();
+    if (exps == null) return;
+    for (var i = 0; i < items.length; i++) {
+      var skill = exps[items[i].item1];
+      skill.index = i;
+      await skill.update();
     }
   }
 
-  // Future<bool> deleteData(List<Experience> list, int index) async {
+  Future<bool> deleteData(List<Experience> list, int index) async {
 
-  //   for (var i = index + 1; i < list.length; i++) {
-  //     list[i].index = list[i].index! - 1;
-  //     await list[i].update();
-  //   }
+    for (var i = index + 1; i < list.length; i++) {
+      list[i].index = list[i].index! - 1;
+      await list[i].update();
+    }
 
-  //   try {
-  //     await list[index].delete();
-  //     return true;
-  //   } catch (e) {
-  //     log('Error deleting: $e');
-  //     return false;
-  //   }
-    
-  // }
+    try {
+      await list[index].delete();
+      return true;
+    } catch (e) {
+      log('Error deleting: $e');
+      return false;
+    }
+
+  }
 
   Future<String?> uploadImageAndGetURL(
       Uint8List imageBytes, String fileName) async {

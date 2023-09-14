@@ -118,10 +118,8 @@ class ISkillSectionAdmin extends StatelessWidget {
                     ReorderDialog(
                       controller: _adminController,
                       onReorder: () {
-                        Navigator.of(dialogContext)
-                            .pop(); // Close reorder dialog
-                        Navigator.of(parentContext)
-                            .pop(); // Close old list dialog
+                        Navigator.of(dialogContext).pop(); // Close reorder
+                        Navigator.of(parentContext).pop(); // Close old list
                         _showList(parentContext); // Show new list dialog
                       },
                     ),
