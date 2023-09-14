@@ -17,34 +17,33 @@ class CustomMenuButton extends StatefulWidget {
 
 class _CustomMenuButtonState extends State<CustomMenuButton> {
   bool isHovered = false;
-
+  TextStyle textStyle = PublicViewTextStyles.navBarText.copyWith(fontWeight: FontWeight.normal);
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
-      onEnter: (_) {
+      onEnter: (PointerEvent event) {
         setState(() {
-          isHovered = true;
+          textStyle = PublicViewTextStyles.navBarText.copyWith(fontWeight: FontWeight.bold);
         });
       },
-      onExit: (_) {
+      onExit: (PointerEvent event) {
         setState(() {
-          isHovered = false;
+          textStyle = PublicViewTextStyles.navBarText.copyWith(fontWeight: FontWeight.normal);
         });
       },
       child: TextButton(
         onPressed: widget.onPressed,
         style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.resolveWith<Color>((states) {
-            if (states.contains(MaterialState.hovered)) {
-              return Colors.black; // Set the text color to black when hovered
-            } else {
-              return PublicViewTextStyles.navBarText.color!; // Use specified color when not hovered
-            }
+          overlayColor: MaterialStateProperty.resolveWith<Color>(
+            (Set <MaterialState> states) {
+              // if (states.contains(MaterialState.hovered)) {
+                return Colors.transparent;
+              // }
           }),
         ),
         child: Text(
           widget.text,
-          style: PublicViewTextStyles.navBarText,
+          style: textStyle,
         ),
       ),
     );
