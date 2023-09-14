@@ -5,8 +5,13 @@ import '../ui/custom_texts/public_view_text_styles.dart';
 import '../ui/custom_menu_button.dart';
 
 class MenuSection extends StatefulWidget {
-  final Function scrollToBottom;
-  const MenuSection({super.key, required this.scrollToBottom});
+  final Function(GlobalKey) scrollToSection;
+  final Map<String, GlobalKey> sectionKeys; // Map to store section keys
+
+  const MenuSection({
+    required this.scrollToSection,
+    required this.sectionKeys, // Accept the map of section keys
+  });
 
   @override
   MenuSectionState createState() => MenuSectionState();
@@ -26,7 +31,7 @@ class MenuSectionState extends State<MenuSection> {
               padding: EdgeInsets.only(left: 50.0, right: 20.0),
               child: CustomMenuButton(
                 onPressed: () {
-                          widget.scrollToBottom();
+                          widget.scrollToSection(widget.sectionKeys['landing']!);
                         }, // Set onPressed to null for Button 1
                 text: "Experience",
               ),
@@ -39,7 +44,7 @@ class MenuSectionState extends State<MenuSection> {
               padding: EdgeInsets.only(left: 20.0, right: 20.0),
               child: CustomMenuButton(
                 onPressed: () {
-                          widget.scrollToBottom();
+                          widget.scrollToSection(widget.sectionKeys['contact']!);
                         }, // Set onPressed to null for Button 1
                 text: "Skills & Education",
               ),
@@ -52,7 +57,7 @@ class MenuSectionState extends State<MenuSection> {
               padding: EdgeInsets.only(left: 20.0, right: 20.0),
               child: CustomMenuButton(
                 onPressed: () {
-                          widget.scrollToBottom();
+                          widget.scrollToSection(widget.sectionKeys['experience']!);
                         }, // Set onPressed to null for Button 1
                 text: "Projects",
               ),
@@ -67,7 +72,7 @@ class MenuSectionState extends State<MenuSection> {
               padding: EdgeInsets.only(left: 50.0, right: 20.0),
               child: CustomMenuButton(
                 onPressed: () {
-                          widget.scrollToBottom();
+                          widget.scrollToSection(widget.sectionKeys['experience']!);
                         }, // Set onPressed to null for Button 1
                 text: "Awards & Certifications",
               ),
@@ -80,7 +85,7 @@ class MenuSectionState extends State<MenuSection> {
               padding: EdgeInsets.only(left: 20.0, right: 20.0),
               child: CustomMenuButton(
                 onPressed: () {
-                          widget.scrollToBottom();
+                          widget.scrollToSection(widget.sectionKeys['experience']!);
                         }, // Set onPressed to null for Button 1
                 text: "Recommendations",
               ),

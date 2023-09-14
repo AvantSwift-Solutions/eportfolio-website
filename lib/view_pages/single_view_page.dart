@@ -1,20 +1,38 @@
-import 'package:avantswift_portfolio/view_pages/about_me_section.dart';
 import 'package:flutter/material.dart';
 import 'contact_section.dart';
 import 'landing_page.dart';
 import 'menu_section.dart';
+import 'about_me_section.dart';
 
 class SinglePageView extends StatelessWidget {
+  
   final ScrollController _scrollController = ScrollController();
   final GlobalKey _contactKey = GlobalKey();
+  final GlobalKey _experienceKey = GlobalKey();
+  final GlobalKey _skillsKey = GlobalKey();
+  final GlobalKey _projectsKey = GlobalKey();
+  final GlobalKey _awardsKey = GlobalKey();
+  final GlobalKey _landingkey = GlobalKey();
 
   SinglePageView({super.key});
 
-  void _scrollToContact() {
-    final context = _contactKey.currentContext;
+  // void _scrollToContact() {
+  //   final context = _contactKey.currentContext;
+  //   if (context != null) {
+  //     _scrollController.animateTo(
+  //       _scrollController.position.maxScrollExtent,
+  //       duration: const Duration(milliseconds: 500),
+  //       curve: Curves.easeInOut,
+  //     );
+  //   }
+  // }
+
+
+  void _scrollToSection(GlobalKey sectionKey) {
+    final context = sectionKey.currentContext;
     if (context != null) {
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
+      Scrollable.ensureVisible(
+        context,
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
       );
@@ -23,26 +41,40 @@ class SinglePageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final sectionKeys = {
+      'experience': _experienceKey,
+      'skills': _skillsKey,
+      'projects': _projectsKey,
+      'awards': _awardsKey,
+      'contact': _contactKey,
+      'landing': _landingkey
+    };
+
     return Scaffold(
       body: SizedBox(
         height: MediaQuery.of(context).size.height -
             kToolbarHeight -
-            kBottomNavigationBarHeight, // Adjust height as needed
+            kBottomNavigationBarHeight,
         child: SingleChildScrollView(
           controller: _scrollController,
           child: Column(
             children: [
               LandingPage(
-                scrollToBottom: _scrollToContact, // Scroll to contact
+                key: _landingkey,
+                scrollToBottom: _scrollToSection//_scrollToContact,
               ),
-              //const SizedBox(height: 500), // Add some spacing
               MenuSection(
-                scrollToBottom: _scrollToContact,
+                scrollToSection: _scrollToSection,
+                sectionKeys: sectionKeys, // Pass the map of section keys
               ),
               const AboutMeSection(),
-              const SizedBox(height: 500), // Add some spacing
-              ContactSection(
-                  key: _contactKey), // Placeholder for contact section
+              const SizedBox(height: 500),
+              ContactSection(key: _contactKey),
+              // Add your other sections here with their respective GlobalKey
+              // Example: MySkillsSection(key: _skillsKey),
+              // Example: MyProjectsSection(key: _projectsKey),
+              // Example: MyAwardsSection(key: _awardsKey),
             ],
           ),
         ),
