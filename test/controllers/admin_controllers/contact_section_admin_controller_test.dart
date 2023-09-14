@@ -23,7 +23,7 @@ void main() {
     when(mockUser.uid).thenReturn('mockUid');
     when(mockUser.email).thenReturn('mock@example.com');
     when(mockUser.name).thenReturn('Mock User');
-    when(mockUser.landingPageTitle).thenReturn('Mock Title');
+    when(mockUser.nickname).thenReturn('Mock Title');
     when(mockUser.landingPageDescription).thenReturn('Mock Description');
     when(mockUser.imageURL).thenReturn('http://example.com/mock_image.jpg');
 

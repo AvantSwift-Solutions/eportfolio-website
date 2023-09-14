@@ -17,7 +17,7 @@ class AboutMeSectionAdminController {
       if (user != null) {
         return AboutMeSectionDTO(
           aboutMe: user.aboutMe,
-          imageURL: user.imageURL,
+          imageURL: user.aboutMeURL,
         );
       } else {
         return AboutMeSectionDTO(
@@ -41,10 +41,7 @@ class AboutMeSectionAdminController {
 
       if (user != null) {
         user.aboutMe = aboutMeSectionData.aboutMe;
-
-        /* ImageURL requires additional steps of taking to storage and
-         getting the URL */
-        user.imageURL = aboutMeSectionData.imageURL;
+        user.aboutMeURL = aboutMeSectionData.imageURL;
 
         bool updateSuccess = await user.update() ?? false;
         return updateSuccess; // Return true if update is successful

@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import '../controllers/view_controllers/contact_section_controller.dart';
 import '../reposervice/user_repo_services.dart';
-import '../ui/custom_scroll_button.dart';
+import '../ui/custom_view_button.dart';
 import '../ui/custom_texts/public_view_text_styles.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -302,7 +302,7 @@ class ContactSectionState extends State<ContactSection> {
                               ),
                               const SizedBox(height: 20),
                               const SizedBox(height: 20),
-                              CustomScrollButton(
+                              CustomViewButton(
                                 text: 'Send',
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {

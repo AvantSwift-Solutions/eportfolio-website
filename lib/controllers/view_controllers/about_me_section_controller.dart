@@ -15,7 +15,7 @@ class AboutMeSectionController {
       if (user != null) {
         return AboutMeSectionDTO(
           aboutMe: user.aboutMe,
-          imageURL: user.imageURL,
+          imageURL: user.aboutMeURL,
         );
       } else {
         return AboutMeSectionDTO(

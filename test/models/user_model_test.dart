@@ -14,24 +14,26 @@ void main() {
           email: 'user@example.com',
           name: 'John Doe',
           creationTimestamp: Timestamp.now(),
-          landingPageTitle: 'Welcome to my page',
+          nickname: 'Welcome to my page',
           landingPageDescription: 'This is my landing page',
           imageURL: 'https://example.com/image.jpg',
           contactEmail: 'differentEmail@example.com',
           linkedinURL: 'https://www.linkedin.com/in/example-user/',
+          aboutMeURL: 'https://example.com/aboutme',
           aboutMe: 'This is about me');
       final userMap = user.toMap();
 
       expect(userMap['uid'], 'user123');
       expect(userMap['email'], 'user@example.com');
       expect(userMap['name'], 'John Doe');
-      expect(userMap['landingPageTitle'], 'Welcome to my page');
+      expect(userMap['nickname'], 'Welcome to my page');
       expect(userMap['landingPageDescription'], 'This is my landing page');
       expect(userMap['imageURL'], 'https://example.com/image.jpg');
       expect(userMap['contactEmail'], 'differentEmail@example.com');
       expect(
           userMap['linkedinURL'], 'https://www.linkedin.com/in/example-user/');
       expect(userMap['aboutMe'], 'This is about me');
+      expect(userMap['aboutMeURL'], 'https://example.com/aboutme');
     });
     // Write more tests for other methods (create, update, delete, getFirstUser)
   });
