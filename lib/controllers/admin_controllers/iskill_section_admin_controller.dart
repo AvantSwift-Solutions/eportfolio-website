@@ -42,4 +42,22 @@ class ISkillSectionAdminController {
       await skill.update();
     }
   }
+
+  Future<bool> deleteData(List<ISkill> list, int index) async {
+
+    for (var i = index + 1; i < list.length; i++) {
+      list[i].index = list[i].index! - 1;
+      await list[i].update();
+    }
+
+    try {
+      await list[index].delete();
+      return true;
+    } catch (e) {
+      log('Error deleting: $e');
+      return false;
+    }
+
+  }
+
 }

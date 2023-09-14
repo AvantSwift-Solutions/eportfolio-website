@@ -46,6 +46,23 @@ class ExperienceSectionAdminController {
     }
   }
 
+  // Future<bool> deleteData(List<Experience> list, int index) async {
+
+  //   for (var i = index + 1; i < list.length; i++) {
+  //     list[i].index = list[i].index! - 1;
+  //     await list[i].update();
+  //   }
+
+  //   try {
+  //     await list[index].delete();
+  //     return true;
+  //   } catch (e) {
+  //     log('Error deleting: $e');
+  //     return false;
+  //   }
+    
+  // }
+
   Future<String?> uploadImageAndGetURL(
       Uint8List imageBytes, String fileName) async {
     try {

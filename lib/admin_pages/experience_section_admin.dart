@@ -1,6 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
+import 'dart:typed_data';
+
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import '../controllers/admin_controllers/experience_section_admin_controller.dart';
@@ -162,7 +165,9 @@ class ExperienceSectionAdmin extends StatelessWidget {
 
   void _showExperienceDialog(BuildContext context, Experience experience,
       Future<bool> Function(Experience) onExperienceUpdated) {
+
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    Uint8List? pickedImageBytes;
 
     String title, successMessage, errorMessage;
     if (experience.companyName == '') {
@@ -231,6 +236,35 @@ class ExperienceSectionAdmin extends StatelessWidget {
                               },
                             ),
                             AdminViewDialogStyles.spacer,
+                            const Text('Company Name*', textAlign: TextAlign.left),
+                            AdminViewDialogStyles.interTitleField,
+                            TextFormField(
+                              style: AdminViewDialogStyles.inputTextStyle,
+                              initialValue: experience.companyName,
+                              decoration: AdminViewDialogStyles.inputDecoration,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter a company name';
+                                }
+                                return null;
+                              },
+                              onSaved: (value) {
+                                experience.companyName = value;
+                              },
+                            ),
+                            AdminViewDialogStyles.spacer,
+                            if (pickedImageBytes != null)
+                              Image.memory(pickedImageBytes!),
+                            ElevatedButton(
+                              onPressed: () async {
+                                Uint8List? imageBytes = await _pickImage();
+                                if (imageBytes != null) {
+                                  pickedImageBytes = imageBytes;
+                                  setState(() {});
+                                }
+                              },
+                              child: const Text('Pick an Image'),
+                            ),
                             const Divider(),
                           ],
                         ),
@@ -246,6 +280,14 @@ class ExperienceSectionAdmin extends StatelessWidget {
                             onPressed: () async {
                               if (formKey.currentState!.validate()) {
                                 formKey.currentState!.save();
+                                if (pickedImageBytes != null) {
+                                  String? imageURL =
+                                      await _adminController.uploadImageAndGetURL(
+                                          pickedImageBytes!, '${experience.peid}_image.jpg');
+                                  if (imageURL != null) {
+                                    experience.logoURL = imageURL;
+                                  }
+                                }
                                 bool isSuccess = await onExperienceUpdated(experience);
                                 if (isSuccess) {
                                   ScaffoldMessenger.of(parentContext)
@@ -258,10 +300,8 @@ class ExperienceSectionAdmin extends StatelessWidget {
                                     SnackBar(content: Text(errorMessage)),
                                   );
                                 }
-                                Navigator.of(dialogContext)
-                                    .pop(); // Close update dialog
-                                Navigator.of(parentContext)
-                                    .pop(); // Close old list
+                                Navigator.of(dialogContext).pop(); // Close update
+                                Navigator.of(parentContext).pop(); // Close old list
                                 _showList(parentContext); // Show new list
                               }
                             },
@@ -366,7 +406,8 @@ class ExperienceSectionAdmin extends StatelessWidget {
                               child: Text('Cancel',
                                   style: AdminViewDialogStyles.buttonTextStyle),
                             ),
-                          ]),
+                          ]
+                        ),
                     )
                   ],
                 ),
@@ -377,4 +418,19 @@ class ExperienceSectionAdmin extends StatelessWidget {
       },
     );
   }
+
+  Future<Uint8List?> _pickImage() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+    );
+
+    if (result != null && result.files.isNotEmpty) {
+      final pickedFile = result.files.single;
+      Uint8List imageBytes = pickedFile.bytes!;
+      return imageBytes;
+    }
+
+    return null;
+  }
+  
 }

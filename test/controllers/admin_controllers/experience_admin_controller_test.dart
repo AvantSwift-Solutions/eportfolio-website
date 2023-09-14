@@ -46,11 +46,11 @@ void main() {
 
   group('Experience section admin controller tests', () {
     test(
-        'getExperienceSectionData returns correct data when  experience is not null',
+        'getSectionData returns correct data when  experience is not null',
         () async {
       when(mockRepoService.getAllExperiences())
           .thenAnswer((_) async => [mockExperience1, mockExperience2]);
-      final getAllExperiences = await controller.getExperienceSectionData();
+      final getAllExperiences = await controller.getSectionData();
 
       // Make assertions on the returned data
       expect(getAllExperiences!.length, 2);
@@ -77,75 +77,19 @@ void main() {
       expect(exp2.description, mockExperience2.description);
     });
 
-    test('getExperienceSectionData returns null data when  experience is null',
+    test('getSectionData returns null data when  experience is null',
         () async {
       when(mockRepoService.getAllExperiences()).thenAnswer((_) async => null);
-      final experienceSectionData = await controller.getExperienceSectionData();
+      final experienceSectionData = await controller.getSectionData();
       expect(experienceSectionData, null);
     });
 
-    test('getExperienceSectionData returns null data on exception', () async {
+    test('getSectionData returns null data on exception', () async {
       when(mockRepoService.getAllExperiences())
           .thenThrow(Exception('Test Exception'));
-      final experienceSectionData = await controller.getExperienceSectionData();
+      final experienceSectionData = await controller.getSectionData();
       expect(experienceSectionData, null);
     });
 
-    test('updateExperienceSectionData returns true on successful update',
-        () async {
-      when(mockRepoService.getAllExperiences())
-          .thenAnswer((_) async => [mockExperience1, mockExperience2]);
-      when(mockExperience1.update()).thenAnswer((_) async => true);
-
-      final updateResult = await controller.updateExperienceSectionData(
-        0,
-        Experience(
-          peid: 'mockId1',
-          jobTitle: 'New Mock JobTitle1',
-          companyName: 'New Mock CompanyName1',
-          location: 'New Mock Location1',
-          startDate: Timestamp(1234567890, 0),
-          endDate: Timestamp(1234567890, 0),
-          description: 'New Mock Description1',
-          logoURL: 'http://example.com/new_mock_image1.jpg',
-        ),
-      );
-
-      expect(updateResult, true);
-      verify(mockExperience1.jobTitle = 'New Mock JobTitle1');
-      verify(mockExperience1.companyName = 'New Mock CompanyName1');
-      verify(mockExperience1.location = 'New Mock Location1');
-      verify(mockExperience1.startDate = Timestamp(1234567890, 0));
-      verify(mockExperience1.endDate = Timestamp(1234567890, 0));
-      verify(mockExperience1.description = 'New Mock Description1');
-      verify(
-          mockExperience1.logoURL = 'http://example.com/new_mock_image1.jpg');
-
-      verify(mockExperience1.update()); // Verify that the method was called
-    });
-
-    test('updateExperienceSectionData returns false when user is null',
-        () async {
-      when(mockRepoService.getAllExperiences()).thenAnswer((_) async => null);
-
-      final updateResult = await controller.updateExperienceSectionData(
-        0,
-        Experience(
-          peid: 'mockId1',
-          jobTitle: 'New Mock JobTitle1',
-          companyName: 'New Mock CompanyName1',
-          location: 'New Mock Location1',
-          startDate: Timestamp(1234567890, 0),
-          endDate: Timestamp(1234567890, 0),
-          description: 'New Mock Description1',
-          logoURL: 'http://example.com/new_mock_image1.jpg',
-        ),
-      );
-
-      expect(updateResult, false);
-
-      verifyNever(mockExperience1.update());
-      verifyNever(mockExperience2.update());
-    });
   });
 }

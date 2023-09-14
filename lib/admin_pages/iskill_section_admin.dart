@@ -93,7 +93,7 @@ class ISkillSectionAdmin extends StatelessWidget {
                                       color: Colors.black,
                                       onPressed: () {
                                         _showDeleteDialog(
-                                            context, iskills[index]);
+                                            context, iskills, index);
                                       },
                                     ),
                                   ],
@@ -294,8 +294,8 @@ class ISkillSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showDeleteDialog(BuildContext context, ISkill skill) async {
-    final name = skill.name ?? 'Interpersonal Skill';
+  void _showDeleteDialog(BuildContext context, List<ISkill> skills, int index) async {
+    final name = skills[index].name ?? 'Interpersonal Skill';
 
     showDialog(
       context: parentContext,
@@ -340,7 +340,7 @@ class ISkillSectionAdmin extends StatelessWidget {
                             ElevatedButton(
                               style: AdminViewDialogStyles.elevatedButtonStyle,
                               onPressed: () async {
-                                final deleted = await skill.delete();
+                                final deleted = await _adminController.deleteData(skills, index);
                                 if (deleted) {
                                   setState(() {});
                                   ScaffoldMessenger.of(context).showSnackBar(
@@ -355,12 +355,9 @@ class ISkillSectionAdmin extends StatelessWidget {
                                             Text('Failed to delete $name')),
                                   );
                                 }
-                                Navigator.of(dialogContext)
-                                    .pop(); // Close delete dialog
-                                Navigator.of(parentContext)
-                                    .pop(); // Close old list dialog
-                                _showList(
-                                    parentContext); // Show new list dialog
+                                Navigator.of(dialogContext).pop(); // Close delete
+                                Navigator.of(parentContext).pop(); // Close old list
+                                _showList(parentContext); // Show new list dialog
                               },
                               child: Text('Delete',
                                   style: AdminViewDialogStyles.buttonTextStyle),
