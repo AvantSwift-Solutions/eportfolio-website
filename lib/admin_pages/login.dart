@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:avantswift_portfolio/models/User.dart' as model;
 import 'package:avantswift_portfolio/services/auth_state.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginPage extends StatefulWidget {
   final Function(model.User) onLoginSuccess;
@@ -32,7 +33,22 @@ class LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: SingleChildScrollView(
+        child: Row(
+          children: [
+            Container(
+              color: const Color(0xFFF6F7F9),
+              width: MediaQuery.of(context).size.width / 2, // Half of the screen width
+              height: MediaQuery.of(context).size.height, // Full screen height
+              child: Center(
+                child: SvgPicture.asset(
+                      'assets/login_graphic.svg', // Replace with your SVG file path
+                      width: 500,
+                      height: 500,
+                      ),
+              ),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
           child: Form(
             key: _formKey, // Set the form key here
             child: Column(
@@ -127,6 +143,9 @@ class LoginPageState extends State<LoginPage> {
               ],
             ),
           ),
+        )
+            )
+          ],
         ),
       ),
     );
