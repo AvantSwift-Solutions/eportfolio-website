@@ -43,99 +43,126 @@ class ISkillSectionAdmin extends StatelessWidget {
         return Theme(
           data: AdminViewDialogStyles.dialogThemeData,
           child: AlertDialog(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text('Edit Interpersonal Skills'),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: IconButton(
-                    icon: const Icon(Icons.close),
-                    color: Colors.black,
-                    onPressed: () {
-                      Navigator.of(dialogContext).pop();
-                    },
+            scrollable: true,
+            titlePadding:
+                const EdgeInsets.only(top: 0, left: 24, right: 24, bottom: 0),
+            actionsPadding:
+                const EdgeInsets.only(top: 0, left: 24, right: 24, bottom: 0),
+            contentPadding:
+                const EdgeInsets.only(top: 0, left: 24, right: 24, bottom: 0),
+            title: Container(
+                padding: const EdgeInsets.only(top: 24),
+                color: AdminViewDialogStyles.bgColor,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Edit Interpersonal Skills'),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: IconButton(
+                            icon: const Icon(Icons.close),
+                            color: Colors.black,
+                            onPressed: () {
+                              Navigator.of(dialogContext).pop();
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Divider(),
+                  ],
+                )),
+            content: SizedBox(
+              height: 300,
+              child: SingleChildScrollView(
+                child: SizedBox(
+                  width: AdminViewDialogStyles.listDialogWidth,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      iskills.isEmpty
+                          ? const Text('No Interpersonal Skills available')
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: iskills.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8),
+                                  child: ListTile(
+                                    tileColor: Colors.white,
+                                    title: Text(iskills[index].name!,
+                                        style: AdminViewDialogStyles
+                                            .listTextStyle),
+                                    trailing: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                          icon: const Icon(Icons.edit),
+                                          color: Colors.black,
+                                          onPressed: () {
+                                            _showEditDialog(context, index);
+                                          },
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.delete),
+                                          color: Colors.black,
+                                          onPressed: () {
+                                            _showDeleteDialog(
+                                                context, iskills, index);
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                    onTap: () {
+                                      _showEditDialog(context, index);
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-            contentPadding: AdminViewDialogStyles.contentPadding,
-            content: SizedBox(
-              width: AdminViewDialogStyles.listDialogWidth,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Divider(),
-                  iskills.isEmpty
-                      ? const Text('No Interpersonal Skills available')
-                      : ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: iskills.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8),
-                              child: ListTile(
-                                tileColor: Colors.white,
-                                title: Text(iskills[index].name!,
-                                    style: AdminViewDialogStyles.listTextStyle),
-                                trailing: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.edit),
-                                      color: Colors.black,
-                                      onPressed: () {
-                                        _showEditDialog(context, index);
-                                      },
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.delete),
-                                      color: Colors.black,
-                                      onPressed: () {
-                                        _showDeleteDialog(
-                                            context, iskills, index);
-                                      },
-                                    ),
-                                  ],
-                                ),
-                                onTap: () {
-                                  _showEditDialog(context, index);
-                                },
-                              ),
-                            );
-                          },
-                        ),
-                  const Divider(),
-                ],
               ),
             ),
             actions: <Widget>[
-              Padding(
-                padding: AdminViewDialogStyles.actionPadding,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ReorderDialog(
-                      controller: _adminController,
-                      onReorder: () {
-                        Navigator.of(dialogContext).pop(); // Close reorder
-                        Navigator.of(parentContext).pop(); // Close old list
-                        _showList(parentContext); // Show new list dialog
-                      },
-                    ),
-                    ElevatedButton(
-                      style: AdminViewDialogStyles.elevatedButtonStyle,
-                      onPressed: () {
-                        _showAddNewDialog(context, iskills);
-                      },
-                      child: Text(
-                        'Add New',
-                        style: AdminViewDialogStyles.buttonTextStyle,
+              Container(
+                  padding: const EdgeInsets.only(top: 4, bottom: 24),
+                  color: AdminViewDialogStyles.bgColor,
+                  child: Column(
+                    children: [
+                      const Divider(),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ReorderDialog(
+                            controller: _adminController,
+                            onReorder: () {
+                              Navigator.of(dialogContext)
+                                  .pop(); // Close reorder
+                              Navigator.of(parentContext)
+                                  .pop(); // Close old list
+                              _showList(parentContext); // Show new list dialog
+                            },
+                          ),
+                          ElevatedButton(
+                            style: AdminViewDialogStyles.elevatedButtonStyle,
+                            onPressed: () {
+                              _showAddNewDialog(context, iskills);
+                            },
+                            child: Text(
+                              'Add New',
+                              style: AdminViewDialogStyles.buttonTextStyle,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-              )
+                    ],
+                  ))
             ],
           ),
         );
@@ -181,8 +208,7 @@ class ISkillSectionAdmin extends StatelessWidget {
     }
 
     showDialog(
-      context:
-          parentContext, // Use the parent context instead of the current context
+      context: parentContext,
       builder: (BuildContext dialogContext) {
         return StatefulBuilder(
           builder: (context, setState) {
@@ -205,7 +231,7 @@ class ISkillSectionAdmin extends StatelessWidget {
                       ),
                     ],
                   ),
-                  contentPadding: AdminViewDialogStyles.contentPadding,
+                  contentPadding: AdminViewDialogStyles.actionsDialogPadding,
                   content: Form(
                       key: formKey,
                       child: SizedBox(
@@ -242,7 +268,7 @@ class ISkillSectionAdmin extends StatelessWidget {
                       )),
                   actions: <Widget>[
                     Padding(
-                      padding: AdminViewDialogStyles.actionPadding,
+                      padding: AdminViewDialogStyles.actionsDialogPadding,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -292,7 +318,8 @@ class ISkillSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showDeleteDialog(BuildContext context, List<ISkill> skills, int index) async {
+  void _showDeleteDialog(
+      BuildContext context, List<ISkill> skills, int index) async {
     final name = skills[index].name ?? 'Interpersonal Skill';
 
     showDialog(
@@ -331,14 +358,15 @@ class ISkillSectionAdmin extends StatelessWidget {
                   ),
                   actions: <Widget>[
                     Padding(
-                      padding: AdminViewDialogStyles.actionPadding,
+                      padding: AdminViewDialogStyles.actionsDialogPadding,
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             ElevatedButton(
                               style: AdminViewDialogStyles.elevatedButtonStyle,
                               onPressed: () async {
-                                final deleted = await _adminController.deleteData(skills, index);
+                                final deleted = await _adminController
+                                    .deleteData(skills, index);
                                 if (deleted) {
                                   setState(() {});
                                   ScaffoldMessenger.of(context).showSnackBar(
@@ -353,9 +381,12 @@ class ISkillSectionAdmin extends StatelessWidget {
                                             Text('Failed to delete $name')),
                                   );
                                 }
-                                Navigator.of(dialogContext).pop(); // Close delete
-                                Navigator.of(parentContext).pop(); // Close old list
-                                _showList(parentContext); // Show new list dialog
+                                Navigator.of(dialogContext)
+                                    .pop(); // Close delete
+                                Navigator.of(parentContext)
+                                    .pop(); // Close old list
+                                _showList(
+                                    parentContext); // Show new list dialog
                               },
                               child: Text('Delete',
                                   style: AdminViewDialogStyles.buttonTextStyle),

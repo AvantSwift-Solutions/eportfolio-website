@@ -22,7 +22,7 @@ class ExperienceSectionAdminController {
   }
 
   String getSectionName() {
-    return 'Interpersonal Skill';
+    return 'Professional Experience';
   }
 
   Future<List<Tuple2<int, String>>> getSectionTitles() async {
@@ -30,7 +30,8 @@ class ExperienceSectionAdminController {
     var ret = <Tuple2<int, String>>[];
     if (exps != null) {
       for (var i = 0; i < exps.length; i++) {
-        ret.add(Tuple2(exps[i].index!, '${exps[i].jobTitle} at ${exps[i].companyName}'));
+        ret.add(Tuple2(
+            exps[i].index!, '${exps[i].jobTitle} at ${exps[i].companyName}'));
       }
     }
     return ret;
@@ -46,8 +47,34 @@ class ExperienceSectionAdminController {
     }
   }
 
-  Future<bool> deleteData(List<Experience> list, int index) async {
+  String defaultOrderName() {
+    // Button will say 'Order _'
+    return 'by End Date';
+  }
 
+  Future<void> applyDefaultOrder() async {
+    List<Experience>? list = await getSectionData();
+    if (list == null) return;
+
+    list.sort((a, b) {
+      if (a.endDate == null && b.endDate == null) {
+        return 0;
+      } else if (a.endDate == null) {
+        return -1;
+      } else if (b.endDate == null) {
+        return 1;
+      } else {
+        return b.endDate!.compareTo(a.endDate!);
+      }
+    });
+
+    for (var i = 0; i < list.length; i++) {
+      list[i].index = i;
+      await list[i].update();
+    }
+  }
+
+  Future<bool> deleteData(List<Experience> list, int index) async {
     for (var i = index + 1; i < list.length; i++) {
       list[i].index = list[i].index! - 1;
       await list[i].update();
@@ -60,7 +87,6 @@ class ExperienceSectionAdminController {
       log('Error deleting: $e');
       return false;
     }
-
   }
 
   Future<String?> uploadImageAndGetURL(
@@ -76,5 +102,4 @@ class ExperienceSectionAdminController {
       return null;
     }
   }
-
 }

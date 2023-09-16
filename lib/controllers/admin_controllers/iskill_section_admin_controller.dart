@@ -43,8 +43,24 @@ class ISkillSectionAdminController {
     }
   }
 
-  Future<bool> deleteData(List<ISkill> list, int index) async {
+  String defaultOrderName() {
+    // Button will say 'Order _'
+    return 'Alphabetically';
+  }
 
+  Future<void> applyDefaultOrder() async {
+    List<ISkill>? list = await getSectionData();
+    if (list == null) return;
+
+    list.sort((a, b) => a.name!.toLowerCase().compareTo(b.name!.toLowerCase()));
+
+    for (var i = 0; i < list.length; i++) {
+      list[i].index = i;
+      await list[i].update();
+    }
+  }
+
+  Future<bool> deleteData(List<ISkill> list, int index) async {
     for (var i = index + 1; i < list.length; i++) {
       list[i].index = list[i].index! - 1;
       await list[i].update();
@@ -57,7 +73,5 @@ class ISkillSectionAdminController {
       log('Error deleting: $e');
       return false;
     }
-
   }
-
 }

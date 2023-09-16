@@ -5,6 +5,8 @@ import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:mat_month_picker_dialog/mat_month_picker_dialog.dart';
 import 'package:uuid/uuid.dart';
 import '../controllers/admin_controllers/experience_section_admin_controller.dart';
 import '../models/Experience.dart';
@@ -38,106 +40,130 @@ class ExperienceSectionAdmin extends StatelessWidget {
   }
 
   Future<void> _showList(BuildContext context) async {
-    List<Experience> experiences = await _adminController.getSectionData() ?? [];
+    List<Experience> experiences =
+        await _adminController.getSectionData() ?? [];
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
         return Theme(
           data: AdminViewDialogStyles.dialogThemeData,
           child: AlertDialog(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text('Edit Professional Experiences'),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: IconButton(
-                    icon: const Icon(Icons.close),
-                    color: Colors.black,
-                    onPressed: () {
-                      Navigator.of(dialogContext).pop();
-                    },
+            scrollable: true,
+            titlePadding: AdminViewDialogStyles.titleDialogPadding,
+            contentPadding: AdminViewDialogStyles.contentDialogPadding,
+            actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
+            title: Container(
+                padding: AdminViewDialogStyles.titleContPadding,
+                color: AdminViewDialogStyles.bgColor,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Edit Professional Experiences'),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: IconButton(
+                            icon: const Icon(Icons.close),
+                            iconSize: AdminViewDialogStyles.closeIconSize,
+                            hoverColor: Colors.transparent,
+                            onPressed: () {
+                              Navigator.of(dialogContext).pop();
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Divider(),
+                  ],
+                )),
+            content: SizedBox(
+              height: AdminViewDialogStyles.listDialogHeight,
+              child: SingleChildScrollView(
+                child: SizedBox(
+                  width: AdminViewDialogStyles.listDialogWidth,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      experiences.isEmpty
+                          ? const Text('No Professional Experiences available')
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: experiences.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical:
+                                          AdminViewDialogStyles.listSpacing),
+                                  child: ListTile(
+                                    tileColor: Colors.white,
+                                    title: Text(
+                                        '${experiences[index].jobTitle} at ${experiences[index].companyName}',
+                                        style: AdminViewDialogStyles
+                                            .listTextStyle),
+                                    trailing: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                          icon: const Icon(Icons.edit),
+                                          onPressed: () {
+                                            _showEditDialog(context, index);
+                                          },
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.delete),
+                                          onPressed: () {
+                                            _showDeleteDialog(
+                                                context, experiences[index]);
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                    onTap: () {
+                                      _showEditDialog(context, index);
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-            contentPadding: AdminViewDialogStyles.contentPadding,
-            content: SizedBox(
-              width: AdminViewDialogStyles.listDialogWidth,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Divider(),
-                  experiences.isEmpty
-                      ? const Text('No Professional Experiences available')
-                      : ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: experiences.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8),
-                              child: ListTile(
-                                tileColor: Colors.white,
-                                title: Text('${experiences[index].jobTitle} at ${experiences[index].companyName}',
-                                    style: AdminViewDialogStyles.listTextStyle),
-                                trailing: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.edit),
-                                      color: Colors.black,
-                                      onPressed: () {
-                                        _showEditDialog(context, index);
-                                      },
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.delete),
-                                      color: Colors.black,
-                                      onPressed: () {
-                                        _showDeleteDialog(
-                                            context, experiences[index]);
-                                      },
-                                    ),
-                                  ],
-                                ),
-                                onTap: () {
-                                  _showEditDialog(context, index);
-                                },
-                              ),
-                            );
-                          },
-                        ),
-                  const Divider(),
-                ],
               ),
             ),
             actions: <Widget>[
-              Padding(
-                padding: AdminViewDialogStyles.actionPadding,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ReorderDialog(
-                      controller: _adminController,
-                      onReorder: () {
-                        Navigator.of(dialogContext).pop(); // Close reorder
-                        Navigator.of(parentContext).pop(); // Close old list
-                        _showList(parentContext); // Show new list dialog
-                      },
-                    ),
-                    ElevatedButton(
-                      style: AdminViewDialogStyles.elevatedButtonStyle,
-                      onPressed: () {
-                        _showAddNewDialog(context, experiences);
-                      },
-                      child: Text(
-                        'Add New',
-                        style: AdminViewDialogStyles.buttonTextStyle,
+              Container(
+                  padding: AdminViewDialogStyles.actionsContPadding,
+                  color: AdminViewDialogStyles.bgColor,
+                  child: Column(
+                    children: [
+                      const Divider(),
+                      const SizedBox(height: AdminViewDialogStyles.listSpacing),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ReorderDialog(
+                            controller: _adminController,
+                            onReorder: () {
+                              Navigator.of(dialogContext).pop();
+                              Navigator.of(parentContext).pop();
+                              _showList(parentContext);
+                            },
+                          ),
+                          ElevatedButton(
+                            style: AdminViewDialogStyles.elevatedButtonStyle,
+                            onPressed: () {
+                              _showAddNewDialog(context, experiences);
+                            },
+                            child: Text(
+                              'Add New',
+                              style: AdminViewDialogStyles.buttonTextStyle,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-              )
+                    ],
+                  ))
             ],
           ),
         );
@@ -145,17 +171,20 @@ class ExperienceSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showAddNewDialog(BuildContext context, List<Experience> experienceList) async {
+  void _showAddNewDialog(
+      BuildContext context, List<Experience> experienceList) async {
     final id = const Uuid().v4();
     final experience = Experience(
       peid: id,
       index: experienceList.length,
       jobTitle: '',
+      employmentType: '',
       companyName: '',
       location: '',
       startDate: Timestamp.now(),
       endDate: Timestamp.now(),
       description: '',
+      logoURL: '',
     );
 
     _showExperienceDialog(context, experience, (a) async {
@@ -174,9 +203,23 @@ class ExperienceSectionAdmin extends StatelessWidget {
 
   void _showExperienceDialog(BuildContext context, Experience experience,
       Future<bool> Function(Experience) onExperienceUpdated) {
-
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     Uint8List? pickedImageBytes;
+    String initialEmploymentType = experience.employmentType ?? 'None';
+
+    TextEditingController startDateController = TextEditingController(
+        text: DateFormat('MMMM d, y').format(experience.startDate!.toDate()));
+
+    bool currentRole = experience.endDate == null;
+    String endDateDisp;
+    if (experience.endDate == null) {
+      endDateDisp = '-';
+    } else {
+      endDateDisp =
+          DateFormat('MMMM d, y').format(experience.endDate!.toDate());
+    }
+    TextEditingController endDateController =
+        TextEditingController(text: endDateDisp);
 
     String title, successMessage, errorMessage;
     if (experience.companyName == '') {
@@ -184,168 +227,405 @@ class ExperienceSectionAdmin extends StatelessWidget {
       successMessage = 'Professional Experience info added successfully';
       errorMessage = 'Error adding new Professional Experience info';
     } else {
-      title = 'Edit info for \'${experience.jobTitle} at ${experience.companyName}\'';
+      title =
+          'Edit info for \'${experience.jobTitle} at ${experience.companyName}\'';
       successMessage = 'Professional Experience info updated successfully';
       errorMessage = 'Error updating Professional Experience info';
     }
 
+    final employmentTypes = <String>[
+      '',
+      'Full-time',
+      'Part-time',
+      'Contract',
+      'Internship',
+      'Freelance',
+      'Temporary',
+      'Volunteer',
+    ];
+
     showDialog(
-      context:
-          parentContext, // Use the parent context instead of the current context
+      context: parentContext,
       builder: (BuildContext dialogContext) {
         return StatefulBuilder(
           builder: (context, setState) {
             return Theme(
                 data: AdminViewDialogStyles.dialogThemeData,
                 child: AlertDialog(
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(title),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                          icon: const Icon(Icons.close),
-                          color: Colors.black,
-                          onPressed: () {
-                            Navigator.of(dialogContext).pop();
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  contentPadding: AdminViewDialogStyles.contentPadding,
-                  content: Form(
-                      key: formKey,
-                      child: SizedBox(
-                        width: AdminViewDialogStyles.showDialogWidth,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Divider(),
-                            Text('* indicates required field',
-                                style:
-                                    AdminViewDialogStyles.indicatesTextStyle),
-                            AdminViewDialogStyles.spacer,
-                            const Text('Company Name*', textAlign: TextAlign.left),
-                            AdminViewDialogStyles.interTitleField,
-                            TextFormField(
-                              style: AdminViewDialogStyles.inputTextStyle,
-                              initialValue: experience.companyName,
-                              decoration: AdminViewDialogStyles.inputDecoration,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter a company name';
-                                }
-                                return null;
-                              },
-                              onSaved: (value) {
-                                experience.companyName = value;
-                              },
-                            ),
-                            AdminViewDialogStyles.spacer,
-                            const Text('Job Title*', textAlign: TextAlign.left),
-                            AdminViewDialogStyles.interTitleField,
-                            TextFormField(
-                              style: AdminViewDialogStyles.inputTextStyle,
-                              initialValue: experience.jobTitle,
-                              decoration: AdminViewDialogStyles.inputDecoration,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter a job title';
-                                }
-                                return null;
-                              },
-                              onSaved: (value) {
-                                experience.jobTitle = value;
-                              },
-                            ),
-                            AdminViewDialogStyles.spacer,
-                            const Text('Location', textAlign: TextAlign.left),
-                            AdminViewDialogStyles.interTitleField,
-                            TextFormField(
-                              style: AdminViewDialogStyles.inputTextStyle,
-                              initialValue: experience.location,
-                              decoration: AdminViewDialogStyles.inputDecoration,
-                              onSaved: (value) {
-                                experience.location = value;
-                              },
-                            ),
-                            AdminViewDialogStyles.spacer,
-                            const Text('Description', textAlign: TextAlign.left),
-                            AdminViewDialogStyles.interTitleField,
-                            TextFormField(
-                              style: AdminViewDialogStyles.inputTextStyle,
-                              initialValue: experience.description,
-                              decoration: AdminViewDialogStyles.inputDecoration,
-                              onSaved: (value) {
-                                experience.description = value;
-                              },
-                            ),
-                            AdminViewDialogStyles.spacer,
-                            if (pickedImageBytes != null)
-                              Image.memory(pickedImageBytes!),
-                            ElevatedButton(
-                              onPressed: () async {
-                                Uint8List? imageBytes = await _pickImage();
-                                if (imageBytes != null) {
-                                  pickedImageBytes = imageBytes;
-                                  setState(() {});
-                                }
-                              },
-                              child: const Text('Pick an Image'),
-                            ),
-                            const Divider(),
-                          ],
+                  scrollable: true,
+                  titlePadding: AdminViewDialogStyles.titleDialogPadding,
+                  contentPadding: AdminViewDialogStyles.contentDialogPadding,
+                  actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
+                  title: Container(
+                      padding: AdminViewDialogStyles.titleContPadding,
+                      color: AdminViewDialogStyles.bgColor,
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(title),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: IconButton(
+                                  icon: const Icon(Icons.close),
+                                  iconSize: AdminViewDialogStyles.closeIconSize,
+                                  hoverColor: Colors.transparent,
+                                  onPressed: () {
+                                    Navigator.of(dialogContext).pop();
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Divider(),
+                          // Align(
+                          //   alignment: Alignment.centerLeft,
+                          //   child: Text(
+                          //     '* indicates required field',
+                          //     style: AdminViewDialogStyles.indicatesTextStyle,
+                          //   ),
+                          // ),
+                        ],
+                      )),
+                  content: SizedBox(
+                      height: AdminViewDialogStyles.showDialogHeight,
+                      child: SingleChildScrollView(
+                        child: SizedBox(
+                          width: AdminViewDialogStyles.showDialogWidth,
+                          child: Form(
+                              key: formKey,
+                              child: SizedBox(
+                                width: AdminViewDialogStyles.showDialogWidth,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      '* indicates required field',
+                                      style: AdminViewDialogStyles
+                                          .indicatesTextStyle,
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Job Title*',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    TextFormField(
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      initialValue: experience.jobTitle,
+                                      decoration:
+                                          AdminViewDialogStyles.inputDecoration,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter a job title';
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) {
+                                        experience.jobTitle = value;
+                                      },
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Employment Type',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    DropdownButtonFormField<String>(
+                                      value: initialEmploymentType,
+                                      decoration:
+                                          AdminViewDialogStyles.inputDecoration,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          experience.employmentType = value!;
+                                        });
+                                      },
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      items: employmentTypes
+                                          .map<DropdownMenuItem<String>>(
+                                              (String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(value),
+                                        );
+                                      }).toList()
+                                        ..add(
+                                          const DropdownMenuItem<String>(
+                                            value: 'Other',
+                                            child: Row(
+                                              children: [
+                                                Icon(Icons.add),
+                                                SizedBox(
+                                                    width: AdminViewDialogStyles
+                                                        .listSpacing),
+                                                Text('Other'),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                    ),
+                                    if (!employmentTypes
+                                        .contains(experience.employmentType))
+                                      AdminViewDialogStyles.spacer,
+                                    if (!employmentTypes
+                                        .contains(experience.employmentType))
+                                      TextFormField(
+                                        decoration: AdminViewDialogStyles
+                                            .otherDecoration,
+                                        style: AdminViewDialogStyles
+                                            .inputTextStyle,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            experience.employmentType = value;
+                                          });
+                                        },
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Please enter a custom employment type';
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Company Name*',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    TextFormField(
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      initialValue: experience.companyName,
+                                      decoration:
+                                          AdminViewDialogStyles.inputDecoration,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter a company name';
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) {
+                                        experience.companyName = value;
+                                      },
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Location',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    TextFormField(
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      initialValue: experience.location,
+                                      decoration:
+                                          AdminViewDialogStyles.inputDecoration,
+                                      onSaved: (value) {
+                                        experience.location = value;
+                                      },
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Start Date',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    TextFormField(
+                                      readOnly: true,
+                                      decoration:
+                                          AdminViewDialogStyles.dateDecoration,
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      controller: startDateController,
+                                      onTap: () async {
+                                        final pickedDate =
+                                            await showMonthPicker(
+                                          context: context,
+                                          initialDate:
+                                              experience.startDate!.toDate(),
+                                          firstDate: DateTime(1900),
+                                          lastDate: DateTime(2200),
+                                        );
+                                        if (pickedDate != null) {
+                                          final formattedDate =
+                                              DateFormat('MMMM y')
+                                                  .format(pickedDate);
+                                          startDateController.text =
+                                              formattedDate;
+                                          experience.startDate =
+                                              Timestamp.fromDate(pickedDate);
+                                        }
+                                      },
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('End Date',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    TextFormField(
+                                      readOnly: true,
+                                      decoration:
+                                          AdminViewDialogStyles.dateDecoration,
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      controller: endDateController,
+                                      enabled: !currentRole,
+                                      onTap: () async {
+                                        final pickedDate =
+                                            await showMonthPicker(
+                                          context: context,
+                                          initialDate:
+                                              experience.endDate!.toDate(),
+                                          firstDate: DateTime(1900),
+                                          lastDate: DateTime(2200),
+                                        );
+                                        if (pickedDate != null) {
+                                          final formattedDate =
+                                              DateFormat('MMMM y')
+                                                  .format(pickedDate);
+                                          endDateController.text =
+                                              formattedDate;
+                                          experience.endDate =
+                                              Timestamp.fromDate(pickedDate);
+                                        }
+                                      },
+                                    ),
+                                    Row(
+                                      children: [
+                                        Checkbox(
+                                          value: currentRole,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              if (!currentRole) {
+                                                experience.endDate = null;
+                                                endDateController.text = '-';
+                                              } else {
+                                                experience.endDate =
+                                                    Timestamp.now();
+                                                endDateController.text =
+                                                    DateFormat('MMMM y')
+                                                        .format(DateTime.now());
+                                              }
+                                              currentRole = value!;
+                                            });
+                                          },
+                                        ),
+                                        Text(
+                                            'I am currently working in this role',
+                                            style: AdminViewDialogStyles
+                                                .inputTextStyle)
+                                      ],
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Description',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    TextFormField(
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      maxLines: 5,
+                                      initialValue: experience.description,
+                                      decoration:
+                                          AdminViewDialogStyles.inputDecoration,
+                                      onSaved: (value) {
+                                        experience.description = value;
+                                      },
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Company Logo',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    if (pickedImageBytes != null)
+                                      Image.memory(pickedImageBytes!,
+                                          width:
+                                              AdminViewDialogStyles.imageWidth),
+                                    if (experience.logoURL != '' &&
+                                        pickedImageBytes == null)
+                                      Image.network(experience.logoURL!,
+                                          width:
+                                              AdminViewDialogStyles.imageWidth),
+                                    AdminViewDialogStyles.interTitleField,
+                                    ElevatedButton(
+                                      onPressed: () async {
+                                        Uint8List? imageBytes =
+                                            await _pickImage();
+                                        if (imageBytes != null) {
+                                          pickedImageBytes = imageBytes;
+                                          setState(() {});
+                                        }
+                                      },
+                                      style: AdminViewDialogStyles
+                                          .imageButtonStyle,
+                                      child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            const Icon(Icons.add),
+                                            Text(
+                                              experience.logoURL == ''
+                                                  ? 'Add Image'
+                                                  : 'Change Image',
+                                              style: AdminViewDialogStyles
+                                                  .buttonTextStyle,
+                                            )
+                                          ]),
+                                    ),
+                                  ],
+                                ),
+                              )),
                         ),
                       )),
                   actions: <Widget>[
-                    Padding(
-                      padding: AdminViewDialogStyles.actionPadding,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                    Container(
+                      padding: AdminViewDialogStyles.actionsContPadding,
+                      color: AdminViewDialogStyles.bgColor,
+                      child: Column(
                         children: [
-                          ElevatedButton(
-                            style: AdminViewDialogStyles.elevatedButtonStyle,
-                            onPressed: () async {
-                              if (formKey.currentState!.validate()) {
-                                formKey.currentState!.save();
-                                if (pickedImageBytes != null) {
-                                  String? imageURL =
-                                      await _adminController.uploadImageAndGetURL(
-                                          pickedImageBytes!, '${experience.peid}_image.jpg');
-                                  if (imageURL != null) {
-                                    experience.logoURL = imageURL;
+                          const Divider(),
+                          const SizedBox(
+                              height: AdminViewDialogStyles.listSpacing),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ElevatedButton(
+                                style:
+                                    AdminViewDialogStyles.elevatedButtonStyle,
+                                onPressed: () async {
+                                  if (formKey.currentState!.validate()) {
+                                    formKey.currentState!.save();
+                                    if (pickedImageBytes != null) {
+                                      String? imageURL = await _adminController
+                                          .uploadImageAndGetURL(
+                                              pickedImageBytes!,
+                                              '${experience.peid}_image.jpg');
+                                      if (imageURL != null) {
+                                        experience.logoURL = imageURL;
+                                      }
+                                    }
+                                    bool isSuccess =
+                                        await onExperienceUpdated(experience);
+                                    if (isSuccess) {
+                                      ScaffoldMessenger.of(parentContext)
+                                          .showSnackBar(
+                                        SnackBar(content: Text(successMessage)),
+                                      );
+                                    } else {
+                                      ScaffoldMessenger.of(parentContext)
+                                          .showSnackBar(
+                                        SnackBar(content: Text(errorMessage)),
+                                      );
+                                    }
+                                    Navigator.of(dialogContext).pop();
+                                    Navigator.of(parentContext).pop();
+                                    _showList(parentContext); // Show new list
                                   }
-                                }
-                                bool isSuccess = await onExperienceUpdated(experience);
-                                if (isSuccess) {
-                                  ScaffoldMessenger.of(parentContext)
-                                      .showSnackBar(
-                                    SnackBar(content: Text(successMessage)),
-                                  );
-                                } else {
-                                  ScaffoldMessenger.of(parentContext)
-                                      .showSnackBar(
-                                    SnackBar(content: Text(errorMessage)),
-                                  );
-                                }
-                                Navigator.of(dialogContext).pop(); // Close update
-                                Navigator.of(parentContext).pop(); // Close old list
-                                _showList(parentContext); // Show new list
-                              }
-                            },
-                            child: Text('Save',
-                                style: AdminViewDialogStyles.buttonTextStyle),
-                          ),
-                          TextButton(
-                            style: AdminViewDialogStyles.textButtonStyle,
-                            onPressed: () {
-                              Navigator.of(dialogContext).pop();
-                            },
-                            child: Text('Cancel',
-                                style: AdminViewDialogStyles.buttonTextStyle),
+                                },
+                                child: Text('Save',
+                                    style:
+                                        AdminViewDialogStyles.buttonTextStyle),
+                              ),
+                              TextButton(
+                                style: AdminViewDialogStyles.textButtonStyle,
+                                onPressed: () {
+                                  Navigator.of(dialogContext).pop();
+                                },
+                                child: Text('Cancel',
+                                    style:
+                                        AdminViewDialogStyles.buttonTextStyle),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -379,7 +659,8 @@ class ExperienceSectionAdmin extends StatelessWidget {
                         alignment: Alignment.topRight,
                         child: IconButton(
                           icon: const Icon(Icons.close),
-                          color: Colors.black,
+                          iconSize: AdminViewDialogStyles.closeIconSize,
+                          hoverColor: Colors.transparent,
                           onPressed: () {
                             Navigator.of(dialogContext).pop();
                           },
@@ -397,7 +678,7 @@ class ExperienceSectionAdmin extends StatelessWidget {
                   ),
                   actions: <Widget>[
                     Padding(
-                      padding: AdminViewDialogStyles.actionPadding,
+                      padding: AdminViewDialogStyles.deleteActionsDialogPadding,
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -419,12 +700,9 @@ class ExperienceSectionAdmin extends StatelessWidget {
                                             Text('Failed to delete $name')),
                                   );
                                 }
-                                Navigator.of(dialogContext)
-                                    .pop(); // Close delete dialog
-                                Navigator.of(parentContext)
-                                    .pop(); // Close old list dialog
-                                _showList(
-                                    parentContext); // Show new list dialog
+                                Navigator.of(dialogContext).pop();
+                                Navigator.of(parentContext).pop();
+                                _showList(parentContext);
                               },
                               child: Text('Delete',
                                   style: AdminViewDialogStyles.buttonTextStyle),
@@ -437,8 +715,7 @@ class ExperienceSectionAdmin extends StatelessWidget {
                               child: Text('Cancel',
                                   style: AdminViewDialogStyles.buttonTextStyle),
                             ),
-                          ]
-                        ),
+                          ]),
                     )
                   ],
                 ),
@@ -463,5 +740,4 @@ class ExperienceSectionAdmin extends StatelessWidget {
 
     return null;
   }
-  
 }

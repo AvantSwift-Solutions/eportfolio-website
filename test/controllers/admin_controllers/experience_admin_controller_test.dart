@@ -22,6 +22,7 @@ void main() {
     when(mockExperience1.peid).thenReturn('mockId1');
     when(mockExperience1.index).thenReturn(1);
     when(mockExperience1.jobTitle).thenReturn('Mock JobTitle1');
+    when(mockExperience1.employmentType).thenReturn('Mock EmploymentType1');
     when(mockExperience1.companyName).thenReturn('Mock CompanyName1');
     when(mockExperience1.location).thenReturn('Mock Location1');
     when(mockExperience1.startDate).thenReturn(Timestamp.now());
@@ -34,6 +35,7 @@ void main() {
     when(mockExperience2.peid).thenReturn('mockId2');
     when(mockExperience2.index).thenReturn(2);
     when(mockExperience2.jobTitle).thenReturn('Mock JobTitle2');
+    when(mockExperience2.employmentType).thenReturn('Mock EmploymentType2');
     when(mockExperience2.companyName).thenReturn('Mock CompanyName2');
     when(mockExperience2.location).thenReturn('Mock Location2');
     when(mockExperience2.startDate).thenReturn(Timestamp.now());
@@ -47,8 +49,7 @@ void main() {
   });
 
   group('Experience section admin controller tests', () {
-    test(
-        'getSectionData returns correct data when  experience is not null',
+    test('getSectionData returns correct data when  experience is not null',
         () async {
       when(mockRepoService.getAllExperiences())
           .thenAnswer((_) async => [mockExperience1, mockExperience2]);
@@ -63,6 +64,7 @@ void main() {
       expect(exp1.peid, mockExperience1.peid);
       expect(exp1.index, mockExperience1.index);
       expect(exp1.jobTitle, mockExperience1.jobTitle);
+      expect(exp1.employmentType, mockExperience1.employmentType);
       expect(exp1.companyName, mockExperience1.companyName);
       expect(exp1.location, mockExperience1.location);
       expect(exp1.startDate, mockExperience1.startDate);
@@ -73,6 +75,7 @@ void main() {
       expect(exp2.peid, mockExperience2.peid);
       expect(exp2.index, mockExperience2.index);
       expect(exp2.jobTitle, mockExperience2.jobTitle);
+      expect(exp2.employmentType, mockExperience2.employmentType);
       expect(exp2.companyName, mockExperience2.companyName);
       expect(exp2.location, mockExperience2.location);
       expect(exp2.startDate, mockExperience2.startDate);
@@ -81,8 +84,7 @@ void main() {
       expect(exp2.description, mockExperience2.description);
     });
 
-    test('getSectionData returns null data when  experience is null',
-        () async {
+    test('getSectionData returns null data when  experience is null', () async {
       when(mockRepoService.getAllExperiences()).thenAnswer((_) async => null);
       final experienceSectionData = await controller.getSectionData();
       expect(experienceSectionData, null);
@@ -94,6 +96,5 @@ void main() {
       final experienceSectionData = await controller.getSectionData();
       expect(experienceSectionData, null);
     });
-
   });
 }

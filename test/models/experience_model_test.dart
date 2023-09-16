@@ -13,6 +13,7 @@ void main() {
         peid: 'exp123',
         index: 1,
         jobTitle: 'Scrum Master',
+        employmentType: 'Full Time',
         companyName: 'TikTok',
         location: 'New York',
         startDate: Timestamp(1234567890, 0),
@@ -25,6 +26,7 @@ void main() {
       expect(experienceMap['peid'], 'exp123');
       expect(experienceMap['index'], 1);
       expect(experienceMap['jobTitle'], 'Scrum Master');
+      expect(experienceMap['employmentType'], 'Full Time');
       expect(experienceMap['companyName'], 'TikTok');
       expect(experienceMap['location'], 'New York');
       expect(experienceMap['startDate'], Timestamp(1234567890, 0));

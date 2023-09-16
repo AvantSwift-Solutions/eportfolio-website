@@ -6,6 +6,7 @@ class Experience {
   final String? peid;
   int? index;
   String? jobTitle;
+  String? employmentType;
   String? companyName;
   String? location;
   Timestamp? startDate;
@@ -18,11 +19,12 @@ class Experience {
     required this.index,
     required this.jobTitle,
     required this.companyName,
-    this.location,
-    this.startDate,
-    this.endDate,
-    this.description,
-    this.logoURL,
+    required this.employmentType,
+    required this.location,
+    required this.startDate,
+    required this.endDate,
+    required this.description,
+    required this.logoURL,
   });
 
   factory Experience.fromDocumentSnapshot(DocumentSnapshot snapshot) {
@@ -30,6 +32,7 @@ class Experience {
       final data = snapshot.data() as Map<String, dynamic>;
       final index = data['index'];
       final jobTitle = data['jobTitle'];
+      final employmentType = data['employmentType'];
       final companyName = data['companyName'];
       final location = data['location'];
       final description = data['description'];
@@ -41,6 +44,7 @@ class Experience {
         peid: snapshot.id,
         index: index,
         jobTitle: jobTitle,
+        employmentType: employmentType,
         companyName: companyName,
         location: location,
         description: description,
@@ -58,6 +62,7 @@ class Experience {
       'peid': peid,
       'index': index,
       'jobTitle': jobTitle,
+      'employmentType': employmentType,
       'companyName': companyName,
       'location': location,
       'description': description,
