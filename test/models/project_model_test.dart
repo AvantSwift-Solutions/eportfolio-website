@@ -12,7 +12,7 @@ void main() {
         ppid: 'user123',
         name: 'Project 1',
         description: 'This is my project',
-        imageURL: 'https://example.com/image.jpg',
+        link: 'https://example.com',
       );
       final projectMap = project.toMap();
 

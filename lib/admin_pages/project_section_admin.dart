@@ -75,7 +75,8 @@ class ProjectSectionAdmin extends StatelessWidget {
   void _showAddProjectDialog(BuildContext context, List<Project> projects) {
     TextEditingController nameController = TextEditingController();
     TextEditingController descriptionController = TextEditingController();
-    Uint8List? pickedImageBytes;
+    TextEditingController linkController = TextEditingController(); 
+    //Uint8List? pickedImageBytes;
     Project newProject =
         Project(ppid: '', name: '', creationTimestamp: Timestamp.now());
 
@@ -99,16 +100,10 @@ class ProjectSectionAdmin extends StatelessWidget {
                     onChanged: (value) => newProject.description = value,
                     decoration: const InputDecoration(labelText: 'Description'),
                   ),
-                  if (pickedImageBytes != null) Image.memory(pickedImageBytes!),
-                  ElevatedButton(
-                    onPressed: () async {
-                      Uint8List? imageBytes = await _pickImage();
-                      if (imageBytes != null) {
-                        pickedImageBytes = imageBytes;
-                        setState(() {});
-                      }
-                    },
-                    child: const Text('Pick an Image'),
+                  TextField(
+                    controller: linkController,
+                    onChanged: (value) => newProject.link = value,
+                    decoration: const InputDecoration(labelText: 'Link'),
                   ),
                 ],
               ),
@@ -120,18 +115,6 @@ class ProjectSectionAdmin extends StatelessWidget {
                       log('Name or description is empty');
                       return;
                     }
-
-                    if (pickedImageBytes != null) {
-                      String? imageURL =
-                          await _adminController.uploadImageAndGetURL(
-                        pickedImageBytes!,
-                        'selected_image.jpg',
-                      );
-                      if (imageURL != null) {
-                        newProject.imageURL = imageURL;
-                      }
-                    }
-
                     // await _adminController.addProject(newProject);
                     newProject.create();
                     projects.add(newProject);
@@ -175,7 +158,6 @@ class ProjectSectionAdmin extends StatelessWidget {
                       return ListTile(
                         title: Text(projects[index].name!),
                         // subtitle: Text(Projects[index].description),
-                        // leading: Image.network(Projects[index].imageURL),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -222,7 +204,8 @@ class ProjectSectionAdmin extends StatelessWidget {
         TextEditingController(text: selectedProject?.name);
     TextEditingController descriptionController =
         TextEditingController(text: selectedProject?.description);
-    Uint8List? pickedImageBytes;
+    TextEditingController linkController =
+        TextEditingController(text: selectedProject?.link);
 
     showDialog(
       context: context,
@@ -244,16 +227,10 @@ class ProjectSectionAdmin extends StatelessWidget {
                     onChanged: (value) => projects?[i].description = value,
                     decoration: const InputDecoration(labelText: 'Description'),
                   ),
-                  if (pickedImageBytes != null) Image.memory(pickedImageBytes!),
-                  ElevatedButton(
-                    onPressed: () async {
-                      Uint8List? imageBytes = await _pickImage();
-                      if (imageBytes != null) {
-                        pickedImageBytes = imageBytes;
-                        setState(() {});
-                      }
-                    },
-                    child: const Text('Pick an Image'),
+                  TextField(
+                    controller: linkController,
+                    onChanged: (value) => projects?[i].link = value,
+                    decoration: const InputDecoration(labelText: 'Link'),
                   ),
                 ],
               ),
@@ -265,17 +242,6 @@ class ProjectSectionAdmin extends StatelessWidget {
                       log('Name or description is empty');
                       return;
                     }
-                    if (pickedImageBytes != null) {
-                      String? imageURL =
-                          await _adminController.uploadImageAndGetURL(
-                        pickedImageBytes!,
-                        'selected_image.jpg',
-                      );
-                      if (imageURL != null) {
-                        selectedProject?.imageURL = imageURL;
-                      }
-                    }
-
                     bool isSuccess = await _adminController.updateProjectData(
                             i, projects![i]) ??
                         false;
@@ -355,17 +321,17 @@ class ProjectSectionAdmin extends StatelessWidget {
     );
   }
 
-  Future<Uint8List?> _pickImage() async {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.image,
-    );
+  // Future<Uint8List?> _pickImage() async {
+  //   final result = await FilePicker.platform.pickFiles(
+  //     type: FileType.image,
+  //   );
 
-    if (result != null && result.files.isNotEmpty) {
-      final pickedFile = result.files.single;
-      Uint8List imageBytes = pickedFile.bytes!;
-      return imageBytes;
-    }
+  //   if (result != null && result.files.isNotEmpty) {
+  //     final pickedFile = result.files.single;
+  //     Uint8List imageBytes = pickedFile.bytes!;
+  //     return imageBytes;
+  //   }
 
-    return null;
-  }
+  //   return null;
+  // }
 }

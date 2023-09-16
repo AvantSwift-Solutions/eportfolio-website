@@ -1,4 +1,5 @@
 import 'package:avantswift_portfolio/view_pages/about_me_section.dart';
+import 'package:avantswift_portfolio/view_pages/project_section.dart';
 import 'package:flutter/material.dart';
 import 'contact_section.dart';
 import 'landing_page.dart';
@@ -19,7 +20,6 @@ class SinglePageView extends StatelessWidget {
       );
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,8 +37,11 @@ class SinglePageView extends StatelessWidget {
               const SizedBox(height: 500), // Add some spacing
               const AboutMeSection(),
               const SizedBox(height: 500), // Add some spacing
+              const ProjectSection(),
+              const SizedBox(height: 500), // Add some spacing
               ContactSection(
-                  key: _contactKey), // Placeholder for contact section
+                  key: _contactKey
+              ), // Placeholder for contact section
             ],
           ),
         ),

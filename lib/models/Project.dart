@@ -8,14 +8,14 @@ class Project {
   String? name;
   String? description;
   Timestamp? creationTimestamp;
-  String? imageURL;
+  String? link;
 
   Project({
     required this.ppid,
     required this.name,
     this.description,
     this.creationTimestamp,
-    this.imageURL,
+    this.link,
   });
 
   factory Project.fromDocumentSnapshot(DocumentSnapshot snapshot) {
@@ -23,14 +23,14 @@ class Project {
     final name = data['name'];
     final description = data['description'];
     final creationTimestamp = data['creationTimestamp'];
-    final imageUrl = data['imageURL'];
+    final link = data['link'];
 
     return Project(
       ppid: snapshot.id,
       name: name,
       description: description,
       creationTimestamp: creationTimestamp,
-      imageURL: imageUrl,
+      link: link,
     );
   }
 
@@ -40,7 +40,7 @@ class Project {
       'name': name,
       'description': description,
       'creationTimestamp': creationTimestamp,
-      'imageURL': imageURL
+      'link': link
     };
   }
 
