@@ -18,6 +18,13 @@ class ProjectSectionState extends State<ProjectSection> {
       ProjectSectionController(ProjectRepoService());
   List<Project>? allProjects;
   bool showAllProjects = false;
+  int initiallyDisplayedProjects = 3;
+  int colorIndex = 0;
+  final List<Color> alternatingColors = [
+    Colors.orange.shade200,
+    Colors.blue.shade200,
+    Colors.green.shade200
+  ];
 
   @override
   void initState() {
@@ -38,6 +45,12 @@ class ProjectSectionState extends State<ProjectSection> {
     }
   }
 
+  Color getNextColor() {
+    Color nextColor = alternatingColors[colorIndex];
+    colorIndex = (colorIndex + 1) % alternatingColors.length;
+    return nextColor;
+  }
+
   void openLink(String link) async {
     if (await canLaunchUrlString(link)) {
       await launchUrlString(link);
@@ -46,9 +59,23 @@ class ProjectSectionState extends State<ProjectSection> {
     }
   }
 
+  void openCustomLink() async {
+    const url = 'https://example.com'; // Replace with your desired URL (github)
+    if (await canLaunchUrlString(url)) {
+      await launchUrlString(url);
+    } else {
+      print('Could not launch $url');
+    }
+  }
+
   void toggleShowAllProjects() {
     setState(() {
-      // Toggle the state to show all projects or just the first three
+      if (showAllProjects) {
+        initiallyDisplayedProjects = 3; // Show 3 projects initially on "Show Less"
+      } else {
+        initiallyDisplayedProjects =
+            allProjects!.length; // Show all projects on "Show More"
+      }
       showAllProjects = !showAllProjects;
     });
   }
@@ -56,74 +83,180 @@ class ProjectSectionState extends State<ProjectSection> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(
-          'Personal Projects',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
+        Padding(
+          padding: const EdgeInsets.only(right: 100),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                flex: 3,
+                child: Center(
+                  child: Text(
+                    'Personal Projects',
+                    style: TextStyle(
+                      fontSize: 40,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 200), // Add some spacing between title and quote
+              Expanded(
+                flex: 3,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 150.0), // Change padding for quote
+                  child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black, width: 1.0),
+                    borderRadius: BorderRadius.circular(5.0), // Border radius
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2), // Adjust shadow color and opacity
+                        spreadRadius: 2, // Adjust the spread radius
+                        blurRadius: 5, // Adjust the blur radius
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  width: 300,
+                  // height: 200,
+                  child: Container(
+                    padding: const EdgeInsets.all(16.0),
+                    color: Colors.white, // Background color
+                    child: Text(
+                      '"I enjoy working on projects during my personal time as it provides an opportunity to experiment with something new and continuously enrich my current skill-set."',
+                      textAlign: TextAlign.left,
+                      softWrap: true,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                  ),
+                ),
+                ),
+              ),
+            ],
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 20), // Space between title and projects
         Center(
           child: Column(
             children: [
               if (allProjects != null)
-                Wrap(
-                  alignment: WrapAlignment.center,
-                  children: [
-                    for (var project in allProjects!.take(showAllProjects
-                        ? allProjects!.length
-                        : 3))
-                      Container(
-                        width: 300, // Fixed width for each project card
-                        margin:
-                            EdgeInsets.all(10), // Add some margin between cards
-                        child: Card(
-                          elevation: 3, // Add elevation for a shadow effect
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  project.name!,
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                Center(
+                  child: Wrap(
+                    alignment: WrapAlignment.center,
+                    children: List.generate(initiallyDisplayedProjects, (index) {
+                      if (index < allProjects!.length) {
+                        // Calculate spacing for the staggered effect
+                        double spacing = (index + 1) * 50.0;
+                        return Padding(
+                          padding: EdgeInsets.only(top: spacing, right: 50),
+                          child: Container(
+                            width: 250,
+                            height: 250,
+                            child: Card(
+                              elevation: 3,
+                              color: getNextColor(),
+                              shape: RoundedRectangleBorder(
+                                side: BorderSide(color: Colors.black, width: 1),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      allProjects![index].name!,
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      allProjects![index].description!,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    Spacer(),
+                                    Align(
+                                      alignment: Alignment.bottomRight,
+                                      child: ElevatedButton(
+                                        onPressed: () => openLink(allProjects![index].link!),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.grey,
+                                        ),
+                                        child: Icon(Icons.link),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  project.description!,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                ElevatedButton(
-                                  onPressed: () => openLink(project.link!),
-                                  child: Text('Visit Project'),
-                                ),
-                              ],
+                              ),
                             ),
                           ),
+                        );
+                      } else {
+                        return Container(); // Empty container if index exceeds project count
+                      }
+                    }),
+                  ),
+                ),
+              const SizedBox(height: 50),
+              if (allProjects != null &&
+                  allProjects!.length > initiallyDisplayedProjects)
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 375.0, bottom: 16.0),
+                    child: ElevatedButton(
+                      onPressed: toggleShowAllProjects,
+                      child: Text('Show More'),
+                    ),
+                  ),
+                ),
+              const SizedBox(height: 30),
+              if (showAllProjects)
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 375.0, bottom: 16.0),
+                    child: ElevatedButton(
+                      onPressed: toggleShowAllProjects,
+                      child: Text('Show Less'),
+                    ),
+                  ),
+                ),
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: GestureDetector(
+                  onTap: openCustomLink,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 150.0, bottom: 50.0),
+                    child: Container(
+                      padding: const EdgeInsets.all(12.0),
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      child: Text(
+                        'View all my projects!',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
                         ),
                       ),
-                  ],
+                    ),
+                  ),
                 ),
-              if (allProjects != null &&
-                  (!showAllProjects && allProjects!.length > 3))
-                ElevatedButton(
-                  onPressed: toggleShowAllProjects,
-                  child: Text('Show More'),
-                ),
-              if (showAllProjects)
-                ElevatedButton(
-                  onPressed: toggleShowAllProjects,
-                  child: Text('Show Less'),
-                ),
+              ),
               if (allProjects == null)
                 Text(
                   'Error loading projects.',
