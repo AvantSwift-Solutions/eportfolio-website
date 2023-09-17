@@ -23,23 +23,23 @@ class ISkillSectionAdminController {
   }
 
   Future<List<Tuple2<int, String>>> getSectionTitles() async {
-    List<ISkill>? skills = await getSectionData();
+    List<ISkill>? list = await getSectionData();
     var ret = <Tuple2<int, String>>[];
-    if (skills != null) {
-      for (var i = 0; i < skills.length; i++) {
-        ret.add(Tuple2(skills[i].index!, skills[i].name!));
+    if (list != null) {
+      for (var i = 0; i < list.length; i++) {
+        ret.add(Tuple2(list[i].index!, list[i].name!));
       }
     }
     return ret;
   }
 
   Future<void> updateSectionOrder(List<Tuple2<int, String>> items) async {
-    List<ISkill>? skills = await getSectionData();
-    if (skills == null) return;
+    List<ISkill>? list = await getSectionData();
+    if (list == null) return;
     for (var i = 0; i < items.length; i++) {
-      var skill = skills[items[i].item1];
-      skill.index = i;
-      await skill.update();
+      var x = list[items[i].item1];
+      x.index = i;
+      await x.update();
     }
   }
 

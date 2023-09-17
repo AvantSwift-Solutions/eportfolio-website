@@ -7,6 +7,7 @@ class AdminViewDialogStyles {
   static const double listSpacing = 8;
   static const double closeIconSize = 35;
   static const double imageWidth = 170;
+  static const int textBoxLines = 5;
 
   static const double listDialogWidth = 400;
   static const double listDialogHeight = 300;

@@ -8,7 +8,7 @@ class AwardCertRepoService {
   Future<List<AwardCert>?> getAllAwardCert() async {
     try {
       QuerySnapshot snapshot =
-          await FirebaseFirestore.instance.collection('AwardCert').get();
+          await FirebaseFirestore.instance.collection('AwardCert').orderBy('index').get();
       if (snapshot.docs.isNotEmpty) {
         return snapshot.docs
             .map((doc) => AwardCert.fromDocumentSnapshot(doc))

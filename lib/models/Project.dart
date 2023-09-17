@@ -3,43 +3,48 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Project {
+  Timestamp? creationTimestamp;
   final String? ppid;
+  int? index;
   String? name;
   String? description;
-  Timestamp? creationTimestamp;
-  String? imageURL;
+  String? link;
 
   Project({
+    required this.creationTimestamp,
     required this.ppid,
+    required this.index,
     required this.name,
-    this.description,
-    this.creationTimestamp,
-    this.imageURL,
+    required this.description,
+    required this.link,
   });
 
   factory Project.fromDocumentSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;
+    final creationTimestamp = data['creationTimestamp'];
+    final index = data['index'];
     final name = data['name'];
     final description = data['description'];
-    final creationTimestamp = data['creationTimestamp'];
-    final imageUrl = data['imageURL'];
+    final link = data['link'];
 
     return Project(
+      creationTimestamp: creationTimestamp,
+      index: index,
       ppid: snapshot.id,
       name: name,
       description: description,
-      creationTimestamp: creationTimestamp,
-      imageURL: imageUrl,
+      link: link,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
+      'creationTimestamp': creationTimestamp,
       'ppid': ppid,
+      'index': index,
       'name': name,
       'description': description,
-      'creationTimestamp': creationTimestamp,
-      'imageURL': imageURL
+      'link': link
     };
   }
 

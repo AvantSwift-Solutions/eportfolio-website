@@ -3,7 +3,9 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Education {
+  Timestamp? creationTimestamp;
   final String? eid;
+  int? index;
   Timestamp? startDate;
   Timestamp? endDate;
   String? logoURL;
@@ -12,17 +14,21 @@ class Education {
   String? description;
 
   Education({
+    required this.creationTimestamp,
     required this.eid,
+    required this.index,
     required this.startDate,
     required this.endDate,
-    this.logoURL,
+    required this.logoURL,
     required this.schoolName,
     required this.degree,
-    this.description,
+    required this.description,
   });
 
   factory Education.fromDocumentSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;
+    final creationTimestamp = data['creationTimestamp'];
+    final index = data['index'];
     final startDate = data['startDate'];
     final endDate = data['endDate'];
     final logoURL = data['logoURL'];
@@ -31,7 +37,9 @@ class Education {
     final description = data['description'];
 
     return Education(
+      creationTimestamp: creationTimestamp,
       eid: snapshot.id,
+      index: index,
       startDate: startDate,
       endDate: endDate,
       logoURL: logoURL,
@@ -44,6 +52,8 @@ class Education {
   Map<String, dynamic> toMap() {
     return {
       'eid': eid,
+      'creationTimestamp': creationTimestamp,
+      'index': index,
       'startDate': startDate,
       'endDate': endDate,
       'logoURL': logoURL,

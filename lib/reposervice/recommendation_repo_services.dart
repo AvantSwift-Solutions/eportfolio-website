@@ -6,7 +6,7 @@ class RecommendationRepoService {
   Future<List<Recommendation>?> getAllRecommendations() async {
     try {
       QuerySnapshot snapshot =
-          await FirebaseFirestore.instance.collection('Recommendation').get();
+          await FirebaseFirestore.instance.collection('Recommendation').orderBy('index').get();
       final tmp = snapshot.docs
           .map((doc) => Recommendation.fromDocumentSnapshot(doc))
           .toList();

@@ -19,6 +19,7 @@ void main() {
 
   setUp(() {
     mockExperience1 = MockExperience();
+    when(mockExperience1.creationTimestamp).thenReturn(Timestamp.now());
     when(mockExperience1.peid).thenReturn('mockId1');
     when(mockExperience1.index).thenReturn(1);
     when(mockExperience1.jobTitle).thenReturn('Mock JobTitle1');
@@ -32,6 +33,7 @@ void main() {
     when(mockExperience1.description).thenReturn('Mock Description1');
 
     mockExperience2 = MockExperience();
+    when(mockExperience2.creationTimestamp).thenReturn(Timestamp.now());
     when(mockExperience2.peid).thenReturn('mockId2');
     when(mockExperience2.index).thenReturn(2);
     when(mockExperience2.jobTitle).thenReturn('Mock JobTitle2');
@@ -61,6 +63,7 @@ void main() {
       var exp1 = getAllExperiences[0];
       var exp2 = getAllExperiences[1];
 
+      expect(exp1.creationTimestamp, mockExperience1.creationTimestamp);
       expect(exp1.peid, mockExperience1.peid);
       expect(exp1.index, mockExperience1.index);
       expect(exp1.jobTitle, mockExperience1.jobTitle);
@@ -72,6 +75,7 @@ void main() {
       expect(exp1.logoURL, mockExperience1.logoURL);
       expect(exp1.description, mockExperience1.description);
 
+      expect(exp2.creationTimestamp, mockExperience2.creationTimestamp);
       expect(exp2.peid, mockExperience2.peid);
       expect(exp2.index, mockExperience2.index);
       expect(exp2.jobTitle, mockExperience2.jobTitle);
@@ -96,5 +100,10 @@ void main() {
       final experienceSectionData = await controller.getSectionData();
       expect(experienceSectionData, null);
     });
+
+    test('getSectionName returns correct name', () {
+      expect(controller.getSectionName(), 'Professional Experience');
+    });
+
   });
 }

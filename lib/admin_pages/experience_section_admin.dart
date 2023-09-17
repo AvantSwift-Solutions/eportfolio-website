@@ -175,6 +175,7 @@ class ExperienceSectionAdmin extends StatelessWidget {
       BuildContext context, List<Experience> experienceList) async {
     final id = const Uuid().v4();
     final experience = Experience(
+      creationTimestamp: Timestamp.now(),
       peid: id,
       index: experienceList.length,
       jobTitle: '',
@@ -182,7 +183,7 @@ class ExperienceSectionAdmin extends StatelessWidget {
       companyName: '',
       location: '',
       startDate: Timestamp.now(),
-      endDate: Timestamp.now(),
+      endDate: null,
       description: '',
       logoURL: '',
     );
@@ -208,7 +209,7 @@ class ExperienceSectionAdmin extends StatelessWidget {
     String initialEmploymentType = experience.employmentType ?? 'None';
 
     TextEditingController startDateController = TextEditingController(
-        text: DateFormat('MMMM d, y').format(experience.startDate!.toDate()));
+        text: DateFormat('MMMM, y').format(experience.startDate!.toDate()));
 
     bool currentRole = experience.endDate == null;
     String endDateDisp;
@@ -216,7 +217,7 @@ class ExperienceSectionAdmin extends StatelessWidget {
       endDateDisp = '-';
     } else {
       endDateDisp =
-          DateFormat('MMMM d, y').format(experience.endDate!.toDate());
+          DateFormat('MMMM, y').format(experience.endDate!.toDate());
     }
     TextEditingController endDateController =
         TextEditingController(text: endDateDisp);
@@ -442,7 +443,7 @@ class ExperienceSectionAdmin extends StatelessWidget {
                                         );
                                         if (pickedDate != null) {
                                           final formattedDate =
-                                              DateFormat('MMMM y')
+                                              DateFormat('MMMM, y')
                                                   .format(pickedDate);
                                           startDateController.text =
                                               formattedDate;
@@ -474,7 +475,7 @@ class ExperienceSectionAdmin extends StatelessWidget {
                                         );
                                         if (pickedDate != null) {
                                           final formattedDate =
-                                              DateFormat('MMMM y')
+                                              DateFormat('MMMM, y')
                                                   .format(pickedDate);
                                           endDateController.text =
                                               formattedDate;
@@ -496,7 +497,7 @@ class ExperienceSectionAdmin extends StatelessWidget {
                                                 experience.endDate =
                                                     Timestamp.now();
                                                 endDateController.text =
-                                                    DateFormat('MMMM y')
+                                                    DateFormat('MMMM, y')
                                                         .format(DateTime.now());
                                               }
                                               currentRole = value!;
@@ -516,7 +517,7 @@ class ExperienceSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
-                                      maxLines: 5,
+                                      maxLines: AdminViewDialogStyles.textBoxLines,
                                       initialValue: experience.description,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
@@ -585,6 +586,7 @@ class ExperienceSectionAdmin extends StatelessWidget {
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
                                     formKey.currentState!.save();
+                                    experience.creationTimestamp = Timestamp.now();
                                     if (pickedImageBytes != null) {
                                       String? imageURL = await _adminController
                                           .uploadImageAndGetURL(
@@ -638,8 +640,8 @@ class ExperienceSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showDeleteDialog(BuildContext context, Experience exp) async {
-    final name = exp.companyName ?? 'Professional Experience';
+  void _showDeleteDialog(BuildContext context, Experience x) async {
+    final name = '${x.jobTitle} at ${x.companyName}';
 
     showDialog(
       context: parentContext,
@@ -685,7 +687,7 @@ class ExperienceSectionAdmin extends StatelessWidget {
                             ElevatedButton(
                               style: AdminViewDialogStyles.elevatedButtonStyle,
                               onPressed: () async {
-                                final deleted = await exp.delete();
+                                final deleted = await x.delete();
                                 if (deleted) {
                                   setState(() {});
                                   ScaffoldMessenger.of(context).showSnackBar(

@@ -3,48 +3,58 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AwardCert {
+  Timestamp? creationTimestamp;
   final String? acid;
+  int? index;
   String? name;
   String? imageURL;
   String? link;
   String? source;
-  Timestamp? creationTimestamp;
+  Timestamp? dateIssued;
 
   AwardCert({
+    required this.creationTimestamp,
     required this.acid,
+    required this.index,
     required this.name,
-    this.imageURL,
+    required this.imageURL,
     required this.link,
     required this.source,
-    this.creationTimestamp,
+    required this.dateIssued,
   });
 
   factory AwardCert.fromDocumentSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;
+    final creationTimestamp = data['creationTimestamp'];
+    final index = data['index'];
     final name = data['name'];
     final imageURL = data['imageURL'];
     final link = data['link'];
     final source = data['source'];
-    final creationTimestamp = data['creationTimestamp'];
+    final dateIssued = data['dateIssued'];
 
     return AwardCert(
+      creationTimestamp: creationTimestamp,
+      index: index,
       acid: snapshot.id,
       name: name,
       imageURL: imageURL,
       link: link,
       source: source,
-      creationTimestamp: creationTimestamp,
+      dateIssued: dateIssued,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
+      'creationTimestamp': creationTimestamp,
       'acid': acid,
+      'index': index,
       'name': name,
       'imageURL': imageURL,
       'link': link,
       'source': source,
-      'creationTimestamp': creationTimestamp,
+      'dateIssued': dateIssued,
     };
   }
 

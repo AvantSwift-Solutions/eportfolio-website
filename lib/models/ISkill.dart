@@ -3,11 +3,13 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ISkill {
+  Timestamp? creationTimestamp;
   final String? isid;
   int? index;
   String? name;
 
   ISkill({
+    required this.creationTimestamp,
     required this.isid,
     required this.index,
     required this.name,
@@ -15,10 +17,12 @@ class ISkill {
 
   factory ISkill.fromDocumentSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;
+    final creationTimestamp = data['creationTimestamp'];
     final index = data['index'];
     final name = data['name'];
 
     return ISkill(
+      creationTimestamp: creationTimestamp,
       isid: snapshot.id,
       index: index,
       name: name,
@@ -27,6 +31,7 @@ class ISkill {
 
   Map<String, dynamic> toMap() {
     return {
+      'creationTimestamp': creationTimestamp,
       'isid': isid,
       'index': index,
       'name': name,

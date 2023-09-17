@@ -1,5 +1,6 @@
 import 'package:avantswift_portfolio/models/ISkill.dart';
 import 'package:avantswift_portfolio/reposervice/iskill_repo_services.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -80,9 +81,9 @@ void main() {
 
     test('returns list of titles when section data is not null', () async {
       when(controller.getSectionData()).thenAnswer((_) => Future.value([
-            ISkill(index: 1, name: 'Skill 1', isid: ''),
-            ISkill(index: 2, name: 'Skill 2', isid: ''),
-            ISkill(index: 3, name: 'Skill 3', isid: ''),
+            ISkill(creationTimestamp: Timestamp.now(), index: 1, name: 'Skill 1', isid: ''),
+            ISkill(creationTimestamp: Timestamp.now(), index: 2, name: 'Skill 2', isid: ''),
+            ISkill(creationTimestamp: Timestamp.now(), index: 3, name: 'Skill 3', isid: ''),
           ]));
       final titles = await controller.getSectionTitles();
       expect(titles, [
@@ -91,5 +92,7 @@ void main() {
         const Tuple2(3, 'Skill 3'),
       ]);
     });
+
   });
+  
 }

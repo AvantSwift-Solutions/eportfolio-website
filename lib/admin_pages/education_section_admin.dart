@@ -1,9 +1,12 @@
-// ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
+// ignore_for_file: use_build_context_synchronously
 import 'dart:typed_data';
+import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
+import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mat_month_picker_dialog/mat_month_picker_dialog.dart';
 import 'package:uuid/uuid.dart';
 import '../controllers/admin_controllers/education_section_admin_controller.dart';
 import '../models/Education.dart';
@@ -38,66 +41,131 @@ class EducationSectionAdmin extends StatelessWidget {
 
   Future<void> _showList(BuildContext context) async {
     List<Education> educations =
-        await _adminController.getEducationSectionData() ?? [];
+        await _adminController.getSectionData() ?? [];
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          title: const Text('Education List'),
-          content: SizedBox(
-            width: 300,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                educations.isEmpty
-                    ? const Text('No Educations available')
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: educations.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(educations[index].schoolName!),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  icon: const Icon(Icons.edit),
-                                  onPressed: () {
-                                    _showEditDialog(context, index);
-                                  },
-                                ),
-                                IconButton(
-                                  icon: const Icon(Icons.delete),
-                                  onPressed: () {
-                                    _showDeleteDialog(
-                                        context, educations[index]);
-                                  },
-                                ),
-                              ],
-                            ),
-                            onTap: () {
-                              _showEditDialog(context, index);
+        return Theme(
+          data: AdminViewDialogStyles.dialogThemeData,
+          child: AlertDialog(
+            scrollable: true,
+            titlePadding: AdminViewDialogStyles.titleDialogPadding,
+            contentPadding: AdminViewDialogStyles.contentDialogPadding,
+            actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
+            title: Container(
+                padding: AdminViewDialogStyles.titleContPadding,
+                color: AdminViewDialogStyles.bgColor,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Edit Educations'),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: IconButton(
+                            icon: const Icon(Icons.close),
+                            iconSize: AdminViewDialogStyles.closeIconSize,
+                            hoverColor: Colors.transparent,
+                            onPressed: () {
+                              Navigator.of(dialogContext).pop();
                             },
-                          );
-                        },
-                      ),
-                TextButton(
-                  onPressed: () {
-                    _showAddNewDialog(context, educations);
-                  },
-                  child: const Text('Add New Education'),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Divider(),
+                  ],
+                )),
+            content: SizedBox(
+              height: AdminViewDialogStyles.listDialogHeight,
+              child: SingleChildScrollView(
+                child: SizedBox(
+                  width: AdminViewDialogStyles.listDialogWidth,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      educations.isEmpty
+                          ? const Text('No Educations available')
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: educations.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical:
+                                          AdminViewDialogStyles.listSpacing),
+                                  child: ListTile(
+                                    tileColor: Colors.white,
+                                    title: Text(
+                                        '${educations[index].degree} at ${educations[index].schoolName}',
+                                        style: AdminViewDialogStyles
+                                            .listTextStyle),
+                                    trailing: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                          icon: const Icon(Icons.edit),
+                                          onPressed: () {
+                                            _showEditDialog(context, index);
+                                          },
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.delete),
+                                          onPressed: () {
+                                            _showDeleteDialog(
+                                                context, educations[index]);
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                    onTap: () {
+                                      _showEditDialog(context, index);
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
+                    ],
+                  ),
                 ),
-              ],
+              ),
             ),
+            actions: <Widget>[
+              Container(
+                  padding: AdminViewDialogStyles.actionsContPadding,
+                  color: AdminViewDialogStyles.bgColor,
+                  child: Column(
+                    children: [
+                      const Divider(),
+                      const SizedBox(height: AdminViewDialogStyles.listSpacing),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ReorderDialog(
+                            controller: _adminController,
+                            onReorder: () {
+                              Navigator.of(dialogContext).pop();
+                              Navigator.of(parentContext).pop();
+                              _showList(parentContext);
+                            },
+                          ),
+                          ElevatedButton(
+                            style: AdminViewDialogStyles.elevatedButtonStyle,
+                            onPressed: () {
+                              _showAddNewDialog(context, educations);
+                            },
+                            child: Text(
+                              'Add New',
+                              style: AdminViewDialogStyles.buttonTextStyle,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ))
+            ],
           ),
-          actions: <Widget>[
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pop();
-              },
-              child: const Text('OK'),
-            ),
-          ],
         );
       },
     );
@@ -107,23 +175,24 @@ class EducationSectionAdmin extends StatelessWidget {
       BuildContext context, List<Education> educationList) async {
     final id = const Uuid().v4();
     final education = Education(
+      creationTimestamp: Timestamp.now(),
       eid: id,
-      startDate: Timestamp.now(),
-      endDate: Timestamp.now(),
-      logoURL: null,
       schoolName: '',
       degree: '',
+      index: educationList.length,
+      startDate: Timestamp.now(),
+      endDate: null,
       description: '',
+      logoURL: '',
     );
 
-    _showEducationDialog(context, education, (education) async {
-      return await education.create(id);
+    _showEducationDialog(context, education, (a) async {
+      return await a.create(id);
     });
   }
 
   void _showEditDialog(BuildContext context, int i) async {
-    final educationSectionData =
-        await _adminController.getEducationSectionData();
+    final educationSectionData = await _adminController.getSectionData();
     final education = educationSectionData![i];
 
     _showEducationDialog(context, education, (a) async {
@@ -133,209 +202,438 @@ class EducationSectionAdmin extends StatelessWidget {
 
   void _showEducationDialog(BuildContext context, Education education,
       Future<bool> Function(Education) onEducationUpdated) {
-    TextEditingController nameController =
-        TextEditingController(text: education.schoolName);
-    TextEditingController degreeController =
-        TextEditingController(text: education.degree);
-    TextEditingController descriptionController =
-        TextEditingController(text: education.description);
-    TextEditingController startDateController = TextEditingController(
-        text: DateFormat('MMMM d, y').format(education.startDate!.toDate()));
-    TextEditingController endDateController = TextEditingController(
-        text: DateFormat('MMMM d, y').format(education.endDate!.toDate()));
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     Uint8List? pickedImageBytes;
+
+    TextEditingController startDateController = TextEditingController(
+        text: DateFormat('MMMM, y').format(education.startDate!.toDate()));
+
+    bool currentRole = education.endDate == null;
+    String endDateDisp;
+    if (education.endDate == null) {
+      endDateDisp = '-';
+    } else {
+      endDateDisp =
+          DateFormat('MMMM, y').format(education.endDate!.toDate());
+    }
+    TextEditingController endDateController =
+        TextEditingController(text: endDateDisp);
 
     String title, successMessage, errorMessage;
     if (education.schoolName == '') {
-      title = 'Add new Education information';
+      title = 'Add New Education';
       successMessage = 'Education info added successfully';
       errorMessage = 'Error adding new Education info';
     } else {
-      title = 'Edit your Education information for ${education.schoolName}';
+      title =
+          'Edit info for \'${education.degree} at ${education.schoolName}\'';
       successMessage = 'Education info updated successfully';
       errorMessage = 'Error updating Education info';
     }
-
-    showDialog(
-      context:
-          parentContext, // Use the parent context instead of the current context
-      builder: (BuildContext dialogContext) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: Text(title),
-              content: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    TextField(
-                      controller: nameController,
-                      onChanged: (value) => education.schoolName = value,
-                      decoration:
-                          const InputDecoration(labelText: 'School Name'),
-                    ),
-                    TextField(
-                      controller: degreeController,
-                      onChanged: (value) => education.degree = value,
-                      decoration: const InputDecoration(labelText: 'Degree'),
-                    ),
-                    TextField(
-                      controller: descriptionController,
-                      onChanged: (value) => education.description = value,
-                      decoration:
-                          const InputDecoration(labelText: 'Description'),
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: startDateController,
-                            decoration:
-                                const InputDecoration(labelText: 'Start Date'),
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () async {
-                            final pickedDate = await showDatePicker(
-                              context: context,
-                              initialDate: education.startDate!.toDate(),
-                              firstDate: DateTime(1900),
-                              lastDate: DateTime(2100),
-                            );
-                            if (pickedDate != null) {
-                              final formattedDate =
-                                  DateFormat('MMMM d, y').format(pickedDate);
-                              startDateController.text = formattedDate;
-                              education.startDate =
-                                  Timestamp.fromDate(pickedDate);
-                            }
-                          },
-                          icon: const Icon(Icons.calendar_today),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: endDateController,
-                            decoration:
-                                const InputDecoration(labelText: 'End Date'),
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () async {
-                            final pickedDate = await showDatePicker(
-                              context: context,
-                              initialDate: education.endDate!.toDate(),
-                              firstDate: DateTime(1900),
-                              lastDate: DateTime(2100),
-                            );
-                            if (pickedDate != null) {
-                              final formattedDate =
-                                  DateFormat('MMMM d, y').format(pickedDate);
-                              endDateController.text = formattedDate;
-                              education.endDate =
-                                  Timestamp.fromDate(pickedDate);
-                            }
-                          },
-                          icon: const Icon(Icons.calendar_today),
-                        ),
-                      ],
-                    ),
-                    if (pickedImageBytes != null)
-                      Image.memory(pickedImageBytes!),
-                    ElevatedButton(
-                      onPressed: () async {
-                        Uint8List? imageBytes = await _pickImage();
-                        if (imageBytes != null) {
-                          pickedImageBytes = imageBytes;
-                          setState(() {});
-                        }
-                      },
-                      child: const Text('Pick an Image'),
-                    ),
-                  ],
-                ),
-              ),
-              actions: <Widget>[
-                ElevatedButton(
-                  onPressed: () async {
-                    if (pickedImageBytes != null) {
-                      String? imageURL =
-                          await _adminController.uploadImageAndGetURL(
-                              pickedImageBytes!, 'selected_image.jpg');
-                      if (imageURL != null) {
-                        education.logoURL = imageURL;
-                      }
-                    }
-                    bool isSuccess = await onEducationUpdated(education);
-                    if (isSuccess) {
-                      ScaffoldMessenger.of(parentContext).showSnackBar(
-                        SnackBar(content: Text(successMessage)),
-                      );
-                    } else {
-                      ScaffoldMessenger.of(parentContext).showSnackBar(
-                        SnackBar(content: Text(errorMessage)),
-                      );
-                    }
-                    Navigator.of(dialogContext).pop(); // Close update dialog
-                    Navigator.of(parentContext).pop(); // Close old list dialog
-                    _showList(parentContext); // Show new list dialog
-                  },
-                  child: const Text('OK'),
-                ),
-                TextButton(
-                  onPressed: () async {
-                    Navigator.of(dialogContext).pop();
-                  },
-                  child: const Text('Cancel'),
-                ),
-              ],
-            );
-          },
-        );
-      },
-    );
-  }
-
-  void _showDeleteDialog(BuildContext context, Education education) async {
-    final name = education.schoolName ?? 'Education';
 
     showDialog(
       context: parentContext,
       builder: (BuildContext dialogContext) {
         return StatefulBuilder(
           builder: (context, setState) {
-            return AlertDialog(
-              title: const Text('Confirm Deletion'),
-              content: Text('Are you sure you want to delete $name?'),
-              actions: <Widget>[
-                ElevatedButton(
-                  onPressed: () async {
-                    final deleted = await education.delete();
-                    if (deleted) {
-                      setState(() {});
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('$name deleted successfully')),
-                      );
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Failed to delete $name')),
-                      );
-                    }
-                    Navigator.of(dialogContext).pop(); // Close delete dialog
-                    Navigator.of(parentContext).pop(); // Close old list dialog
-                    _showList(parentContext); // Show new list dialog
-                  },
-                  child: const Text('Delete'),
+            return Theme(
+                data: AdminViewDialogStyles.dialogThemeData,
+                child: AlertDialog(
+                  scrollable: true,
+                  titlePadding: AdminViewDialogStyles.titleDialogPadding,
+                  contentPadding: AdminViewDialogStyles.contentDialogPadding,
+                  actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
+                  title: Container(
+                      padding: AdminViewDialogStyles.titleContPadding,
+                      color: AdminViewDialogStyles.bgColor,
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(title),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: IconButton(
+                                  icon: const Icon(Icons.close),
+                                  iconSize: AdminViewDialogStyles.closeIconSize,
+                                  hoverColor: Colors.transparent,
+                                  onPressed: () {
+                                    Navigator.of(dialogContext).pop();
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Divider(),
+                          // Align(
+                          //   alignment: Alignment.centerLeft,
+                          //   child: Text(
+                          //     '* indicates required field',
+                          //     style: AdminViewDialogStyles.indicatesTextStyle,
+                          //   ),
+                          // ),
+                        ],
+                      )),
+                  content: SizedBox(
+                      height: AdminViewDialogStyles.showDialogHeight,
+                      child: SingleChildScrollView(
+                        child: SizedBox(
+                          width: AdminViewDialogStyles.showDialogWidth,
+                          child: Form(
+                              key: formKey,
+                              child: SizedBox(
+                                width: AdminViewDialogStyles.showDialogWidth,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      '* indicates required field',
+                                      style: AdminViewDialogStyles
+                                          .indicatesTextStyle,
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('School Name*',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    TextFormField(
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      initialValue: education.schoolName,
+                                      decoration:
+                                          AdminViewDialogStyles.inputDecoration,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter a school name';
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) {
+                                        education.schoolName = value;
+                                      },
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Degree*',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    TextFormField(
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      initialValue: education.degree,
+                                      decoration:
+                                          AdminViewDialogStyles.inputDecoration,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter a degree';
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) {
+                                        education.degree = value;
+                                      },
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Start Date',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    TextFormField(
+                                      readOnly: true,
+                                      decoration:
+                                          AdminViewDialogStyles.dateDecoration,
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      controller: startDateController,
+                                      onTap: () async {
+                                        final pickedDate =
+                                            await showMonthPicker(
+                                          context: context,
+                                          initialDate:
+                                              education.startDate!.toDate(),
+                                          firstDate: DateTime(1900),
+                                          lastDate: DateTime(2200),
+                                        );
+                                        if (pickedDate != null) {
+                                          final formattedDate =
+                                              DateFormat('MMMM, y')
+                                                  .format(pickedDate);
+                                          startDateController.text =
+                                              formattedDate;
+                                          education.startDate =
+                                              Timestamp.fromDate(pickedDate);
+                                        }
+                                      },
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('End Date',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    TextFormField(
+                                      readOnly: true,
+                                      decoration:
+                                          AdminViewDialogStyles.dateDecoration,
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      controller: endDateController,
+                                      enabled: !currentRole,
+                                      onTap: () async {
+                                        final pickedDate =
+                                            await showMonthPicker(
+                                          context: context,
+                                          initialDate:
+                                              education.endDate!.toDate(),
+                                          firstDate: DateTime(1900),
+                                          lastDate: DateTime(2200),
+                                        );
+                                        if (pickedDate != null) {
+                                          final formattedDate =
+                                              DateFormat('MMMM, y')
+                                                  .format(pickedDate);
+                                          endDateController.text =
+                                              formattedDate;
+                                          education.endDate =
+                                              Timestamp.fromDate(pickedDate);
+                                        }
+                                      },
+                                    ),
+                                    Row(
+                                      children: [
+                                        Checkbox(
+                                          value: currentRole,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              if (!currentRole) {
+                                                education.endDate = null;
+                                                endDateController.text = '-';
+                                              } else {
+                                                education.endDate =
+                                                    Timestamp.now();
+                                                endDateController.text =
+                                                    DateFormat('MMMM, y')
+                                                        .format(DateTime.now());
+                                              }
+                                              currentRole = value!;
+                                            });
+                                          },
+                                        ),
+                                        Text(
+                                            'I am currently completing this degree',
+                                            style: AdminViewDialogStyles
+                                                .inputTextStyle)
+                                      ],
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Description',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    TextFormField(
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      maxLines: AdminViewDialogStyles.textBoxLines,
+                                      initialValue: education.description,
+                                      decoration:
+                                          AdminViewDialogStyles.inputDecoration,
+                                      onSaved: (value) {
+                                        education.description = value;
+                                      },
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('School Logo',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    if (pickedImageBytes != null)
+                                      Image.memory(pickedImageBytes!,
+                                          width:
+                                              AdminViewDialogStyles.imageWidth),
+                                    if (education.logoURL != '' &&
+                                        pickedImageBytes == null)
+                                      Image.network(education.logoURL!,
+                                          width:
+                                              AdminViewDialogStyles.imageWidth),
+                                    AdminViewDialogStyles.interTitleField,
+                                    ElevatedButton(
+                                      onPressed: () async {
+                                        Uint8List? imageBytes =
+                                            await _pickImage();
+                                        if (imageBytes != null) {
+                                          pickedImageBytes = imageBytes;
+                                          setState(() {});
+                                        }
+                                      },
+                                      style: AdminViewDialogStyles
+                                          .imageButtonStyle,
+                                      child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            const Icon(Icons.add),
+                                            Text(
+                                              education.logoURL == ''
+                                                  ? 'Add Image'
+                                                  : 'Change Image',
+                                              style: AdminViewDialogStyles
+                                                  .buttonTextStyle,
+                                            )
+                                          ]),
+                                    ),
+                                  ],
+                                ),
+                              )),
+                        ),
+                      )),
+                  actions: <Widget>[
+                    Container(
+                      padding: AdminViewDialogStyles.actionsContPadding,
+                      color: AdminViewDialogStyles.bgColor,
+                      child: Column(
+                        children: [
+                          const Divider(),
+                          const SizedBox(
+                              height: AdminViewDialogStyles.listSpacing),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ElevatedButton(
+                                style:
+                                    AdminViewDialogStyles.elevatedButtonStyle,
+                                onPressed: () async {
+                                  if (formKey.currentState!.validate()) {
+                                    formKey.currentState!.save();
+                                    education.creationTimestamp = Timestamp.now();
+                                    if (pickedImageBytes != null) {
+                                      String? imageURL = await _adminController
+                                          .uploadImageAndGetURL(
+                                              pickedImageBytes!,
+                                              '${education.eid}_image.jpg');
+                                      if (imageURL != null) {
+                                        education.logoURL = imageURL;
+                                      }
+                                    }
+                                    bool isSuccess =
+                                        await onEducationUpdated(education);
+                                    if (isSuccess) {
+                                      ScaffoldMessenger.of(parentContext)
+                                          .showSnackBar(
+                                        SnackBar(content: Text(successMessage)),
+                                      );
+                                    } else {
+                                      ScaffoldMessenger.of(parentContext)
+                                          .showSnackBar(
+                                        SnackBar(content: Text(errorMessage)),
+                                      );
+                                    }
+                                    Navigator.of(dialogContext).pop();
+                                    Navigator.of(parentContext).pop();
+                                    _showList(parentContext); // Show new list
+                                  }
+                                },
+                                child: Text('Save',
+                                    style:
+                                        AdminViewDialogStyles.buttonTextStyle),
+                              ),
+                              TextButton(
+                                style: AdminViewDialogStyles.textButtonStyle,
+                                onPressed: () {
+                                  Navigator.of(dialogContext).pop();
+                                },
+                                child: Text('Cancel',
+                                    style:
+                                        AdminViewDialogStyles.buttonTextStyle),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ));
+          },
+        );
+      },
+    );
+  }
+
+  void _showDeleteDialog(BuildContext context, Education x) async {
+    final name = '${x.degree} at ${x.schoolName}';
+
+    showDialog(
+      context: parentContext,
+      builder: (BuildContext dialogContext) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Theme(
+              data: AdminViewDialogStyles.dialogThemeData,
+              child: Theme(
+                data: AdminViewDialogStyles.dialogThemeData,
+                child: AlertDialog(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Delete \'$name\'?'),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: IconButton(
+                          icon: const Icon(Icons.close),
+                          iconSize: AdminViewDialogStyles.closeIconSize,
+                          hoverColor: Colors.transparent,
+                          onPressed: () {
+                            Navigator.of(dialogContext).pop();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  content: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                          'Are you sure you want to delete info for \'$name\'?'),
+                    ],
+                  ),
+                  actions: <Widget>[
+                    Padding(
+                      padding: AdminViewDialogStyles.deleteActionsDialogPadding,
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            ElevatedButton(
+                              style: AdminViewDialogStyles.elevatedButtonStyle,
+                              onPressed: () async {
+                                final deleted = await x.delete();
+                                if (deleted) {
+                                  setState(() {});
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content:
+                                            Text('$name deleted successfully')),
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content:
+                                            Text('Failed to delete $name')),
+                                  );
+                                }
+                                Navigator.of(dialogContext).pop();
+                                Navigator.of(parentContext).pop();
+                                _showList(parentContext);
+                              },
+                              child: Text('Delete',
+                                  style: AdminViewDialogStyles.buttonTextStyle),
+                            ),
+                            TextButton(
+                              style: AdminViewDialogStyles.textButtonStyle,
+                              onPressed: () {
+                                Navigator.of(dialogContext).pop();
+                              },
+                              child: Text('Cancel',
+                                  style: AdminViewDialogStyles.buttonTextStyle),
+                            ),
+                          ]),
+                    )
+                  ],
                 ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(dialogContext).pop();
-                  },
-                  child: const Text('Cancel'),
-                ),
-              ],
+              ),
             );
           },
         );

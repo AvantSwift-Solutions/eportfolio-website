@@ -3,23 +3,31 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TSkill {
+  Timestamp? creationTimestamp;
   final String? tsid;
+  int? index;
   String? name;
   String? imageURL;
 
   TSkill({
+    required this.creationTimestamp,
     required this.tsid,
+    required this.index,
     required this.name,
-    this.imageURL,
+    required this.imageURL,
   });
 
   factory TSkill.fromDocumentSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;
+    final creationTimestamp = data['creationTimestamp'];
+    final index = data['index'];
     final name = data['name'];
     final imageURL = data['imageURL'];
 
     return TSkill(
+      creationTimestamp: creationTimestamp,
       tsid: snapshot.id,
+      index: index,
       name: name,
       imageURL: imageURL,
     );
@@ -27,7 +35,9 @@ class TSkill {
 
   Map<String, dynamic> toMap() {
     return {
+      'creationTimestamp': creationTimestamp,
       'tsid': tsid,
+      'index': index,
       'name': name,
       'imageURL': imageURL,
     };

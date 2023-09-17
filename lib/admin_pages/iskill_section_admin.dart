@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import '../controllers/admin_controllers/iskill_section_admin_controller.dart';
@@ -36,7 +36,8 @@ class ISkillSectionAdmin extends StatelessWidget {
   }
 
   Future<void> _showList(BuildContext context) async {
-    List<ISkill> iskills = await _adminController.getSectionData() ?? [];
+    List<ISkill> iskills =
+        await _adminController.getSectionData() ?? [];
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -44,14 +45,11 @@ class ISkillSectionAdmin extends StatelessWidget {
           data: AdminViewDialogStyles.dialogThemeData,
           child: AlertDialog(
             scrollable: true,
-            titlePadding:
-                const EdgeInsets.only(top: 0, left: 24, right: 24, bottom: 0),
-            actionsPadding:
-                const EdgeInsets.only(top: 0, left: 24, right: 24, bottom: 0),
-            contentPadding:
-                const EdgeInsets.only(top: 0, left: 24, right: 24, bottom: 0),
+            titlePadding: AdminViewDialogStyles.titleDialogPadding,
+            contentPadding: AdminViewDialogStyles.contentDialogPadding,
+            actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
             title: Container(
-                padding: const EdgeInsets.only(top: 24),
+                padding: AdminViewDialogStyles.titleContPadding,
                 color: AdminViewDialogStyles.bgColor,
                 child: Column(
                   children: [
@@ -63,7 +61,8 @@ class ISkillSectionAdmin extends StatelessWidget {
                           alignment: Alignment.topRight,
                           child: IconButton(
                             icon: const Icon(Icons.close),
-                            color: Colors.black,
+                            iconSize: AdminViewDialogStyles.closeIconSize,
+                            hoverColor: Colors.transparent,
                             onPressed: () {
                               Navigator.of(dialogContext).pop();
                             },
@@ -75,7 +74,7 @@ class ISkillSectionAdmin extends StatelessWidget {
                   ],
                 )),
             content: SizedBox(
-              height: 300,
+              height: AdminViewDialogStyles.listDialogHeight,
               child: SingleChildScrollView(
                 child: SizedBox(
                   width: AdminViewDialogStyles.listDialogWidth,
@@ -89,11 +88,12 @@ class ISkillSectionAdmin extends StatelessWidget {
                               itemCount: iskills.length,
                               itemBuilder: (context, index) {
                                 return Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 8),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical:
+                                          AdminViewDialogStyles.listSpacing),
                                   child: ListTile(
                                     tileColor: Colors.white,
-                                    title: Text(iskills[index].name!,
+                                    title: Text(iskills[index].name ?? '',
                                         style: AdminViewDialogStyles
                                             .listTextStyle),
                                     trailing: Row(
@@ -101,17 +101,15 @@ class ISkillSectionAdmin extends StatelessWidget {
                                       children: [
                                         IconButton(
                                           icon: const Icon(Icons.edit),
-                                          color: Colors.black,
                                           onPressed: () {
                                             _showEditDialog(context, index);
                                           },
                                         ),
                                         IconButton(
                                           icon: const Icon(Icons.delete),
-                                          color: Colors.black,
                                           onPressed: () {
                                             _showDeleteDialog(
-                                                context, iskills, index);
+                                                context, iskills[index]);
                                           },
                                         ),
                                       ],
@@ -130,23 +128,21 @@ class ISkillSectionAdmin extends StatelessWidget {
             ),
             actions: <Widget>[
               Container(
-                  padding: const EdgeInsets.only(top: 4, bottom: 24),
+                  padding: AdminViewDialogStyles.actionsContPadding,
                   color: AdminViewDialogStyles.bgColor,
                   child: Column(
                     children: [
                       const Divider(),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AdminViewDialogStyles.listSpacing),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           ReorderDialog(
                             controller: _adminController,
                             onReorder: () {
-                              Navigator.of(dialogContext)
-                                  .pop(); // Close reorder
-                              Navigator.of(parentContext)
-                                  .pop(); // Close old list
-                              _showList(parentContext); // Show new list dialog
+                              Navigator.of(dialogContext).pop();
+                              Navigator.of(parentContext).pop();
+                              _showList(parentContext);
                             },
                           ),
                           ElevatedButton(
@@ -173,13 +169,14 @@ class ISkillSectionAdmin extends StatelessWidget {
   void _showAddNewDialog(BuildContext context, List<ISkill> iskillList) async {
     final id = const Uuid().v4();
     final iskill = ISkill(
+      creationTimestamp: Timestamp.now(),
       isid: id,
       index: iskillList.length,
       name: '',
     );
 
-    _showISkillDialog(context, iskill, (skill) async {
-      return await skill.create(id);
+    _showISkillDialog(context, iskill, (a) async {
+      return await a.create(id);
     });
   }
 
@@ -187,8 +184,8 @@ class ISkillSectionAdmin extends StatelessWidget {
     final iskillSectionData = await _adminController.getSectionData();
     final iskill = iskillSectionData![i];
 
-    _showISkillDialog(context, iskill, (skill) async {
-      return await skill.update() ?? false;
+    _showISkillDialog(context, iskill, (a) async {
+      return await a.update() ?? false;
     });
   }
 
@@ -215,97 +212,136 @@ class ISkillSectionAdmin extends StatelessWidget {
             return Theme(
                 data: AdminViewDialogStyles.dialogThemeData,
                 child: AlertDialog(
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(title),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                          icon: const Icon(Icons.close),
-                          color: Colors.black,
-                          onPressed: () {
-                            Navigator.of(dialogContext).pop();
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  contentPadding: AdminViewDialogStyles.actionsDialogPadding,
-                  content: Form(
-                      key: formKey,
-                      child: SizedBox(
-                        width: AdminViewDialogStyles.showDialogWidth,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Divider(),
-                            Text('* indicates required field',
-                                style:
-                                    AdminViewDialogStyles.indicatesTextStyle),
-                            AdminViewDialogStyles.spacer,
-                            const Text('Name*', textAlign: TextAlign.left),
-                            AdminViewDialogStyles.interTitleField,
-                            TextFormField(
-                              style: AdminViewDialogStyles.inputTextStyle,
-                              initialValue: iskill.name,
-                              decoration: AdminViewDialogStyles.inputDecoration,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter a name';
-                                }
-                                return null;
-                              },
-                              onSaved: (value) {
-                                iskill.name = value;
-                              },
-                            ),
-                            AdminViewDialogStyles.spacer,
-                            const Divider(),
-                          ],
+                  scrollable: true,
+                  titlePadding: AdminViewDialogStyles.titleDialogPadding,
+                  contentPadding: AdminViewDialogStyles.contentDialogPadding,
+                  actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
+                  title: Container(
+                      padding: AdminViewDialogStyles.titleContPadding,
+                      color: AdminViewDialogStyles.bgColor,
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(title),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: IconButton(
+                                  icon: const Icon(Icons.close),
+                                  iconSize: AdminViewDialogStyles.closeIconSize,
+                                  hoverColor: Colors.transparent,
+                                  onPressed: () {
+                                    Navigator.of(dialogContext).pop();
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Divider(),
+                          // Align(
+                          //   alignment: Alignment.centerLeft,
+                          //   child: Text(
+                          //     '* indicates required field',
+                          //     style: AdminViewDialogStyles.indicatesTextStyle,
+                          //   ),
+                          // ),
+                        ],
+                      )),
+                  content: SizedBox(
+                      height: AdminViewDialogStyles.showDialogHeight,
+                      child: SingleChildScrollView(
+                        child: SizedBox(
+                          width: AdminViewDialogStyles.showDialogWidth,
+                          child: Form(
+                              key: formKey,
+                              child: SizedBox(
+                                width: AdminViewDialogStyles.showDialogWidth,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      '* indicates required field',
+                                      style: AdminViewDialogStyles
+                                          .indicatesTextStyle,
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Skill Name*',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    TextFormField(
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      initialValue: iskill.name,
+                                      decoration:
+                                          AdminViewDialogStyles.inputDecoration,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter a skill name';
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) {
+                                        iskill.name = value;
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              )),
                         ),
                       )),
                   actions: <Widget>[
-                    Padding(
-                      padding: AdminViewDialogStyles.actionsDialogPadding,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                    Container(
+                      padding: AdminViewDialogStyles.actionsContPadding,
+                      color: AdminViewDialogStyles.bgColor,
+                      child: Column(
                         children: [
-                          ElevatedButton(
-                            style: AdminViewDialogStyles.elevatedButtonStyle,
-                            onPressed: () async {
-                              if (formKey.currentState!.validate()) {
-                                formKey.currentState!.save();
-                                bool isSuccess = await onISkillUpdated(iskill);
-                                if (isSuccess) {
-                                  ScaffoldMessenger.of(parentContext)
-                                      .showSnackBar(
-                                    SnackBar(content: Text(successMessage)),
-                                  );
-                                } else {
-                                  ScaffoldMessenger.of(parentContext)
-                                      .showSnackBar(
-                                    SnackBar(content: Text(errorMessage)),
-                                  );
-                                }
-                                Navigator.of(dialogContext)
-                                    .pop(); // Close update dialog
-                                Navigator.of(parentContext)
-                                    .pop(); // Close old list
-                                _showList(parentContext); // Show new list
-                              }
-                            },
-                            child: Text('Save',
-                                style: AdminViewDialogStyles.buttonTextStyle),
-                          ),
-                          TextButton(
-                            style: AdminViewDialogStyles.textButtonStyle,
-                            onPressed: () {
-                              Navigator.of(dialogContext).pop();
-                            },
-                            child: Text('Cancel',
-                                style: AdminViewDialogStyles.buttonTextStyle),
+                          const Divider(),
+                          const SizedBox(
+                              height: AdminViewDialogStyles.listSpacing),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ElevatedButton(
+                                style:
+                                    AdminViewDialogStyles.elevatedButtonStyle,
+                                onPressed: () async {
+                                  if (formKey.currentState!.validate()) {
+                                    formKey.currentState!.save();
+                                    iskill.creationTimestamp = Timestamp.now();
+                                    bool isSuccess =
+                                        await onISkillUpdated(iskill);
+                                    if (isSuccess) {
+                                      ScaffoldMessenger.of(parentContext)
+                                          .showSnackBar(
+                                        SnackBar(content: Text(successMessage)),
+                                      );
+                                    } else {
+                                      ScaffoldMessenger.of(parentContext)
+                                          .showSnackBar(
+                                        SnackBar(content: Text(errorMessage)),
+                                      );
+                                    }
+                                    Navigator.of(dialogContext).pop();
+                                    Navigator.of(parentContext).pop();
+                                    _showList(parentContext); // Show new list
+                                  }
+                                },
+                                child: Text('Save',
+                                    style:
+                                        AdminViewDialogStyles.buttonTextStyle),
+                              ),
+                              TextButton(
+                                style: AdminViewDialogStyles.textButtonStyle,
+                                onPressed: () {
+                                  Navigator.of(dialogContext).pop();
+                                },
+                                child: Text('Cancel',
+                                    style:
+                                        AdminViewDialogStyles.buttonTextStyle),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -318,9 +354,8 @@ class ISkillSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showDeleteDialog(
-      BuildContext context, List<ISkill> skills, int index) async {
-    final name = skills[index].name ?? 'Interpersonal Skill';
+  void _showDeleteDialog(BuildContext context, ISkill x) async {
+    final name = x.name ?? 'Interpersonal Skill';
 
     showDialog(
       context: parentContext,
@@ -340,7 +375,8 @@ class ISkillSectionAdmin extends StatelessWidget {
                         alignment: Alignment.topRight,
                         child: IconButton(
                           icon: const Icon(Icons.close),
-                          color: Colors.black,
+                          iconSize: AdminViewDialogStyles.closeIconSize,
+                          hoverColor: Colors.transparent,
                           onPressed: () {
                             Navigator.of(dialogContext).pop();
                           },
@@ -358,15 +394,14 @@ class ISkillSectionAdmin extends StatelessWidget {
                   ),
                   actions: <Widget>[
                     Padding(
-                      padding: AdminViewDialogStyles.actionsDialogPadding,
+                      padding: AdminViewDialogStyles.deleteActionsDialogPadding,
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             ElevatedButton(
                               style: AdminViewDialogStyles.elevatedButtonStyle,
                               onPressed: () async {
-                                final deleted = await _adminController
-                                    .deleteData(skills, index);
+                                final deleted = await x.delete();
                                 if (deleted) {
                                   setState(() {});
                                   ScaffoldMessenger.of(context).showSnackBar(
@@ -381,12 +416,9 @@ class ISkillSectionAdmin extends StatelessWidget {
                                             Text('Failed to delete $name')),
                                   );
                                 }
-                                Navigator.of(dialogContext)
-                                    .pop(); // Close delete
-                                Navigator.of(parentContext)
-                                    .pop(); // Close old list
-                                _showList(
-                                    parentContext); // Show new list dialog
+                                Navigator.of(dialogContext).pop();
+                                Navigator.of(parentContext).pop();
+                                _showList(parentContext);
                               },
                               child: Text('Delete',
                                   style: AdminViewDialogStyles.buttonTextStyle),
@@ -410,4 +442,5 @@ class ISkillSectionAdmin extends StatelessWidget {
       },
     );
   }
+
 }

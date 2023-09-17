@@ -26,24 +26,24 @@ class ExperienceSectionAdminController {
   }
 
   Future<List<Tuple2<int, String>>> getSectionTitles() async {
-    List<Experience>? exps = await getSectionData();
+    List<Experience>? list = await getSectionData();
     var ret = <Tuple2<int, String>>[];
-    if (exps != null) {
-      for (var i = 0; i < exps.length; i++) {
+    if (list != null) {
+      for (var i = 0; i < list.length; i++) {
         ret.add(Tuple2(
-            exps[i].index!, '${exps[i].jobTitle} at ${exps[i].companyName}'));
+            list[i].index!, '${list[i].jobTitle} at ${list[i].companyName}'));
       }
     }
     return ret;
   }
 
   Future<void> updateSectionOrder(List<Tuple2<int, String>> items) async {
-    List<Experience>? exps = await getSectionData();
-    if (exps == null) return;
+    List<Experience>? list = await getSectionData();
+    if (list == null) return;
     for (var i = 0; i < items.length; i++) {
-      var skill = exps[items[i].item1];
-      skill.index = i;
-      await skill.update();
+      var x = list[items[i].item1];
+      x.index = i;
+      await x.update();
     }
   }
 

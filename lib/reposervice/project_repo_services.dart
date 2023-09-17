@@ -8,7 +8,7 @@ class ProjectRepoService {
   Future<List<Project>?> getAllProjects() async {
     try {
       QuerySnapshot snapshot =
-          await FirebaseFirestore.instance.collection('Project').get();
+          await FirebaseFirestore.instance.collection('Project').orderBy('index').get();
       if (snapshot.docs.isNotEmpty) {
         return snapshot.docs
             .map((doc) => Project.fromDocumentSnapshot(doc))

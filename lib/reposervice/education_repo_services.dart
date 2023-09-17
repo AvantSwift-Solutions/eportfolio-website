@@ -8,7 +8,7 @@ class EducationRepoService {
   Future<List<Education>?> getAllEducation() async {
     try {
       QuerySnapshot snapshot =
-          await FirebaseFirestore.instance.collection('Education').get();
+          await FirebaseFirestore.instance.collection('Education').orderBy('index').get();
       if (snapshot.docs.isNotEmpty) {
         return snapshot.docs
             .map((doc) => Education.fromDocumentSnapshot(doc))

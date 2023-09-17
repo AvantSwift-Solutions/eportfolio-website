@@ -10,7 +10,9 @@ void main() {
 
     test('Education.toMap should convert education to a map', () {
       final education = Education(
+        creationTimestamp: Timestamp.now(),
         eid: 'edu123',
+        index: 0,
         startDate: Timestamp(1234567890, 0),
         endDate: Timestamp(1234567890, 0),
         logoURL: 'https://example.com/image.jpg',
@@ -20,7 +22,9 @@ void main() {
       );
       final educationMap = education.toMap();
 
+      expect(educationMap['creationTimestamp'], education.creationTimestamp);
       expect(educationMap['eid'], 'edu123');
+      expect(educationMap['index'], 0);
       expect(educationMap['startDate'], Timestamp(1234567890, 0));
       expect(educationMap['endDate'], Timestamp(1234567890, 0));
       expect(educationMap['logoURL'], 'https://example.com/image.jpg');
