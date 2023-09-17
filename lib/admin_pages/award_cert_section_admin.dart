@@ -339,6 +339,12 @@ class AwardCertSectionAdmin extends StatelessWidget {
                                       initialValue: awardcert.link,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
+                                      validator: (value) {
+                                        if (value != null && value.isNotEmpty && !Uri.parse(value).isAbsolute) {
+                                          return 'Please enter a valid link';
+                                        }
+                                        return null;
+                                      },
                                       onSaved: (value) {
                                         awardcert.link = value;
                                       },

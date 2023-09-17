@@ -37,11 +37,13 @@ class AboutMeSectionAdmin extends StatelessWidget {
 
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     Uint8List? pickedImageBytes;
+    // Flag to check if user tried to sumbit without picking a required image
+    bool noImage = false;
 
     String title, successMessage, errorMessage;
-      title = 'Edit About Me info';
-      successMessage = 'About Me info updated successfully';
-      errorMessage = 'Error updating About Me info';
+    title = 'Edit About Me info';
+    successMessage = 'About Me info updated successfully';
+    errorMessage = 'Error updating About Me info';
 
     showDialog(
       context: context,
@@ -140,30 +142,66 @@ class AboutMeSectionAdmin extends StatelessWidget {
                                           width:
                                               AdminViewDialogStyles.imageWidth),
                                     AdminViewDialogStyles.interTitleField,
-                                    ElevatedButton(
-                                      onPressed: () async {
-                                        Uint8List? imageBytes =
-                                            await _pickImage();
-                                        if (imageBytes != null) {
-                                          pickedImageBytes = imageBytes;
-                                          setState(() {});
-                                        }
-                                      },
-                                      style: AdminViewDialogStyles
-                                          .imageButtonStyle,
-                                      child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            const Icon(Icons.add),
-                                            Text(
-                                              aboutMeData.imageURL == ''
-                                                  ? 'Add Image'
-                                                  : 'Change Image',
-                                              style: AdminViewDialogStyles
-                                                  .buttonTextStyle,
-                                            )
-                                          ]),
-                                    ),
+                                    if (!noImage)
+                                      ElevatedButton(
+                                        onPressed: () async {
+                                          Uint8List? imageBytes =
+                                              await _pickImage();
+                                          if (imageBytes != null) {
+                                            noImage = false;
+                                            pickedImageBytes = imageBytes;
+                                            setState(() {});
+                                          }
+                                        },
+                                        style: AdminViewDialogStyles
+                                            .imageButtonStyle,
+                                        child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const Icon(Icons.add),
+                                              Text(
+                                                aboutMeData.imageURL == ''
+                                                    ? 'Add Image'
+                                                    : 'Change Image',
+                                                style: AdminViewDialogStyles
+                                                    .buttonTextStyle,
+                                              )
+                                            ]),
+                                      )
+                                    else
+                                      ElevatedButton(
+                                        onPressed: () async {
+                                          Uint8List? imageBytes =
+                                              await _pickImage();
+                                          if (imageBytes != null) {
+                                            noImage = false;
+                                            pickedImageBytes = imageBytes;
+                                            setState(() {});
+                                          }
+                                        },
+                                        style: AdminViewDialogStyles
+                                            .noImageButtonStyle,
+                                        child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const Icon(Icons.add),
+                                              Text(
+                                                aboutMeData.imageURL == ''
+                                                    ? 'Add Image'
+                                                    : 'Change Image',
+                                                style: AdminViewDialogStyles
+                                                    .buttonTextStyle,
+                                              )
+                                            ]),
+                                      ),
+                                    AdminViewDialogStyles.interTitleField,
+                                    AdminViewDialogStyles.interTitleField,
+                                    if (noImage)
+                                      Text(
+                                        '    Please add an image',
+                                        style: AdminViewDialogStyles
+                                            .errorTextStyle,
+                                      ),
                                   ],
                                 ),
                               )),
@@ -185,7 +223,11 @@ class AboutMeSectionAdmin extends StatelessWidget {
                                 style:
                                     AdminViewDialogStyles.elevatedButtonStyle,
                                 onPressed: () async {
-                                  if (formKey.currentState!.validate()) {
+                                  if (aboutMeData.imageURL == '' && pickedImageBytes == null) {
+                                    noImage = true;
+                                    setState(() {});
+                                  }
+                                  if (formKey.currentState!.validate() && !noImage) {
                                     formKey.currentState!.save();
                                     if (pickedImageBytes != null) {
                                       String? imageURL = await _adminController

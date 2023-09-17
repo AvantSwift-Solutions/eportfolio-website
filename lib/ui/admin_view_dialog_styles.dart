@@ -24,27 +24,32 @@ class AdminViewDialogStyles {
   static SizedBox spacer = const SizedBox(height: 24);
 
   static ThemeData dialogThemeData = ThemeData(
-      dialogTheme: const DialogTheme(
-          titleTextStyle: TextStyle(
-            fontSize: _titleSize,
-            fontWeight: FontWeight.bold,
-          ),
-          contentTextStyle: TextStyle(
-            fontSize: _bodySize,
-            fontWeight: FontWeight.normal,
-          ),
-          backgroundColor: bgColor),
-      dividerTheme: const DividerThemeData(
-        thickness: 1.5,
-        color: Colors.black,
+    inputDecorationTheme: InputDecorationTheme(
+      errorStyle: errorTextStyle,
+    ),
+    dialogTheme: const DialogTheme(
+      titleTextStyle: TextStyle(
+        fontSize: _titleSize,
+        fontWeight: FontWeight.bold,
       ),
-      iconTheme: const IconThemeData(
-        color: Colors.black,
-        size: 30,
+      contentTextStyle: TextStyle(
+        fontSize: _bodySize,
+        fontWeight: FontWeight.normal,
       ),
-      listTileTheme: const ListTileThemeData(
-        iconColor: Colors.black,
-      ));
+      backgroundColor: bgColor
+    ),
+    dividerTheme: const DividerThemeData(
+      thickness: 1.5,
+      color: Colors.black,
+    ),
+    iconTheme: const IconThemeData(
+      color: Colors.black,
+      size: 30,
+    ),
+    listTileTheme: const ListTileThemeData(
+      iconColor: Colors.black,
+    )
+  );
 
   static ButtonStyle elevatedButtonStyle = ButtonStyle(
     backgroundColor: MaterialStateProperty.all<Color>(buttonColor),
@@ -57,6 +62,13 @@ class AdminViewDialogStyles {
 
   static ButtonStyle imageButtonStyle = ButtonStyle(
     backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+    padding: MaterialStateProperty.all<EdgeInsets>(
+        const EdgeInsets.symmetric(vertical: 16, horizontal: 6)),
+    iconColor: MaterialStateProperty.all<Color>(Colors.black),
+  );
+
+  static ButtonStyle noImageButtonStyle = ButtonStyle(
+    backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
     padding: MaterialStateProperty.all<EdgeInsets>(
         const EdgeInsets.symmetric(vertical: 16, horizontal: 6)),
     iconColor: MaterialStateProperty.all<Color>(Colors.black),
@@ -76,6 +88,12 @@ class AdminViewDialogStyles {
 
   static TextStyle listTextStyle = const TextStyle(
     fontSize: _bodySize,
+  );
+
+  static TextStyle errorTextStyle = const TextStyle(
+    fontSize: _bodySize*0.8,
+    fontWeight: FontWeight.normal,
+    color: Colors.red,
   );
 
   static TextStyle inputTextStyle = const TextStyle(fontSize: _bodySize);
