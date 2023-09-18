@@ -33,9 +33,10 @@ class TechnicalSkillsController {
           Image.network(tSkill.imageURL!, fit: BoxFit.contain),
         );
       }
-      int startIndex = i * 8 - 8;
-      int endIndex = (startIndex + 8).clamp(0, allTSkillImages.length);
-      List<Image> curPageImages = allTSkillImages.sublist(startIndex, endIndex);
+      // int startIndex = i * 8 - 8;
+      // int endIndex = (startIndex + 8).clamp(0, allTSkillImages.length);
+      // List<Image> curPageImages = allTSkillImages.sublist(startIndex, endIndex);
+      List<Image> curPageImages = allTSkillImages;
       return curPageImages;
     } catch (e) {
       log('Error getting ISkill list: $e');
