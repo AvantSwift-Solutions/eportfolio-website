@@ -3,11 +3,12 @@ import 'package:avantswift_portfolio/reposervice/tskill_repo_services.dart';
 import 'package:avantswift_portfolio/ui/tskill_image.dart';
 import 'package:flutter/material.dart';
 
+import '../ui/custom_texts/public_view_text_styles.dart';
+
 class TechnicalSkillsWidget extends StatefulWidget {
   const TechnicalSkillsWidget({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _TechnicalSkillsWidgetState createState() => _TechnicalSkillsWidgetState();
 }
 
@@ -43,9 +44,27 @@ class _TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        const SizedBox(
+          height: 120,
+        ),
+        Text(
+          'Technical Skills',
+          style: PublicViewTextStyles.generalSubHeading,
+          textAlign: TextAlign.start,
+        ),
+        Container(
+          width: 420,
+          child: const Divider(
+            color: Colors.black,
+            thickness: 2.0,
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
         SizedBox(
-          width: 400,
-          height: 400, // Adjust the height as needed
+          width: 420,
+          height: 450, // Adjust the height as needed
           child: SizedBox(
             child: PageView.builder(
               controller: _pageController,
@@ -68,18 +87,19 @@ class _TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
                   clipBehavior: Clip.none,
                   children: [
                     Positioned(
-                        top: 55,
-                        bottom: 20,
-                        right: 1,
-                        left: 1,
-                        // Adjust this value to lower the image
-                        child: Center(
-                          child: TSkillsImage(
-                            centerImage:
-                                centreImage!, // Replace with your center image
-                            allSurroundingImages: pageImages,
-                          ),
-                        )),
+                      top: 55,
+                      bottom: 20,
+                      right: 1,
+                      left: 1,
+                      // Adjust this value to lower the image
+                      child: Center(
+                        child: TSkillsImage(
+                          centerImage:
+                              centreImage!, // Replace with your center image
+                          allSurroundingImages: pageImages,
+                        ),
+                      ),
+                    ),
                   ],
                 );
               },

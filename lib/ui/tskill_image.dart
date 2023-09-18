@@ -14,6 +14,7 @@ class TSkillsImage extends StatefulWidget {
   }) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _TSkillsImageState createState() => _TSkillsImageState();
 }
 
@@ -42,8 +43,8 @@ class _TSkillsImageState extends State<TSkillsImage> {
 
   @override
   Widget build(BuildContext context) {
-    final double imageSize = MediaQuery.of(context).size.width * 0.06;
-    final double centerImageSize = MediaQuery.of(context).size.width * 0.1;
+    final double imageSize = MediaQuery.of(context).size.width * 0.05;
+    final double centerImageSize = MediaQuery.of(context).size.width * 0.15;
 
     // Calculate the angle between each surrounding image
     final double angleBetweenImages = 2 * pi / currentPageImages.length;
