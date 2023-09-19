@@ -7,6 +7,7 @@ class ExperienceDTO {
   String? description;
   String? logoURL;
   int? index;
+  String? employmentType;
 
   ExperienceDTO(
       {required this.jobTitle,
@@ -16,5 +17,6 @@ class ExperienceDTO {
       this.endDate,
       this.description,
       this.logoURL,
-      this.index});
+      this.index,
+      this.employmentType});
 }

@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:js_interop';
 
 import 'package:avantswift_portfolio/reposervice/experience_repo_services.dart';
 
@@ -15,7 +16,7 @@ class ExperienceSectionController {
 
   // Function to format Timestamp to "Month Year" format
   String formatTimestamp(Timestamp? timestamp) {
-    if (timestamp == Null) {
+    if (timestamp.isNull) {
       return "Null Timestamp";
     }
     final DateTime dateTime = (timestamp as Timestamp).toDate();
@@ -24,7 +25,7 @@ class ExperienceSectionController {
   }
 
   String formatEndDateTimestamp(Timestamp? timestamp) {
-    if (timestamp == Null) {
+    if (timestamp.isNull) {
       return "Present";
     }
 
@@ -46,6 +47,7 @@ class ExperienceSectionController {
             description: experience.description,
             logoURL: experience.logoURL,
             index: experience.index,
+            employmentType: experience.employmentType,
           );
         }).toList();
       } else {
@@ -59,11 +61,12 @@ class ExperienceSectionController {
             description: 'unknown',
             logoURL: 'unknown',
             index: -1,
+            employmentType: 'unknown',
           )
         ];
       }
     } catch (e) {
-      log('Error getting contact section data: $e');
+      log('Error getting experience section data: $e');
       return [
         ExperienceDTO(
           jobTitle: 'Error',
@@ -74,6 +77,7 @@ class ExperienceSectionController {
           description: 'Error',
           logoURL: 'Error',
           index: -2,
+          employmentType: 'Error',
         )
       ];
     }
@@ -98,8 +102,10 @@ class ExperienceSectionController {
           description: experience.description,
           logoURL: experience.logoURL,
           index: experience.index,
+          employmentType: experience.employmentType,
         );
       } else {
+        log('Error getting experience by index:');
         return null; // Return null if the index is out of bounds or experiences is null
       }
     } catch (e) {

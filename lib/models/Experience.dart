@@ -13,6 +13,7 @@ class Experience {
   String? description;
   String? logoURL;
   int? index;
+  String? employmentType;
 
   Experience({
     required this.peid,
@@ -24,6 +25,7 @@ class Experience {
     this.description,
     this.logoURL,
     this.index,
+    this.employmentType,
   });
 
   factory Experience.fromDocumentSnapshot(DocumentSnapshot snapshot) {
@@ -37,6 +39,7 @@ class Experience {
       final endDate = data['endDate'];
       final logoURL = data['logoURL'];
       final index = data['index'];
+      final employmentType = data['employmentType'];
 
       return Experience(
         peid: snapshot.id,
@@ -48,6 +51,7 @@ class Experience {
         endDate: endDate,
         logoURL: logoURL,
         index: index,
+        employmentType: employmentType,
       );
     } catch (e) {
       rethrow;
@@ -65,6 +69,7 @@ class Experience {
       'endDate': endDate,
       'logoURL': logoURL,
       'index': index,
+      'empoymentType': employmentType,
     };
   }
 
