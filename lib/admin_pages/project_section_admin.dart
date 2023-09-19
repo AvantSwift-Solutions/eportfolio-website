@@ -36,8 +36,7 @@ class ProjectSectionAdmin extends StatelessWidget {
   }
 
   Future<void> _showList(BuildContext context) async {
-    List<Project> projects =
-        await _adminController.getSectionData() ?? [];
+    List<Project> projects = await _adminController.getSectionData() ?? [];
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -166,7 +165,8 @@ class ProjectSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showAddNewDialog(BuildContext context, List<Project> projectList) async {
+  void _showAddNewDialog(
+      BuildContext context, List<Project> projectList) async {
     final id = const Uuid().v4();
     final project = Project(
       creationTimestamp: Timestamp.now(),
@@ -293,7 +293,8 @@ class ProjectSectionAdmin extends StatelessWidget {
                                         textAlign: TextAlign.left),
                                     AdminViewDialogStyles.interTitleField,
                                     TextFormField(
-                                      maxLines: AdminViewDialogStyles.textBoxLines,
+                                      maxLines:
+                                          AdminViewDialogStyles.textBoxLines,
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
                                       initialValue: project.description,
@@ -473,5 +474,4 @@ class ProjectSectionAdmin extends StatelessWidget {
       },
     );
   }
-
 }

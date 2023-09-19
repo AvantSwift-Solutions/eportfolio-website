@@ -32,7 +32,6 @@ class AboutMeSectionAdmin extends StatelessWidget {
   }
 
   Future<void> _showEditDialog(BuildContext context) async {
-
     final aboutMeData = await _adminController.getAboutMeSectionData()!;
 
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -112,7 +111,8 @@ class AboutMeSectionAdmin extends StatelessWidget {
                                         textAlign: TextAlign.left),
                                     AdminViewDialogStyles.interTitleField,
                                     TextFormField(
-                                      maxLines: AdminViewDialogStyles.textBoxLines,
+                                      maxLines:
+                                          AdminViewDialogStyles.textBoxLines,
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
                                       initialValue: aboutMeData.aboutMe,
@@ -198,7 +198,7 @@ class AboutMeSectionAdmin extends StatelessWidget {
                                     AdminViewDialogStyles.interTitleField,
                                     if (noImage)
                                       Text(
-                                        '    Please add an image',
+                                        'Please add an image',
                                         style: AdminViewDialogStyles
                                             .errorTextStyle,
                                       ),
@@ -223,11 +223,13 @@ class AboutMeSectionAdmin extends StatelessWidget {
                                 style:
                                     AdminViewDialogStyles.elevatedButtonStyle,
                                 onPressed: () async {
-                                  if (aboutMeData.imageURL == '' && pickedImageBytes == null) {
+                                  if (aboutMeData.imageURL == '' &&
+                                      pickedImageBytes == null) {
                                     noImage = true;
                                     setState(() {});
                                   }
-                                  if (formKey.currentState!.validate() && !noImage) {
+                                  if (formKey.currentState!.validate() &&
+                                      !noImage) {
                                     formKey.currentState!.save();
                                     if (pickedImageBytes != null) {
                                       String? imageURL = await _adminController
@@ -238,8 +240,8 @@ class AboutMeSectionAdmin extends StatelessWidget {
                                         aboutMeData.imageURL = imageURL;
                                       }
                                     }
-                                    bool? isSuccess =
-                                        await _adminController.updateAboutMeSectionData(aboutMeData);
+                                    bool? isSuccess = await _adminController
+                                        .updateAboutMeSectionData(aboutMeData);
                                     if (isSuccess != null && isSuccess) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(

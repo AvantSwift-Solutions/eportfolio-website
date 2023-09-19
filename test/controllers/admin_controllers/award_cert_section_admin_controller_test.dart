@@ -68,7 +68,6 @@ void main() {
       expect(awardCert2?.link, ac2.link);
       expect(awardCert2?.source, ac2.source);
       expect(awardCert2?.dateIssued, ac2.dateIssued);
-      
     });
 
     test('getAwardCertList returns null on error', () async {
@@ -88,8 +87,7 @@ void main() {
     });
 
     test('getSectionName returns correct name', () {
-      expect(controller.getSectionName(), 'Award Certifications');
+      expect(controller.getSectionName(), 'Awards & Certifications');
     });
-    
   });
 }

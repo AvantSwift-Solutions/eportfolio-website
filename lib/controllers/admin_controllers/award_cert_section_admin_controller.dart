@@ -31,8 +31,8 @@ class AwardCertSectionAdminController {
     var ret = <Tuple2<int, String>>[];
     if (list != null) {
       for (var i = 0; i < list.length; i++) {
-        ret.add(Tuple2(
-            list[i].index!, '${list[i].name} from ${list[i].source}'));
+        ret.add(
+            Tuple2(list[i].index!, '${list[i].name} from ${list[i].source}'));
       }
     }
     return ret;

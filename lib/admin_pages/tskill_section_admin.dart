@@ -9,6 +9,7 @@ import 'package:uuid/uuid.dart';
 import '../controllers/admin_controllers/tskill_section_admin_controller.dart';
 import '../models/TSkill.dart';
 import '../reposervice/tskill_repo_services.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class TSkillSectionAdmin extends StatelessWidget {
   final TSkillSectionAdminController _adminController =
@@ -37,9 +38,166 @@ class TSkillSectionAdmin extends StatelessWidget {
     );
   }
 
+  Future<void> _editCenterImage(BuildContext context) async {
+
+    String curimageURL = await FirebaseStorage.instance.ref('images/technical_skills_image').getDownloadURL();
+    Uint8List? pickedImageBytes;
+
+    showDialog(
+      context: parentContext,
+      builder: (BuildContext dialogContext) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Theme(
+                data: AdminViewDialogStyles.dialogThemeData,
+                child: AlertDialog(
+                  scrollable: true,
+                  titlePadding: AdminViewDialogStyles.titleDialogPadding,
+                  contentPadding: AdminViewDialogStyles.contentDialogPadding,
+                  actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
+                  title: Container(
+                      padding: AdminViewDialogStyles.titleContPadding,
+                      color: AdminViewDialogStyles.bgColor,
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('Change Center Image'),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: IconButton(
+                                  icon: const Icon(Icons.close),
+                                  iconSize: AdminViewDialogStyles.closeIconSize,
+                                  hoverColor: Colors.transparent,
+                                  onPressed: () {
+                                    Navigator.of(dialogContext).pop();
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Divider(),
+                        ],
+                      )),
+                  content: SizedBox(
+                      height: AdminViewDialogStyles.showDialogHeight,
+                      child: SingleChildScrollView(
+                        child: SizedBox(
+                          width: AdminViewDialogStyles.showDialogWidth,
+                          child: Form(
+                              child: SizedBox(
+                                width: AdminViewDialogStyles.showDialogWidth,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    AdminViewDialogStyles.spacer,
+                                    if (pickedImageBytes != null)
+                                      Image.memory(pickedImageBytes!,
+                                          width:
+                                              AdminViewDialogStyles.imageWidth),
+                                    if (curimageURL != '' &&
+                                        pickedImageBytes == null)
+                                      Image.network(curimageURL,
+                                          width:
+                                              AdminViewDialogStyles.imageWidth),
+                                    AdminViewDialogStyles.interTitleField,
+                                    ElevatedButton(
+                                      onPressed: () async {
+                                        Uint8List? imageBytes =
+                                            await _pickImage();
+                                        if (imageBytes != null) {
+                                          pickedImageBytes = imageBytes;
+                                          setState(() {});
+                                        }
+                                      },
+                                      style: AdminViewDialogStyles
+                                          .imageButtonStyle,
+                                      child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            const Icon(Icons.add),
+                                            Text(
+                                              curimageURL == ''
+                                                  ? 'Add Image'
+                                                  : 'Change Image',
+                                              style: AdminViewDialogStyles
+                                                  .buttonTextStyle,
+                                            )
+                                          ]),
+                                    ),
+                                  ],
+                                ),
+                              )),
+                        ),
+                      )),
+                  actions: <Widget>[
+                    Container(
+                      padding: AdminViewDialogStyles.actionsContPadding,
+                      color: AdminViewDialogStyles.bgColor,
+                      child: Column(
+                        children: [
+                          const Divider(),
+                          const SizedBox(
+                              height: AdminViewDialogStyles.listSpacing),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ElevatedButton(
+                                style:
+                                    AdminViewDialogStyles.elevatedButtonStyle,
+                                onPressed: () async {
+                                    if (pickedImageBytes != null) {
+                                      String? imageURL = await _adminController
+                                          .uploadImageAndGetURL(
+                                              pickedImageBytes!,
+                                              'technical_skills_image');
+                                      if (imageURL != null) {
+                                        ScaffoldMessenger.of(parentContext)
+                                            .showSnackBar(
+                                          const SnackBar(content: Text('Center Image updated successfully')),
+                                        );
+                                      } else {
+                                        ScaffoldMessenger.of(parentContext)
+                                            .showSnackBar(
+                                          const SnackBar(content: Text('Error updating Center Image')),
+                                        );
+                                      }
+                                    Navigator.of(dialogContext).pop();
+                                    Navigator.of(parentContext).pop();
+                                    _showList(parentContext); // Show new list
+                                  }
+                                },
+                                child: Text('Save',
+                                    style:
+                                        AdminViewDialogStyles.buttonTextStyle),
+                              ),
+                              TextButton(
+                                style: AdminViewDialogStyles.textButtonStyle,
+                                onPressed: () {
+                                  Navigator.of(dialogContext).pop();
+                                },
+                                child: Text('Cancel',
+                                    style:
+                                        AdminViewDialogStyles.buttonTextStyle),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ));
+          },
+        );
+      },
+    );
+
+  }
+
   Future<void> _showList(BuildContext context) async {
-    List<TSkill> tskills =
-        await _adminController.getSectionData() ?? [];
+    List<TSkill> tskills = await _adminController.getSectionData() ?? [];
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -83,6 +241,24 @@ class TSkillSectionAdmin extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: AdminViewDialogStyles.centerImageButtonStyle,
+                          onPressed: () {
+                            _editCenterImage(context);
+                          },
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.add),
+                              Text('Change Center Image',
+                                style: AdminViewDialogStyles.buttonTextStyle)
+                            ],
+                          )
+                        ),
+                      ),
+                      
                       tskills.isEmpty
                           ? const Text('No Technical Skills available')
                           : ListView.builder(
@@ -95,8 +271,7 @@ class TSkillSectionAdmin extends StatelessWidget {
                                           AdminViewDialogStyles.listSpacing),
                                   child: ListTile(
                                     tileColor: Colors.white,
-                                    title: Text(
-                                        tskills[index].name ?? '',
+                                    title: Text(tskills[index].name ?? '',
                                         style: AdminViewDialogStyles
                                             .listTextStyle),
                                     trailing: Row(
@@ -169,8 +344,7 @@ class TSkillSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showAddNewDialog(
-      BuildContext context, List<TSkill> tskillList) async {
+  void _showAddNewDialog(BuildContext context, List<TSkill> tskillList) async {
     final id = const Uuid().v4();
     final tskill = TSkill(
       creationTimestamp: Timestamp.now(),
@@ -205,8 +379,7 @@ class TSkillSectionAdmin extends StatelessWidget {
       successMessage = 'Technical Skill info added successfully';
       errorMessage = 'Error adding new Technical Skill info';
     } else {
-      title =
-          'Edit info for \'${tskill.name}\'';
+      title = 'Edit info for \'${tskill.name}\'';
       successMessage = 'Technical Skill info updated successfully';
       errorMessage = 'Error updating Technical Skill info';
     }

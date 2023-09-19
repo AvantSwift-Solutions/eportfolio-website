@@ -113,8 +113,8 @@ class RecommendationSectionAdmin extends StatelessWidget {
                                         IconButton(
                                           icon: const Icon(Icons.delete),
                                           onPressed: () {
-                                            _showDeleteDialog(
-                                                context, recommendations[index]);
+                                            _showDeleteDialog(context,
+                                                recommendations[index]);
                                           },
                                         ),
                                       ],
@@ -199,7 +199,9 @@ class RecommendationSectionAdmin extends StatelessWidget {
     });
   }
 
-  void _showRecommendationDialog(BuildContext context, Recommendation recommendation,
+  void _showRecommendationDialog(
+      BuildContext context,
+      Recommendation recommendation,
       Future<bool> Function(Recommendation) onRecommendationUpdated) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     Uint8List? pickedImageBytes;
@@ -296,7 +298,8 @@ class RecommendationSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
-                                      initialValue: recommendation.colleagueName,
+                                      initialValue:
+                                          recommendation.colleagueName,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
                                       validator: (value) {
@@ -316,11 +319,13 @@ class RecommendationSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
-                                      initialValue: recommendation.colleagueJobTitle,
+                                      initialValue:
+                                          recommendation.colleagueJobTitle,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
                                       onSaved: (value) {
-                                        recommendation.colleagueJobTitle = value;
+                                        recommendation.colleagueJobTitle =
+                                            value;
                                       },
                                     ),
                                     AdminViewDialogStyles.spacer,
@@ -339,8 +344,9 @@ class RecommendationSectionAdmin extends StatelessWidget {
                                         final pickedDate =
                                             await showMonthPicker(
                                           context: context,
-                                          initialDate:
-                                              recommendation.dateReceived!.toDate(),
+                                          initialDate: recommendation
+                                              .dateReceived!
+                                              .toDate(),
                                           firstDate: DateTime(1900),
                                           lastDate: DateTime(2200),
                                         );
@@ -348,8 +354,7 @@ class RecommendationSectionAdmin extends StatelessWidget {
                                           final formattedDate =
                                               DateFormat('MMMM, y')
                                                   .format(pickedDate);
-                                          dateController.text =
-                                              formattedDate;
+                                          dateController.text = formattedDate;
                                           recommendation.dateReceived =
                                               Timestamp.fromDate(pickedDate);
                                         }
@@ -362,7 +367,8 @@ class RecommendationSectionAdmin extends StatelessWidget {
                                           onChanged: (value) {
                                             setState(() {
                                               if (!currentRole) {
-                                                recommendation.dateReceived = null;
+                                                recommendation.dateReceived =
+                                                    null;
                                                 dateController.text = '-';
                                               } else {
                                                 recommendation.dateReceived =
@@ -375,8 +381,7 @@ class RecommendationSectionAdmin extends StatelessWidget {
                                             });
                                           },
                                         ),
-                                        Text(
-                                            'No date associated',
+                                        Text('No date associated',
                                             style: AdminViewDialogStyles
                                                 .inputTextStyle)
                                       ],
@@ -386,7 +391,8 @@ class RecommendationSectionAdmin extends StatelessWidget {
                                         textAlign: TextAlign.left),
                                     AdminViewDialogStyles.interTitleField,
                                     TextFormField(
-                                      maxLines: AdminViewDialogStyles.textBoxLines,
+                                      maxLines:
+                                          AdminViewDialogStyles.textBoxLines,
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
                                       initialValue: recommendation.description,
@@ -463,7 +469,8 @@ class RecommendationSectionAdmin extends StatelessWidget {
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
                                     formKey.currentState!.save();
-                                    recommendation.creationTimestamp = Timestamp.now();
+                                    recommendation.creationTimestamp =
+                                        Timestamp.now();
                                     if (pickedImageBytes != null) {
                                       String? imageURL = await _adminController
                                           .uploadImageAndGetURL(
@@ -474,7 +481,8 @@ class RecommendationSectionAdmin extends StatelessWidget {
                                       }
                                     }
                                     bool isSuccess =
-                                        await onRecommendationUpdated(recommendation);
+                                        await onRecommendationUpdated(
+                                            recommendation);
                                     if (isSuccess) {
                                       ScaffoldMessenger.of(parentContext)
                                           .showSnackBar(

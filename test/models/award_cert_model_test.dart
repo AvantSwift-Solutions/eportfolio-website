@@ -17,8 +17,7 @@ void main() {
           link: 'https://example.com/user/certification',
           source: 'Example source',
           imageURL: 'https://example.com/image.jpg',
-          dateIssued: Timestamp(1234567890, 0)
-          );
+          dateIssued: Timestamp(1234567890, 0));
       final awardCertMap = awardCerts.toMap();
 
       expect(awardCertMap['creationTimestamp'], awardCerts.creationTimestamp);

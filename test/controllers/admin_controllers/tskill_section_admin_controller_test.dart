@@ -62,8 +62,7 @@ void main() {
       expect(tskill2.imageURL, mockTSkill2.imageURL);
     });
 
-    test('getSectionData returns null data when tskill is null',
-        () async {
+    test('getSectionData returns null data when tskill is null', () async {
       when(mockRepoService.getAllTSkill()).thenAnswer((_) async => null);
       final tskillSectionData = await controller.getSectionData();
       expect(tskillSectionData, null);
@@ -80,6 +79,5 @@ void main() {
       final sectionName = controller.getSectionName();
       expect(sectionName, 'Technical Skills');
     });
-
   });
 }

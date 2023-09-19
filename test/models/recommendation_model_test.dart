@@ -20,7 +20,8 @@ void main() {
       );
       final recommendationMap = recommendation.toMap();
 
-      expect(recommendationMap['creationTimestamp'], recommendation.creationTimestamp);
+      expect(recommendationMap['creationTimestamp'],
+          recommendation.creationTimestamp);
       expect(recommendationMap['rid'], 'rid123');
       expect(recommendationMap['index'], 0);
       expect(recommendationMap['colleagueName'], 'Steve Jobs');

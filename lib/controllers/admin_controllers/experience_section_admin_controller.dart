@@ -22,7 +22,7 @@ class ExperienceSectionAdminController {
   }
 
   String getSectionName() {
-    return 'Professional Experience';
+    return 'Professional Experiences';
   }
 
   Future<List<Tuple2<int, String>>> getSectionTitles() async {

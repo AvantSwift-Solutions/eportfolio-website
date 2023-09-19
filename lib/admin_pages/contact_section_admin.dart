@@ -31,15 +31,14 @@ class ContactSectionAdmin extends StatelessWidget {
   }
 
   Future<void> _showEditDialog(BuildContext context) async {
-
     final contactSectionData = await _adminController.getContactSectionData()!;
 
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     String title, successMessage, errorMessage;
-      title = 'Edit About Me info';
-      successMessage = 'About Me info updated successfully';
-      errorMessage = 'Error updating About Me info';
+    title = 'Edit About Me info';
+    successMessage = 'About Me info updated successfully';
+    errorMessage = 'Error updating About Me info';
 
     showDialog(
       context: context,
@@ -110,13 +109,15 @@ class ContactSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
-                                      initialValue: contactSectionData.contactEmail,
+                                      initialValue:
+                                          contactSectionData.contactEmail,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
                                           return 'Please enter an email';
-                                        } else if (!EmailValidator.validate(value)) {
+                                        } else if (!EmailValidator.validate(
+                                            value)) {
                                           return 'Please enter a valid email';
                                         }
                                         return null;
@@ -132,13 +133,16 @@ class ContactSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
-                                      initialValue: contactSectionData.linkedinURL,
+                                      initialValue:
+                                          contactSectionData.linkedinURL,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
                                           return 'Please enter a LinkedIn URL';
-                                        } else if (!value.contains('https://www.linkedin.com/in/') || !Uri.parse(value).isAbsolute) {
+                                        } else if (!value.contains(
+                                                'https://www.linkedin.com/in/') ||
+                                            !Uri.parse(value).isAbsolute) {
                                           return 'Please enter a valid LinkedIn URL';
                                         }
                                         return null;
@@ -170,8 +174,9 @@ class ContactSectionAdmin extends StatelessWidget {
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
                                     formKey.currentState!.save();
-                                    bool? isSuccess =
-                                        await _adminController.updateContactSectionData(contactSectionData);
+                                    bool? isSuccess = await _adminController
+                                        .updateContactSectionData(
+                                            contactSectionData);
                                     if (isSuccess != null && isSuccess) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
@@ -211,5 +216,4 @@ class ContactSectionAdmin extends StatelessWidget {
       },
     );
   }
-  
 }

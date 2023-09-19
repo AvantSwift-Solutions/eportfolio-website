@@ -32,7 +32,6 @@ class LandingPageAdmin extends StatelessWidget {
   }
 
   Future<void> _showEditDialog(BuildContext context) async {
-
     final landingPageData = await _adminController.getLandingPageData()!;
 
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -152,10 +151,12 @@ class LandingPageAdmin extends StatelessWidget {
                                         textAlign: TextAlign.left),
                                     AdminViewDialogStyles.interTitleField,
                                     TextFormField(
-                                      maxLines: AdminViewDialogStyles.textBoxLines,
+                                      maxLines:
+                                          AdminViewDialogStyles.textBoxLines,
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
-                                      initialValue: landingPageData.landingPageDescription,
+                                      initialValue: landingPageData
+                                          .landingPageDescription,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
                                       validator: (value) {
@@ -165,7 +166,8 @@ class LandingPageAdmin extends StatelessWidget {
                                         return null;
                                       },
                                       onSaved: (value) {
-                                        landingPageData.landingPageDescription = value;
+                                        landingPageData.landingPageDescription =
+                                            value;
                                       },
                                     ),
                                     AdminViewDialogStyles.spacer,
@@ -234,11 +236,11 @@ class LandingPageAdmin extends StatelessWidget {
                                               )
                                             ]),
                                       ),
-                                      AdminViewDialogStyles.interTitleField,
-                                      AdminViewDialogStyles.interTitleField,
-                                      if (noImage)
+                                    AdminViewDialogStyles.interTitleField,
+                                    AdminViewDialogStyles.interTitleField,
+                                    if (noImage)
                                       Text(
-                                        '    Please add an image',
+                                        'Please add an image',
                                         style: AdminViewDialogStyles
                                             .errorTextStyle,
                                       ),
@@ -263,11 +265,13 @@ class LandingPageAdmin extends StatelessWidget {
                                 style:
                                     AdminViewDialogStyles.elevatedButtonStyle,
                                 onPressed: () async {
-                                  if (landingPageData.imageURL == '' && pickedImageBytes == null) {
+                                  if (landingPageData.imageURL == '' &&
+                                      pickedImageBytes == null) {
                                     noImage = true;
                                     setState(() {});
                                   }
-                                  if (formKey.currentState!.validate() && !noImage) {
+                                  if (formKey.currentState!.validate() &&
+                                      !noImage) {
                                     formKey.currentState!.save();
                                     if (pickedImageBytes != null) {
                                       String? imageURL = await _adminController
@@ -278,8 +282,8 @@ class LandingPageAdmin extends StatelessWidget {
                                         landingPageData.imageURL = imageURL;
                                       }
                                     }
-                                    bool? isSuccess =
-                                        await _adminController.updateLandingPageData(landingPageData);
+                                    bool? isSuccess = await _adminController
+                                        .updateLandingPageData(landingPageData);
                                     if (isSuccess != null && isSuccess) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(

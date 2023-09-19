@@ -20,7 +20,7 @@ class ProjectSectionAdminController {
   }
 
   String getSectionName() {
-    return 'Personal Project';
+    return 'Personal Projects';
   }
 
   Future<List<Tuple2<int, String>>> getSectionTitles() async {
@@ -75,5 +75,4 @@ class ProjectSectionAdminController {
       return false;
     }
   }
-  
 }

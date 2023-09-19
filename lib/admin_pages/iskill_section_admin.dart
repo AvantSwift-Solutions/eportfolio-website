@@ -36,8 +36,7 @@ class ISkillSectionAdmin extends StatelessWidget {
   }
 
   Future<void> _showList(BuildContext context) async {
-    List<ISkill> iskills =
-        await _adminController.getSectionData() ?? [];
+    List<ISkill> iskills = await _adminController.getSectionData() ?? [];
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -442,5 +441,4 @@ class ISkillSectionAdmin extends StatelessWidget {
       },
     );
   }
-
 }

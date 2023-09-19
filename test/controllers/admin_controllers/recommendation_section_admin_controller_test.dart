@@ -45,13 +45,11 @@ void main() {
   });
 
   group('Recommendation section admin controller tests', () {
-    test(
-        'getSectionData returns correct data when recommendation is not null',
+    test('getSectionData returns correct data when recommendation is not null',
         () async {
       when(mockRepoService.getAllRecommendations())
           .thenAnswer((_) async => [mockRecommendation1, mockRecommendation2]);
-      final getAllRecommendations =
-          await controller.getSectionData();
+      final getAllRecommendations = await controller.getSectionData();
 
       // Make assertions on the returned data
       expect(getAllRecommendations!.length, 2);
@@ -76,32 +74,26 @@ void main() {
       expect(rec2.description, mockRecommendation2.description);
       expect(rec2.imageURL, mockRecommendation2.imageURL);
       expect(rec2.dateReceived, mockRecommendation2.dateReceived);
-      
     });
 
-    test(
-        'getSectionData returns null data when recommendation is null',
+    test('getSectionData returns null data when recommendation is null',
         () async {
       when(mockRepoService.getAllRecommendations())
           .thenAnswer((_) async => null);
-      final recommendationSectionData =
-          await controller.getSectionData();
+      final recommendationSectionData = await controller.getSectionData();
       expect(recommendationSectionData, null);
     });
 
-    test('getSectionData returns null data on exception',
-        () async {
+    test('getSectionData returns null data on exception', () async {
       when(mockRepoService.getAllRecommendations())
           .thenThrow(Exception('Test Exception'));
-      final recommendationSectionData =
-          await controller.getSectionData();
+      final recommendationSectionData = await controller.getSectionData();
       expect(recommendationSectionData, null);
     });
 
     test('getSectionName returns correct name', () {
       final sectionName = controller.getSectionName();
-      expect(sectionName, 'Recommendation');
+      expect(sectionName, 'Recommendations');
     });
-
   });
 }

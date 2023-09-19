@@ -7,8 +7,10 @@ import '../models/Project.dart';
 class ProjectRepoService {
   Future<List<Project>?> getAllProjects() async {
     try {
-      QuerySnapshot snapshot =
-          await FirebaseFirestore.instance.collection('Project').orderBy('index').get();
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('Project')
+          .orderBy('index')
+          .get();
       if (snapshot.docs.isNotEmpty) {
         return snapshot.docs
             .map((doc) => Project.fromDocumentSnapshot(doc))

@@ -40,8 +40,7 @@ class EducationSectionAdmin extends StatelessWidget {
   }
 
   Future<void> _showList(BuildContext context) async {
-    List<Education> educations =
-        await _adminController.getSectionData() ?? [];
+    List<Education> educations = await _adminController.getSectionData() ?? [];
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -213,8 +212,7 @@ class EducationSectionAdmin extends StatelessWidget {
     if (education.endDate == null) {
       endDateDisp = '-';
     } else {
-      endDateDisp =
-          DateFormat('MMMM, y').format(education.endDate!.toDate());
+      endDateDisp = DateFormat('MMMM, y').format(education.endDate!.toDate());
     }
     TextEditingController endDateController =
         TextEditingController(text: endDateDisp);
@@ -429,7 +427,8 @@ class EducationSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
-                                      maxLines: AdminViewDialogStyles.textBoxLines,
+                                      maxLines:
+                                          AdminViewDialogStyles.textBoxLines,
                                       initialValue: education.description,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
@@ -498,7 +497,8 @@ class EducationSectionAdmin extends StatelessWidget {
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
                                     formKey.currentState!.save();
-                                    education.creationTimestamp = Timestamp.now();
+                                    education.creationTimestamp =
+                                        Timestamp.now();
                                     if (pickedImageBytes != null) {
                                       String? imageURL = await _adminController
                                           .uploadImageAndGetURL(

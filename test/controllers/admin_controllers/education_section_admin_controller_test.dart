@@ -47,8 +47,7 @@ void main() {
   });
 
   group('Education section admin controller tests', () {
-    test(
-        'getSectionData returns correct data when education is not null',
+    test('getSectionData returns correct data when education is not null',
         () async {
       when(mockRepoService.getAllEducation())
           .thenAnswer((_) async => [mockEducation1, mockEducation2]);
@@ -81,8 +80,7 @@ void main() {
       expect(edu2.description, mockEducation2.description);
     });
 
-    test('getSectionData returns null data when education is null',
-        () async {
+    test('getSectionData returns null data when education is null', () async {
       when(mockRepoService.getAllEducation()).thenAnswer((_) async => null);
       final educationSectionData = await controller.getSectionData();
       expect(educationSectionData, null);
@@ -96,8 +94,7 @@ void main() {
     });
 
     test('getSectionName returns correct name', () {
-      expect(controller.getSectionName(), 'Education');
+      expect(controller.getSectionName(), 'Educations');
     });
-
   });
 }

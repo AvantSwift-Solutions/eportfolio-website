@@ -40,8 +40,7 @@ class AwardCertSectionAdmin extends StatelessWidget {
   }
 
   Future<void> _showList(BuildContext context) async {
-    List<AwardCert> awardcerts =
-        await _adminController.getSectionData() ?? [];
+    List<AwardCert> awardcerts = await _adminController.getSectionData() ?? [];
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -221,8 +220,7 @@ class AwardCertSectionAdmin extends StatelessWidget {
       successMessage = 'Award & Certification info added successfully';
       errorMessage = 'Error adding new Award & Certification info';
     } else {
-      title =
-          'Edit info for \'${awardcert.name} from ${awardcert.source}\'';
+      title = 'Edit info for \'${awardcert.name} from ${awardcert.source}\'';
       successMessage = 'Award & Certification info updated successfully';
       errorMessage = 'Error updating Award & Certification info';
     }
@@ -340,7 +338,9 @@ class AwardCertSectionAdmin extends StatelessWidget {
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
                                       validator: (value) {
-                                        if (value != null && value.isNotEmpty && !Uri.parse(value).isAbsolute) {
+                                        if (value != null &&
+                                            value.isNotEmpty &&
+                                            !Uri.parse(value).isAbsolute) {
                                           return 'Please enter a valid link';
                                         }
                                         return null;
@@ -374,8 +374,7 @@ class AwardCertSectionAdmin extends StatelessWidget {
                                           final formattedDate =
                                               DateFormat('MMMM, y')
                                                   .format(pickedDate);
-                                          dateController.text =
-                                              formattedDate;
+                                          dateController.text = formattedDate;
                                           awardcert.dateIssued =
                                               Timestamp.fromDate(pickedDate);
                                         }
@@ -401,8 +400,7 @@ class AwardCertSectionAdmin extends StatelessWidget {
                                             });
                                           },
                                         ),
-                                        Text(
-                                            'No date associated',
+                                        Text('No date associated',
                                             style: AdminViewDialogStyles
                                                 .inputTextStyle)
                                       ],
@@ -468,7 +466,8 @@ class AwardCertSectionAdmin extends StatelessWidget {
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
                                     formKey.currentState!.save();
-                                    awardcert.creationTimestamp = Timestamp.now();
+                                    awardcert.creationTimestamp =
+                                        Timestamp.now();
                                     if (pickedImageBytes != null) {
                                       String? imageURL = await _adminController
                                           .uploadImageAndGetURL(

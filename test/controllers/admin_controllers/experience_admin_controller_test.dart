@@ -102,8 +102,8 @@ void main() {
     });
 
     test('getSectionName returns correct name', () {
-      expect(controller.getSectionName(), 'Professional Experience');
+      expect(controller.getSectionName(), 'Professional Experiences');
     });
-
   });
+
 }

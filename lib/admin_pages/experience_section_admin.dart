@@ -216,8 +216,7 @@ class ExperienceSectionAdmin extends StatelessWidget {
     if (experience.endDate == null) {
       endDateDisp = '-';
     } else {
-      endDateDisp =
-          DateFormat('MMMM, y').format(experience.endDate!.toDate());
+      endDateDisp = DateFormat('MMMM, y').format(experience.endDate!.toDate());
     }
     TextEditingController endDateController =
         TextEditingController(text: endDateDisp);
@@ -517,7 +516,8 @@ class ExperienceSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
-                                      maxLines: AdminViewDialogStyles.textBoxLines,
+                                      maxLines:
+                                          AdminViewDialogStyles.textBoxLines,
                                       initialValue: experience.description,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
@@ -586,7 +586,8 @@ class ExperienceSectionAdmin extends StatelessWidget {
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
                                     formKey.currentState!.save();
-                                    experience.creationTimestamp = Timestamp.now();
+                                    experience.creationTimestamp =
+                                        Timestamp.now();
                                     if (pickedImageBytes != null) {
                                       String? imageURL = await _adminController
                                           .uploadImageAndGetURL(

@@ -37,7 +37,6 @@ void main() {
     when(pp2.name).thenReturn('mock name2');
     when(pp2.description).thenReturn('mock desc2');
     when(pp2.link).thenReturn('https://example.com/mock_project2.pdf');
-
   });
 
   group('Project section admin controller tests', () {
@@ -63,7 +62,6 @@ void main() {
       expect(project2?.name, pp2.name);
       expect(project2?.description, pp2.description);
       expect(project2?.link, pp2.link);
-
     });
 
     test('getAllProjects returns null on error', () async {
@@ -76,9 +74,7 @@ void main() {
 
     test('getSectionName returns correct name', () {
       final sectionName = controller.getSectionName();
-      expect(sectionName, 'Project');
+      expect(sectionName, 'Personal Projects');
     });
-
   });
-
 }

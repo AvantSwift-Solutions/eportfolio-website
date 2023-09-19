@@ -70,7 +70,7 @@ void main() {
 
     test('getSectionName returns correct name', () {
       final sectionName = controller.getSectionName();
-      expect(sectionName, 'Interpersonal Skill');
+      expect(sectionName, 'Interpersonal Skills');
     });
 
     test('returns empty list when section data is null', () async {
@@ -81,9 +81,21 @@ void main() {
 
     test('returns list of titles when section data is not null', () async {
       when(controller.getSectionData()).thenAnswer((_) => Future.value([
-            ISkill(creationTimestamp: Timestamp.now(), index: 1, name: 'Skill 1', isid: ''),
-            ISkill(creationTimestamp: Timestamp.now(), index: 2, name: 'Skill 2', isid: ''),
-            ISkill(creationTimestamp: Timestamp.now(), index: 3, name: 'Skill 3', isid: ''),
+            ISkill(
+                creationTimestamp: Timestamp.now(),
+                index: 1,
+                name: 'Skill 1',
+                isid: ''),
+            ISkill(
+                creationTimestamp: Timestamp.now(),
+                index: 2,
+                name: 'Skill 2',
+                isid: ''),
+            ISkill(
+                creationTimestamp: Timestamp.now(),
+                index: 3,
+                name: 'Skill 3',
+                isid: ''),
           ]));
       final titles = await controller.getSectionTitles();
       expect(titles, [
@@ -92,7 +104,5 @@ void main() {
         const Tuple2(3, 'Skill 3'),
       ]);
     });
-
   });
-  
 }
