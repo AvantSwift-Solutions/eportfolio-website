@@ -63,6 +63,7 @@ class MyAppState extends State<MyApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
       ),
       initialRoute: '/login',
+      debugShowCheckedModeBanner: false,
       routes: {
         '/landing-page': (context) => SinglePageView(),
         '/login': (context) => LoginPage(

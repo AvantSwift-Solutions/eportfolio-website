@@ -291,7 +291,6 @@ class LoginPageState extends State<LoginPage> {
 
 
   Future<void> _loginWithEmailAndPassword() async {
-    print("FORM FUNCTION");
     try {
       final email = _emailController.text.trim();
       final password = _passwordController.text;
