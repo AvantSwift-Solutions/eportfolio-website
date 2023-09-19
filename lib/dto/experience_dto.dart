@@ -6,13 +6,15 @@ class ExperienceDTO {
   String? endDate;
   String? description;
   String? logoURL;
+  int? index;
 
   ExperienceDTO(
       {required this.jobTitle,
       required this.companyName,
-      required this.location,
-      required this.startDate,
-      required this.endDate,
-      required this.description,
-      required this.logoURL});
+      this.location,
+      this.startDate,
+      this.endDate,
+      this.description,
+      this.logoURL,
+      this.index});
 }

@@ -15,12 +15,20 @@ class ExperienceSectionController {
 
   // Function to format Timestamp to "Month Year" format
   String formatTimestamp(Timestamp? timestamp) {
-    if (Timestamp == Null) {
+    if (timestamp == Null) {
       return "Null Timestamp";
     }
     final DateTime dateTime = (timestamp as Timestamp).toDate();
     final String formattedDate = DateFormat.yMMM().format(dateTime);
     return formattedDate;
+  }
+
+  String formatEndDateTimestamp(Timestamp? timestamp) {
+    if (timestamp == Null) {
+      return "Present";
+    }
+
+    return formatTimestamp(timestamp);
   }
 
   Future<List<ExperienceDTO>?>? getExperienceSectionData() async {
@@ -34,9 +42,10 @@ class ExperienceSectionController {
             companyName: experience.companyName,
             location: experience.location,
             startDate: formatTimestamp(experience.startDate),
-            endDate: formatTimestamp(experience.endDate),
+            endDate: formatEndDateTimestamp(experience.endDate),
             description: experience.description,
             logoURL: experience.logoURL,
+            index: experience.index,
           );
         }).toList();
       } else {
@@ -46,9 +55,10 @@ class ExperienceSectionController {
             companyName: 'unknown',
             location: 'unknown',
             startDate: 'unknown',
-            endDate: 'unknown', 
+            endDate: 'unknown',
             description: 'unknown',
             logoURL: 'unknown',
+            index: -1,
           )
         ];
       }
@@ -63,6 +73,7 @@ class ExperienceSectionController {
           endDate: 'Error',
           description: 'Error',
           logoURL: 'Error',
+          index: -2,
         )
       ];
     }
@@ -83,9 +94,10 @@ class ExperienceSectionController {
           companyName: experience.companyName,
           location: experience.location,
           startDate: formatTimestamp(experience.startDate),
-          endDate: formatTimestamp(experience.endDate),
+          endDate: formatEndDateTimestamp(experience.endDate),
           description: experience.description,
           logoURL: experience.logoURL,
+          index: experience.index,
         );
       } else {
         return null; // Return null if the index is out of bounds or experiences is null
