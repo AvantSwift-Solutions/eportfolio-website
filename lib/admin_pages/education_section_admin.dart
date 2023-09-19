@@ -183,6 +183,9 @@ class EducationSectionAdmin extends StatelessWidget {
       endDate: null,
       description: '',
       logoURL: '',
+      major: '',
+      grade: -1,
+      gradeDescription: '',
     );
 
     _showEducationDialog(context, education, (a) async {
@@ -332,6 +335,20 @@ class EducationSectionAdmin extends StatelessWidget {
                                       },
                                     ),
                                     AdminViewDialogStyles.spacer,
+                                    const Text('Major',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    TextFormField(
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      initialValue: education.major,
+                                      decoration:
+                                          AdminViewDialogStyles.inputDecoration,
+                                      onSaved: (value) {
+                                        education.major = value;
+                                      },
+                                    ),
+                                    AdminViewDialogStyles.spacer,
                                     const Text('Start Date',
                                         textAlign: TextAlign.left),
                                     AdminViewDialogStyles.interTitleField,
@@ -419,6 +436,49 @@ class EducationSectionAdmin extends StatelessWidget {
                                             style: AdminViewDialogStyles
                                                 .inputTextStyle)
                                       ],
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Grade',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    TextFormField(
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      initialValue: education.grade == -1
+                                          ? ''
+                                          : education.grade.toString(),
+                                      validator: (value) {
+                                        if (value != null && value.isNotEmpty) {
+                                          if (double.tryParse(value) == null) {
+                                            return 'Please enter a number';
+                                          }
+                                        }
+                                        return null;
+                                      },
+                                      decoration:
+                                          AdminViewDialogStyles.inputDecoration,
+                                      onSaved: (value) {
+                                        education.grade =
+                                            double.tryParse(value ?? '-1') ??
+                                                -1;
+                                      },
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Grade Description',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    TextFormField(
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      initialValue: education.gradeDescription,
+                                      decoration: AdminViewDialogStyles
+                                          .inputDecoration
+                                          .copyWith(
+                                        hintText: 'e.g. First Class Honours',
+                                      ),
+                                      onSaved: (value) {
+                                        education.gradeDescription = value;
+                                      },
                                     ),
                                     AdminViewDialogStyles.spacer,
                                     const Text('Description',

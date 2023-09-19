@@ -39,8 +39,9 @@ class TSkillSectionAdmin extends StatelessWidget {
   }
 
   Future<void> _editCenterImage(BuildContext context) async {
-
-    String curimageURL = await FirebaseStorage.instance.ref('images/technical_skills_image').getDownloadURL();
+    String curimageURL = await FirebaseStorage.instance
+        .ref('images/technical_skills_image')
+        .getDownloadURL();
     Uint8List? pickedImageBytes;
 
     showDialog(
@@ -87,49 +88,45 @@ class TSkillSectionAdmin extends StatelessWidget {
                           width: AdminViewDialogStyles.showDialogWidth,
                           child: Form(
                               child: SizedBox(
-                                width: AdminViewDialogStyles.showDialogWidth,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    AdminViewDialogStyles.spacer,
-                                    if (pickedImageBytes != null)
-                                      Image.memory(pickedImageBytes!,
-                                          width:
-                                              AdminViewDialogStyles.imageWidth),
-                                    if (curimageURL != '' &&
-                                        pickedImageBytes == null)
-                                      Image.network(curimageURL,
-                                          width:
-                                              AdminViewDialogStyles.imageWidth),
-                                    AdminViewDialogStyles.interTitleField,
-                                    ElevatedButton(
-                                      onPressed: () async {
-                                        Uint8List? imageBytes =
-                                            await _pickImage();
-                                        if (imageBytes != null) {
-                                          pickedImageBytes = imageBytes;
-                                          setState(() {});
-                                        }
-                                      },
-                                      style: AdminViewDialogStyles
-                                          .imageButtonStyle,
-                                      child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            const Icon(Icons.add),
-                                            Text(
-                                              curimageURL == ''
-                                                  ? 'Add Image'
-                                                  : 'Change Image',
-                                              style: AdminViewDialogStyles
-                                                  .buttonTextStyle,
-                                            )
-                                          ]),
-                                    ),
-                                  ],
+                            width: AdminViewDialogStyles.showDialogWidth,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                AdminViewDialogStyles.spacer,
+                                if (pickedImageBytes != null)
+                                  Image.memory(pickedImageBytes!,
+                                      width: AdminViewDialogStyles.imageWidth),
+                                if (curimageURL != '' &&
+                                    pickedImageBytes == null)
+                                  Image.network(curimageURL,
+                                      width: AdminViewDialogStyles.imageWidth),
+                                AdminViewDialogStyles.interTitleField,
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    Uint8List? imageBytes = await _pickImage();
+                                    if (imageBytes != null) {
+                                      pickedImageBytes = imageBytes;
+                                      setState(() {});
+                                    }
+                                  },
+                                  style: AdminViewDialogStyles.imageButtonStyle,
+                                  child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const Icon(Icons.add),
+                                        Text(
+                                          curimageURL == ''
+                                              ? 'Add Image'
+                                              : 'Change Image',
+                                          style: AdminViewDialogStyles
+                                              .buttonTextStyle,
+                                        )
+                                      ]),
                                 ),
-                              )),
+                              ],
+                            ),
+                          )),
                         ),
                       )),
                   actions: <Widget>[
@@ -148,22 +145,25 @@ class TSkillSectionAdmin extends StatelessWidget {
                                 style:
                                     AdminViewDialogStyles.elevatedButtonStyle,
                                 onPressed: () async {
-                                    if (pickedImageBytes != null) {
-                                      String? imageURL = await _adminController
-                                          .uploadImageAndGetURL(
-                                              pickedImageBytes!,
-                                              'technical_skills_image');
-                                      if (imageURL != null) {
-                                        ScaffoldMessenger.of(parentContext)
-                                            .showSnackBar(
-                                          const SnackBar(content: Text('Center Image updated successfully')),
-                                        );
-                                      } else {
-                                        ScaffoldMessenger.of(parentContext)
-                                            .showSnackBar(
-                                          const SnackBar(content: Text('Error updating Center Image')),
-                                        );
-                                      }
+                                  if (pickedImageBytes != null) {
+                                    String? imageURL = await _adminController
+                                        .uploadImageAndGetURL(pickedImageBytes!,
+                                            'technical_skills_image');
+                                    if (imageURL != null) {
+                                      ScaffoldMessenger.of(parentContext)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                            content: Text(
+                                                'Center Image updated successfully')),
+                                      );
+                                    } else {
+                                      ScaffoldMessenger.of(parentContext)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                            content: Text(
+                                                'Error updating Center Image')),
+                                      );
+                                    }
                                     Navigator.of(dialogContext).pop();
                                     Navigator.of(parentContext).pop();
                                     _showList(parentContext); // Show new list
@@ -193,7 +193,6 @@ class TSkillSectionAdmin extends StatelessWidget {
         );
       },
     );
-
   }
 
   Future<void> _showList(BuildContext context) async {
@@ -244,21 +243,20 @@ class TSkillSectionAdmin extends StatelessWidget {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          style: AdminViewDialogStyles.centerImageButtonStyle,
-                          onPressed: () {
-                            _editCenterImage(context);
-                          },
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(Icons.add),
-                              Text('Change Center Image',
-                                style: AdminViewDialogStyles.buttonTextStyle)
-                            ],
-                          )
-                        ),
+                            style: AdminViewDialogStyles.centerImageButtonStyle,
+                            onPressed: () {
+                              _editCenterImage(context);
+                            },
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(Icons.add),
+                                Text('Change Center Image',
+                                    style:
+                                        AdminViewDialogStyles.buttonTextStyle)
+                              ],
+                            )),
                       ),
-                      
                       tskills.isEmpty
                           ? const Text('No Technical Skills available')
                           : ListView.builder(

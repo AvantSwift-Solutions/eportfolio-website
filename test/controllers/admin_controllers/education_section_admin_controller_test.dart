@@ -29,6 +29,9 @@ void main() {
     when(mockEducation1.schoolName).thenReturn('Mock School1');
     when(mockEducation1.degree).thenReturn('Mock Degree1');
     when(mockEducation1.description).thenReturn('Mock Description1');
+    when(mockEducation1.major).thenReturn('Mock Major1');
+    when(mockEducation1.grade).thenReturn(90);
+    when(mockEducation1.gradeDescription).thenReturn('Mock Grade Description1');
 
     mockEducation2 = MockEducation();
     when(mockEducation2.creationTimestamp).thenReturn(Timestamp.now());
@@ -41,6 +44,9 @@ void main() {
     when(mockEducation2.schoolName).thenReturn('Mock School2');
     when(mockEducation2.degree).thenReturn('Mock Degree2');
     when(mockEducation2.description).thenReturn('Mock Description2');
+    when(mockEducation2.major).thenReturn('Mock Major2');
+    when(mockEducation2.grade).thenReturn(80);
+    when(mockEducation2.gradeDescription).thenReturn('Mock Grade Description2');
 
     mockRepoService = MockEducationRepoService();
     controller = EducationSectionAdminController(mockRepoService);
@@ -68,6 +74,9 @@ void main() {
       expect(edu1.schoolName, mockEducation1.schoolName);
       expect(edu1.degree, mockEducation1.degree);
       expect(edu1.description, mockEducation1.description);
+      expect(edu1.major, mockEducation1.major);
+      expect(edu1.grade, mockEducation1.grade);
+      expect(edu1.gradeDescription, mockEducation1.gradeDescription);
 
       expect(edu2.creationTimestamp, mockEducation2.creationTimestamp);
       expect(edu2.eid, mockEducation2.eid);
@@ -78,6 +87,9 @@ void main() {
       expect(edu2.schoolName, mockEducation2.schoolName);
       expect(edu2.degree, mockEducation2.degree);
       expect(edu2.description, mockEducation2.description);
+      expect(edu2.major, mockEducation2.major);
+      expect(edu2.grade, mockEducation2.grade);
+      expect(edu2.gradeDescription, mockEducation2.gradeDescription);
     });
 
     test('getSectionData returns null data when education is null', () async {

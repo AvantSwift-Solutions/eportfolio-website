@@ -105,5 +105,4 @@ void main() {
       expect(controller.getSectionName(), 'Professional Experiences');
     });
   });
-
 }

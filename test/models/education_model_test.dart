@@ -19,6 +19,9 @@ void main() {
         schoolName: 'University of Example',
         degree: 'Degree name',
         description: 'This is a degree',
+        major: 'Major name',
+        grade: 90,
+        gradeDescription: 'First Class Honours',
       );
       final educationMap = education.toMap();
 
@@ -31,6 +34,9 @@ void main() {
       expect(educationMap['schoolName'], 'University of Example');
       expect(educationMap['degree'], 'Degree name');
       expect(educationMap['description'], 'This is a degree');
+      expect(educationMap['major'], 'Major name');
+      expect(educationMap['grade'], 90);
+      expect(educationMap['gradeDescription'], 'First Class Honours');
     });
   });
 }

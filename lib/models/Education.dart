@@ -12,6 +12,9 @@ class Education {
   String? schoolName;
   String? degree;
   String? description;
+  String? major;
+  double? grade;
+  String? gradeDescription;
 
   Education({
     required this.creationTimestamp,
@@ -23,6 +26,9 @@ class Education {
     required this.schoolName,
     required this.degree,
     required this.description,
+    required this.major,
+    required this.grade,
+    required this.gradeDescription,
   });
 
   factory Education.fromDocumentSnapshot(DocumentSnapshot snapshot) {
@@ -35,6 +41,9 @@ class Education {
     final schoolName = data['schoolName'];
     final degree = data['degree'];
     final description = data['description'];
+    final major = data['major'];
+    final grade = data['grade'];
+    final gradeDescription = data['gradeDescription'];
 
     return Education(
       creationTimestamp: creationTimestamp,
@@ -46,6 +55,9 @@ class Education {
       schoolName: schoolName,
       degree: degree,
       description: description,
+      major: major,
+      grade: grade,
+      gradeDescription: gradeDescription,
     );
   }
 
@@ -60,6 +72,9 @@ class Education {
       'schoolName': schoolName,
       'degree': degree,
       'description': description,
+      'major': major,
+      'grade': grade,
+      'gradeDescription': gradeDescription,
     };
   }
 
