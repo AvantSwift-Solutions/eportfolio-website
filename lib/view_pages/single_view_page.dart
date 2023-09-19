@@ -1,8 +1,8 @@
-import 'package:avantswift_portfolio/view_pages/about_me_section.dart';
 import 'package:flutter/material.dart';
-import 'contact_section.dart';
-import 'experience_section.dart';
 import 'landing_page.dart';
+import 'about_me_section.dart';
+import 'experience_section.dart';
+import 'contact_section.dart';
 
 class SinglePageView extends StatelessWidget {
   final ScrollController _scrollController = ScrollController();
