@@ -1,5 +1,6 @@
 import 'package:avantswift_portfolio/models/AwardCert.dart';
 import 'package:avantswift_portfolio/reposervice/award_cert_repo_services.dart';
+import 'package:avantswift_portfolio/view_pages/recommendation_section.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -95,16 +96,11 @@ class AwardCertSectionState extends State<AwardCertSection> {
             ],
           ),
         ),
+        SizedBox(width: 200),
         // Right Section (Peer Recommendations or other content)
         Expanded(
           flex: 1, // Adjust flex as needed
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Place your content for the right section here
-              // For example, peer recommendations or other content widgets
-            ],
-          ),
+          child: RecommendationSection(),
         ),
       ],
     );
