@@ -3,6 +3,7 @@ import 'package:avantswift_portfolio/reposervice/award_cert_repo_services.dart';
 import 'package:avantswift_portfolio/view_pages/recommendation_section.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:avantswift_portfolio/ui/custom_texts/public_view_text_styles.dart';
 
 class AwardCertSection extends StatefulWidget {
   const AwardCertSection({Key? key}) : super(key: key);
@@ -55,6 +56,10 @@ class AwardCertSectionState extends State<AwardCertSection> {
   @override
   Widget build(BuildContext context) {
     int totalPages = (awardCerts?.length ?? 0) ~/ (awardsPerRow * 2) + 1;
+    final screenWidth = MediaQuery.of(context).size.width;
+    // print(screenWidth);
+    double titleFontSize = screenWidth * 0.03;
+
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,11 +74,15 @@ class AwardCertSectionState extends State<AwardCertSection> {
                 padding: const EdgeInsets.only(left: 80.0),
                 child: Text(
                   'Awards & Certifications',
-                  style: TextStyle(
-                    fontSize: 64,
+                  style: PublicViewTextStyles.generalHeading.copyWith(
                     fontWeight: FontWeight.bold,
-                    fontFamily: 'Montserrat',
-                  ),
+                    fontSize: titleFontSize,
+                    ),
+                  // style: TextStyle(
+                  //   fontSize: 64,
+                  //   fontWeight: FontWeight.bold,
+                  //   fontFamily: 'Montserrat',
+                  // ),
                 ),
               ),
               const SizedBox(height: 40),
@@ -111,13 +120,14 @@ class AwardCertSectionState extends State<AwardCertSection> {
               if (awardCerts == null)
                 Text(
                   'Error loading awards and certificates.',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.red,
-                  ),
+                  style: PublicViewTextStyles.generalBodyText,
+                  // style: TextStyle(
+                  //   fontSize: 16,
+                  //   color: Colors.red,
+                  // ),
                 ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 0.0),
+                padding: const EdgeInsets.symmetric(vertical: 20.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -175,6 +185,7 @@ class AwardCertSectionState extends State<AwardCertSection> {
       ],
     );
   }
+
 
   Widget _buildPageIndicator(bool isActive, int pageIndex) {
     return GestureDetector(
