@@ -83,7 +83,7 @@ class _TSkillsImageState extends State<TSkillsImage> {
                         ),
                       ),
                       child: Padding(
-                        padding: EdgeInsets.all(widget.padding),
+                        padding: const EdgeInsets.all(0),
                         child: ClipOval(
                           child: currentPageImages[i],
                         ),
@@ -97,8 +97,8 @@ class _TSkillsImageState extends State<TSkillsImage> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: Colors.black, // Border color
-                      width: 2.0, // Border width
+                      color: Colors.grey, // This needs to be changed later
+                      width: 2.0,
                     ),
                   ),
                   child: Padding(

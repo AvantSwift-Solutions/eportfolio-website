@@ -28,7 +28,7 @@ class _TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
 
   void _loadImages() async {
     allSurroundingImages =
-        await _technicalSkillsController.getTechnicalSkillImagesGivenPage(1);
+        await _technicalSkillsController.getTechnicalSkillImages();
     centreImage = await _technicalSkillsController.getCentralImage();
     // Ensure that the widget rebuilds after loading the images
     setState(() {});
@@ -52,9 +52,9 @@ class _TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
           style: PublicViewTextStyles.generalSubHeading,
           textAlign: TextAlign.start,
         ),
-        Container(
+        const SizedBox(
           width: 420,
-          child: const Divider(
+          child: Divider(
             color: Colors.black,
             thickness: 2.0,
           ),

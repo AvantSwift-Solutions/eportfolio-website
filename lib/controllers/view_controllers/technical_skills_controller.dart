@@ -23,19 +23,19 @@ class TechnicalSkillsController {
     }
   }
 
-  Future<List<Image>> getTechnicalSkillImagesGivenPage(int i) async {
+  Future<List<Image>> getTechnicalSkillImages() async {
     try {
       List<TSkill>? allTSkill = await tSkillRepoService.getAllTSkill();
       List<Image> allTSkillImages = [];
       for (TSkill tSkill in allTSkill!) {
         // Load the image from the network or assets
         allTSkillImages.add(
-          Image.network(tSkill.imageURL!, fit: BoxFit.contain),
+          Image.network(
+            tSkill.imageURL!,
+          ),
         );
       }
-      // int startIndex = i * 8 - 8;
-      // int endIndex = (startIndex + 8).clamp(0, allTSkillImages.length);
-      // List<Image> curPageImages = allTSkillImages.sublist(startIndex, endIndex);
+
       List<Image> curPageImages = allTSkillImages;
       return curPageImages;
     } catch (e) {
