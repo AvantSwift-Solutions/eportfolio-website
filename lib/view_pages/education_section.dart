@@ -1,7 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
-import 'dart:js_interop';
-
 import 'package:flutter/material.dart';
 import '../controllers/view_controllers/education_section_controller.dart';
 import '../dto/education_section_dto.dart';
@@ -20,134 +16,133 @@ class EducationSectionState extends State<EducationSection> {
   final EducationSectionController _educationSectionController =
       EducationSectionController(EducationRepoService());
 
-  // Variable to track whether to show all experiences or not
+  late List<EducationDTO> educationSectionData;
   bool showAllEducation = false;
-
-  @override
-  void dispose() {
-    super.dispose(); // Call super.dispose() at the end
-  }
-
   int currentPage = 0;
   static const itemsPerPage = 2;
 
   @override
+  void initState() {
+    super.initState();
+    _loadEducationData();
+  }
+
+  Future<void> _loadEducationData() async {
+    final data = await _educationSectionController.getEducationSectionData();
+    setState(() {
+      educationSectionData = data!;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // Dispose of any resources if needed
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _educationSectionController.getEducationSectionData(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return const Center(child: Text('Error loading data'));
-        }
+    if (educationSectionData == null) {
+      // Handle the case when data is still loading
+      return const Center(child: CircularProgressIndicator());
+    } else if (educationSectionData.isEmpty) {
+      // Handle the case when there's no data
+      return const Center(child: Text('No education data available'));
+    }
 
-        final educationSectionData = snapshot.data;
-        final screenWidth = MediaQuery.of(context).size.width;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final totalPages = (educationSectionData.length / itemsPerPage).ceil();
+    double titleFontSize = screenWidth * 0.05;
+    int numEducation = showAllEducation
+        ? educationSectionData.length
+        : itemsPerPage; // Set the number of items to display
 
-// Calculate the total number of pages
-        final totalPages = (educationSectionData!.length / itemsPerPage).ceil();
-
-        double titleFontSize = screenWidth * 0.05;
-
-        // Determine the number of experiences to display based on showAllExperiences
-        int numEducation;
-
-        if (showAllEducation) {
-          numEducation = educationSectionData?.length as int;
-        } else {
-          numEducation = 2; // You can change this to any desired limit
-        }
-
-        return Container(
-          width: screenWidth * 0.4 + screenWidth * 0.006,
-          // decoration: BoxDecoration(border: Border.all(color: Colors.cyan)),
-          child: Column(
+    return Container(
+      width: screenWidth * 0.4 + screenWidth * 0.006,
+      child: Column(
+        children: [
+          Row(
             children: [
-              Row(
-                children: [
-                  SizedBox(
-                    width: screenWidth * 0.055,
-                  ),
-                  Text(
-                    "Education History",
-                    style: PublicViewTextStyles.generalSubHeading,
-                    textAlign: TextAlign.left,
-                  ),
-                ],
+              SizedBox(
+                width: screenWidth * 0.055,
               ),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: itemsPerPage,
-                itemBuilder: (context, index) {
-                  final dataIndex = currentPage * itemsPerPage + index;
-                  if (dataIndex < educationSectionData.length) {
-                    return Column(
-                      children: [
-                        EducationWidget(
-                          educationDTO: educationSectionData[dataIndex],
-                        ),
-                      ],
-                    );
-                  } else {
-                    return SizedBox(); // Return an empty widget if there are no more items.
-                  }
-                },
+              Text(
+                "Education History",
+                style: PublicViewTextStyles.generalSubHeading,
+                textAlign: TextAlign.left,
               ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: screenWidth * 0.055,
-                  ),
-                  Expanded(
-                      child: Column(
-                    children: [
-                      Divider(
-                        color: Colors.black,
-                        thickness: 2,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          for (int page = 0; page < totalPages; page++)
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  currentPage = page;
-                                });
-                              },
-                              child: Container(
-                                width: 10,
-                                height: 10,
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 5),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: currentPage == page
-                                      ? Colors.black
-                                      : Colors.grey.withOpacity(0.5),
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                    ],
-                  ))
-                ],
-              )
             ],
           ),
-        );
-      },
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: numEducation,
+            itemBuilder: (context, index) {
+              final dataIndex = currentPage * itemsPerPage + index;
+              if (dataIndex < educationSectionData.length) {
+                return Column(
+                  children: [
+                    EducationWidget(
+                      educationDTO: educationSectionData[dataIndex],
+                    ),
+                  ],
+                );
+              } else {
+                return SizedBox(); // Return an empty widget if there are no more items.
+              }
+            },
+          ),
+          Row(
+            children: [
+              SizedBox(
+                width: screenWidth * 0.055,
+              ),
+              Expanded(
+                child: Column(
+                  children: [
+                    Divider(
+                      color: Colors.black,
+                      thickness: 2,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        for (int page = 0; page < totalPages; page++)
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                currentPage = page;
+                              });
+                            },
+                            child: Container(
+                              width: 10,
+                              height: 10,
+                              margin: const EdgeInsets.symmetric(horizontal: 5),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: currentPage == page
+                                    ? Colors.black
+                                    : Colors.grey.withOpacity(0.5),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 }
-// test
 
 class EducationWidget extends StatelessWidget {
   final EducationDTO educationDTO;
-  const EducationWidget({super.key, required this.educationDTO});
+  const EducationWidget({Key? key, required this.educationDTO})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -155,11 +150,9 @@ class EducationWidget extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     final bool isFirst = educationDTO.index as int == 0;
-
     double titleFontSize = screenWidth * 0.03;
 
     return IntrinsicHeight(
-      // decoration: BoxDecoration(border: Border.all(color: Colors.black)),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -236,9 +229,9 @@ class EducationWidget extends StatelessWidget {
                             educationDTO.degree as String,
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          if (!educationDTO.major.isNull)
+                          if (!educationDTO.major!.isEmpty)
                             Text(
-                              !educationDTO.major.isNull
+                              !educationDTO.major!.isEmpty
                                   ? '${educationDTO.major as String}'
                                   : "",
                               style: TextStyle(fontWeight: FontWeight.bold),
