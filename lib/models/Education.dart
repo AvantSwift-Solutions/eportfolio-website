@@ -11,6 +11,10 @@ class Education {
   String? schoolName;
   String? degree;
   String? description;
+  String? gradeDescription;
+  int? index;
+  int? grade;
+  String? major;
 
   Education({
     required this.eid,
@@ -20,6 +24,10 @@ class Education {
     required this.schoolName,
     required this.degree,
     this.description,
+    this.gradeDescription,
+    this.grade,
+    this.index,
+    this.major,
   });
 
   factory Education.fromDocumentSnapshot(DocumentSnapshot snapshot) {
@@ -30,6 +38,10 @@ class Education {
     final schoolName = data['schoolName'];
     final degree = data['degree'];
     final description = data['description'];
+    final gradeDescription = data['gradeDescription'];
+    final grade = data['grade'];
+    final index = data['index'];
+    final major = data['major'];
 
     return Education(
       eid: snapshot.id,
@@ -39,6 +51,10 @@ class Education {
       schoolName: schoolName,
       degree: degree,
       description: description,
+      gradeDescription: gradeDescription,
+      grade: grade,
+      index: index,
+      major: major,
     );
   }
 
@@ -51,6 +67,10 @@ class Education {
       'schoolName': schoolName,
       'degree': degree,
       'description': description,
+      'gradeDescription': gradeDescription,
+      'grade': grade,
+      'index': index,
+      'major': major,
     };
   }
 
