@@ -568,7 +568,7 @@ class AwardCertSectionAdmin extends StatelessWidget {
                             ElevatedButton(
                               style: AdminViewDialogStyles.elevatedButtonStyle,
                               onPressed: () async {
-                                final deleted = await x.delete();
+                                final deleted = await x.delete() ?? false;
                                 if (deleted) {
                                   setState(() {});
                                   ScaffoldMessenger.of(context).showSnackBar(

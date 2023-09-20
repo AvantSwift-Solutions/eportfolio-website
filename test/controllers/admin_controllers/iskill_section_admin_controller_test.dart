@@ -20,11 +20,13 @@ void main() {
 
   setUp(() {
     mockISkill1 = MockISkill();
+    when(mockISkill1.creationTimestamp).thenReturn(Timestamp.now());
     when(mockISkill1.isid).thenReturn('mockIsid1');
     when(mockISkill1.index).thenReturn(0);
     when(mockISkill1.name).thenReturn('Mock ISkill 1');
 
     mockISkill2 = MockISkill();
+    when(mockISkill2.creationTimestamp).thenReturn(Timestamp.now());
     when(mockISkill2.isid).thenReturn('mockIsid2');
     when(mockISkill2.index).thenReturn(1);
     when(mockISkill2.name).thenReturn('Mock ISkill 2');
@@ -46,10 +48,12 @@ void main() {
       var iskill1 = allISkill[0];
       var iskill2 = allISkill[1];
 
+      expect(iskill1.creationTimestamp, mockISkill1.creationTimestamp);
       expect(iskill1.isid, mockISkill1.isid);
       expect(iskill1.index, mockISkill1.index);
       expect(iskill1.name, mockISkill1.name);
 
+      expect(iskill1.creationTimestamp, mockISkill1.creationTimestamp);
       expect(iskill2.isid, mockISkill2.isid);
       expect(iskill2.index, mockISkill2.index);
       expect(iskill2.name, mockISkill2.name);
@@ -80,29 +84,82 @@ void main() {
     });
 
     test('returns list of titles when section data is not null', () async {
-      when(controller.getSectionData()).thenAnswer((_) => Future.value([
-            ISkill(
-                creationTimestamp: Timestamp.now(),
-                index: 1,
-                name: 'Skill 1',
-                isid: ''),
-            ISkill(
-                creationTimestamp: Timestamp.now(),
-                index: 2,
-                name: 'Skill 2',
-                isid: ''),
-            ISkill(
-                creationTimestamp: Timestamp.now(),
-                index: 3,
-                name: 'Skill 3',
-                isid: ''),
-          ]));
+      when(controller.getSectionData())
+          .thenAnswer((_) => Future.value([mockISkill1, mockISkill2]));
       final titles = await controller.getSectionTitles();
       expect(titles, [
-        const Tuple2(1, 'Skill 1'),
-        const Tuple2(2, 'Skill 2'),
-        const Tuple2(3, 'Skill 3'),
+        Tuple2(mockISkill1.index, mockISkill1.name),
+        Tuple2(mockISkill2.index, mockISkill2.name),
       ]);
+    });
+
+    test('updateSectionOrder should update the indicies', () async {
+      final items = [
+        const Tuple2<int, String>(0, 'item1'),
+        const Tuple2<int, String>(1, 'item2')
+      ];
+      final exps = [mockISkill1, mockISkill2];
+      when(controller.getSectionData()).thenAnswer((_) async => exps);
+      when(mockISkill1.update()).thenAnswer((_) async => true);
+      when(mockISkill2.update()).thenAnswer((_) async => true);
+
+      await controller.updateSectionOrder(items);
+
+      verifyInOrder([
+        mockISkill1.index = 0,
+        mockISkill1.update(),
+        mockISkill2.index = 1,
+        mockISkill2.update(),
+      ]);
+    });
+
+    test('defaultOrderName should return correctly', () {
+      expect(controller.defaultOrderName(), 'Alphabetically');
+    });
+
+    test('applyDefaultOrder should sort objects in default order', () async {
+      final list = [mockISkill1, mockISkill2];
+      when(controller.getSectionData()).thenAnswer((_) async => list);
+      when(mockISkill1.name).thenReturn('b');
+      when(mockISkill2.name).thenReturn('a');
+      when(mockISkill1.update()).thenAnswer((_) async => true);
+      when(mockISkill2.update()).thenAnswer((_) async => false);
+
+      await controller.applyDefaultOrder();
+
+      expect(list[0].name, 'a');
+      expect(list[1].name, 'b');
+    });
+
+    test(
+        'deleteData should delete object at given index and update the index of remaining objects',
+        () async {
+      final list = [mockISkill1, mockISkill2];
+      when(mockISkill1.index).thenReturn(0);
+      when(mockISkill2.index).thenReturn(1);
+      when(mockISkill1.update()).thenAnswer((_) async => true);
+      when(mockISkill1.delete()).thenAnswer((_) async => true);
+      when(mockISkill2.update()).thenAnswer((_) async => true);
+      when(mockISkill2.delete()).thenAnswer((_) async => true);
+
+      final result = await controller.deleteData(list, 0);
+
+      verifyInOrder([
+        mockISkill2.index = 0,
+        mockISkill2.update(),
+        mockISkill1.delete(),
+      ]);
+      expect(list[0].index, 0);
+      expect(result, true);
+    });
+
+    test('deleteData should return false if deleting object fails', () async {
+      final list = [mockISkill1];
+      when(mockISkill1.delete()).thenThrow(Exception());
+
+      final result = await controller.deleteData(list, 0);
+
+      expect(result, false);
     });
   });
 }

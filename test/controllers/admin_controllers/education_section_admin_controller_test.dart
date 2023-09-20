@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:avantswift_portfolio/controllers/admin_controllers/education_section_admin_controller.dart';
+import 'package:tuple/tuple.dart';
 import 'mocks/education_section_admin_controller_test.mocks.dart';
 
 @GenerateMocks([EducationRepoService])
@@ -107,6 +108,95 @@ void main() {
 
     test('getSectionName returns correct name', () {
       expect(controller.getSectionName(), 'Educations');
+    });
+
+    test('returns empty list when section data is null', () async {
+      when(controller.getSectionData()).thenAnswer((_) => Future.value(null));
+      final titles = await controller.getSectionTitles();
+      expect(titles, isEmpty);
+    });
+
+    test('returns list of titles when section data is not null', () async {
+      when(controller.getSectionData())
+          .thenAnswer((_) => Future.value([mockEducation1, mockEducation2]));
+      final titles = await controller.getSectionTitles();
+      expect(titles, [
+        Tuple2(mockEducation1.index,
+            '${mockEducation1.degree} at ${mockEducation1.schoolName}'),
+        Tuple2(mockEducation2.index,
+            '${mockEducation2.degree} at ${mockEducation2.schoolName}'),
+      ]);
+    });
+
+    test('updateSectionOrder should update the indicies', () async {
+      final items = [
+        const Tuple2<int, String>(0, 'item1'),
+        const Tuple2<int, String>(1, 'item2')
+      ];
+      final exps = [mockEducation1, mockEducation2];
+      when(controller.getSectionData()).thenAnswer((_) async => exps);
+      when(mockEducation1.update()).thenAnswer((_) async => true);
+      when(mockEducation2.update()).thenAnswer((_) async => true);
+
+      await controller.updateSectionOrder(items);
+
+      verifyInOrder([
+        mockEducation1.index = 0,
+        mockEducation1.update(),
+        mockEducation2.index = 1,
+        mockEducation2.update(),
+      ]);
+    });
+
+    test('defaultOrderName should return correctly', () {
+      expect(controller.defaultOrderName(), 'by End Date');
+    });
+
+    test('applyDefaultOrder should sort objects in default order', () async {
+      final list = [mockEducation1, mockEducation2];
+      when(controller.getSectionData()).thenAnswer((_) async => list);
+      when(mockEducation1.endDate)
+          .thenReturn(Timestamp.fromMicrosecondsSinceEpoch(1));
+      when(mockEducation2.endDate)
+          .thenReturn(Timestamp.fromMicrosecondsSinceEpoch(2));
+      when(mockEducation1.update()).thenAnswer((_) async => true);
+      when(mockEducation2.update()).thenAnswer((_) async => false);
+
+      await controller.applyDefaultOrder();
+
+      expect(list[0].endDate, Timestamp.fromMicrosecondsSinceEpoch(2));
+      expect(list[1].endDate, Timestamp.fromMicrosecondsSinceEpoch(1));
+    });
+
+    test(
+        'deleteData should delete object at given index and update the index of remaining objects',
+        () async {
+      final list = [mockEducation1, mockEducation2];
+      when(mockEducation1.index).thenReturn(0);
+      when(mockEducation2.index).thenReturn(1);
+      when(mockEducation1.update()).thenAnswer((_) async => true);
+      when(mockEducation1.delete()).thenAnswer((_) async => true);
+      when(mockEducation2.update()).thenAnswer((_) async => true);
+      when(mockEducation2.delete()).thenAnswer((_) async => true);
+
+      final result = await controller.deleteData(list, 0);
+
+      verifyInOrder([
+        mockEducation2.index = 0,
+        mockEducation2.update(),
+        mockEducation1.delete(),
+      ]);
+      expect(list[0].index, 0);
+      expect(result, true);
+    });
+
+    test('deleteData should return false if deleting object fails', () async {
+      final list = [mockEducation1];
+      when(mockEducation1.delete()).thenThrow(Exception());
+
+      final result = await controller.deleteData(list, 0);
+
+      expect(result, false);
     });
   });
 }

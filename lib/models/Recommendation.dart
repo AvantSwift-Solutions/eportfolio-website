@@ -88,7 +88,7 @@ class Recommendation {
     }
   }
 
-  Future<bool> delete() async {
+  Future<bool>? delete() async {
     try {
       await FirebaseFirestore.instance
           .collection('Recommendation')

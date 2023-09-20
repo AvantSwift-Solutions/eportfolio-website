@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:tuple/tuple.dart';
 import 'mocks/award_cert_section_admin_controller_test.mocks.dart';
 
 @GenerateMocks([AwardCertRepoService])
@@ -88,6 +89,91 @@ void main() {
 
     test('getSectionName returns correct name', () {
       expect(controller.getSectionName(), 'Awards & Certifications');
+    });
+
+    test('returns empty list when section data is null', () async {
+      when(controller.getSectionData()).thenAnswer((_) => Future.value(null));
+      final titles = await controller.getSectionTitles();
+      expect(titles, isEmpty);
+    });
+
+    test('returns list of titles when section data is not null', () async {
+      when(controller.getSectionData())
+          .thenAnswer((_) => Future.value([ac1, ac2]));
+      final titles = await controller.getSectionTitles();
+      expect(titles, [
+        Tuple2(ac1.index, '${ac1.name} from ${ac1.source}'),
+        Tuple2(ac2.index, '${ac2.name} from ${ac2.source}'),
+      ]);
+    });
+
+    test('updateSectionOrder should update the indicies', () async {
+      final items = [
+        const Tuple2<int, String>(0, 'item1'),
+        const Tuple2<int, String>(1, 'item2')
+      ];
+      final exps = [ac1, ac2];
+      when(controller.getSectionData()).thenAnswer((_) async => exps);
+      when(ac1.update()).thenAnswer((_) async => true);
+      when(ac2.update()).thenAnswer((_) async => true);
+
+      await controller.updateSectionOrder(items);
+
+      verifyInOrder([
+        ac1.index = 0,
+        ac1.update(),
+        ac2.index = 1,
+        ac2.update(),
+      ]);
+    });
+
+    test('defaultOrderName should return correctly', () {
+      expect(controller.defaultOrderName(), 'by Date Issued');
+    });
+
+    test('applyDefaultOrder should sort objects in default order', () async {
+      final list = [ac1, ac2];
+      when(controller.getSectionData()).thenAnswer((_) async => list);
+      when(ac1.dateIssued).thenReturn(Timestamp.fromMicrosecondsSinceEpoch(1));
+      when(ac2.dateIssued).thenReturn(Timestamp.fromMicrosecondsSinceEpoch(2));
+      when(ac1.update()).thenAnswer((_) async => true);
+      when(ac2.update()).thenAnswer((_) async => false);
+
+      await controller.applyDefaultOrder();
+
+      expect(list[0].dateIssued, Timestamp.fromMicrosecondsSinceEpoch(2));
+      expect(list[1].dateIssued, Timestamp.fromMicrosecondsSinceEpoch(1));
+    });
+
+    test(
+        'deleteData should delete object at given index and update the index of remaining objects',
+        () async {
+      final list = [ac1, ac2];
+      when(ac1.index).thenReturn(0);
+      when(ac2.index).thenReturn(1);
+      when(ac1.update()).thenAnswer((_) async => true);
+      when(ac1.delete()).thenAnswer((_) async => true);
+      when(ac2.update()).thenAnswer((_) async => true);
+      when(ac2.delete()).thenAnswer((_) async => true);
+
+      final result = await controller.deleteData(list, 0);
+
+      verifyInOrder([
+        ac2.index = 0,
+        ac2.update(),
+        ac1.delete(),
+      ]);
+      expect(list[0].index, 0);
+      expect(result, true);
+    });
+
+    test('deleteData should return false if deleting object fails', () async {
+      final list = [ac1];
+      when(ac1.delete()).thenThrow(Exception());
+
+      final result = await controller.deleteData(list, 0);
+
+      expect(result, false);
     });
   });
 }

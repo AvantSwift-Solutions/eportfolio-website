@@ -74,7 +74,7 @@ class Project {
     }
   }
 
-  Future<bool> delete() async {
+  Future<bool>? delete() async {
     try {
       await FirebaseFirestore.instance.collection('Project').doc(ppid).delete();
       return true;

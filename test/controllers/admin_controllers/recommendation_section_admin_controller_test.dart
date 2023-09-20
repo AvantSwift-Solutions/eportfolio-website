@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:avantswift_portfolio/controllers/admin_controllers/recommendation_section_admin_controller.dart';
+import 'package:tuple/tuple.dart';
 import 'mocks/recommendation_section_admin_controller_test.mocks.dart';
 
 @GenerateMocks([RecommendationRepoService])
@@ -94,6 +95,95 @@ void main() {
     test('getSectionName returns correct name', () {
       final sectionName = controller.getSectionName();
       expect(sectionName, 'Recommendations');
+    });
+
+    test('returns empty list when section data is null', () async {
+      when(controller.getSectionData()).thenAnswer((_) => Future.value(null));
+      final titles = await controller.getSectionTitles();
+      expect(titles, isEmpty);
+    });
+
+    test('returns list of titles when section data is not null', () async {
+      when(controller.getSectionData()).thenAnswer(
+          (_) => Future.value([mockRecommendation1, mockRecommendation2]));
+      final titles = await controller.getSectionTitles();
+      expect(titles, [
+        Tuple2(mockRecommendation1.index,
+            'From ${mockRecommendation1.colleagueName}'),
+        Tuple2(mockRecommendation2.index,
+            'From ${mockRecommendation2.colleagueName}'),
+      ]);
+    });
+
+    test('updateSectionOrder should update the indicies', () async {
+      final items = [
+        const Tuple2<int, String>(0, 'item1'),
+        const Tuple2<int, String>(1, 'item2')
+      ];
+      final exps = [mockRecommendation1, mockRecommendation2];
+      when(controller.getSectionData()).thenAnswer((_) async => exps);
+      when(mockRecommendation1.update()).thenAnswer((_) async => true);
+      when(mockRecommendation2.update()).thenAnswer((_) async => true);
+
+      await controller.updateSectionOrder(items);
+
+      verifyInOrder([
+        mockRecommendation1.index = 0,
+        mockRecommendation1.update(),
+        mockRecommendation2.index = 1,
+        mockRecommendation2.update(),
+      ]);
+    });
+
+    test('defaultOrderName should return correctly', () {
+      expect(controller.defaultOrderName(), 'by Date Recieved');
+    });
+
+    test('applyDefaultOrder should sort objects in default order', () async {
+      final list = [mockRecommendation1, mockRecommendation2];
+      when(controller.getSectionData()).thenAnswer((_) async => list);
+      when(mockRecommendation1.dateReceived)
+          .thenReturn(Timestamp.fromMicrosecondsSinceEpoch(1));
+      when(mockRecommendation2.dateReceived)
+          .thenReturn(Timestamp.fromMicrosecondsSinceEpoch(2));
+      when(mockRecommendation1.update()).thenAnswer((_) async => true);
+      when(mockRecommendation2.update()).thenAnswer((_) async => false);
+
+      await controller.applyDefaultOrder();
+
+      expect(list[0].dateReceived, Timestamp.fromMicrosecondsSinceEpoch(2));
+      expect(list[1].dateReceived, Timestamp.fromMicrosecondsSinceEpoch(1));
+    });
+
+    test(
+        'deleteData should delete object at given index and update the index of remaining objects',
+        () async {
+      final list = [mockRecommendation1, mockRecommendation2];
+      when(mockRecommendation1.index).thenReturn(0);
+      when(mockRecommendation2.index).thenReturn(1);
+      when(mockRecommendation1.update()).thenAnswer((_) async => true);
+      when(mockRecommendation1.delete()).thenAnswer((_) async => true);
+      when(mockRecommendation2.update()).thenAnswer((_) async => true);
+      when(mockRecommendation2.delete()).thenAnswer((_) async => true);
+
+      final result = await controller.deleteData(list, 0);
+
+      verifyInOrder([
+        mockRecommendation2.index = 0,
+        mockRecommendation2.update(),
+        mockRecommendation1.delete(),
+      ]);
+      expect(list[0].index, 0);
+      expect(result, true);
+    });
+
+    test('deleteData should return false if deleting object fails', () async {
+      final list = [mockRecommendation1];
+      when(mockRecommendation1.delete()).thenThrow(Exception());
+
+      final result = await controller.deleteData(list, 0);
+
+      expect(result, false);
     });
   });
 }

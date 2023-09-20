@@ -64,7 +64,7 @@ class ISkill {
     }
   }
 
-  Future<bool> delete() async {
+  Future<bool>? delete() async {
     try {
       await FirebaseFirestore.instance.collection('ISkill').doc(isid).delete();
       return true;
