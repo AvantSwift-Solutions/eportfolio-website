@@ -65,9 +65,8 @@ class EducationSectionState extends State<EducationSection> {
                   ),
                   Text(
                     "Education History",
-                    style: PublicViewTextStyles.generalHeading.copyWith(
-                        fontSize: titleFontSize * 0.4,
-                        fontWeight: FontWeight.bold),
+                    style: PublicViewTextStyles.generalSubHeading,
+                    textAlign: TextAlign.left,
                   ),
                 ],
               ),
@@ -148,7 +147,10 @@ class EducationWidget extends StatelessWidget {
           Expanded(
             child: Column(
               children: [
-                const Divider(),
+                const Divider(
+                  color: Colors.black,
+                  thickness: 2,
+                ),
                 Row(
                   children: [
                     Column(

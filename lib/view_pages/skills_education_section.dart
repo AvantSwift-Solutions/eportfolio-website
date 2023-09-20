@@ -2,6 +2,7 @@ import 'package:avantswift_portfolio/view_pages/technical_skills_section.dart';
 import 'package:flutter/material.dart';
 
 import '../ui/custom_texts/public_view_text_styles.dart';
+import 'education_section.dart';
 import 'interpersonal_skills_section.dart';
 
 // Import your TechnicalSkillsWidget and InterpersonalSkillsWidget here
@@ -37,23 +38,23 @@ class SkillsAndEducation extends StatelessWidget {
                   child: const TechnicalSkillsWidget(),
                 ),
 
-                const SizedBox(width: 20),
+                const SizedBox(width: 200),
                 // Right Column
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(right: 80),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.black, // Border color
-                              width: 2.0, // Border width
-                            ),
-                          ),
-                          child: InterpersonalSkillsWidget(),
+                          // decoration: BoxDecoration(
+                          //   border: Border.all(
+                          //     color: Colors.black, // Border color
+                          //     width: 2.0, // Border width
+                          //   ),
+                          // ),
+                          child: EducationSection(),
                         ),
                         const SizedBox(height: 20), // Adjust vertical spacing
                         // InterpersonalSkillsWidget
