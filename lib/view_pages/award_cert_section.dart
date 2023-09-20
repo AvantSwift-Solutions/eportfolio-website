@@ -14,10 +14,19 @@ class AwardCertSection extends StatefulWidget {
 class AwardCertSectionState extends State<AwardCertSection> {
   final AwardCertRepoService _awardCertRepoService = AwardCertRepoService();
   List<AwardCert>? awardCerts;
+  PageController _pageController = PageController(viewportFraction: 1.0, initialPage: 0);
+  static const int awardsPerRow = 3;
+  int _currentPage = 0;
 
   @override
   void initState() {
     super.initState();
+    _pageController.addListener(() {
+      setState(() {
+        _currentPage = _pageController.page?.toInt() ?? 0;
+      });
+    });
+
     fetchData();
   }
 
@@ -42,14 +51,17 @@ class AwardCertSectionState extends State<AwardCertSection> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
+    int totalPages = (awardCerts?.length ?? 0) ~/ (awardsPerRow * 2) + 1;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Left Section (Awards and Certificates)
         Expanded(
-          flex: 1, // Adjust flex as needed
+          flex: 1,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -68,21 +80,32 @@ class AwardCertSectionState extends State<AwardCertSection> {
               if (awardCerts != null)
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0),
-                  child: GridView.builder(
-                    padding: EdgeInsets.all(20),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3, // Adjust the number of columns as needed
-                      // childAspectRatio: 1.0, // Adjust aspect ratio for circular shape
-                      // crossAxisSpacing: 5.0, // Adjust horizontal spacing
-                      // mainAxisSpacing: 10.0, // Adjust vertical spacing
-                      
+                  child: SizedBox(
+                    height: 450,
+                    child: PageView.builder(
+                      controller: _pageController,
+                      physics: BouncingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: totalPages,
+                      itemBuilder: (context, pageIndex) {
+                        int startIndex = pageIndex * (awardsPerRow * 2);
+                        int endIndex = (pageIndex + 1) * (awardsPerRow * 2);
+                        endIndex = endIndex < awardCerts!.length ? endIndex : awardCerts!.length;
+
+                        return GridView.builder(
+                          padding: EdgeInsets.all(20),
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: awardsPerRow,
+                          ),
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: endIndex - startIndex,
+                          itemBuilder: (context, index) {
+                            return _buildAwardCertCircle(awardCerts![startIndex + index]);
+                          },
+                        );
+                      },
                     ),
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: awardCerts!.length,
-                    itemBuilder: (context, index) {
-                      return _buildAwardCertCircle(awardCerts![index]);
-                    },
                   ),
                 ),
               if (awardCerts == null)
@@ -93,13 +116,25 @@ class AwardCertSectionState extends State<AwardCertSection> {
                     color: Colors.red,
                   ),
                 ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 0.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    for (int i = 0; i < totalPages; i++)
+                      i == _currentPage
+                          ? _buildPageIndicator(true, i)
+                          : _buildPageIndicator(false, i),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
         SizedBox(width: 200),
         // Right Section (Peer Recommendations or other content)
         Expanded(
-          flex: 1, // Adjust flex as needed
+          flex: 1,
           child: RecommendationSection(),
         ),
       ],
@@ -114,7 +149,18 @@ class AwardCertSectionState extends State<AwardCertSection> {
           child: CircleAvatar(
             backgroundColor: Color.fromARGB(255, 174, 224, 176),
             radius: 80.0,
-            backgroundImage: NetworkImage(awardCert.imageURL ?? ''),
+            backgroundImage: awardCert.imageURL != null ? NetworkImage(awardCert.imageURL!) : null,
+            child: awardCert.imageURL == null
+                ? Center(
+                    child: Text(
+                      awardCert.source ?? 'Source',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  )
+                : null,
           ),
         ),
         SizedBox(height: 10.0),
@@ -129,4 +175,26 @@ class AwardCertSectionState extends State<AwardCertSection> {
       ],
     );
   }
+
+  Widget _buildPageIndicator(bool isActive, int pageIndex) {
+    return GestureDetector(
+      onTap: () {
+        _pageController.animateToPage(
+          pageIndex,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.ease,
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 4.0),
+        height: 8.0,
+        width: isActive ? 8.0 : 8.0,
+        decoration: BoxDecoration(
+          color: isActive ? Colors.blue : Colors.grey,
+          borderRadius: BorderRadius.circular(4.0),
+        ),
+      ),
+    );
+  }
+
 }
