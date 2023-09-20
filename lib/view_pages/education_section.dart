@@ -42,7 +42,6 @@ class EducationSectionState extends State<EducationSection> {
         final educationSectionData = snapshot.data;
         final screenWidth = MediaQuery.of(context).size.width;
 
-        double titleFontSize = screenWidth * 0.05;
 
         // Determine the number of experiences to display based on showAllExperiences
         int numEducation;
@@ -53,7 +52,7 @@ class EducationSectionState extends State<EducationSection> {
           numEducation = 2; // You can change this to any desired limit
         }
 
-        return Container(
+        return SizedBox(
           width: screenWidth * 0.4 + screenWidth * 0.006,
           // decoration: BoxDecoration(border: Border.all(color: Colors.cyan)),
           child: Column(
@@ -103,7 +102,6 @@ class EducationWidget extends StatelessWidget {
 
     final bool isFirst = educationDTO.index as int == 0;
 
-    double titleFontSize = screenWidth * 0.03;
 
     return IntrinsicHeight(
       // decoration: BoxDecoration(border: Border.all(color: Colors.black)),
@@ -173,7 +171,7 @@ class EducationWidget extends StatelessWidget {
                         children: [
                           Text(educationDTO.degree as String),
                           Text(!educationDTO.major.isNull
-                              ? '${educationDTO.major as String}'
+                              ? educationDTO.major as String
                               : ""),
                           Text((!educationDTO.grade!.isNegative
                                   ? 'Grade: ${educationDTO.grade as int}'

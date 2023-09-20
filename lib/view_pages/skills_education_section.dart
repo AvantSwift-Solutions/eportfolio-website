@@ -54,7 +54,7 @@ class SkillsAndEducation extends StatelessWidget {
                           //     width: 2.0, // Border width
                           //   ),
                           // ),
-                          child: EducationSection(),
+                          child: const EducationSection(),
                         ),
                         const SizedBox(height: 20), // Adjust vertical spacing
                         // InterpersonalSkillsWidget

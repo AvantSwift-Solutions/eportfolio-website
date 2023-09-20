@@ -41,7 +41,7 @@ class SinglePageView extends StatelessWidget {
               const SizedBox(height: 100), // Add some spacing
               // InterpersonalSkillsWidget(),
               // const SizedBox(height: 100),
-              SkillsAndEducation(),
+              const SkillsAndEducation(),
               // const TechnicalSkillsWidget(), // Add some spacing
               const SizedBox(height: 500), // Add some spacing
               const EducationSection(),
