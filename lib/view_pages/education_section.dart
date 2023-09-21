@@ -16,162 +16,137 @@ class EducationSectionState extends State<EducationSection> {
   final EducationSectionController _educationSectionController =
       EducationSectionController(EducationRepoService());
 
-  late List<EducationDTO> educationSectionData;
+  List<EducationDTO> educationSectionData = [];
   bool showAllEducation = false;
   int currentPage = 0;
   static const itemsPerPage = 2;
-
-  // Variables to track drag start and end positions
-  Offset? dragStart;
-  Offset? dragEnd;
+  late PageController _pageController;
 
   @override
   void initState() {
     super.initState();
+    _pageController = PageController();
     _loadEducationData();
   }
 
   Future<void> _loadEducationData() async {
     final data = await _educationSectionController.getEducationSectionData();
     setState(() {
-      educationSectionData = data!;
+      educationSectionData = data ?? [];
     });
   }
 
   @override
   void dispose() {
+    _pageController.dispose();
     super.dispose();
-    // Dispose of any resources if needed
   }
 
   @override
   Widget build(BuildContext context) {
-    if (educationSectionData == null) {
-      // Handle the case when data is still loading
-      return const Center(child: CircularProgressIndicator());
-    } else if (educationSectionData.isEmpty) {
-      // Handle the case when there's no data
-      return const Center(child: Text('No education data available'));
-    }
-
-    final screenWidth = MediaQuery.of(context).size.width;
     final totalPages = (educationSectionData.length / itemsPerPage).ceil();
-    double titleFontSize = screenWidth * 0.05;
-    int numEducation = showAllEducation
-        ? educationSectionData.length
-        : itemsPerPage; // Set the number of items to display
 
-    return GestureDetector(
-      // Detect horizontal drags
-      onPanStart: (details) {
-        dragStart = details.localPosition;
-      },
-      onPanUpdate: (details) {
-        dragEnd = details.localPosition;
-      },
-      onPanEnd: (details) {
-        if (dragStart != null && dragEnd != null) {
-          // Calculate the difference in positions
-          final dx = dragEnd!.dx - dragStart!.dx;
-          if (dx > 50 && currentPage > 0) {
-            // Swipe right, go to the previous page
-            setState(() {
-              currentPage--;
-            });
-          } else if (dx < -50 && currentPage < totalPages - 1) {
-            // Swipe left, go to the next page
-            setState(() {
-              currentPage++;
-            });
-          }
-        }
-        dragStart = null;
-        dragEnd = null;
-      },
-      child: Container(
-        width: screenWidth * 0.4 + screenWidth * 0.006,
-        child: Column(
-          children: [
-            Row(
-              children: [
-                SizedBox(
-                  width: screenWidth * 0.055,
-                ),
-                Text(
-                  "Education History",
-                  style: PublicViewTextStyles.generalSubHeading,
-                  textAlign: TextAlign.left,
-                ),
-              ],
-            ),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: numEducation,
-              itemBuilder: (context, index) {
-                final dataIndex = currentPage * itemsPerPage + index;
-                if (dataIndex < educationSectionData.length) {
-                  return Column(
-                    children: [
-                      EducationWidget(
-                        educationDTO: educationSectionData[dataIndex],
-                      ),
-                    ],
-                  );
-                } else {
-                  return SizedBox(); // Return an empty widget if there are no more items.
-                }
+    return Container(
+      height:
+          400, // Specify a fixed height here or calculate it based on your layout,
+      child: Column(
+        children: [
+          Row(
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.055,
+              ),
+              Text(
+                "Education History",
+                style: PublicViewTextStyles.generalSubHeading,
+                textAlign: TextAlign.left,
+              ),
+            ],
+          ),
+          Expanded(
+            child: PageView.builder(
+              controller: _pageController,
+              itemCount: totalPages,
+              onPageChanged: (int page) {
+                setState(() {
+                  currentPage = page;
+                });
+              },
+              itemBuilder: (context, page) {
+                final startIndex = page * itemsPerPage;
+                final endIndex = startIndex + itemsPerPage;
+                final pageData = educationSectionData.sublist(
+                  startIndex,
+                  endIndex < educationSectionData.length
+                      ? endIndex
+                      : educationSectionData.length,
+                );
+
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: pageData.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        EducationWidget(
+                          educationDTO: pageData[index],
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
             ),
-            Row(
-              children: [
-                SizedBox(
-                  width: screenWidth * 0.055,
-                ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Divider(
-                        color: Colors.black,
-                        thickness: 2,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          for (int page = 0; page < totalPages; page++)
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  currentPage = page;
-                                });
-                              },
-                              child: Container(
-                                width: 10,
-                                height: 10,
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 5),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: currentPage == page
-                                      ? Colors.black
-                                      : Colors.grey.withOpacity(0.5),
-                                ),
+          ),
+          Row(
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.055,
+              ),
+              Expanded(
+                child: Column(
+                  children: [
+                    Divider(
+                      color: Colors.black,
+                      thickness: 2,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        for (int page = 0; page < totalPages; page++)
+                          GestureDetector(
+                            onTap: () {
+                              _pageController.animateToPage(
+                                page,
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeInOut,
+                              );
+                            },
+                            child: Container(
+                              width: 10,
+                              height: 10,
+                              margin: const EdgeInsets.symmetric(horizontal: 5),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: currentPage == page
+                                    ? Colors.black
+                                    : Colors.grey.withOpacity(0.5),
                               ),
                             ),
-                        ],
-                      ),
-                    ],
-                  ),
+                          ),
+                      ],
+                    ),
+                  ],
                 ),
-              ],
-            )
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
 }
-
 
 class EducationWidget extends StatelessWidget {
   final EducationDTO educationDTO;
@@ -289,7 +264,10 @@ class EducationWidget extends StatelessWidget {
                   height: screenHeight * 0.015,
                 ),
                 Expanded(
-                  child: Text(educationDTO.description as String),
+                  child: Text(
+                    educationDTO.description as String,
+                    // Additional text styling if needed
+                  ),
                 ),
                 SizedBox(
                   height: screenHeight * 0.015,
