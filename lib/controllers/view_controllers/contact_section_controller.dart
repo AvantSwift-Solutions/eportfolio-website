@@ -23,7 +23,7 @@ class ContactSectionController {
       } else {
         return ContactSectionDTO(
             name: Constants.defaultName,
-            contactEmail: 'No email avaliable',
+            contactEmail: Constants.defaultEmail,
             linkedinURL: Constants.defaultLinkedinURL);
       }
     } catch (e) {

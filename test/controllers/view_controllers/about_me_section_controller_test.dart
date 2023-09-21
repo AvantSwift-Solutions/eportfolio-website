@@ -1,3 +1,4 @@
+import 'package:avantswift_portfolio/constants.dart';
 import 'package:avantswift_portfolio/controllers/view_controllers/about_me_section_controller.dart';
 import 'package:avantswift_portfolio/reposervice/user_repo_services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -37,8 +38,7 @@ void main() {
     final aboutMeSectionData = await controller.getAboutMeSectionData();
 
     expect(aboutMeSectionData!.aboutMe, 'No description available');
-    expect(
-        aboutMeSectionData.imageURL, 'https://example.com/default_image.jpg');
+    expect(aboutMeSectionData.imageURL, Constants.replaceImageURL); // Updated
   });
 
   test('getAboutMeSectionData returns error data on exception', () async {
@@ -47,6 +47,6 @@ void main() {
     final aboutMeSectionData = await controller.getAboutMeSectionData();
 
     expect(aboutMeSectionData!.aboutMe, 'Error');
-    expect(aboutMeSectionData.imageURL, 'https://example.com/error.jpg');
+    expect(aboutMeSectionData.imageURL, Constants.replaceImageURL);
   });
 }
