@@ -65,6 +65,7 @@ class MyAppState extends State<MyApp> {
             const TextSelectionThemeData(cursorColor: Colors.black),
       ),
       initialRoute: '/login',
+      debugShowCheckedModeBanner: false,
       routes: {
         '/landing-page': (context) => SinglePageView(),
         '/login': (context) => LoginPage(

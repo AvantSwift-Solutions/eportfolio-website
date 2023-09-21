@@ -91,6 +91,10 @@ flutter:
     - assets/logo.png
     - assets/linkedin.svg
     - assets/mail.svg
+    - assets/login_graphic.svg
+    - assets/logo-no-background.png
+    - assets/email_icon.svg
+    - assets/password_icon.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
