@@ -79,8 +79,10 @@ class LoginPageState extends State<LoginPage> {
                               alignment: Alignment.center,
                               child: Text(
                                 'Welcome Back!',
-                                style: PublicViewTextStyles.generalHeading.copyWith(
-                                  fontSize: titleFontSize * LoginPage.loginTitleFontSize,
+                                style: PublicViewTextStyles.generalHeading
+                                    .copyWith(
+                                  fontSize: titleFontSize *
+                                      LoginPage.loginTitleFontSize,
                                 ),
                               ),
                             ),
@@ -101,10 +103,15 @@ class LoginPageState extends State<LoginPage> {
             Expanded(
               flex: 6,
               child: Container(
-                margin: const EdgeInsets.only(bottom: LoginPage.rightSectionBottomMargin),
+                margin: const EdgeInsets.only(
+                    bottom: LoginPage.rightSectionBottomMargin),
                 color: Colors.white, // White background color
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(LoginPage.loginRightSectionLeftPadding, 0, LoginPage.loginRightSectionRightPadding, 0), // 50px padding on left and right
+                  padding: const EdgeInsets.fromLTRB(
+                      LoginPage.loginRightSectionLeftPadding,
+                      0,
+                      LoginPage.loginRightSectionRightPadding,
+                      0), // 50px padding on left and right
                   child: Form(
                     key: _formKey, // Assign the _formKey to the Form widget
                     child: Column(
@@ -116,7 +123,8 @@ class LoginPageState extends State<LoginPage> {
                           child: Text(
                             'Sign in to start editing\nyour portfolio.',
                             style: PublicViewTextStyles.generalHeading.copyWith(
-                              fontSize: titleFontSize * LoginPage.loginTitleFontSize,
+                              fontSize:
+                                  titleFontSize * LoginPage.loginTitleFontSize,
                             ),
                           ),
                         ),
@@ -126,16 +134,21 @@ class LoginPageState extends State<LoginPage> {
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 'Powered by',
-                                style: PublicViewTextStyles.generalHeading.copyWith(
+                                style: PublicViewTextStyles.generalHeading
+                                    .copyWith(
                                   fontSize: LoginPage.bodyTextSize,
                                 ),
                               ),
                             ),
-                            const SizedBox(width: LoginPage.formGapSize), // Add some spacing between text and image
+                            const SizedBox(
+                                width: LoginPage
+                                    .formGapSize), // Add some spacing between text and image
                             Image.asset(
                               'assets/logo-no-background.png',
-                              width: LoginPage.avantSwiftSolutionsLogoWidth, // Adjust the width as needed
-                              height: LoginPage.avantSwiftSolutionsLogoWidth, // Adjust the height as needed
+                              width: LoginPage
+                                  .avantSwiftSolutionsLogoWidth, // Adjust the width as needed
+                              height: LoginPage
+                                  .avantSwiftSolutionsLogoWidth, // Adjust the height as needed
                             ),
                           ],
                         ),
@@ -146,23 +159,31 @@ class LoginPageState extends State<LoginPage> {
                             height: LoginPage.formHeight,
                             child: Container(
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(LoginPage.radius), // Adjust the radius as needed
-                                color: const Color(0xFFEDECEC), // Set the background color
+                                borderRadius: BorderRadius.circular(LoginPage
+                                    .radius), // Adjust the radius as needed
+                                color: const Color(
+                                    0xFFEDECEC), // Set the background color
                               ),
                               child: Row(
                                 children: [
                                   const SizedBox(width: LoginPage.formGapSize),
                                   Container(
-                                    width: LoginPage.formIconBoxWidth, // Adjust the width as needed
-                                    height: LoginPage.formIconBoxHeight, // Adjust the height as needed
+                                    width: LoginPage
+                                        .formIconBoxWidth, // Adjust the width as needed
+                                    height: LoginPage
+                                        .formIconBoxHeight, // Adjust the height as needed
                                     decoration: BoxDecoration(
-                                      color: Colors.white, // Set the background color to white
-                                      borderRadius: BorderRadius.circular(LoginPage.radius), // Adjust the radius as needed
+                                      color: Colors
+                                          .white, // Set the background color to white
+                                      borderRadius: BorderRadius.circular(LoginPage
+                                          .radius), // Adjust the radius as needed
                                     ),
                                     child: SvgPicture.asset(
                                       'assets/email_icon.svg', // Replace with the path to your email SVG icon
-                                      width: LoginPage.formIconSize, // Adjust the width as needed
-                                      height: LoginPage.formIconSize, // Adjust the height as needed
+                                      width: LoginPage
+                                          .formIconSize, // Adjust the width as needed
+                                      height: LoginPage
+                                          .formIconSize, // Adjust the height as needed
                                     ),
                                   ),
                                   Expanded(
@@ -170,8 +191,11 @@ class LoginPageState extends State<LoginPage> {
                                       controller: _emailController,
                                       decoration: const InputDecoration(
                                         labelText: 'Enter your email here',
-                                        border: InputBorder.none, // Remove the default border
-                                        contentPadding: EdgeInsets.symmetric(horizontal: LoginPage.formTextHorizontalPadding), // Optional padding
+                                        border: InputBorder
+                                            .none, // Remove the default border
+                                        contentPadding: EdgeInsets.symmetric(
+                                            horizontal: LoginPage
+                                                .formTextHorizontalPadding), // Optional padding
                                       ),
                                       cursorColor: Colors.black,
                                       validator: (value) {
@@ -195,23 +219,31 @@ class LoginPageState extends State<LoginPage> {
                             height: LoginPage.formHeight,
                             child: Container(
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(LoginPage.radius), // Adjust the radius as needed
-                                color: const Color(0xFFEDECEC), // Set the background color
+                                borderRadius: BorderRadius.circular(LoginPage
+                                    .radius), // Adjust the radius as needed
+                                color: const Color(
+                                    0xFFEDECEC), // Set the background color
                               ),
                               child: Row(
                                 children: [
                                   const SizedBox(width: LoginPage.formGapSize),
                                   Container(
-                                    width: LoginPage.formIconBoxWidth, // Adjust the width as needed
-                                    height: LoginPage.formIconBoxHeight, // Adjust the height as needed
+                                    width: LoginPage
+                                        .formIconBoxWidth, // Adjust the width as needed
+                                    height: LoginPage
+                                        .formIconBoxHeight, // Adjust the height as needed
                                     decoration: BoxDecoration(
-                                      color: Colors.white, // Set the background color to white
-                                      borderRadius: BorderRadius.circular(LoginPage.radius), // Adjust the radius as needed
+                                      color: Colors
+                                          .white, // Set the background color to white
+                                      borderRadius: BorderRadius.circular(LoginPage
+                                          .radius), // Adjust the radius as needed
                                     ),
                                     child: SvgPicture.asset(
                                       'assets/password_icon.svg',
-                                      width: LoginPage.formIconSize, // Adjust the width as needed
-                                      height: LoginPage.formIconSize, // Adjust the height as needed
+                                      width: LoginPage
+                                          .formIconSize, // Adjust the width as needed
+                                      height: LoginPage
+                                          .formIconSize, // Adjust the height as needed
                                     ),
                                   ),
                                   Expanded(
@@ -219,11 +251,15 @@ class LoginPageState extends State<LoginPage> {
                                       controller: _passwordController,
                                       decoration: const InputDecoration(
                                         labelText: 'Enter your password here',
-                                        border: InputBorder.none, // Remove the default border
-                                        contentPadding: EdgeInsets.symmetric(horizontal: LoginPage.formTextHorizontalPadding), // Optional padding
+                                        border: InputBorder
+                                            .none, // Remove the default border
+                                        contentPadding: EdgeInsets.symmetric(
+                                            horizontal: LoginPage
+                                                .formTextHorizontalPadding), // Optional padding
                                       ),
                                       cursorColor: Colors.black,
-                                      obscureText: _obscureText, // Use a boolean variable to toggle obscureText
+                                      obscureText:
+                                          _obscureText, // Use a boolean variable to toggle obscureText
                                       validator: (value) {
                                         if (value?.isEmpty ?? true) {
                                           return 'No password was entered';
@@ -233,21 +269,29 @@ class LoginPageState extends State<LoginPage> {
                                     ),
                                   ),
                                   SizedBox(
-                                    width: LoginPage.formIconBoxWidth, // Adjust the width as needed
+                                    width: LoginPage
+                                        .formIconBoxWidth, // Adjust the width as needed
                                     height: LoginPage.formIconBoxHeight,
                                     child: TextButton(
                                       onPressed: () {
                                         setState(() {
-                                          _obscureText = !_obscureText; // Toggle the obscureText property
+                                          _obscureText =
+                                              !_obscureText; // Toggle the obscureText property
                                         });
                                       },
                                       style: ButtonStyle(
-                                        overlayColor: MaterialStateProperty.all(Colors.transparent), // Remove hover effect
+                                        overlayColor: MaterialStateProperty.all(
+                                            Colors
+                                                .transparent), // Remove hover effect
                                       ),
                                       child: Icon(
-                                        _obscureText ? Icons.visibility : Icons.visibility_off,
+                                        _obscureText
+                                            ? Icons.visibility
+                                            : Icons.visibility_off,
                                         size: LoginPage.obscureTextIconSize,
-                                        color: _obscureText ? const Color(0xFF0074D9) : const Color(0xFF0074D9),
+                                        color: _obscureText
+                                            ? const Color(0xFF0074D9)
+                                            : const Color(0xFF0074D9),
                                       ),
                                     ),
                                   ),
@@ -258,13 +302,18 @@ class LoginPageState extends State<LoginPage> {
                         ),
                         const SizedBox(height: LoginPage.gapSize),
                         Align(
-                          alignment: Alignment.centerRight, // Align to the right
+                          alignment:
+                              Alignment.centerRight, // Align to the right
                           child: GestureDetector(
                             onTap: () {
                               Navigator.pushNamed(context, '/forgot-password');
                             },
                             child: Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 0, LoginPage.forgotPasswordPadding, 0), // Add padding around the text
+                              padding: const EdgeInsets.fromLTRB(
+                                  0,
+                                  0,
+                                  LoginPage.forgotPasswordPadding,
+                                  0), // Add padding around the text
                               child: Text(
                                 'Forgot my password',
                                 style: PublicViewTextStyles.buttonText.copyWith(
@@ -288,7 +337,8 @@ class LoginPageState extends State<LoginPage> {
                                 style: PublicViewTextStyles.buttonText,
                               ),
                               onPressed: () {
-                                if (_formKey.currentState?.validate() ?? false) {
+                                if (_formKey.currentState?.validate() ??
+                                    false) {
                                   _loginWithEmailAndPassword();
                                 }
                               },
@@ -306,10 +356,6 @@ class LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
-
-
-
 
   Future<void> _loginWithEmailAndPassword() async {
     try {
