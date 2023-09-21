@@ -6,7 +6,10 @@ import 'package:avantswift_portfolio/ui/custom_view_more_button.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import '../dto/experience_dto.dart';
+import '../ui/color_cycle.dart';
+import '../ui/colored_circle.dart';
 import '../ui/custom_texts/public_view_text_styles.dart';
+import '../ui/dashed_vertical_line_painter.dart';
 
 class ExperienceSection extends StatefulWidget {
   const ExperienceSection({Key? key}) : super(key: key);
@@ -154,12 +157,16 @@ class ExperienceWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '${experienceDTO.companyName as String}, ${experienceDTO.location as String}',
+                          (experienceDTO.companyName as String) +
+                              (experienceDTO.location!.isNotEmpty
+                                  ? ', ${experienceDTO.location as String}'
+                                  : ''),
                           style: PublicViewTextStyles
                               .professionalExperienceHeading
                               .copyWith(
-                                  color: selectedColor,
-                                  fontSize: titleFontSize * 0.97),
+                            color: selectedColor,
+                            fontSize: titleFontSize * 0.97,
+                          ),
                         ),
                         Text(
                           '${experienceDTO.startDate as String} - ${experienceDTO.endDate as String}',
@@ -269,57 +276,4 @@ class ExperienceWidget extends StatelessWidget {
       ),
     );
   }
-}
-
-class DashedLineVerticalPainter extends CustomPainter {
-  final Color selectedColor;
-
-  DashedLineVerticalPainter({required this.selectedColor});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    double dashHeight = 8, dashSpace = 5, startY = 0;
-    final paint = Paint()
-      ..color = selectedColor
-      ..strokeWidth = 1;
-    while (startY < size.height) {
-      canvas.drawLine(Offset(0, startY), Offset(0, startY + dashHeight), paint);
-      startY += dashHeight + dashSpace;
-    }
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
-}
-
-class ColoredCircle extends StatelessWidget {
-  final Color selectedColor;
-
-  const ColoredCircle({super.key, required this.selectedColor});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 28.0, // Define the width of the circle
-      height: 28.0, // Define the height of the circle
-      decoration: BoxDecoration(
-        shape: BoxShape.circle, // This makes the container a circle
-        color: selectedColor, // Specify the color you want
-      ),
-    );
-  }
-}
-
-Color getColorFromNumber(int number) {
-  List<Color> colorList = [
-    Colors.orange.shade200,
-    Colors.blue.shade200,
-    Colors.green.shade200
-    // Add more colors as needed
-  ];
-
-  // Use modulo to wrap around the colors if the number is too large
-  final int index = number % colorList.length;
-
-  return colorList[index];
 }
