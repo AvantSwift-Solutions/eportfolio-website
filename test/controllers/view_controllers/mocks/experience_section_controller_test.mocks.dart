@@ -50,10 +50,35 @@ class MockExperience extends _i1.Mock implements _i4.Experience {
   }
 
   @override
+  set creationTimestamp(_i5.Timestamp? _creationTimestamp) =>
+      super.noSuchMethod(
+        Invocation.setter(
+          #creationTimestamp,
+          _creationTimestamp,
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  set index(int? _index) => super.noSuchMethod(
+        Invocation.setter(
+          #index,
+          _index,
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
   set jobTitle(String? _jobTitle) => super.noSuchMethod(
         Invocation.setter(
           #jobTitle,
           _jobTitle,
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  set employmentType(String? _employmentType) => super.noSuchMethod(
+        Invocation.setter(
+          #employmentType,
+          _employmentType,
         ),
         returnValueForMissingStub: null,
       );
@@ -106,22 +131,6 @@ class MockExperience extends _i1.Mock implements _i4.Experience {
         returnValueForMissingStub: null,
       );
   @override
-  set index(int? _index) => super.noSuchMethod(
-        Invocation.setter(
-          #index,
-          _index,
-        ),
-        returnValueForMissingStub: null,
-      );
-  @override
-  set employmentType(String? _employmentType) => super.noSuchMethod(
-        Invocation.setter(
-          #employmentType,
-          _employmentType,
-        ),
-        returnValueForMissingStub: null,
-      );
-  @override
   Map<String, dynamic> toMap() => (super.noSuchMethod(
         Invocation.method(
           #toMap,
@@ -130,21 +139,11 @@ class MockExperience extends _i1.Mock implements _i4.Experience {
         returnValue: <String, dynamic>{},
       ) as Map<String, dynamic>);
   @override
-  _i3.Future<void> create() => (super.noSuchMethod(
+  _i3.Future<bool> create(String? id) => (super.noSuchMethod(
         Invocation.method(
           #create,
-          [],
+          [id],
         ),
-        returnValue: _i3.Future<void>.value(),
-        returnValueForMissingStub: _i3.Future<void>.value(),
-      ) as _i3.Future<void>);
-  @override
-  _i3.Future<void> delete() => (super.noSuchMethod(
-        Invocation.method(
-          #delete,
-          [],
-        ),
-        returnValue: _i3.Future<void>.value(),
-        returnValueForMissingStub: _i3.Future<void>.value(),
-      ) as _i3.Future<void>);
+        returnValue: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
 }

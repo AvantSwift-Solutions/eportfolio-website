@@ -35,7 +35,7 @@ class DefaultPage extends StatelessWidget {
                 'You are logged in as an admin',
                 style: TextStyle(fontSize: 16),
               ),
-              LandingPageAdmin(), // Placing the LandingPageAdmin widget here
+              LandingPageAdmin(),
               AboutMeSectionAdmin(),
               ExperienceSectionAdmin(),
               EducationSectionAdmin(),

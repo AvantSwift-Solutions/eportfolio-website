@@ -1,5 +1,4 @@
 import 'package:avantswift_portfolio/controllers/view_controllers/experience_section_controller.dart';
-import 'package:avantswift_portfolio/models/Education.dart';
 import 'package:avantswift_portfolio/models/Experience.dart';
 import 'package:avantswift_portfolio/reposervice/experience_repo_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -32,6 +31,7 @@ void main() {
       when(mockExperience1.logoURL)
           .thenReturn('http://example.com/mock_image1.jpg');
       when(mockExperience1.description).thenReturn('Mock Description 1');
+      when(mockExperience1.employmentType).thenReturn('Mock Employment Type 1');
       when(mockExperience1.index).thenReturn(1);
 
       mockExperience2 = MockExperience();
@@ -45,13 +45,14 @@ void main() {
       when(mockExperience2.companyName).thenReturn('Mock Company Name 2');
       when(mockExperience2.location).thenReturn('Mock Location 2');
       when(mockExperience2.description).thenReturn('Mock Description 2');
+      when(mockExperience2.employmentType).thenReturn('Mock Employment Type 2');
       when(mockExperience2.index).thenReturn(2);
 
       mockRepoService = MockExperienceRepoService();
       controller = ExperienceSectionController(mockRepoService);
     });
 
-    test('getAllEducation returns a list of EducationDTOs', () async {
+    test('getAllExperience returns a list of ExperienceDTOs', () async {
       // ignore: non_constant_identifier_names
       final ExperienceList = [
         Experience(
@@ -64,6 +65,8 @@ void main() {
           location: 'Mock Location 1',
           description: 'Mock Description 1',
           index: 1,
+          creationTimestamp: null,
+          employmentType: 'Mock Employment Type 1',
         ),
         Experience(
           peid: 'mockId2',
@@ -75,6 +78,8 @@ void main() {
           location: 'Mock Location 2',
           description: 'Mock Description 2',
           index: 2,
+          creationTimestamp: null,
+          employmentType: 'Mock Employment Type 2',
         ),
       ];
 
@@ -95,6 +100,7 @@ void main() {
       expect(experienceDTO1.location, mockExperience1.location);
       expect(experienceDTO1.description, mockExperience1.description);
       expect(experienceDTO1.logoURL, mockExperience1.logoURL);
+      expect(experienceDTO1.employmentType, mockExperience1.employmentType);
 
       expect(experienceDTO2.companyName, mockExperience2.companyName);
       expect(experienceDTO2.jobTitle, mockExperience2.jobTitle);
@@ -103,6 +109,7 @@ void main() {
       expect(experienceDTO2.location, mockExperience2.location);
       expect(experienceDTO2.description, mockExperience2.description);
       expect(experienceDTO2.logoURL, mockExperience2.logoURL);
+      expect(experienceDTO2.employmentType, mockExperience2.employmentType);
 
       verify(mockRepoService.getAllExperiences());
     });
@@ -123,6 +130,26 @@ void main() {
       expect(experienceDTOUnknown.location, 'unknown');
       expect(experienceDTOUnknown.description, 'unknown');
       expect(experienceDTOUnknown.logoURL, 'unknown');
+      expect(experienceDTOUnknown.employmentType, 'unknown');
+    });
+
+    test('getAllExperience returns error data on exception', () async {
+      when(mockRepoService.getAllExperiences())
+          .thenThrow(Exception('Test Exception'));
+      final experienceDTOList = await controller.getExperienceSectionData();
+
+      expect(experienceDTOList!.length, 1);
+
+      var experienceDTOUnknown = experienceDTOList[0];
+
+      expect(experienceDTOUnknown.companyName, 'Error');
+      expect(experienceDTOUnknown.jobTitle, 'Error');
+      expect(experienceDTOUnknown.startDate, 'Error');
+      expect(experienceDTOUnknown.endDate, 'Error');
+      expect(experienceDTOUnknown.location, 'Error');
+      expect(experienceDTOUnknown.description, 'Error');
+      expect(experienceDTOUnknown.logoURL, 'Error');
+      expect(experienceDTOUnknown.employmentType, 'Error');
     });
 
     // test('getAllEducation returns error data on exception', () async {

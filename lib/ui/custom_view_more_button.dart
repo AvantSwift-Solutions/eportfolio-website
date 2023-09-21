@@ -5,13 +5,14 @@ class CustomViewMoreButton extends StatefulWidget {
   final VoidCallback onPressed;
   final bool initialValue;
 
-  CustomViewMoreButton({
+  const CustomViewMoreButton({super.key, 
     // required this.onStateChanged,
     required this.onPressed,
     required this.initialValue,
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _CustomViewMoreButtonState createState() => _CustomViewMoreButtonState();
 }
 
