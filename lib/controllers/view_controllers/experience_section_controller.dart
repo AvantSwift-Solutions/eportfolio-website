@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:js_interop';
 
 import 'package:avantswift_portfolio/reposervice/experience_repo_services.dart';
 
@@ -16,7 +15,7 @@ class ExperienceSectionController {
 
   // Function to format Timestamp to "Month Year" format
   String formatTimestamp(Timestamp? timestamp) {
-    if (timestamp.isNull) {
+    if (timestamp == null) {
       return "Null Timestamp";
     }
     final DateTime dateTime = (timestamp as Timestamp).toDate();
@@ -25,7 +24,7 @@ class ExperienceSectionController {
   }
 
   String formatEndDateTimestamp(Timestamp? timestamp) {
-    if (timestamp.isNull) {
+    if (timestamp == null) {
       return "Present";
     }
 
@@ -80,37 +79,6 @@ class ExperienceSectionController {
           employmentType: 'Error',
         )
       ];
-    }
-  }
-
-  Future<ExperienceDTO?> getExperienceData(int experienceIndex) async {
-    try {
-      List<Experience>? experiences =
-          await experienceRepoService.getAllExperiences();
-
-      if (experiences != null &&
-          experienceIndex >= 0 &&
-          experienceIndex < experiences.length) {
-        final experience = experiences[experienceIndex];
-
-        return ExperienceDTO(
-          jobTitle: experience.jobTitle,
-          companyName: experience.companyName,
-          location: experience.location,
-          startDate: formatTimestamp(experience.startDate),
-          endDate: formatEndDateTimestamp(experience.endDate),
-          description: experience.description,
-          logoURL: experience.logoURL,
-          index: experience.index,
-          employmentType: experience.employmentType,
-        );
-      } else {
-        log('Error getting experience by index:');
-        return null; // Return null if the index is out of bounds or experiences is null
-      }
-    } catch (e) {
-      log('Error getting experience by index: $e');
-      return null; // Return null in case of an error
     }
   }
 }

@@ -24,93 +24,94 @@ class ExperienceSectionState extends State<ExperienceSection> {
 
   // Variable to track whether to show all experiences or not
   bool showAllExperiences = false;
+  List<ExperienceDTO>? experienceSectionData;
+  bool isLoading = true;
 
   @override
-  void dispose() {
-    super.dispose(); // Call super.dispose() at the end
+  void initState() {
+    super.initState();
+    _loadExperienceData();
+  }
+
+  Future<void> _loadExperienceData() async {
+    try {
+      final data =
+          await _experienceSectionController.getExperienceSectionData();
+      setState(() {
+        experienceSectionData = data;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      // Handle error loading data
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _experienceSectionController.getExperienceSectionData(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return const Center(child: Text('Error loading data'));
-        }
+    final screenWidth = MediaQuery.of(context).size.width;
+    double titleFontSize = screenWidth * 0.05;
 
-        final experienceSectionData = snapshot.data;
-        final screenWidth = MediaQuery.of(context).size.width;
+    // Determine the number of experiences to display based on showAllExperiences
+    int numExperiences;
 
-        double titleFontSize = screenWidth * 0.05;
+    if (showAllExperiences) {
+      numExperiences = experienceSectionData?.length ?? 0;
+    } else {
+      numExperiences = 3; // You can change this to any desired limit
+    }
 
-        // Determine the number of experiences to display based on showAllExperiences
-        int numExperiences;
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(50.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Divider(),
+            RichText(
+              text: TextSpan(
+                style: PublicViewTextStyles.generalHeading.copyWith(
+                    fontSize: titleFontSize * 0.8, fontWeight: FontWeight.bold),
+                children: const [
+                  TextSpan(
+                    text: 'Professional\n',
+                  ),
+                  TextSpan(
+                    text: 'Experience',
+                  ),
+                ],
+              ),
+            ),
 
-        if (showAllExperiences) {
-          numExperiences = experienceSectionData?.length as int;
-        } else {
-          numExperiences = 3; // You can change this to any desired limit
-        }
+            const SizedBox(height: 60.0),
 
-        return Center(
-          child: Padding(
-            padding: const EdgeInsets.all(50.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Divider(),
-                RichText(
-                  text: TextSpan(
-                    style: PublicViewTextStyles.generalHeading.copyWith(
-                        fontSize: titleFontSize * 0.8,
-                        fontWeight: FontWeight.bold),
-                    children: const [
-                      TextSpan(
-                        text: 'Professional\n',
-                      ),
-                      TextSpan(
-                        text: 'Experience',
-                      ),
+            isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : Column(
+                    children: [
+                      for (int index = 0; index < numExperiences; index++)
+                        ExperienceWidget(
+                          experienceDTO: experienceSectionData![index],
+                        ),
                     ],
                   ),
-                ),
 
-                const SizedBox(height: 60.0),
-
-                // Use ListView.builder to dynamically create ExperienceWidgets
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: numExperiences,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        ExperienceWidget(
-                            experienceDTO:
-                                experienceSectionData!.elementAt(index)),
-                      ],
-                    );
-                  },
-                ),
-                Center(
-                  child: CustomViewMoreButton(
-                    initialValue: showAllExperiences,
-                    onPressed: () {
-                      setState(() {
-                        showAllExperiences = !showAllExperiences;
-                      });
-                    },
-                  ),
-                )
-                // Button to toggle showing all experiences or a limited number
-              ],
+            Center(
+              child: CustomViewMoreButton(
+                initialValue: showAllExperiences,
+                onPressed: () {
+                  setState(() {
+                    showAllExperiences = !showAllExperiences;
+                  });
+                },
+              ),
             ),
-          ),
-        );
-      },
+            // Button to toggle showing all experiences or a limited number
+          ],
+        ),
+      ),
     );
   }
 }
