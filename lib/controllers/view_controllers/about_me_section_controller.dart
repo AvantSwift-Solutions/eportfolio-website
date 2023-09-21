@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import '../../constants.dart';
 import '../../dto/about_me_section_dto.dart';
 import '../../models/User.dart';
 import '../../reposervice/user_repo_services.dart';
@@ -20,14 +21,14 @@ class AboutMeSectionController {
       } else {
         return AboutMeSectionDTO(
           aboutMe: 'No description available',
-          imageURL: 'https://example.com/default_image.jpg',
+          imageURL: Constants.replaceImageURL,
         );
       }
     } catch (e) {
       log('Error getting about me section data: $e');
       return AboutMeSectionDTO(
         aboutMe: 'Error',
-        imageURL: 'https://example.com/error.jpg',
+        imageURL: Constants.replaceImageURL,
       );
     }
   }

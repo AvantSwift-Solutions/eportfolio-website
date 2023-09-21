@@ -41,9 +41,9 @@ class Education {
     final schoolName = data['schoolName'];
     final degree = data['degree'];
     final description = data['description'];
-    final major = data['major'];
-    final grade = data['grade'];
     final gradeDescription = data['gradeDescription'];
+    final grade = data['grade'];
+    final major = data['major'];
 
     return Education(
       creationTimestamp: creationTimestamp,
@@ -72,9 +72,9 @@ class Education {
       'schoolName': schoolName,
       'degree': degree,
       'description': description,
-      'major': major,
-      'grade': grade,
       'gradeDescription': gradeDescription,
+      'grade': grade,
+      'major': major,
     };
   }
 

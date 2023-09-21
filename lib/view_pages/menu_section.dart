@@ -15,7 +15,8 @@ class MenuSection extends StatefulWidget {
   static const double firstItemLeftPadding = 50.0;
   static const double sizedBoxSize = 20.0;
 
-  const MenuSection({super.key, 
+  const MenuSection({
+    super.key,
     required this.scrollToSection,
     required this.sectionKeys, // Accept the map of section keys
   });
@@ -25,11 +26,9 @@ class MenuSection extends StatefulWidget {
 }
 
 class MenuSectionState extends State<MenuSection> {
-
   @override
   Widget build(BuildContext context) {
-
-    return Column (
+    return Column(
       children: [
         Divider(
           color: Color(0xFFBABAB3),
@@ -42,11 +41,13 @@ class MenuSectionState extends State<MenuSection> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.only(left: MenuSection.firstItemLeftPadding, right: MenuSection.rightPadding),
+              padding: EdgeInsets.only(
+                  left: MenuSection.firstItemLeftPadding,
+                  right: MenuSection.rightPadding),
               child: CustomMenuButton(
                 onPressed: () {
-                          widget.scrollToSection(widget.sectionKeys['experience']!);
-                        },
+                  widget.scrollToSection(widget.sectionKeys['experience']!);
+                },
                 text: "Experience",
               ),
             ),
@@ -55,11 +56,13 @@ class MenuSectionState extends State<MenuSection> {
               style: PublicViewTextStyles.navBarText,
             ),
             Padding(
-              padding: EdgeInsets.only(left: MenuSection.leftPadding, right: MenuSection.rightPadding),
+              padding: EdgeInsets.only(
+                  left: MenuSection.leftPadding,
+                  right: MenuSection.rightPadding),
               child: CustomMenuButton(
                 onPressed: () {
-                          widget.scrollToSection(widget.sectionKeys['skills_edu']!);
-                        }, 
+                  widget.scrollToSection(widget.sectionKeys['skills_edu']!);
+                },
                 text: "Skills & Education",
               ),
             ),
@@ -68,26 +71,30 @@ class MenuSectionState extends State<MenuSection> {
               style: PublicViewTextStyles.navBarText,
             ),
             Padding(
-              padding: EdgeInsets.only(left: MenuSection.leftPadding, right: MenuSection.rightPadding),
+              padding: EdgeInsets.only(
+                  left: MenuSection.leftPadding,
+                  right: MenuSection.rightPadding),
               child: CustomMenuButton(
                 onPressed: () {
-                          widget.scrollToSection(widget.sectionKeys['projects']!);
-                        }, 
+                  widget.scrollToSection(widget.sectionKeys['projects']!);
+                },
                 text: "Projects",
               ),
             ),
-          ],  
+          ],
         ),
         SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.only(left: MenuSection.firstItemLeftPadding, right: MenuSection.rightPadding),
+              padding: EdgeInsets.only(
+                  left: MenuSection.firstItemLeftPadding,
+                  right: MenuSection.rightPadding),
               child: CustomMenuButton(
                 onPressed: () {
-                          widget.scrollToSection(widget.sectionKeys['awards_certs']!);
-                        }, 
+                  widget.scrollToSection(widget.sectionKeys['awards_certs']!);
+                },
                 text: "Awards, Certifications & Peer Recommendations",
               ),
             ),

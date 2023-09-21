@@ -1,3 +1,4 @@
+import 'package:avantswift_portfolio/constants.dart';
 import 'package:avantswift_portfolio/controllers/view_controllers/landing_page_controller.dart';
 import 'package:avantswift_portfolio/reposervice/user_repo_services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -39,10 +40,10 @@ void main() {
     when(mockRepoService.getFirstUser()).thenAnswer((_) async => null);
     final landingPageData = await controller.getLandingPageData();
 
-    expect(landingPageData!.name, 'Unknown');
-    expect(landingPageData.nickname, 'Welcome');
+    expect(landingPageData!.name, Constants.defaultName);
+    expect(landingPageData.nickname, Constants.defaultNickname);
     expect(landingPageData.landingPageDescription, 'No description available');
-    expect(landingPageData.imageURL, 'https://example.com/default_image.jpg');
+    expect(landingPageData.imageURL, Constants.replaceImageURL);
   });
 
   test('getLandingPageData returns error data on exception', () async {
@@ -53,6 +54,6 @@ void main() {
     expect(landingPageData!.name, 'Error');
     expect(landingPageData.nickname, 'Error');
     expect(landingPageData.landingPageDescription, 'Error');
-    expect(landingPageData.imageURL, 'https://example.com/error.jpg');
+    expect(landingPageData.imageURL, Constants.replaceImageURL);
   });
 }

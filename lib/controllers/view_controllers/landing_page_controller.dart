@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import '../../constants.dart';
 import '../../dto/landing_page_dto.dart';
 import '../../models/User.dart';
 import '../../reposervice/user_repo_services.dart';
@@ -15,17 +16,17 @@ class LandingPageController {
       String? firstName = user?.name?.split(' ').first; // Only shows firstname
       if (user != null) {
         return LandingPageDTO(
-          name: firstName ?? 'Unknown',
+          name: firstName ?? Constants.defaultName,
           nickname: user.nickname,
           landingPageDescription: user.landingPageDescription,
           imageURL: user.imageURL,
         );
       } else {
         return LandingPageDTO(
-          name: 'Unknown',
-          nickname: 'Welcome',
+          name: Constants.defaultName,
+          nickname: Constants.defaultNickname,
           landingPageDescription: 'No description available',
-          imageURL: 'https://example.com/default_image.jpg',
+          imageURL: Constants.replaceImageURL,
         );
       }
     } catch (e) {
@@ -34,7 +35,7 @@ class LandingPageController {
         name: 'Error',
         nickname: 'Error',
         landingPageDescription: 'Error',
-        imageURL: 'https://example.com/error.jpg',
+        imageURL: Constants.replaceImageURL,
       );
     }
   }

@@ -1,3 +1,4 @@
+import 'package:avantswift_portfolio/view_pages/skills_education_section.dart';
 import 'package:flutter/material.dart';
 import 'contact_section.dart';
 import 'landing_page.dart';
@@ -5,7 +6,6 @@ import 'menu_section.dart';
 import 'about_me_section.dart';
 
 class SinglePageView extends StatelessWidget {
-  
   final ScrollController _scrollController = ScrollController();
   final GlobalKey _contactKey = GlobalKey();
   final GlobalKey _experienceKey = GlobalKey();
@@ -26,7 +26,6 @@ class SinglePageView extends StatelessWidget {
     }
   }
 
-
   void _scrollToSection(GlobalKey sectionKey) {
     final context = sectionKey.currentContext;
     if (context != null) {
@@ -40,7 +39,6 @@ class SinglePageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final sectionKeys = {
       'experience': _experienceKey,
       'skills_edu': _skillsEduKey,
@@ -67,6 +65,10 @@ class SinglePageView extends StatelessWidget {
               ),
               const AboutMeSection(),
               const SizedBox(height: 500),
+              SkillsAndEducation(
+                key: _skillsEduKey,
+              ),
+              const SizedBox(height: 100),
               ContactSection(key: _contactKey),
             ],
           ),
