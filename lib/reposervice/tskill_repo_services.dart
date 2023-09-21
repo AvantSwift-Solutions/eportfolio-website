@@ -7,8 +7,10 @@ import '../models/TSkill.dart';
 class TSkillRepoService {
   Future<List<TSkill>?> getAllTSkill() async {
     try {
-      QuerySnapshot snapshot =
-          await FirebaseFirestore.instance.collection('TSkill').get();
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('TSkill')
+          .orderBy('index')
+          .get();
       if (snapshot.docs.isNotEmpty) {
         return snapshot.docs
             .map((doc) => TSkill.fromDocumentSnapshot(doc))

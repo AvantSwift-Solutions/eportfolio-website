@@ -9,7 +9,7 @@ class EducationRepoService {
     try {
       QuerySnapshot snapshot = await FirebaseFirestore.instance
           .collection('Education')
-          .orderBy("index")
+          .orderBy('index')
           .get();
       if (snapshot.docs.isNotEmpty) {
         return snapshot.docs

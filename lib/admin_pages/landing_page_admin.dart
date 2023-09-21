@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
 import 'dart:typed_data';
 import 'package:avantswift_portfolio/reposervice/user_repo_services.dart';
+import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import '../controllers/admin_controllers/landing_page_admin_controller.dart';
@@ -22,7 +23,7 @@ class LandingPageAdmin extends StatelessWidget {
               onPressed: () {
                 _showEditDialog(context);
               },
-              child: const Text('Edit User Info'),
+              child: const Text('Edit Landing Page Info'),
             ),
           ),
         ],
@@ -30,94 +31,293 @@ class LandingPageAdmin extends StatelessWidget {
     );
   }
 
-  void _showEditDialog(BuildContext context) async {
-    final landingPageData = await _adminController.getLandingPageData();
+  Future<void> _showEditDialog(BuildContext context) async {
+    final landingPageData = await _adminController.getLandingPageData()!;
 
-    TextEditingController nameController =
-        TextEditingController(text: landingPageData!.name);
-    TextEditingController titleController =
-        TextEditingController(text: landingPageData.nickname);
-    TextEditingController descriptionController =
-        TextEditingController(text: landingPageData.landingPageDescription);
-
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     Uint8List? pickedImageBytes;
+    // Flag to check if user tried to sumbit without picking a required image
+    bool noImage = false;
+
+    String title, successMessage, errorMessage;
+    title = 'Edit Landing Page info';
+    successMessage = 'Landing Page info updated successfully';
+    errorMessage = 'Error updating Landing Page info';
 
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
         return StatefulBuilder(
           builder: (context, setState) {
-            return AlertDialog(
-              title: const Text('Edit your landing page information'),
-              content: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    TextField(
-                      controller: nameController,
-                      onChanged: (value) => landingPageData.name = value,
-                      decoration: const InputDecoration(labelText: 'Name'),
-                    ),
-                    TextField(
-                      controller: titleController,
-                      onChanged: (value) => landingPageData.nickname = value,
-                      decoration: const InputDecoration(labelText: 'Nickname'),
-                    ),
-                    TextField(
-                      controller: descriptionController,
-                      onChanged: (value) =>
-                          landingPageData.landingPageDescription = value,
-                      decoration: const InputDecoration(
-                          labelText: 'Landing Page Description'),
-                    ),
-                    if (pickedImageBytes != null)
-                      Image.memory(pickedImageBytes!),
-                    ElevatedButton(
-                      onPressed: () async {
-                        Uint8List? imageBytes = await _pickImage();
-                        if (imageBytes != null) {
-                          pickedImageBytes = imageBytes;
-                          setState(() {});
-                        }
-                      },
-                      child: const Text('Pick an Image'),
+            return Theme(
+                data: AdminViewDialogStyles.dialogThemeData,
+                child: AlertDialog(
+                  scrollable: true,
+                  titlePadding: AdminViewDialogStyles.titleDialogPadding,
+                  contentPadding: AdminViewDialogStyles.contentDialogPadding,
+                  actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
+                  title: Container(
+                      padding: AdminViewDialogStyles.titleContPadding,
+                      color: AdminViewDialogStyles.bgColor,
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(title),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: IconButton(
+                                  icon: const Icon(Icons.close),
+                                  iconSize: AdminViewDialogStyles.closeIconSize,
+                                  hoverColor: Colors.transparent,
+                                  onPressed: () {
+                                    Navigator.of(dialogContext).pop();
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Divider(),
+                          // Align(
+                          //   alignment: Alignment.centerLeft,
+                          //   child: Text(
+                          //     '* indicates required field',
+                          //     style: AdminViewDialogStyles.indicatesTextStyle,
+                          //   ),
+                          // ),
+                        ],
+                      )),
+                  content: SizedBox(
+                      height: AdminViewDialogStyles.showDialogHeight,
+                      child: SingleChildScrollView(
+                        child: SizedBox(
+                          width: AdminViewDialogStyles.showDialogWidth,
+                          child: Form(
+                              key: formKey,
+                              child: SizedBox(
+                                width: AdminViewDialogStyles.showDialogWidth,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      '* indicates required field',
+                                      style: AdminViewDialogStyles
+                                          .indicatesTextStyle,
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Name*',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    TextFormField(
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      initialValue: landingPageData.name,
+                                      decoration:
+                                          AdminViewDialogStyles.inputDecoration,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter a name';
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) {
+                                        landingPageData.name = value;
+                                      },
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Nickname*',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    TextFormField(
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      initialValue: landingPageData.nickname,
+                                      decoration:
+                                          AdminViewDialogStyles.inputDecoration,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter a nickname';
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) {
+                                        landingPageData.nickname = value;
+                                      },
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Short Description*',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    TextFormField(
+                                      maxLines:
+                                          AdminViewDialogStyles.textBoxLines,
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      initialValue: landingPageData
+                                          .landingPageDescription,
+                                      decoration:
+                                          AdminViewDialogStyles.inputDecoration,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter a description';
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) {
+                                        landingPageData.landingPageDescription =
+                                            value;
+                                      },
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Landing Page Image*',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    if (pickedImageBytes != null)
+                                      Image.memory(pickedImageBytes!,
+                                          width:
+                                              AdminViewDialogStyles.imageWidth),
+                                    if (landingPageData.imageURL != '' &&
+                                        pickedImageBytes == null)
+                                      Image.network(landingPageData.imageURL!,
+                                          width:
+                                              AdminViewDialogStyles.imageWidth),
+                                    AdminViewDialogStyles.interTitleField,
+                                    if (!noImage)
+                                      ElevatedButton(
+                                        onPressed: () async {
+                                          Uint8List? imageBytes =
+                                              await _pickImage();
+                                          if (imageBytes != null) {
+                                            noImage = false;
+                                            pickedImageBytes = imageBytes;
+                                            setState(() {});
+                                          }
+                                        },
+                                        style: AdminViewDialogStyles
+                                            .imageButtonStyle,
+                                        child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const Icon(Icons.add),
+                                              Text(
+                                                landingPageData.imageURL == ''
+                                                    ? 'Add Image'
+                                                    : 'Change Image',
+                                                style: AdminViewDialogStyles
+                                                    .buttonTextStyle,
+                                              )
+                                            ]),
+                                      )
+                                    else
+                                      ElevatedButton(
+                                        onPressed: () async {
+                                          Uint8List? imageBytes =
+                                              await _pickImage();
+                                          if (imageBytes != null) {
+                                            noImage = false;
+                                            pickedImageBytes = imageBytes;
+                                            setState(() {});
+                                          }
+                                        },
+                                        style: AdminViewDialogStyles
+                                            .noImageButtonStyle,
+                                        child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const Icon(Icons.add),
+                                              Text(
+                                                landingPageData.imageURL == ''
+                                                    ? 'Add Image'
+                                                    : 'Change Image',
+                                                style: AdminViewDialogStyles
+                                                    .buttonTextStyle,
+                                              )
+                                            ]),
+                                      ),
+                                    AdminViewDialogStyles.interTitleField,
+                                    AdminViewDialogStyles.interTitleField,
+                                    if (noImage)
+                                      Text(
+                                        'Please add an image',
+                                        style: AdminViewDialogStyles
+                                            .errorTextStyle,
+                                      ),
+                                  ],
+                                ),
+                              )),
+                        ),
+                      )),
+                  actions: <Widget>[
+                    Container(
+                      padding: AdminViewDialogStyles.actionsContPadding,
+                      color: AdminViewDialogStyles.bgColor,
+                      child: Column(
+                        children: [
+                          const Divider(),
+                          const SizedBox(
+                              height: AdminViewDialogStyles.listSpacing),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ElevatedButton(
+                                style:
+                                    AdminViewDialogStyles.elevatedButtonStyle,
+                                onPressed: () async {
+                                  if (landingPageData.imageURL == '' &&
+                                      pickedImageBytes == null) {
+                                    noImage = true;
+                                    setState(() {});
+                                  }
+                                  if (formKey.currentState!.validate() &&
+                                      !noImage) {
+                                    formKey.currentState!.save();
+                                    if (pickedImageBytes != null) {
+                                      String? imageURL = await _adminController
+                                          .uploadImageAndGetURL(
+                                              pickedImageBytes!,
+                                              'landing_page_image.jpg');
+                                      if (imageURL != null) {
+                                        landingPageData.imageURL = imageURL;
+                                      }
+                                    }
+                                    bool? isSuccess = await _adminController
+                                        .updateLandingPageData(landingPageData);
+                                    if (isSuccess != null && isSuccess) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(content: Text(successMessage)),
+                                      );
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(content: Text(errorMessage)),
+                                      );
+                                    }
+                                    Navigator.of(dialogContext).pop();
+                                  }
+                                },
+                                child: Text('Save',
+                                    style:
+                                        AdminViewDialogStyles.buttonTextStyle),
+                              ),
+                              TextButton(
+                                style: AdminViewDialogStyles.textButtonStyle,
+                                onPressed: () {
+                                  Navigator.of(dialogContext).pop();
+                                },
+                                child: Text('Cancel',
+                                    style:
+                                        AdminViewDialogStyles.buttonTextStyle),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ],
-                ),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () async {
-                    if (pickedImageBytes != null) {
-                      String? imageURL =
-                          await _adminController.uploadImageAndGetURL(
-                              pickedImageBytes!, 'landing_page');
-                      if (imageURL != null) {
-                        landingPageData.imageURL = imageURL;
-                      }
-                    }
-
-                    bool isSuccess = await _adminController
-                            .updateLandingPageData(landingPageData) ??
-                        false;
-                    if (isSuccess) {
-                      Navigator.of(dialogContext).pop();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('User info updated')));
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text('Failed to update user info')));
-                    }
-                  },
-                  child: const Text('OK'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(dialogContext).pop();
-                  },
-                  child: const Text('Cancel'),
-                ),
-              ],
-            );
+                ));
           },
         );
       },
