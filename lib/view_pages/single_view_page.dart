@@ -2,7 +2,6 @@ import 'package:avantswift_portfolio/view_pages/about_me_section.dart';
 import 'package:avantswift_portfolio/view_pages/skills_education_section.dart';
 import 'package:flutter/material.dart';
 import 'contact_section.dart';
-import 'education_section.dart';
 import 'landing_page.dart';
 
 class SinglePageView extends StatelessWidget {
@@ -39,13 +38,8 @@ class SinglePageView extends StatelessWidget {
               const SizedBox(height: 100), // Add some spacing
               const AboutMeSection(),
               const SizedBox(height: 100), // Add some spacing
-              // InterpersonalSkillsWidget(),
-              // const SizedBox(height: 100),
               const SkillsAndEducation(),
-              // const TechnicalSkillsWidget(), // Add some spacing
               const SizedBox(height: 500), // Add some spacing
-              const EducationSection(),
-              const SizedBox(height: 100),
 
               ContactSection(
                   key: _contactKey), // Placeholder for contact section

@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import '../constants.dart';
 import '../controllers/view_controllers/contact_section_controller.dart';
 import '../reposervice/user_repo_services.dart';
 import '../ui/custom_view_button.dart';
@@ -374,8 +375,8 @@ class ContactSectionState extends State<ContactSection> {
                             ),
                             Row(
                               children: [
-                                SvgPicture.asset(
-                                  'mail.svg',
+                                SvgPicture.network(
+                                  Constants.mailSVGURL,
                                   width: 84,
                                   height: 84,
                                 ),
@@ -406,8 +407,8 @@ class ContactSectionState extends State<ContactSection> {
                             ),
                             Row(
                               children: [
-                                SvgPicture.asset(
-                                  'linkedin.svg',
+                                SvgPicture.network(
+                                  Constants.linkedinSVGURL,
                                   width: 84,
                                   height: 84,
                                 ),

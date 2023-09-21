@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import '../../constants.dart';
 import '../../dto/contact_section_dto.dart';
 import '../../models/User.dart';
 import '../../reposervice/user_repo_services.dart';
@@ -21,9 +22,9 @@ class ContactSectionController {
             linkedinURL: user.linkedinURL);
       } else {
         return ContactSectionDTO(
-            name: 'Unknown',
+            name: Constants.defaultName,
             contactEmail: 'No email avaliable',
-            linkedinURL: 'No LinkedIn avaliable');
+            linkedinURL: Constants.defaultLinkedinURL);
       }
     } catch (e) {
       log('Error getting contact section data: $e');
