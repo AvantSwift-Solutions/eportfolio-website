@@ -7,7 +7,7 @@ class EducationDTO {
   String? description;
   String? gradeDescription;
   int? index;
-  int? grade;
+  double? grade;
   String? major;
 
   EducationDTO({

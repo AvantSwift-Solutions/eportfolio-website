@@ -1,31 +1,37 @@
-// ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
+// ignore_for_file: use_build_context_synchronously
 import 'dart:typed_data';
-import 'package:avantswift_portfolio/controllers/admin_controllers/award_cert_admin_controller.dart';
-import 'package:avantswift_portfolio/reposervice/award_cert_repo_services.dart';
+import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
+import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
+import 'package:mat_month_picker_dialog/mat_month_picker_dialog.dart';
+import 'package:uuid/uuid.dart';
+import '../controllers/admin_controllers/award_cert_section_admin_controller.dart';
 import '../models/AwardCert.dart';
+import '../reposervice/award_cert_repo_services.dart';
 
 class AwardCertSectionAdmin extends StatelessWidget {
-  final AwardCertAdminController _adminController =
-      AwardCertAdminController(AwardCertRepoService());
+  final AwardCertSectionAdminController _adminController =
+      AwardCertSectionAdminController(AwardCertRepoService());
+  late final BuildContext parentContext;
 
   AwardCertSectionAdmin({super.key});
 
   @override
   Widget build(BuildContext context) {
+    parentContext = context;
     return SingleChildScrollView(
       child: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
-              onPressed: () async {
-                _showEditDialog(
-                    context, await _adminController.getAwardCertList());
+              onPressed: () {
+                _showList(context);
               },
-              child: const Text('Edit AwardCert'),
+              child: const Text('Edit Award & Certification Info'),
             ),
           ),
         ],
@@ -33,324 +39,570 @@ class AwardCertSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showEditDialog(
-      BuildContext context, List<AwardCert>? awardCerts) async {
+  Future<void> _showList(BuildContext context) async {
+    List<AwardCert> awardcerts = await _adminController.getSectionData() ?? [];
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          title: const Text('Edit AwardCert'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(dialogContext).pop();
-                  _showAddAwardCertDialog(context, awardCerts!);
-                },
-                child: const Text('Add AwardCert'),
+        return Theme(
+          data: AdminViewDialogStyles.dialogThemeData,
+          child: AlertDialog(
+            scrollable: true,
+            titlePadding: AdminViewDialogStyles.titleDialogPadding,
+            contentPadding: AdminViewDialogStyles.contentDialogPadding,
+            actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
+            title: Container(
+                padding: AdminViewDialogStyles.titleContPadding,
+                color: AdminViewDialogStyles.bgColor,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Edit Award & Certifications'),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: IconButton(
+                            icon: const Icon(Icons.close),
+                            iconSize: AdminViewDialogStyles.closeIconSize,
+                            hoverColor: Colors.transparent,
+                            onPressed: () {
+                              Navigator.of(dialogContext).pop();
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Divider(),
+                  ],
+                )),
+            content: SizedBox(
+              height: AdminViewDialogStyles.listDialogHeight,
+              child: SingleChildScrollView(
+                child: SizedBox(
+                  width: AdminViewDialogStyles.listDialogWidth,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      awardcerts.isEmpty
+                          ? const Text('No Award & Certifications available')
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: awardcerts.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical:
+                                          AdminViewDialogStyles.listSpacing),
+                                  child: ListTile(
+                                    tileColor: Colors.white,
+                                    title: Text(
+                                        '${awardcerts[index].name} from ${awardcerts[index].source}',
+                                        style: AdminViewDialogStyles
+                                            .listTextStyle),
+                                    trailing: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                          icon: const Icon(Icons.edit),
+                                          onPressed: () {
+                                            _showEditDialog(context, index);
+                                          },
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.delete),
+                                          onPressed: () {
+                                            _showDeleteDialog(
+                                                context, awardcerts[index]);
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                    onTap: () {
+                                      _showEditDialog(context, index);
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
+                    ],
+                  ),
+                ),
               ),
-              ElevatedButton(
-                onPressed: () async {
-                  Navigator.of(dialogContext).pop();
-                  _showExistingAwardCertDialog(context, awardCerts!);
-                },
-                child: const Text('Update Existing AwardCert'),
-              ),
+            ),
+            actions: <Widget>[
+              Container(
+                  padding: AdminViewDialogStyles.actionsContPadding,
+                  color: AdminViewDialogStyles.bgColor,
+                  child: Column(
+                    children: [
+                      const Divider(),
+                      const SizedBox(height: AdminViewDialogStyles.listSpacing),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ReorderDialog(
+                            controller: _adminController,
+                            onReorder: () {
+                              Navigator.of(dialogContext).pop();
+                              Navigator.of(parentContext).pop();
+                              _showList(parentContext);
+                            },
+                          ),
+                          ElevatedButton(
+                            style: AdminViewDialogStyles.elevatedButtonStyle,
+                            onPressed: () {
+                              _showAddNewDialog(context, awardcerts);
+                            },
+                            child: Text(
+                              'Add New',
+                              style: AdminViewDialogStyles.buttonTextStyle,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ))
             ],
           ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-          ],
         );
       },
     );
   }
 
-  void _showAddAwardCertDialog(
-      BuildContext context, List<AwardCert> awardCerts) {
-    TextEditingController nameController = TextEditingController();
-    // TextEditingController imageURLController = TextEditingController();
-    TextEditingController linkController = TextEditingController();
-    TextEditingController sourceController = TextEditingController();
+  void _showAddNewDialog(
+      BuildContext context, List<AwardCert> awardcertList) async {
+    final id = const Uuid().v4();
+    final awardcert = AwardCert(
+      creationTimestamp: Timestamp.now(),
+      acid: id,
+      index: awardcertList.length,
+      name: '',
+      link: '',
+      source: '',
+      imageURL: '',
+      dateIssued: null,
+    );
 
+    _showAwardCertDialog(context, awardcert, (a) async {
+      return await a.create(id);
+    });
+  }
+
+  void _showEditDialog(BuildContext context, int i) async {
+    final awardcertSectionData = await _adminController.getSectionData();
+    final awardcert = awardcertSectionData![i];
+
+    _showAwardCertDialog(context, awardcert, (a) async {
+      return await a.update() ?? false;
+    });
+  }
+
+  void _showAwardCertDialog(BuildContext context, AwardCert awardcert,
+      Future<bool> Function(AwardCert) onAwardCertUpdated) {
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     Uint8List? pickedImageBytes;
-    AwardCert newAwardCert =
-        AwardCert(acid: '', name: '', link: '', source: '');
+
+    bool currentRole = awardcert.dateIssued == null;
+    String endDateDisp;
+    if (awardcert.dateIssued == null) {
+      endDateDisp = '-';
+    } else {
+      endDateDisp =
+          DateFormat('MMMM, y').format(awardcert.dateIssued!.toDate());
+    }
+    TextEditingController dateController =
+        TextEditingController(text: endDateDisp);
+
+    String title, successMessage, errorMessage;
+    if (awardcert.name == '') {
+      title = 'Add New Award & Certification';
+      successMessage = 'Award & Certification info added successfully';
+      errorMessage = 'Error adding new Award & Certification info';
+    } else {
+      title = 'Edit info for \'${awardcert.name} from ${awardcert.source}\'';
+      successMessage = 'Award & Certification info updated successfully';
+      errorMessage = 'Error updating Award & Certification info';
+    }
 
     showDialog(
-      context: context,
+      context: parentContext,
       builder: (BuildContext dialogContext) {
         return StatefulBuilder(
           builder: (context, setState) {
-            return AlertDialog(
-              title: const Text('Add AwardCert'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextField(
-                    controller: nameController,
-                    onChanged: (value) => newAwardCert.name = value,
-                    decoration: const InputDecoration(labelText: 'Name'),
-                  ),
-                  TextField(
-                    controller: linkController,
-                    onChanged: (value) => newAwardCert.link = value,
-                    decoration: const InputDecoration(labelText: 'Link'),
-                  ),
-                  TextField(
-                    controller: sourceController,
-                    onChanged: (value) => newAwardCert.source = value,
-                    decoration: const InputDecoration(labelText: 'Source'),
-                  ),
-                  if (pickedImageBytes != null) Image.memory(pickedImageBytes!),
-                  ElevatedButton(
-                    onPressed: () async {
-                      Uint8List? imageBytes = await _pickImage();
-                      if (imageBytes != null) {
-                        pickedImageBytes = imageBytes;
-                        setState(() {});
-                      }
-                    },
-                    child: const Text('Pick an Image'),
-                  ),
-                ],
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () async {
-                    if (pickedImageBytes != null) {
-                      String? imageURL =
-                          await _adminController.uploadImageAndGetURL(
-                        pickedImageBytes!,
-                        'selected_image.jpg',
-                      );
-                      if (imageURL != null) {
-                        newAwardCert.imageURL = imageURL;
-                      }
-                    }
-
-                    newAwardCert.create();
-                    awardCerts.add(newAwardCert);
-                    Navigator.of(dialogContext).pop();
-                    setState(() {});
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Added a new AwardCert')),
-                    );
-                  },
-                  child: const Text('Add'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(dialogContext).pop();
-                  },
-                  child: const Text('Cancel'),
-                ),
-              ],
-            );
-          },
-        );
-      },
-    );
-  }
-
-  void _showExistingAwardCertDialog(
-      BuildContext context, List<AwardCert> awardCerts) {
-    showDialog(
-      context: context,
-      builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          title: const Text('AwardCert List'),
-          content: SizedBox(
-            width: 300,
-            height: 300,
-            child: awardCerts.isNotEmpty
-                ? ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: awardCerts.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(awardCerts[index].name!),
-                        // leading: Image.network(awardCerts[index].imageURL),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.edit),
-                              onPressed: () {
-                                _showUpdateAwardCertDialog(context, index);
-                              },
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.delete),
-                              onPressed: () {
-                                _showDeleteDialog(context, index);
-                              },
-                            ),
-                          ],
+            return Theme(
+                data: AdminViewDialogStyles.dialogThemeData,
+                child: AlertDialog(
+                  scrollable: true,
+                  titlePadding: AdminViewDialogStyles.titleDialogPadding,
+                  contentPadding: AdminViewDialogStyles.contentDialogPadding,
+                  actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
+                  title: Container(
+                      padding: AdminViewDialogStyles.titleContPadding,
+                      color: AdminViewDialogStyles.bgColor,
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(title),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: IconButton(
+                                  icon: const Icon(Icons.close),
+                                  iconSize: AdminViewDialogStyles.closeIconSize,
+                                  hoverColor: Colors.transparent,
+                                  onPressed: () {
+                                    Navigator.of(dialogContext).pop();
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Divider(),
+                          // Align(
+                          //   alignment: Alignment.centerLeft,
+                          //   child: Text(
+                          //     '* indicates required field',
+                          //     style: AdminViewDialogStyles.indicatesTextStyle,
+                          //   ),
+                          // ),
+                        ],
+                      )),
+                  content: SizedBox(
+                      height: AdminViewDialogStyles.showDialogHeight,
+                      child: SingleChildScrollView(
+                        child: SizedBox(
+                          width: AdminViewDialogStyles.showDialogWidth,
+                          child: Form(
+                              key: formKey,
+                              child: SizedBox(
+                                width: AdminViewDialogStyles.showDialogWidth,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      '* indicates required field',
+                                      style: AdminViewDialogStyles
+                                          .indicatesTextStyle,
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Award/Certificate Name*',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    TextFormField(
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      initialValue: awardcert.name,
+                                      decoration:
+                                          AdminViewDialogStyles.inputDecoration,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter a name';
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) {
+                                        awardcert.name = value;
+                                      },
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Source*',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    TextFormField(
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      initialValue: awardcert.source,
+                                      decoration:
+                                          AdminViewDialogStyles.inputDecoration,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter a source';
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) {
+                                        awardcert.source = value;
+                                      },
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Link',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    TextFormField(
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      initialValue: awardcert.link,
+                                      decoration:
+                                          AdminViewDialogStyles.inputDecoration,
+                                      validator: (value) {
+                                        if (value != null &&
+                                            value.isNotEmpty &&
+                                            !Uri.parse(value).isAbsolute) {
+                                          return 'Please enter a valid link';
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) {
+                                        awardcert.link = value;
+                                      },
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Date Issued',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    TextFormField(
+                                      readOnly: true,
+                                      decoration:
+                                          AdminViewDialogStyles.dateDecoration,
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      controller: dateController,
+                                      enabled: !currentRole,
+                                      onTap: () async {
+                                        final pickedDate =
+                                            await showMonthPicker(
+                                          context: context,
+                                          initialDate:
+                                              awardcert.dateIssued!.toDate(),
+                                          firstDate: DateTime(1900),
+                                          lastDate: DateTime(2200),
+                                        );
+                                        if (pickedDate != null) {
+                                          final formattedDate =
+                                              DateFormat('MMMM, y')
+                                                  .format(pickedDate);
+                                          dateController.text = formattedDate;
+                                          awardcert.dateIssued =
+                                              Timestamp.fromDate(pickedDate);
+                                        }
+                                      },
+                                    ),
+                                    Row(
+                                      children: [
+                                        Checkbox(
+                                          value: currentRole,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              if (!currentRole) {
+                                                awardcert.dateIssued = null;
+                                                dateController.text = '-';
+                                              } else {
+                                                awardcert.dateIssued =
+                                                    Timestamp.now();
+                                                dateController.text =
+                                                    DateFormat('MMMM, y')
+                                                        .format(DateTime.now());
+                                              }
+                                              currentRole = value!;
+                                            });
+                                          },
+                                        ),
+                                        Text('No date associated',
+                                            style: AdminViewDialogStyles
+                                                .inputTextStyle)
+                                      ],
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Image',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    if (pickedImageBytes != null)
+                                      Image.memory(pickedImageBytes!,
+                                          width:
+                                              AdminViewDialogStyles.imageWidth),
+                                    if (awardcert.imageURL != '' &&
+                                        pickedImageBytes == null)
+                                      Image.network(awardcert.imageURL!,
+                                          width:
+                                              AdminViewDialogStyles.imageWidth),
+                                    AdminViewDialogStyles.interTitleField,
+                                    ElevatedButton(
+                                      onPressed: () async {
+                                        Uint8List? imageBytes =
+                                            await _pickImage();
+                                        if (imageBytes != null) {
+                                          pickedImageBytes = imageBytes;
+                                          setState(() {});
+                                        }
+                                      },
+                                      style: AdminViewDialogStyles
+                                          .imageButtonStyle,
+                                      child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            const Icon(Icons.add),
+                                            Text(
+                                              awardcert.imageURL == ''
+                                                  ? 'Add Image'
+                                                  : 'Change Image',
+                                              style: AdminViewDialogStyles
+                                                  .buttonTextStyle,
+                                            )
+                                          ]),
+                                    ),
+                                  ],
+                                ),
+                              )),
                         ),
-                        onTap: () {
-                          _showUpdateAwardCertDialog(context, index);
-                        },
-                      );
-                    },
-                  )
-                : const Text('No AwardCert available'),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _showUpdateAwardCertDialog(BuildContext context, int i) async {
-    final awardCerts = await _adminController.getAwardCertList();
-    final selectedAwardCert = awardCerts?[i];
-
-    TextEditingController nameController =
-        TextEditingController(text: selectedAwardCert?.name);
-    TextEditingController linkController =
-        TextEditingController(text: selectedAwardCert?.link);
-    TextEditingController sourceController =
-        TextEditingController(text: selectedAwardCert?.source);
-    Uint8List? pickedImageBytes;
-
-    showDialog(
-      context: context,
-      builder: (BuildContext dialogContext) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: const Text('Update Existing AwardCert'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextField(
-                    controller: nameController,
-                    onChanged: (value) => awardCerts?[i].name = value,
-                    decoration: const InputDecoration(labelText: 'Name'),
-                  ),
-                  TextField(
-                    controller: linkController,
-                    onChanged: (value) => awardCerts?[i].link = value,
-                    decoration: const InputDecoration(labelText: 'Link'),
-                  ),
-                  TextField(
-                    controller: sourceController,
-                    onChanged: (value) => awardCerts?[i].source = value,
-                    decoration: const InputDecoration(labelText: 'Source'),
-                  ),
-                  if (pickedImageBytes != null) Image.memory(pickedImageBytes!),
-                  ElevatedButton(
-                    onPressed: () async {
-                      Uint8List? imageBytes = await _pickImage();
-                      if (imageBytes != null) {
-                        pickedImageBytes = imageBytes;
-                        setState(() {});
-                      }
-                    },
-                    child: const Text('Pick an Image'),
-                  ),
-                ],
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () async {
-                    if (pickedImageBytes != null) {
-                      String? imageURL =
-                          await _adminController.uploadImageAndGetURL(
-                        pickedImageBytes!,
-                        'selected_image.jpg',
-                      );
-                      if (imageURL != null) {
-                        selectedAwardCert?.imageURL = imageURL;
-                      }
-                    }
-
-                    bool isSuccess = await _adminController.updateAwardCertData(
-                            i, awardCerts![i]) ??
-                        false;
-                    if (isSuccess) {
-                      setState(() {});
-                      Navigator.of(dialogContext).pop();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text('Updated an existing AwardCert')),
-                      );
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content:
-                                Text('Failed to update an existing AwardCert')),
-                      );
-                    }
-                  },
-                  child: const Text('Update'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(dialogContext).pop();
-                  },
-                  child: const Text('Cancel'),
-                ),
-              ],
-            );
+                      )),
+                  actions: <Widget>[
+                    Container(
+                      padding: AdminViewDialogStyles.actionsContPadding,
+                      color: AdminViewDialogStyles.bgColor,
+                      child: Column(
+                        children: [
+                          const Divider(),
+                          const SizedBox(
+                              height: AdminViewDialogStyles.listSpacing),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ElevatedButton(
+                                style:
+                                    AdminViewDialogStyles.elevatedButtonStyle,
+                                onPressed: () async {
+                                  if (formKey.currentState!.validate()) {
+                                    formKey.currentState!.save();
+                                    awardcert.creationTimestamp =
+                                        Timestamp.now();
+                                    if (pickedImageBytes != null) {
+                                      String? imageURL = await _adminController
+                                          .uploadImageAndGetURL(
+                                              pickedImageBytes!,
+                                              '${awardcert.acid}_image.jpg');
+                                      if (imageURL != null) {
+                                        awardcert.imageURL = imageURL;
+                                      }
+                                    }
+                                    bool isSuccess =
+                                        await onAwardCertUpdated(awardcert);
+                                    if (isSuccess) {
+                                      ScaffoldMessenger.of(parentContext)
+                                          .showSnackBar(
+                                        SnackBar(content: Text(successMessage)),
+                                      );
+                                    } else {
+                                      ScaffoldMessenger.of(parentContext)
+                                          .showSnackBar(
+                                        SnackBar(content: Text(errorMessage)),
+                                      );
+                                    }
+                                    Navigator.of(dialogContext).pop();
+                                    Navigator.of(parentContext).pop();
+                                    _showList(parentContext); // Show new list
+                                  }
+                                },
+                                child: Text('Save',
+                                    style:
+                                        AdminViewDialogStyles.buttonTextStyle),
+                              ),
+                              TextButton(
+                                style: AdminViewDialogStyles.textButtonStyle,
+                                onPressed: () {
+                                  Navigator.of(dialogContext).pop();
+                                },
+                                child: Text('Cancel',
+                                    style:
+                                        AdminViewDialogStyles.buttonTextStyle),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ));
           },
         );
       },
     );
   }
 
-  void _showDeleteDialog(BuildContext context, int i) async {
+  void _showDeleteDialog(BuildContext context, AwardCert x) async {
+    final name = '${x.name} from ${x.source}';
+
     showDialog(
-      context: context,
+      context: parentContext,
       builder: (BuildContext dialogContext) {
         return StatefulBuilder(
           builder: (context, setState) {
-            return AlertDialog(
-              title: const Text('Confirm Deletion'),
-              content:
-                  const Text('Are you sure you want to delete this AwardCert?'),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(dialogContext).pop();
-                  },
-                  child: const Text('Cancel'),
+            return Theme(
+              data: AdminViewDialogStyles.dialogThemeData,
+              child: Theme(
+                data: AdminViewDialogStyles.dialogThemeData,
+                child: AlertDialog(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Delete \'$name\'?'),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: IconButton(
+                          icon: const Icon(Icons.close),
+                          iconSize: AdminViewDialogStyles.closeIconSize,
+                          hoverColor: Colors.transparent,
+                          onPressed: () {
+                            Navigator.of(dialogContext).pop();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  content: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                          'Are you sure you want to delete info for \'$name\'?'),
+                    ],
+                  ),
+                  actions: <Widget>[
+                    Padding(
+                      padding: AdminViewDialogStyles.deleteActionsDialogPadding,
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            ElevatedButton(
+                              style: AdminViewDialogStyles.elevatedButtonStyle,
+                              onPressed: () async {
+                                final deleted = await x.delete() ?? false;
+                                if (deleted) {
+                                  setState(() {});
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content:
+                                            Text('$name deleted successfully')),
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content:
+                                            Text('Failed to delete $name')),
+                                  );
+                                }
+                                Navigator.of(dialogContext).pop();
+                                Navigator.of(parentContext).pop();
+                                _showList(parentContext);
+                              },
+                              child: Text('Delete',
+                                  style: AdminViewDialogStyles.buttonTextStyle),
+                            ),
+                            TextButton(
+                              style: AdminViewDialogStyles.textButtonStyle,
+                              onPressed: () {
+                                Navigator.of(dialogContext).pop();
+                              },
+                              child: Text('Cancel',
+                                  style: AdminViewDialogStyles.buttonTextStyle),
+                            ),
+                          ]),
+                    )
+                  ],
                 ),
-                TextButton(
-                  onPressed: () async {
-                    final deleted = await _adminController.deleteAwardCert(i);
-                    Navigator.of(dialogContext).pop(); // Close the dialog.
-
-                    if (deleted) {
-                      setState(() {});
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text('AwardCert deleted successfully')),
-                      );
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text('Failed to delete the AwardCert')),
-                      );
-                    }
-                  },
-                  child: const Text('Delete'),
-                ),
-              ],
+              ),
             );
           },
         );

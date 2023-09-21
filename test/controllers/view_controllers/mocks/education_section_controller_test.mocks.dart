@@ -50,6 +50,23 @@ class MockEducation extends _i1.Mock implements _i4.Education {
   }
 
   @override
+  set creationTimestamp(_i5.Timestamp? _creationTimestamp) =>
+      super.noSuchMethod(
+        Invocation.setter(
+          #creationTimestamp,
+          _creationTimestamp,
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  set index(int? _index) => super.noSuchMethod(
+        Invocation.setter(
+          #index,
+          _index,
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
   set startDate(_i5.Timestamp? _startDate) => super.noSuchMethod(
         Invocation.setter(
           #startDate,
@@ -98,23 +115,15 @@ class MockEducation extends _i1.Mock implements _i4.Education {
         returnValueForMissingStub: null,
       );
   @override
-  set gradeDescription(String? _gradeDescription) => super.noSuchMethod(
+  set major(String? _major) => super.noSuchMethod(
         Invocation.setter(
-          #gradeDescription,
-          _gradeDescription,
+          #major,
+          _major,
         ),
         returnValueForMissingStub: null,
       );
   @override
-  set index(int? _index) => super.noSuchMethod(
-        Invocation.setter(
-          #index,
-          _index,
-        ),
-        returnValueForMissingStub: null,
-      );
-  @override
-  set grade(int? _grade) => super.noSuchMethod(
+  set grade(double? _grade) => super.noSuchMethod(
         Invocation.setter(
           #grade,
           _grade,
@@ -122,10 +131,10 @@ class MockEducation extends _i1.Mock implements _i4.Education {
         returnValueForMissingStub: null,
       );
   @override
-  set major(String? _major) => super.noSuchMethod(
+  set gradeDescription(String? _gradeDescription) => super.noSuchMethod(
         Invocation.setter(
-          #major,
-          _major,
+          #gradeDescription,
+          _gradeDescription,
         ),
         returnValueForMissingStub: null,
       );
@@ -138,21 +147,11 @@ class MockEducation extends _i1.Mock implements _i4.Education {
         returnValue: <String, dynamic>{},
       ) as Map<String, dynamic>);
   @override
-  _i3.Future<void> create() => (super.noSuchMethod(
+  _i3.Future<bool> create(String? id) => (super.noSuchMethod(
         Invocation.method(
           #create,
-          [],
+          [id],
         ),
-        returnValue: _i3.Future<void>.value(),
-        returnValueForMissingStub: _i3.Future<void>.value(),
-      ) as _i3.Future<void>);
-  @override
-  _i3.Future<void> delete() => (super.noSuchMethod(
-        Invocation.method(
-          #delete,
-          [],
-        ),
-        returnValue: _i3.Future<void>.value(),
-        returnValueForMissingStub: _i3.Future<void>.value(),
-      ) as _i3.Future<void>);
+        returnValue: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
 }

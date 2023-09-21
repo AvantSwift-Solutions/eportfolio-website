@@ -1,7 +1,13 @@
-// ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
+// ignore_for_file: use_build_context_synchronously
 import 'dart:typed_data';
+import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
+import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:mat_month_picker_dialog/mat_month_picker_dialog.dart';
+import 'package:uuid/uuid.dart';
 import '../controllers/admin_controllers/recommendation_section_admin_controller.dart';
 import '../models/Recommendation.dart';
 import '../reposervice/recommendation_repo_services.dart';
@@ -9,22 +15,21 @@ import '../reposervice/recommendation_repo_services.dart';
 class RecommendationSectionAdmin extends StatelessWidget {
   final RecommendationSectionAdminController _adminController =
       RecommendationSectionAdminController(RecommendationRepoService());
+  late final BuildContext parentContext;
 
   RecommendationSectionAdmin({super.key});
 
   @override
   Widget build(BuildContext context) {
+    parentContext = context;
     return SingleChildScrollView(
       child: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
-              onPressed: () async {
-                _showRecommendationList(
-                    context,
-                    await _adminController.getRecommendationSectionData() ??
-                        []);
+              onPressed: () {
+                _showList(context);
               },
               child: const Text('Edit Recommendation Info'),
             ),
@@ -34,44 +39,133 @@ class RecommendationSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showRecommendationList(
-      BuildContext context, List<Recommendation> recommendationList) {
+  Future<void> _showList(BuildContext context) async {
+    List<Recommendation> recommendations =
+        await _adminController.getSectionData() ?? [];
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          title: const Text('Peer recommendation List'),
-          content: SizedBox(
-            width: 200,
-            child: recommendationList.isNotEmpty
-                ? ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: recommendationList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return ElevatedButton(
-                        onPressed: () {
-                          _showEditDialog(context, index);
-                        },
-                        child: Text(recommendationList[index].colleagueName!),
-                      );
-                    },
-                  )
-                : const Text('No peer recommendation data available.'),
+        return Theme(
+          data: AdminViewDialogStyles.dialogThemeData,
+          child: AlertDialog(
+            scrollable: true,
+            titlePadding: AdminViewDialogStyles.titleDialogPadding,
+            contentPadding: AdminViewDialogStyles.contentDialogPadding,
+            actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
+            title: Container(
+                padding: AdminViewDialogStyles.titleContPadding,
+                color: AdminViewDialogStyles.bgColor,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Edit Recommendations'),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: IconButton(
+                            icon: const Icon(Icons.close),
+                            iconSize: AdminViewDialogStyles.closeIconSize,
+                            hoverColor: Colors.transparent,
+                            onPressed: () {
+                              Navigator.of(dialogContext).pop();
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Divider(),
+                  ],
+                )),
+            content: SizedBox(
+              height: AdminViewDialogStyles.listDialogHeight,
+              child: SingleChildScrollView(
+                child: SizedBox(
+                  width: AdminViewDialogStyles.listDialogWidth,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      recommendations.isEmpty
+                          ? const Text('No Recommendations available')
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: recommendations.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical:
+                                          AdminViewDialogStyles.listSpacing),
+                                  child: ListTile(
+                                    tileColor: Colors.white,
+                                    title: Text(
+                                        'Recommendation from ${recommendations[index].colleagueName}',
+                                        style: AdminViewDialogStyles
+                                            .listTextStyle),
+                                    trailing: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                          icon: const Icon(Icons.edit),
+                                          onPressed: () {
+                                            _showEditDialog(context, index);
+                                          },
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.delete),
+                                          onPressed: () {
+                                            _showDeleteDialog(context,
+                                                recommendations[index]);
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                    onTap: () {
+                                      _showEditDialog(context, index);
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              Container(
+                  padding: AdminViewDialogStyles.actionsContPadding,
+                  color: AdminViewDialogStyles.bgColor,
+                  child: Column(
+                    children: [
+                      const Divider(),
+                      const SizedBox(height: AdminViewDialogStyles.listSpacing),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ReorderDialog(
+                            controller: _adminController,
+                            onReorder: () {
+                              Navigator.of(dialogContext).pop();
+                              Navigator.of(parentContext).pop();
+                              _showList(parentContext);
+                            },
+                          ),
+                          ElevatedButton(
+                            style: AdminViewDialogStyles.elevatedButtonStyle,
+                            onPressed: () {
+                              _showAddNewDialog(context, recommendations);
+                            },
+                            child: Text(
+                              'Add New',
+                              style: AdminViewDialogStyles.buttonTextStyle,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ))
+            ],
           ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pop();
-              },
-              child: const Text('Close'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _showAddNewDialog(context, recommendationList);
-              },
-              child: const Text('Add New Peer Recommendation'),
-            ),
-          ],
         );
       },
     );
@@ -79,28 +173,29 @@ class RecommendationSectionAdmin extends StatelessWidget {
 
   void _showAddNewDialog(
       BuildContext context, List<Recommendation> recommendationList) async {
+    final id = const Uuid().v4();
     final recommendation = Recommendation(
-      rid: '',
+      creationTimestamp: Timestamp.now(),
+      rid: id,
+      index: recommendationList.length,
       colleagueName: '',
       colleagueJobTitle: '',
       description: '',
-      imageURL: null,
+      imageURL: '',
+      dateReceived: null,
     );
 
-    _showRecommendationDialog(context, recommendation, (recc) async {
-      recc.create();
-      return true;
+    _showRecommendationDialog(context, recommendation, (a) async {
+      return await a.create(id);
     });
   }
 
   void _showEditDialog(BuildContext context, int i) async {
-    final recommendationSectionData =
-        await _adminController.getRecommendationSectionData();
-    final experience = recommendationSectionData![i];
+    final recommendationSectionData = await _adminController.getSectionData();
+    final recommendation = recommendationSectionData![i];
 
-    _showRecommendationDialog(context, experience, (recc) async {
-      return await _adminController.updateRecommendationSectionData(i, recc) ??
-          false;
+    _showRecommendationDialog(context, recommendation, (a) async {
+      return await a.update() ?? false;
     });
   }
 
@@ -108,114 +203,410 @@ class RecommendationSectionAdmin extends StatelessWidget {
       BuildContext context,
       Recommendation recommendation,
       Future<bool> Function(Recommendation) onRecommendationUpdated) {
-    TextEditingController colleagueNameController =
-        TextEditingController(text: recommendation.colleagueName);
-    TextEditingController colleagueJobTitleController =
-        TextEditingController(text: recommendation.colleagueJobTitle);
-    TextEditingController descriptionController =
-        TextEditingController(text: recommendation.description);
-
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     Uint8List? pickedImageBytes;
 
-    String title;
-    var newRecommendation = false;
-    if (recommendation.description == '') {
-      title = 'Add new peer recommendation information';
-      newRecommendation = true;
+    bool currentRole = recommendation.dateReceived == null;
+    String endDateDisp;
+    if (recommendation.dateReceived == null) {
+      endDateDisp = '-';
+    } else {
+      endDateDisp =
+          DateFormat('MMMM, y').format(recommendation.dateReceived!.toDate());
+    }
+    TextEditingController dateController =
+        TextEditingController(text: endDateDisp);
+
+    String title, successMessage, errorMessage;
+    if (recommendation.colleagueName == '') {
+      title = 'Add New Recommendation';
+      successMessage = 'Recommendation info added successfully';
+      errorMessage = 'Error adding new Recommendation info';
     } else {
       title =
-          'Edit your peer recommendation information for ${recommendation.description}';
+          'Edit info for \'Recommendation from ${recommendation.colleagueName}\'';
+      successMessage = 'Recommendation info updated successfully';
+      errorMessage = 'Error updating Recommendation info';
     }
 
-    Navigator.of(context).pop();
     showDialog(
-      context: context,
+      context: parentContext,
       builder: (BuildContext dialogContext) {
         return StatefulBuilder(
           builder: (context, setState) {
-            return AlertDialog(
-              title: Text(title),
-              content: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    TextField(
-                      controller: colleagueNameController,
-                      onChanged: (value) =>
-                          recommendation.colleagueName = value,
-                      decoration:
-                          const InputDecoration(labelText: 'Name of Colleague'),
+            return Theme(
+                data: AdminViewDialogStyles.dialogThemeData,
+                child: AlertDialog(
+                  scrollable: true,
+                  titlePadding: AdminViewDialogStyles.titleDialogPadding,
+                  contentPadding: AdminViewDialogStyles.contentDialogPadding,
+                  actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
+                  title: Container(
+                      padding: AdminViewDialogStyles.titleContPadding,
+                      color: AdminViewDialogStyles.bgColor,
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(title),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: IconButton(
+                                  icon: const Icon(Icons.close),
+                                  iconSize: AdminViewDialogStyles.closeIconSize,
+                                  hoverColor: Colors.transparent,
+                                  onPressed: () {
+                                    Navigator.of(dialogContext).pop();
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Divider(),
+                          // Align(
+                          //   alignment: Alignment.centerLeft,
+                          //   child: Text(
+                          //     '* indicates required field',
+                          //     style: AdminViewDialogStyles.indicatesTextStyle,
+                          //   ),
+                          // ),
+                        ],
+                      )),
+                  content: SizedBox(
+                      height: AdminViewDialogStyles.showDialogHeight,
+                      child: SingleChildScrollView(
+                        child: SizedBox(
+                          width: AdminViewDialogStyles.showDialogWidth,
+                          child: Form(
+                              key: formKey,
+                              child: SizedBox(
+                                width: AdminViewDialogStyles.showDialogWidth,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      '* indicates required field',
+                                      style: AdminViewDialogStyles
+                                          .indicatesTextStyle,
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Colleague Name*',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    TextFormField(
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      initialValue:
+                                          recommendation.colleagueName,
+                                      decoration:
+                                          AdminViewDialogStyles.inputDecoration,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter a name';
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) {
+                                        recommendation.colleagueName = value;
+                                      },
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Colleague Job Title',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    TextFormField(
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      initialValue:
+                                          recommendation.colleagueJobTitle,
+                                      decoration:
+                                          AdminViewDialogStyles.inputDecoration,
+                                      onSaved: (value) {
+                                        recommendation.colleagueJobTitle =
+                                            value;
+                                      },
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Date Issued',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    TextFormField(
+                                      readOnly: true,
+                                      decoration:
+                                          AdminViewDialogStyles.dateDecoration,
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      controller: dateController,
+                                      enabled: !currentRole,
+                                      onTap: () async {
+                                        final pickedDate =
+                                            await showMonthPicker(
+                                          context: context,
+                                          initialDate: recommendation
+                                              .dateReceived!
+                                              .toDate(),
+                                          firstDate: DateTime(1900),
+                                          lastDate: DateTime(2200),
+                                        );
+                                        if (pickedDate != null) {
+                                          final formattedDate =
+                                              DateFormat('MMMM, y')
+                                                  .format(pickedDate);
+                                          dateController.text = formattedDate;
+                                          recommendation.dateReceived =
+                                              Timestamp.fromDate(pickedDate);
+                                        }
+                                      },
+                                    ),
+                                    Row(
+                                      children: [
+                                        Checkbox(
+                                          value: currentRole,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              if (!currentRole) {
+                                                recommendation.dateReceived =
+                                                    null;
+                                                dateController.text = '-';
+                                              } else {
+                                                recommendation.dateReceived =
+                                                    Timestamp.now();
+                                                dateController.text =
+                                                    DateFormat('MMMM, y')
+                                                        .format(DateTime.now());
+                                              }
+                                              currentRole = value!;
+                                            });
+                                          },
+                                        ),
+                                        Text('No date associated',
+                                            style: AdminViewDialogStyles
+                                                .inputTextStyle)
+                                      ],
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Recommendation Description*',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    TextFormField(
+                                      maxLines:
+                                          AdminViewDialogStyles.textBoxLines,
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      initialValue: recommendation.description,
+                                      decoration:
+                                          AdminViewDialogStyles.inputDecoration,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter a recommendation description';
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) {
+                                        recommendation.description = value;
+                                      },
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Image',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    if (pickedImageBytes != null)
+                                      Image.memory(pickedImageBytes!,
+                                          width:
+                                              AdminViewDialogStyles.imageWidth),
+                                    if (recommendation.imageURL != '' &&
+                                        pickedImageBytes == null)
+                                      Image.network(recommendation.imageURL!,
+                                          width:
+                                              AdminViewDialogStyles.imageWidth),
+                                    AdminViewDialogStyles.interTitleField,
+                                    ElevatedButton(
+                                      onPressed: () async {
+                                        Uint8List? imageBytes =
+                                            await _pickImage();
+                                        if (imageBytes != null) {
+                                          pickedImageBytes = imageBytes;
+                                          setState(() {});
+                                        }
+                                      },
+                                      style: AdminViewDialogStyles
+                                          .imageButtonStyle,
+                                      child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            const Icon(Icons.add),
+                                            Text(
+                                              recommendation.imageURL == ''
+                                                  ? 'Add Image'
+                                                  : 'Change Image',
+                                              style: AdminViewDialogStyles
+                                                  .buttonTextStyle,
+                                            )
+                                          ]),
+                                    ),
+                                  ],
+                                ),
+                              )),
+                        ),
+                      )),
+                  actions: <Widget>[
+                    Container(
+                      padding: AdminViewDialogStyles.actionsContPadding,
+                      color: AdminViewDialogStyles.bgColor,
+                      child: Column(
+                        children: [
+                          const Divider(),
+                          const SizedBox(
+                              height: AdminViewDialogStyles.listSpacing),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ElevatedButton(
+                                style:
+                                    AdminViewDialogStyles.elevatedButtonStyle,
+                                onPressed: () async {
+                                  if (formKey.currentState!.validate()) {
+                                    formKey.currentState!.save();
+                                    recommendation.creationTimestamp =
+                                        Timestamp.now();
+                                    if (pickedImageBytes != null) {
+                                      String? imageURL = await _adminController
+                                          .uploadImageAndGetURL(
+                                              pickedImageBytes!,
+                                              '${recommendation.rid}_image.jpg');
+                                      if (imageURL != null) {
+                                        recommendation.imageURL = imageURL;
+                                      }
+                                    }
+                                    bool isSuccess =
+                                        await onRecommendationUpdated(
+                                            recommendation);
+                                    if (isSuccess) {
+                                      ScaffoldMessenger.of(parentContext)
+                                          .showSnackBar(
+                                        SnackBar(content: Text(successMessage)),
+                                      );
+                                    } else {
+                                      ScaffoldMessenger.of(parentContext)
+                                          .showSnackBar(
+                                        SnackBar(content: Text(errorMessage)),
+                                      );
+                                    }
+                                    Navigator.of(dialogContext).pop();
+                                    Navigator.of(parentContext).pop();
+                                    _showList(parentContext); // Show new list
+                                  }
+                                },
+                                child: Text('Save',
+                                    style:
+                                        AdminViewDialogStyles.buttonTextStyle),
+                              ),
+                              TextButton(
+                                style: AdminViewDialogStyles.textButtonStyle,
+                                onPressed: () {
+                                  Navigator.of(dialogContext).pop();
+                                },
+                                child: Text('Cancel',
+                                    style:
+                                        AdminViewDialogStyles.buttonTextStyle),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                    TextField(
-                      controller: colleagueJobTitleController,
-                      onChanged: (value) =>
-                          recommendation.colleagueJobTitle = value,
-                      decoration: const InputDecoration(
-                          labelText: 'Job Title of Colleague'),
-                    ),
-                    TextField(
-                      controller: descriptionController,
-                      onChanged: (value) => recommendation.description = value,
-                      decoration: const InputDecoration(
-                          labelText: 'Description of Recommendation'),
-                    ),
-                    if (pickedImageBytes != null)
-                      Image.memory(pickedImageBytes!),
-                    ElevatedButton(
-                      onPressed: () async {
-                        Uint8List? imageBytes = await _pickImage();
-                        if (imageBytes != null) {
-                          pickedImageBytes = imageBytes;
-                          setState(() {});
-                        }
-                      },
-                      child: const Text('Pick an Image'),
-                    ),
+                  ],
+                ));
+          },
+        );
+      },
+    );
+  }
+
+  void _showDeleteDialog(BuildContext context, Recommendation x) async {
+    final name = 'Recommendation from ${x.colleagueName}';
+
+    showDialog(
+      context: parentContext,
+      builder: (BuildContext dialogContext) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Theme(
+              data: AdminViewDialogStyles.dialogThemeData,
+              child: Theme(
+                data: AdminViewDialogStyles.dialogThemeData,
+                child: AlertDialog(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Delete \'$name\'?'),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: IconButton(
+                          icon: const Icon(Icons.close),
+                          iconSize: AdminViewDialogStyles.closeIconSize,
+                          hoverColor: Colors.transparent,
+                          onPressed: () {
+                            Navigator.of(dialogContext).pop();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  content: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                          'Are you sure you want to delete info for \'$name\'?'),
+                    ],
+                  ),
+                  actions: <Widget>[
+                    Padding(
+                      padding: AdminViewDialogStyles.deleteActionsDialogPadding,
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            ElevatedButton(
+                              style: AdminViewDialogStyles.elevatedButtonStyle,
+                              onPressed: () async {
+                                final deleted = await x.delete() ?? false;
+                                if (deleted) {
+                                  setState(() {});
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content:
+                                            Text('$name deleted successfully')),
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content:
+                                            Text('Failed to delete $name')),
+                                  );
+                                }
+                                Navigator.of(dialogContext).pop();
+                                Navigator.of(parentContext).pop();
+                                _showList(parentContext);
+                              },
+                              child: Text('Delete',
+                                  style: AdminViewDialogStyles.buttonTextStyle),
+                            ),
+                            TextButton(
+                              style: AdminViewDialogStyles.textButtonStyle,
+                              onPressed: () {
+                                Navigator.of(dialogContext).pop();
+                              },
+                              child: Text('Cancel',
+                                  style: AdminViewDialogStyles.buttonTextStyle),
+                            ),
+                          ]),
+                    )
                   ],
                 ),
               ),
-              actions: <Widget>[
-                if (!newRecommendation)
-                  TextButton(
-                    onPressed: () async {
-                      final name = recommendation.colleagueName;
-                      recommendation.delete();
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text('Reccomendatiom from $name deleted')));
-                      Navigator.pop(dialogContext);
-                    },
-                    child: const Text('Delete'),
-                  ),
-                TextButton(
-                  onPressed: () async {
-                    if (pickedImageBytes != null) {
-                      String? imageURL =
-                          await _adminController.uploadImageAndGetURL(
-                              pickedImageBytes!, 'selected_image.jpg');
-                      if (imageURL != null) {
-                        recommendation.imageURL = imageURL;
-                      }
-                    }
-                    bool isSuccess =
-                        await onRecommendationUpdated(recommendation);
-                    if (isSuccess) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text('Peer recommendation info updated')));
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content:
-                              Text('Error updating peer recommendation info')));
-                    }
-                    Navigator.pop(dialogContext);
-                  },
-                  child: const Text('OK'),
-                ),
-                TextButton(
-                  onPressed: () async {
-                    Navigator.pop(dialogContext);
-                  },
-                  child: const Text('Cancel'),
-                ),
-              ],
             );
           },
         );

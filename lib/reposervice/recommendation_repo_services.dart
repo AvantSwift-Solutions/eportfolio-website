@@ -5,8 +5,10 @@ import '../models/Recommendation.dart';
 class RecommendationRepoService {
   Future<List<Recommendation>?> getAllRecommendations() async {
     try {
-      QuerySnapshot snapshot =
-          await FirebaseFirestore.instance.collection('Recommendation').get();
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('Recommendation')
+          .orderBy('index')
+          .get();
       final tmp = snapshot.docs
           .map((doc) => Recommendation.fromDocumentSnapshot(doc))
           .toList();

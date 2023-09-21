@@ -1,5 +1,4 @@
 import 'package:avantswift_portfolio/controllers/view_controllers/education_section_controller.dart';
-import 'package:avantswift_portfolio/dto/education_section_dto.dart';
 import 'package:avantswift_portfolio/models/Education.dart';
 import 'package:avantswift_portfolio/reposervice/education_repo_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,7 +8,7 @@ import 'package:mockito/mockito.dart';
 
 import 'mocks/education_section_controller_test.mocks.dart';
 
-class MockEducation extends Mock implements Education {}
+// class MockEducation extends Mock implements Education {}
 
 @GenerateMocks([EducationRepoService, Education])
 void main() {
@@ -72,6 +71,7 @@ void main() {
           index: 1,
           grade: 95,
           major: 'Mock Major 1',
+          creationTimestamp: null,
         ),
         Education(
           eid: '2',
@@ -85,6 +85,7 @@ void main() {
           index: 2,
           grade: 90,
           major: 'Mock Major 2',
+          creationTimestamp: null,
         ),
       ];
 
@@ -144,8 +145,7 @@ void main() {
       expect(educationDTOUnknown.major, 'unknown');
     });
 
-    test('getAllEducation returns error data on exception',
-        () async {
+    test('getAllEducation returns error data on exception', () async {
       when(mockRepoService.getAllEducation())
           .thenThrow(Exception('Test Exception'));
       final educationDTOList = await controller.getEducationSectionData();
