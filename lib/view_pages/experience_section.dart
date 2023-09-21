@@ -253,6 +253,8 @@ class ExperienceWidget extends StatelessWidget {
                   ),
                   Text(experienceDTO.description as String,
                       style: PublicViewTextStyles.generalBodyText),
+                  // Text(experienceDTO.index.toString(),
+                  //     style: PublicViewTextStyles.generalBodyText),
                   Container(
                     height: screenHeight * 0.05,
                   )
@@ -309,12 +311,10 @@ class ColoredCircle extends StatelessWidget {
 }
 
 Color getColorFromNumber(int number) {
-  const List<Color> colorList = [
-    Color.fromRGBO(79, 147, 122, 1),
-    Colors.blue,
-    Colors.red,
-    Colors.orange,
-    Color(0xFFFBC9A7),
+  List<Color> colorList = [
+    Colors.orange.shade200,
+    Colors.blue.shade200,
+    Colors.green.shade200
     // Add more colors as needed
   ];
 
