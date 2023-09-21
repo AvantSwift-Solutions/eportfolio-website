@@ -157,7 +157,7 @@ class AwardCertSectionState extends State<AwardCertSection> {
         InkWell(
           onTap: () => openLink(awardCert.link ?? ''),
           child: CircleAvatar(
-            backgroundColor: Color.fromARGB(255, 174, 224, 176),
+            backgroundColor: Color(0xffD9EACB),
             radius: 80.0,
             backgroundImage: awardCert.imageURL != null ? NetworkImage(awardCert.imageURL!) : null,
             child: awardCert.imageURL == null
