@@ -21,6 +21,10 @@ class EducationSectionState extends State<EducationSection> {
   int currentPage = 0;
   static const itemsPerPage = 2;
 
+  // Variables to track drag start and end positions
+  Offset? dragStart;
+  Offset? dragEnd;
+
   @override
   void initState() {
     super.initState();
@@ -57,87 +61,117 @@ class EducationSectionState extends State<EducationSection> {
         ? educationSectionData.length
         : itemsPerPage; // Set the number of items to display
 
-    return Container(
-      width: screenWidth * 0.4 + screenWidth * 0.006,
-      child: Column(
-        children: [
-          Row(
-            children: [
-              SizedBox(
-                width: screenWidth * 0.055,
-              ),
-              Text(
-                "Education History",
-                style: PublicViewTextStyles.generalSubHeading,
-                textAlign: TextAlign.left,
-              ),
-            ],
-          ),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: numEducation,
-            itemBuilder: (context, index) {
-              final dataIndex = currentPage * itemsPerPage + index;
-              if (dataIndex < educationSectionData.length) {
-                return Column(
-                  children: [
-                    EducationWidget(
-                      educationDTO: educationSectionData[dataIndex],
-                    ),
-                  ],
-                );
-              } else {
-                return SizedBox(); // Return an empty widget if there are no more items.
-              }
-            },
-          ),
-          Row(
-            children: [
-              SizedBox(
-                width: screenWidth * 0.055,
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    Divider(
-                      color: Colors.black,
-                      thickness: 2,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        for (int page = 0; page < totalPages; page++)
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                currentPage = page;
-                              });
-                            },
-                            child: Container(
-                              width: 10,
-                              height: 10,
-                              margin: const EdgeInsets.symmetric(horizontal: 5),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: currentPage == page
-                                    ? Colors.black
-                                    : Colors.grey.withOpacity(0.5),
+    return GestureDetector(
+      // Detect horizontal drags
+      onPanStart: (details) {
+        dragStart = details.localPosition;
+      },
+      onPanUpdate: (details) {
+        dragEnd = details.localPosition;
+      },
+      onPanEnd: (details) {
+        if (dragStart != null && dragEnd != null) {
+          // Calculate the difference in positions
+          final dx = dragEnd!.dx - dragStart!.dx;
+          if (dx > 50 && currentPage > 0) {
+            // Swipe right, go to the previous page
+            setState(() {
+              currentPage--;
+            });
+          } else if (dx < -50 && currentPage < totalPages - 1) {
+            // Swipe left, go to the next page
+            setState(() {
+              currentPage++;
+            });
+          }
+        }
+        dragStart = null;
+        dragEnd = null;
+      },
+      child: Container(
+        width: screenWidth * 0.4 + screenWidth * 0.006,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                SizedBox(
+                  width: screenWidth * 0.055,
+                ),
+                Text(
+                  "Education History",
+                  style: PublicViewTextStyles.generalSubHeading,
+                  textAlign: TextAlign.left,
+                ),
+              ],
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: numEducation,
+              itemBuilder: (context, index) {
+                final dataIndex = currentPage * itemsPerPage + index;
+                if (dataIndex < educationSectionData.length) {
+                  return Column(
+                    children: [
+                      EducationWidget(
+                        educationDTO: educationSectionData[dataIndex],
+                      ),
+                    ],
+                  );
+                } else {
+                  return SizedBox(); // Return an empty widget if there are no more items.
+                }
+              },
+            ),
+            Row(
+              children: [
+                SizedBox(
+                  width: screenWidth * 0.055,
+                ),
+                Expanded(
+                  child: Column(
+                    children: [
+                      Divider(
+                        color: Colors.black,
+                        thickness: 2,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          for (int page = 0; page < totalPages; page++)
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  currentPage = page;
+                                });
+                              },
+                              child: Container(
+                                width: 10,
+                                height: 10,
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: currentPage == page
+                                      ? Colors.black
+                                      : Colors.grey.withOpacity(0.5),
+                                ),
                               ),
                             ),
-                          ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          )
-        ],
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
 }
+
 
 class EducationWidget extends StatelessWidget {
   final EducationDTO educationDTO;
@@ -199,7 +233,7 @@ class EducationWidget extends StatelessWidget {
                   thickness: 2,
                 ),
                 SizedBox(
-                  width: screenWidth * 0.006,
+                  height: screenHeight * 0.015,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -256,6 +290,9 @@ class EducationWidget extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(educationDTO.description as String),
+                ),
+                SizedBox(
+                  height: screenHeight * 0.015,
                 ),
               ],
             ),

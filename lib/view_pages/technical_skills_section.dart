@@ -43,22 +43,29 @@ class _TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const SizedBox(
           height: 120,
         ),
-        Text(
-          'Technical Skills',
-          style: PublicViewTextStyles.generalSubHeading,
-          textAlign: TextAlign.start,
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Technical Skills',
+              style: PublicViewTextStyles.generalSubHeading,
+              textAlign: TextAlign.start,
+            ),
+            const SizedBox(
+              width: 420,
+              child: Divider(
+                color: Colors.black,
+                thickness: 2.0,
+              ),
+            ),
+          ],
         ),
-        const SizedBox(
-          width: 420,
-          child: Divider(
-            color: Colors.black,
-            thickness: 2.0,
-          ),
-        ),
+
         const SizedBox(
           height: 20,
         ),
@@ -106,6 +113,9 @@ class _TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
             ),
           ),
         ),
+        // Expanded(
+        //   child: Center(
+        //     child:
         // Page Indicator
         Visibility(
           visible: (allSurroundingImages.length / 8).ceil() > 1,
@@ -128,6 +138,8 @@ class _TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
               ),
             ),
           ),
+          //   ),
+          // ),
         ),
       ],
     );
