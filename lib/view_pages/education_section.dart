@@ -11,6 +11,11 @@ const double kScreenDividerThickness = 2.0;
 const double kLogoSize = 0.048;
 const double kVerticalSpacing = 0.015;
 const double kHorizontalSpacing = 0.05;
+const double educationWidgetHeight = 400;
+const double navigationCircleSize = 10;
+const double greyOpacity = 0.5;
+const int pageAnimationDuration = 300;
+const double kTitleDividerLength = 0.319;
 
 class EducationSection extends StatefulWidget {
   const EducationSection({Key? key}) : super(key: key);
@@ -57,7 +62,7 @@ class EducationSectionState extends State<EducationSection> {
 
     return SizedBox(
       height:
-          400, // Specify a fixed height here or calculate it based on your layout,
+          educationWidgetHeight, // Specify a fixed height here or calculate it based on your layout,
       child: Column(
         children: [
           Row(
@@ -74,7 +79,7 @@ class EducationSectionState extends State<EducationSection> {
                     textAlign: TextAlign.left,
                   ),
                   SizedBox(
-                    width: screenWidth * 0.319,
+                    width: screenWidth * kTitleDividerLength,
                     child: const Divider(
                       color: Colors.black,
                       thickness: kScreenDividerThickness,
@@ -115,6 +120,7 @@ class EducationSectionState extends State<EducationSection> {
                       children: [
                         EducationWidget(
                           educationDTO: pageData[index],
+                          itemsPerPage: itemsPerPage,
                           numEducation: educationSectionData.length,
                         ),
                       ],
@@ -144,20 +150,21 @@ class EducationSectionState extends State<EducationSection> {
                             onTap: () {
                               _pageController.animateToPage(
                                 page,
-                                duration: const Duration(milliseconds: 300),
+                                duration: const Duration(
+                                    milliseconds: pageAnimationDuration),
                                 curve: Curves.easeInOut,
                               );
                             },
                             child: Container(
-                              width: 10,
-                              height: 10,
+                              width: navigationCircleSize,
+                              height: navigationCircleSize,
                               margin: const EdgeInsets.symmetric(
                                   horizontal: kHorizontalSpacing),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: currentPage == page
                                     ? Colors.black
-                                    : Colors.grey.withOpacity(0.5),
+                                    : Colors.grey.withOpacity(greyOpacity),
                               ),
                             ),
                           ),
@@ -177,8 +184,12 @@ class EducationSectionState extends State<EducationSection> {
 class EducationWidget extends StatelessWidget {
   final EducationDTO educationDTO;
   final int numEducation;
+  final int itemsPerPage;
   const EducationWidget(
-      {Key? key, required this.educationDTO, required this.numEducation})
+      {Key? key,
+      required this.educationDTO,
+      required this.itemsPerPage,
+      required this.numEducation})
       : super(key: key);
 
   @override
@@ -186,7 +197,7 @@ class EducationWidget extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-    final bool isFirst = (educationDTO.index as int) % 2 == 0;
+    final bool isFirst = (educationDTO.index as int) % itemsPerPage == 0;
 
     return IntrinsicHeight(
       child: Row(
