@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:js_interop';
 
 import 'package:avantswift_portfolio/models/Education.dart';
 
@@ -17,16 +16,16 @@ class EducationSectionController {
 
   // Function to format Timestamp to "Month Year" format
   String formatTimestamp(Timestamp? timestamp) {
-    if (timestamp.isNull) {
+    if (timestamp == null) {
       return "Null Timestamp";
     }
-    final DateTime dateTime = (timestamp as Timestamp).toDate();
+    final DateTime dateTime = (timestamp).toDate();
     final String formattedDate = DateFormat.yMMM().format(dateTime);
     return formattedDate;
   }
 
   String formatEndDateTimestamp(Timestamp? timestamp) {
-    if (timestamp.isNull) {
+    if (timestamp == null) {
       return "Present";
     }
 
@@ -81,41 +80,9 @@ class EducationSectionController {
           degree: 'Error',
           major: 'Error',
           gradeDescription: 'Error',
-          grade: -1,
+          grade: -2,
         )
       ];
-    }
-  }
-
-  Future<EducationDTO?> getEducationData(int educationIndex) async {
-    try {
-      List<Education>? educationList =
-          await educationRepoService.getAllEducation();
-
-      if (educationList != null &&
-          educationIndex >= 0 &&
-          educationIndex < educationList.length) {
-        final education = educationList[educationIndex];
-
-        return EducationDTO(
-          startDate: formatTimestamp(education.startDate),
-          endDate: formatEndDateTimestamp(education.endDate),
-          description: education.description,
-          logoURL: education.logoURL,
-          index: education.index,
-          schoolName: education.schoolName,
-          degree: education.degree,
-          major: education.major,
-          gradeDescription: education.gradeDescription,
-          grade: education.grade,
-        );
-      } else {
-        log('Error getting education by index:');
-        return null; // Return null if the index is out of bounds or educationList is null
-      }
-    } catch (e) {
-      log('Error getting education by index: $e');
-      return null; // Return null in case of an error
     }
   }
 }

@@ -12,6 +12,7 @@ class SkillsAndEducation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Padding(
       padding:
           const EdgeInsets.all(50.0), // Add padding of 50 around the widget
@@ -48,19 +49,22 @@ class SkillsAndEducation extends StatelessWidget {
                       children: [
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
-                          // decoration: BoxDecoration(
-                          //   border: Border.all(
-                          //     color: Colors.black, // Border color
-                          //     width: 2.0, // Border width
-                          //   ),
-                          // ),
                           child: const EducationSection(),
                         ),
                         const SizedBox(height: 20), // Adjust vertical spacing
                         // InterpersonalSkillsWidget
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: InterpersonalSkillsWidget(),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: screenWidth * 0.05,
+                              ),
+                              Expanded(
+                                child: InterpersonalSkillsWidget(),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),

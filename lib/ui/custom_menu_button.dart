@@ -12,10 +12,10 @@ class CustomMenuButton extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _CustomMenuButtonState createState() => _CustomMenuButtonState();
+  CustomMenuButtonState createState() => CustomMenuButtonState();
 }
 
-class _CustomMenuButtonState extends State<CustomMenuButton> {
+class CustomMenuButtonState extends State<CustomMenuButton> {
   bool isHovered = false;
   TextStyle textStyle =
       PublicViewTextStyles.navBarText.copyWith(fontWeight: FontWeight.normal);
