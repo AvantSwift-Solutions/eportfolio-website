@@ -12,6 +12,8 @@ class AboutMeSectionAdmin extends StatelessWidget {
 
   AboutMeSectionAdmin({super.key});
 
+  final maxBioLength = 400;
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -113,6 +115,7 @@ class AboutMeSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       maxLines:
                                           AdminViewDialogStyles.textBoxLines,
+                                      maxLength: maxBioLength,
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
                                       initialValue: aboutMeData.aboutMe,

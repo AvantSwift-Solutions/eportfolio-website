@@ -518,6 +518,8 @@ class ExperienceSectionAdmin extends StatelessWidget {
                                           AdminViewDialogStyles.inputTextStyle,
                                       maxLines:
                                           AdminViewDialogStyles.textBoxLines,
+                                      maxLength:
+                                          AdminViewDialogStyles.maxDescLength,
                                       initialValue: experience.description,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,

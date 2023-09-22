@@ -295,6 +295,8 @@ class ProjectSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       maxLines:
                                           AdminViewDialogStyles.textBoxLines,
+                                      maxLength:
+                                          AdminViewDialogStyles.maxDescLength,
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
                                       initialValue: project.description,

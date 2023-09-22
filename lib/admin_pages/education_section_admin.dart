@@ -489,6 +489,8 @@ class EducationSectionAdmin extends StatelessWidget {
                                           AdminViewDialogStyles.inputTextStyle,
                                       maxLines:
                                           AdminViewDialogStyles.textBoxLines,
+                                      maxLength:
+                                          AdminViewDialogStyles.maxDescLength,
                                       initialValue: education.description,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,

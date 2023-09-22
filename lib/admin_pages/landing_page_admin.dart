@@ -12,6 +12,8 @@ class LandingPageAdmin extends StatelessWidget {
 
   LandingPageAdmin({super.key});
 
+  final maxLPDescLength = 400;
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -153,6 +155,7 @@ class LandingPageAdmin extends StatelessWidget {
                                     TextFormField(
                                       maxLines:
                                           AdminViewDialogStyles.textBoxLines,
+                                      maxLength: maxLPDescLength,
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
                                       initialValue: landingPageData
