@@ -57,7 +57,6 @@ class AwardCertSectionState extends State<AwardCertSection> {
   Widget build(BuildContext context) {
     int totalPages = (awardCerts?.length ?? 0) ~/ (awardsPerRow * 2) + 1;
     final screenWidth = MediaQuery.of(context).size.width;
-    // print(screenWidth);
     double titleFontSize = screenWidth * 0.03;
 
 
@@ -188,6 +187,9 @@ class AwardCertSectionState extends State<AwardCertSection> {
 
 
   Widget _buildPageIndicator(bool isActive, int pageIndex) {
+    double buttonWidth = 8.0;
+    double buttonRadius = buttonWidth / 2;
+
     return GestureDetector(
       onTap: () {
         _pageController.animateToPage(
@@ -198,11 +200,11 @@ class AwardCertSectionState extends State<AwardCertSection> {
       },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 4.0),
-        height: 8.0,
-        width: isActive ? 8.0 : 8.0,
+        height: buttonWidth,
+        width: isActive ? buttonWidth : buttonWidth,
         decoration: BoxDecoration(
           color: isActive ? Colors.blue : Colors.grey,
-          borderRadius: BorderRadius.circular(4.0),
+          borderRadius: BorderRadius.circular(buttonRadius),
         ),
       ),
     );

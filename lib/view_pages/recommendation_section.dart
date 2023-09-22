@@ -133,82 +133,89 @@ class RecommendationSectionState extends State<RecommendationSection> {
   }
 
   Widget _buildPageIndicator(bool isActive, int pageIndex) {
-  return GestureDetector(
-    onTap: () {
-      // Move the page view to the tapped page
-      _pageController.animateToPage(
-        pageIndex,
-        duration: Duration(milliseconds: 500),
-        curve: Curves.ease,
-      );
-    },
-    child: Container(
-      margin: EdgeInsets.symmetric(horizontal: 4.0),
-      height: 8.0,
-      width: isActive ? 8.0 : 8.0,
-      decoration: BoxDecoration(
-        color: isActive ? Colors.blue : Colors.grey,
-        borderRadius: BorderRadius.circular(4.0),
+    double buttonWidth = 8;
+    double buttonRadius = buttonWidth / 2;
+
+    return GestureDetector(
+      onTap: () {
+        // Move the page view to the tapped page
+        _pageController.animateToPage(
+          pageIndex,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.ease,
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 4.0),
+        height: buttonWidth,
+        width: isActive ? buttonWidth : buttonWidth,
+        decoration: BoxDecoration(
+          color: isActive ? Colors.blue : Colors.grey,
+          borderRadius: BorderRadius.circular(buttonRadius),
+        ),
       ),
-    ),
-  );
-}
-Widget _buildRecommendationTile(Recommendation recommendation) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      ListTile(
-        title: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CircleAvatar(
-              radius: 20.0,
-              backgroundImage: NetworkImage(recommendation.imageURL ?? ''),
-            ),
-            SizedBox(width: 16.0),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    constraints: BoxConstraints(
-                      maxWidth: 500,
-                    ),
-                    child: Text(
-                      '"${recommendation.description}"',
-                      style: TextStyle(
-                        fontSize: 18,
+    );
+  }
+
+
+  Widget _buildRecommendationTile(Recommendation recommendation) {
+    double imageRadius = 20.0;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ListTile(
+          title: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CircleAvatar(
+                radius: imageRadius,
+                backgroundImage: NetworkImage(recommendation.imageURL ?? ''),
+              ),
+              SizedBox(width: 16.0),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      constraints: BoxConstraints(
+                        maxWidth: 500,
+                      ),
+                      child: Text(
+                        '"${recommendation.description}"',
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
                       ),
                     ),
-                  ),
-                  Text(
-                    recommendation.colleagueName ?? 'Colleague Name',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                    Text(
+                      recommendation.colleagueName ?? 'Colleague Name',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  Text(
-                    recommendation.colleagueJobTitle ?? 'Job Title',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                    Text(
+                      recommendation.colleagueJobTitle ?? 'Job Title',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-      Container(
-        width: 600,
-        child: Divider(
-          height: 1.0, // Height of the divider line
-          color: Colors.black, // Color of the divider line
+        Container(
+          width: 600,
+          child: Divider(
+            height: 1.0, // Height of the divider line
+            color: Colors.black, // Color of the divider line
+          ),
         ),
-      ),
-    ],
-  );
-}
+      ],
+    );
+  }
 }
