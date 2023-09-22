@@ -236,13 +236,6 @@ class ISkillSectionAdmin extends StatelessWidget {
                             ],
                           ),
                           const Divider(),
-                          // Align(
-                          //   alignment: Alignment.centerLeft,
-                          //   child: Text(
-                          //     '* indicates required field',
-                          //     style: AdminViewDialogStyles.indicatesTextStyle,
-                          //   ),
-                          // ),
                         ],
                       )),
                   content: SizedBox(
@@ -270,6 +263,8 @@ class ISkillSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
+                                      maxLength:
+                                          AdminViewDialogStyles.maxFieldLength,
                                       initialValue: iskill.name,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,

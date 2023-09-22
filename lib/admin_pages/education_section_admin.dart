@@ -265,13 +265,6 @@ class EducationSectionAdmin extends StatelessWidget {
                             ],
                           ),
                           const Divider(),
-                          // Align(
-                          //   alignment: Alignment.centerLeft,
-                          //   child: Text(
-                          //     '* indicates required field',
-                          //     style: AdminViewDialogStyles.indicatesTextStyle,
-                          //   ),
-                          // ),
                         ],
                       )),
                   content: SizedBox(
@@ -299,6 +292,8 @@ class EducationSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
+                                      maxLength:
+                                          AdminViewDialogStyles.maxFieldLength,
                                       initialValue: education.schoolName,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
@@ -319,6 +314,8 @@ class EducationSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
+                                      maxLength:
+                                          AdminViewDialogStyles.maxFieldLength,
                                       initialValue: education.degree,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
@@ -339,6 +336,8 @@ class EducationSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
+                                      maxLength:
+                                          AdminViewDialogStyles.maxFieldLength,
                                       initialValue: education.major,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
@@ -448,13 +447,18 @@ class EducationSectionAdmin extends StatelessWidget {
                                       validator: (value) {
                                         if (value != null && value.isNotEmpty) {
                                           if (double.tryParse(value) == null) {
-                                            return 'Please enter a number';
+                                            return 'Please enter a valid number';
+                                          } else if (double.tryParse(value)! <
+                                              0) {
+                                            return 'Please enter a positive number';
                                           }
                                         }
                                         return null;
                                       },
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
+                                      maxLength:
+                                          AdminViewDialogStyles.maxFieldLength,
                                       onSaved: (value) {
                                         education.grade =
                                             double.tryParse(value ?? '-1') ??
@@ -468,6 +472,8 @@ class EducationSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
+                                      maxLength:
+                                          AdminViewDialogStyles.maxFieldLength,
                                       initialValue: education.gradeDescription,
                                       decoration: AdminViewDialogStyles
                                           .inputDecoration

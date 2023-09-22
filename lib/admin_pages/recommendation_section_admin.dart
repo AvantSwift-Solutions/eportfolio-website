@@ -262,13 +262,6 @@ class RecommendationSectionAdmin extends StatelessWidget {
                             ],
                           ),
                           const Divider(),
-                          // Align(
-                          //   alignment: Alignment.centerLeft,
-                          //   child: Text(
-                          //     '* indicates required field',
-                          //     style: AdminViewDialogStyles.indicatesTextStyle,
-                          //   ),
-                          // ),
                         ],
                       )),
                   content: SizedBox(
@@ -296,6 +289,8 @@ class RecommendationSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
+                                      maxLength:
+                                          AdminViewDialogStyles.maxFieldLength,
                                       initialValue:
                                           recommendation.colleagueName,
                                       decoration:
@@ -317,6 +312,8 @@ class RecommendationSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
+                                      maxLength:
+                                          AdminViewDialogStyles.maxFieldLength,
                                       initialValue:
                                           recommendation.colleagueJobTitle,
                                       decoration:

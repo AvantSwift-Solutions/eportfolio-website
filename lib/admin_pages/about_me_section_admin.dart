@@ -80,13 +80,6 @@ class AboutMeSectionAdmin extends StatelessWidget {
                             ],
                           ),
                           const Divider(),
-                          // Align(
-                          //   alignment: Alignment.centerLeft,
-                          //   child: Text(
-                          //     '* indicates required field',
-                          //     style: AdminViewDialogStyles.indicatesTextStyle,
-                          //   ),
-                          // ),
                         ],
                       )),
                   content: SizedBox(

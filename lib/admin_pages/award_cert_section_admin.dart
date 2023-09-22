@@ -285,6 +285,8 @@ class AwardCertSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
+                                      maxLength:
+                                          AdminViewDialogStyles.maxFieldLength,
                                       initialValue: awardcert.name,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
@@ -305,6 +307,8 @@ class AwardCertSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
+                                      maxLength:
+                                          AdminViewDialogStyles.maxFieldLength,
                                       initialValue: awardcert.source,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,

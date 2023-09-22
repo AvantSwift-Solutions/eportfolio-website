@@ -277,13 +277,6 @@ class ExperienceSectionAdmin extends StatelessWidget {
                             ],
                           ),
                           const Divider(),
-                          // Align(
-                          //   alignment: Alignment.centerLeft,
-                          //   child: Text(
-                          //     '* indicates required field',
-                          //     style: AdminViewDialogStyles.indicatesTextStyle,
-                          //   ),
-                          // ),
                         ],
                       )),
                   content: SizedBox(
@@ -311,6 +304,8 @@ class ExperienceSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
+                                      maxLength:
+                                          AdminViewDialogStyles.maxFieldLength,
                                       initialValue: experience.jobTitle,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
@@ -372,6 +367,9 @@ class ExperienceSectionAdmin extends StatelessWidget {
                                             .otherDecoration,
                                         style: AdminViewDialogStyles
                                             .inputTextStyle,
+                                        maxLength: AdminViewDialogStyles
+                                            .maxFieldLength,
+                                        initialValue: experience.employmentType,
                                         onChanged: (value) {
                                           setState(() {
                                             experience.employmentType = value;
@@ -391,6 +389,8 @@ class ExperienceSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
+                                      maxLength:
+                                          AdminViewDialogStyles.maxFieldLength,
                                       initialValue: experience.companyName,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
@@ -411,6 +411,8 @@ class ExperienceSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
+                                      maxLength:
+                                          AdminViewDialogStyles.maxFieldLength,
                                       initialValue: experience.location,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
