@@ -31,9 +31,13 @@ High level architecture overview
 Further information:
 
 **4+1 architectural model**: https://avantswiftsolutions.atlassian.net/wiki/spaces/SD/pages/3309604/Architectural+Design+Documentation
+
 **Subject documentation**: https://avantswiftsolutions.atlassian.net/wiki/spaces/SD/pages/3112975/Progress+Checklists
+
 **Deployed viewer site**: https://avantswiftsolutions.web.app/#/landing-page
+
 **Deployed admin site**: https://avantswiftsolutions.web.app/#/login
+
 **Contact email for team**: avantswiftsolutions@gmail.com - Expect a response within 1-3 business days
 
 
