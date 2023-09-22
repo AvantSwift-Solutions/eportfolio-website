@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../controllers/view_controllers/project_section_controller.dart';
 import '../models/Project.dart';
 import '../reposervice/project_repo_services.dart';
 import '../ui/custom_texts/public_view_text_styles.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
 
 class ProjectSection extends StatefulWidget {
   const ProjectSection({Key? key}) : super(key: key);
@@ -13,6 +14,7 @@ class ProjectSection extends StatefulWidget {
   ProjectSectionState createState() => ProjectSectionState();
 }
 
+
 class ProjectSectionState extends State<ProjectSection> {
   final ProjectSectionController _projectController =
       ProjectSectionController(ProjectRepoService());
@@ -20,17 +22,21 @@ class ProjectSectionState extends State<ProjectSection> {
   bool showAllProjects = false;
   int initiallyDisplayedProjects = 3;
   int colorIndex = 0;
+  bool _isHovered = false;
   final List<Color> alternatingColors = [
     Colors.orange.shade200,
     Colors.blue.shade200,
     Colors.green.shade200
   ];
+  Color projectCardColor = Colors.orange.shade200; // Initialize with the first color
+
 
   @override
   void initState() {
     super.initState();
     fetchData();
   }
+
 
   Future<void> fetchData() async {
     try {
@@ -45,11 +51,14 @@ class ProjectSectionState extends State<ProjectSection> {
     }
   }
 
-  Color getNextColor() {
-    Color nextColor = alternatingColors[colorIndex];
-    colorIndex = (colorIndex + 1) % alternatingColors.length;
-    return nextColor;
-  }
+
+Color getNextColor() {
+  Color nextColor = projectCardColor;
+  colorIndex = (colorIndex + 1) % alternatingColors.length;
+  projectCardColor = alternatingColors[colorIndex]; // Update the project card color for the next iteration
+  return nextColor;
+}
+
 
   void openLink(String link) async {
     if (await canLaunchUrlString(link)) {
@@ -58,6 +67,11 @@ class ProjectSectionState extends State<ProjectSection> {
       print('Could not launch $link');
     }
   }
+  void openSvgLink() {
+    const svgUrl = 'assets/external_link.svg'; // Replace with your desired URL for the SVG
+    openLink(svgUrl);
+  }
+
 
   void openCustomLink() async {
     const url = 'https://example.com'; // Replace with your desired URL (github)
@@ -67,6 +81,7 @@ class ProjectSectionState extends State<ProjectSection> {
       print('Could not launch $url');
     }
   }
+
 
   void toggleShowAllProjects() {
     setState(() {
@@ -80,8 +95,27 @@ class ProjectSectionState extends State<ProjectSection> {
     });
   }
 
+
+  // Calculate the number of projects per row based on the screen width and desired project card width
+  int calculateProjectsPerRow(BuildContext context, double cardWidth) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    return (screenWidth / cardWidth).floor();
+  }
+
+
   @override
   Widget build(BuildContext context) {
+    // Inside the build method, calculate the projects per row and adjust spacing accordingly
+    double cardWidth = 250; // Adjust the desired project card width
+    double cardHeight = 250; // Adjust the desired project card height
+    int projectsPerRow = calculateProjectsPerRow(context, cardWidth); // Adjust the desired project card width
+    final screenWidth = MediaQuery.of(context).size.width;
+    bool _isSvgHovered = false;
+
+    double titleFontSize = screenWidth * 0.05;
+    double descriptionFontSize = screenWidth * 0.01;
+    double spacing = screenWidth * 0.15;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -95,11 +129,14 @@ class ProjectSectionState extends State<ProjectSection> {
                 child: Center(
                   child: Text(
                     'Personal Projects',
-                    style: TextStyle(
-                      fontSize: 40,
-                      fontFamily: 'Montserrat',
+                    style: PublicViewTextStyles.generalHeading.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
+                    // style: TextStyle(
+                    //   fontSize: 40,
+                    //   fontFamily: 'Montserrat',
+                    //   fontWeight: FontWeight.bold,
+                    // ),
                   ),
                 ),
               ),
@@ -109,41 +146,43 @@ class ProjectSectionState extends State<ProjectSection> {
                 child: Padding(
                   padding: const EdgeInsets.only(right: 150.0), // Change padding for quote
                   child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black, width: 1.0),
-                    borderRadius: BorderRadius.circular(5.0), // Border radius
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.2), // Adjust shadow color and opacity
-                        spreadRadius: 2, // Adjust the spread radius
-                        blurRadius: 5, // Adjust the blur radius
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  width: 300,
-                  // height: 200,
-                  child: Container(
-                    padding: const EdgeInsets.all(16.0),
-                    color: Colors.white, // Background color
-                    child: Text(
-                      '"I enjoy working on projects during my personal time as it provides an opportunity to experiment with something new and continuously enrich my current skill-set."',
-                      textAlign: TextAlign.left,
-                      softWrap: true,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w300,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black, width: 1.0),
+                      borderRadius: BorderRadius.circular(5.0), // Border radius
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2), // Adjust shadow color and opacity
+                          spreadRadius: 2, // Adjust the spread radius
+                          blurRadius: 5, // Adjust the blur radius
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Container(
+                      padding: const EdgeInsets.all(16.0),
+                      color: Colors.white, // Background color
+                      child: Text(
+                        '"I enjoy working on projects during my personal time as it provides an opportunity to experiment with something new and continuously enrich my current skill-set."',
+                        textAlign: TextAlign.left,
+                        softWrap: true,
+                        style: PublicViewTextStyles.generalBodyText.copyWith(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                        // style: TextStyle(
+                        //   fontSize: 18,
+                        //   fontFamily: 'Roboto',
+                        //   fontWeight: FontWeight.w300,
+                        // ),
                       ),
                     ),
                   ),
-                ),
                 ),
               ),
             ],
           ),
         ),
-        const SizedBox(height: 20), // Space between title and projects
+        const SizedBox(height: 60), // Space between title and projects
         Center(
           child: Column(
             children: [
@@ -154,12 +193,12 @@ class ProjectSectionState extends State<ProjectSection> {
                     children: List.generate(initiallyDisplayedProjects, (index) {
                       if (index < allProjects!.length) {
                         // Calculate spacing for the staggered effect
-                        double spacing = (index + 1) * 50.0;
+                        double spacing = (index % (projectsPerRow-1)) * 50.0;
                         return Padding(
                           padding: EdgeInsets.only(top: spacing, right: 50),
                           child: Container(
-                            width: 250,
-                            height: 250,
+                            width: cardWidth,
+                            height: cardHeight,
                             child: Card(
                               elevation: 3,
                               color: getNextColor(),
@@ -189,14 +228,34 @@ class ProjectSectionState extends State<ProjectSection> {
                                     Spacer(),
                                     Align(
                                       alignment: Alignment.bottomRight,
-                                      child: ElevatedButton(
-                                        onPressed: () => openLink(allProjects![index].link!),
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.grey,
-                                        ),
-                                        child: Icon(Icons.link),
-                                      ),
-                                    ),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          if (allProjects![index].link != null) {
+                                            openLink(allProjects![index].link!);
+                                          } else {
+                                            print('Link is null.');
+                                          }
+                                        },
+                                        child: MouseRegion(
+                                          cursor: SystemMouseCursors.click,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              if (allProjects![index].link != null) {
+                                                openLink(allProjects![index].link!);
+                                              } else {
+                                                print('Link is null.');
+                                              }
+                                            },
+                                            child: SvgPicture.asset(
+                                              'external_link.svg',
+                                              width: 50,
+                                              height: 50,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        )
+                                      ),              
+                                    )
                                   ],
                                 ),
                               ),
@@ -216,9 +275,45 @@ class ProjectSectionState extends State<ProjectSection> {
                   alignment: Alignment.bottomRight,
                   child: Padding(
                     padding: const EdgeInsets.only(right: 375.0, bottom: 16.0),
-                    child: ElevatedButton(
-                      onPressed: toggleShowAllProjects,
-                      child: Text('Show More'),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        MouseRegion(
+                          onEnter: (_) {
+                            setState(() {
+                              // Change the style on hover
+                              _isHovered = true;
+                            });
+                          },
+                          onExit: (_) {
+                            setState(() {
+                              // Revert the style when not hovered
+                              _isHovered = false;
+                            });
+                          },
+                          child: TextButton(
+                            onPressed: toggleShowAllProjects,
+                            style: ButtonStyle(
+                              overlayColor: MaterialStateProperty.all(Colors.transparent),
+                              padding: MaterialStateProperty.all(EdgeInsets.zero),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(Icons.keyboard_double_arrow_down_outlined, size:30, color: Colors.black),
+                                SizedBox(width: 5),
+                                Text(
+                                  'Load More',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: _isHovered ? Colors.black : Colors.black, // Change text color on hover
+                                    decoration: _isHovered ? TextDecoration.underline : TextDecoration.none, // Underline on hover
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -228,9 +323,45 @@ class ProjectSectionState extends State<ProjectSection> {
                   alignment: Alignment.bottomRight,
                   child: Padding(
                     padding: const EdgeInsets.only(right: 375.0, bottom: 16.0),
-                    child: ElevatedButton(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        MouseRegion(
+                          onEnter: (_) {
+                            setState(() {
+                              // Change the style on hover
+                              _isHovered = true;
+                            });
+                          },
+                          onExit: (_) {
+                            setState(() {
+                              // Revert the style when not hovered
+                              _isHovered = false;
+                            });
+                          },
+                    child: TextButton(
                       onPressed: toggleShowAllProjects,
-                      child: Text('Show Less'),
+                      style: ButtonStyle(
+                        overlayColor: MaterialStateProperty.all(Colors.transparent),
+                        padding: MaterialStateProperty.all(EdgeInsets.zero),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.keyboard_double_arrow_up_outlined, size:30, color: Colors.black),
+                          SizedBox(width: 5),
+                          Text(
+                            'Load Less',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black, // Change text color
+                              decoration: _isHovered ? TextDecoration.underline : TextDecoration.none,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -239,20 +370,12 @@ class ProjectSectionState extends State<ProjectSection> {
                 child: GestureDetector(
                   onTap: openCustomLink,
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 150.0, bottom: 50.0),
-                    child: Container(
-                      padding: const EdgeInsets.all(12.0),
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      child: Text(
-                        'View all my projects!',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                        ),
-                      ),
+                    padding: const EdgeInsets.only(left: 150.0, bottom: 150.0),
+                    child: SvgPicture.asset(
+                      'github.svg',  // Replace with the path to your SVG file
+                      width: 250,
+                      height: 250,
+                      // color: Colors.transparent,
                     ),
                   ),
                 ),
