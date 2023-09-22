@@ -49,7 +49,7 @@ class SkillsAndEducation extends StatelessWidget {
                       children: [
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: EducationSection(),
+                          child: const EducationSection(),
                         ),
                         const SizedBox(height: 20), // Adjust vertical spacing
                         // InterpersonalSkillsWidget

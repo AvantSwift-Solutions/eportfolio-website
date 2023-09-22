@@ -11,7 +11,7 @@ class Constants {
       'https://firebasestorage.googleapis.com/v0/b/avantswiftsolutions.appspot.com/o/images%2Fmail.svg?alt=media&token=716cdb7d-574e-4522-af92-e71bdc31ed6e';
   static const linkedinSVGURL =
       'https://firebasestorage.googleapis.com/v0/b/avantswiftsolutions.appspot.com/o/images%2Flinkedin.svg?alt=media&token=97129468-ac7c-445a-a0cd-42c6f1031fca';
-      
+
   static const double kScreenWidthDivider = 0.055;
   static const double kScreenDividerThickness = 2.0;
   static const double kLogoSize = 0.048;

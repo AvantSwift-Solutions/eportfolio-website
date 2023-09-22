@@ -19,7 +19,7 @@ class EducationSectionController {
     if (timestamp == null) {
       return "Null Timestamp";
     }
-    final DateTime dateTime = (timestamp as Timestamp).toDate();
+    final DateTime dateTime = (timestamp).toDate();
     final String formattedDate = DateFormat.yMMM().format(dateTime);
     return formattedDate;
   }
