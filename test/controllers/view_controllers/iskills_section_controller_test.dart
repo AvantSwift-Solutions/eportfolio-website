@@ -18,8 +18,8 @@ void main() {
 
     test('getIPersonalSkills returns a list of skill names', () async {
       final iSkills = [
-        ISkill(name: 'Skill1', isid: '1', creationTimestamp: null, index: null),
-        ISkill(name: 'Skill2', isid: '2', creationTimestamp: null, index: null),
+        ISkill(name: 'Skill1', isid: '1', creationTimestamp: null, index: 1),
+        ISkill(name: 'Skill2', isid: '2', creationTimestamp: null, index: 2),
       ];
       when(mockRepoService.getAllISkill()).thenAnswer((_) async => iSkills);
       final skillNames = await controller.getIPersonalSkills();
