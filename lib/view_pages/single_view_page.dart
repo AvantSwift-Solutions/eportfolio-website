@@ -50,9 +50,6 @@ class SinglePageView extends StatelessWidget {
 
     return Scaffold(
       body: SizedBox(
-        height: MediaQuery.of(context).size.height -
-            kToolbarHeight -
-            kBottomNavigationBarHeight,
         child: SingleChildScrollView(
           controller: _scrollController,
           child: Column(
