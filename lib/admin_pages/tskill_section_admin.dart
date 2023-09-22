@@ -52,7 +52,6 @@ class TSkillSectionAdmin extends StatelessWidget {
             return Theme(
                 data: AdminViewDialogStyles.dialogThemeData,
                 child: AlertDialog(
-                  scrollable: true,
                   titlePadding: AdminViewDialogStyles.titleDialogPadding,
                   contentPadding: AdminViewDialogStyles.contentDialogPadding,
                   actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
@@ -203,7 +202,6 @@ class TSkillSectionAdmin extends StatelessWidget {
         return Theme(
           data: AdminViewDialogStyles.dialogThemeData,
           child: AlertDialog(
-            scrollable: true,
             titlePadding: AdminViewDialogStyles.titleDialogPadding,
             contentPadding: AdminViewDialogStyles.contentDialogPadding,
             actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
@@ -390,7 +388,6 @@ class TSkillSectionAdmin extends StatelessWidget {
             return Theme(
                 data: AdminViewDialogStyles.dialogThemeData,
                 child: AlertDialog(
-                  scrollable: true,
                   titlePadding: AdminViewDialogStyles.titleDialogPadding,
                   contentPadding: AdminViewDialogStyles.contentDialogPadding,
                   actionsPadding: AdminViewDialogStyles.actionsDialogPadding,

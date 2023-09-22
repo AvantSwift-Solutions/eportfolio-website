@@ -47,7 +47,6 @@ class AwardCertSectionAdmin extends StatelessWidget {
         return Theme(
           data: AdminViewDialogStyles.dialogThemeData,
           child: AlertDialog(
-            scrollable: true,
             titlePadding: AdminViewDialogStyles.titleDialogPadding,
             contentPadding: AdminViewDialogStyles.contentDialogPadding,
             actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
@@ -233,7 +232,6 @@ class AwardCertSectionAdmin extends StatelessWidget {
             return Theme(
                 data: AdminViewDialogStyles.dialogThemeData,
                 child: AlertDialog(
-                  scrollable: true,
                   titlePadding: AdminViewDialogStyles.titleDialogPadding,
                   contentPadding: AdminViewDialogStyles.contentDialogPadding,
                   actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
@@ -260,13 +258,6 @@ class AwardCertSectionAdmin extends StatelessWidget {
                             ],
                           ),
                           const Divider(),
-                          // Align(
-                          //   alignment: Alignment.centerLeft,
-                          //   child: Text(
-                          //     '* indicates required field',
-                          //     style: AdminViewDialogStyles.indicatesTextStyle,
-                          //   ),
-                          // ),
                         ],
                       )),
                   content: SizedBox(
