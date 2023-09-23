@@ -7,8 +7,10 @@ import '../models/AwardCert.dart';
 class AwardCertRepoService {
   Future<List<AwardCert>?> getAllAwardCert() async {
     try {
-      QuerySnapshot snapshot =
-          await FirebaseFirestore.instance.collection('AwardCert').get();
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('AwardCert')
+          .orderBy('index')
+          .get();
       if (snapshot.docs.isNotEmpty) {
         return snapshot.docs
             .map((doc) => AwardCert.fromDocumentSnapshot(doc))

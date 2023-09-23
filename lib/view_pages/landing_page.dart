@@ -1,4 +1,6 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import '../constants.dart';
 import '../controllers/view_controllers/landing_page_controller.dart';
 import '../reposervice/user_repo_services.dart';
 import '../ui/custom_view_button.dart';
@@ -18,6 +20,13 @@ class _LandingPageState extends State<LandingPage> {
   final LandingPageController _landingPageController =
       LandingPageController(UserRepoService());
 
+  Future<String> getReplacementURL() async {
+    final storage = FirebaseStorage.instance;
+    final ref = storage.ref().child(Constants.replaceImageURL);
+    final url = await ref.getDownloadURL();
+    return url;
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -28,7 +37,14 @@ class _LandingPageState extends State<LandingPage> {
         } else if (snapshot.hasError) {
           return const Center(child: Text('Error loading data'));
         }
-
+        if (snapshot.data?.imageURL?.isEmpty ?? false) {
+          // If imageURL is empty, fetch the replacement URL and update it
+          getReplacementURL().then((replacementURL) {
+            if (replacementURL.isNotEmpty) {
+              snapshot.data?.imageURL = replacementURL;
+            }
+          });
+        }
         final landingPageData = snapshot.data;
         final screenWidth = MediaQuery.of(context).size.width;
 

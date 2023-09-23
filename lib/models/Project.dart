@@ -1,58 +1,63 @@
 // ignore_for_file: file_names
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:uuid/uuid.dart';
 
 class Project {
+  Timestamp? creationTimestamp;
   final String? ppid;
+  int? index;
   String? name;
   String? description;
-  Timestamp? creationTimestamp;
-  String? imageURL;
+  String? link;
 
   Project({
+    required this.creationTimestamp,
     required this.ppid,
+    required this.index,
     required this.name,
-    this.description,
-    this.creationTimestamp,
-    this.imageURL,
+    required this.description,
+    required this.link,
   });
 
   factory Project.fromDocumentSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;
+    final creationTimestamp = data['creationTimestamp'];
+    final index = data['index'];
     final name = data['name'];
     final description = data['description'];
-    final creationTimestamp = data['creationTimestamp'];
-    final imageUrl = data['imageURL'];
+    final link = data['link'];
 
     return Project(
+      creationTimestamp: creationTimestamp,
+      index: index,
       ppid: snapshot.id,
       name: name,
       description: description,
-      creationTimestamp: creationTimestamp,
-      imageURL: imageUrl,
+      link: link,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
+      'creationTimestamp': creationTimestamp,
       'ppid': ppid,
+      'index': index,
       'name': name,
       'description': description,
-      'creationTimestamp': creationTimestamp,
-      'imageURL': imageURL
+      'link': link
     };
   }
 
-  Future<void> create() async {
+  Future<bool> create(String id) async {
     try {
-      final ppid = const Uuid().v4();
       await FirebaseFirestore.instance
           .collection('Project')
-          .doc(ppid)
+          .doc(id)
           .set(toMap());
+      return true;
     } catch (e) {
       log('Error creating project document: $e');
+      return false;
     }
   }
 
@@ -69,11 +74,13 @@ class Project {
     }
   }
 
-  Future<void> delete() async {
+  Future<bool>? delete() async {
     try {
       await FirebaseFirestore.instance.collection('Project').doc(ppid).delete();
+      return true;
     } catch (e) {
       log('Error deleting project document: $e');
+      return false;
     }
   }
 }
