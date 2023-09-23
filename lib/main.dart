@@ -64,10 +64,10 @@ class MyAppState extends State<MyApp> {
         textSelectionTheme:
             const TextSelectionThemeData(cursorColor: Colors.black),
       ),
-      initialRoute: '/login',
+      initialRoute: '',
       debugShowCheckedModeBanner: false,
       routes: {
-        '/landing-page': (context) => SinglePageView(),
+        '': (context) => SinglePageView(),
         '/login': (context) => LoginPage(
               authState: widget.authState,
               onLoginSuccess: (user) {
