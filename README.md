@@ -9,7 +9,7 @@ Khai Syuen Tan, khaisyuent@student.unimelb.edu.au, 1190030 \
 Vincent Luu, luuvl@student.unimelb.edu.au, 1269979
 
 ---------------------------------
-High level architecture overview
+High-level architecture overview
 
 ![image](https://github.com/AvantSwift-Solutions/AvantSwift-Solutions/assets/82506964/74a83e09-1a2b-44bd-992f-ba4aa2a99c04)
 
@@ -34,10 +34,10 @@ Further information:
 
 **Subject documentation**: https://avantswiftsolutions.atlassian.net/wiki/spaces/SD/pages/3112975/Progress+Checklists
 
-**Deployed viewer site**: https://avantswiftsolutions.web.app/#/landing-page
+**Deployed viewer site**: https://avantswiftsolutions.web.app
 
 **Deployed admin site**: https://avantswiftsolutions.web.app/#/login
 
-**Contact email for team**: avantswiftsolutions@gmail.com - Expect a response within 1-3 business days
+**Contact email for team**: avantswiftsolutions@gmail.com - Expect a response within 1-2 business days
 
 
