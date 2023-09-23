@@ -1,32 +1,33 @@
-// ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
-import 'dart:developer';
-import 'dart:typed_data';
-import 'package:avantswift_portfolio/reposervice/project_repo_services.dart';
+// ignore_for_file: use_build_context_synchronously
+import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
+import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import '../controllers/admin_controllers/project_section_admin_controller.dart';
 import '../models/Project.dart';
+import '../reposervice/project_repo_services.dart';
 
 class ProjectSectionAdmin extends StatelessWidget {
   final ProjectSectionAdminController _adminController =
       ProjectSectionAdminController(ProjectRepoService());
+  late final BuildContext parentContext;
 
   ProjectSectionAdmin({super.key});
 
   @override
   Widget build(BuildContext context) {
+    parentContext = context;
     return SingleChildScrollView(
       child: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
-              onPressed: () async {
-                _showEditDialog(
-                    context, await _adminController.getProjectList());
+              onPressed: () {
+                _showList(context);
               },
-              child: const Text('Edit Project'),
+              child: const Text('Edit Personal Project Info'),
             ),
           ),
         ],
@@ -34,304 +35,443 @@ class ProjectSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showEditDialog(BuildContext context, List<Project>? projects) async {
+  Future<void> _showList(BuildContext context) async {
+    List<Project> projects = await _adminController.getSectionData() ?? [];
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          title: const Text('Edit Project'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(dialogContext).pop();
-                  _showAddProjectDialog(context, projects!);
-                },
-                child: const Text('Add Project'),
+        return Theme(
+          data: AdminViewDialogStyles.dialogThemeData,
+          child: AlertDialog(
+            scrollable: true,
+            titlePadding: AdminViewDialogStyles.titleDialogPadding,
+            contentPadding: AdminViewDialogStyles.contentDialogPadding,
+            actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
+            title: Container(
+                padding: AdminViewDialogStyles.titleContPadding,
+                color: AdminViewDialogStyles.bgColor,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Edit Personal Projects'),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: IconButton(
+                            icon: const Icon(Icons.close),
+                            iconSize: AdminViewDialogStyles.closeIconSize,
+                            hoverColor: Colors.transparent,
+                            onPressed: () {
+                              Navigator.of(dialogContext).pop();
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Divider(),
+                  ],
+                )),
+            content: SizedBox(
+              height: AdminViewDialogStyles.listDialogHeight,
+              child: SingleChildScrollView(
+                child: SizedBox(
+                  width: AdminViewDialogStyles.listDialogWidth,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      projects.isEmpty
+                          ? const Text('No Personal Projects available')
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: projects.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical:
+                                          AdminViewDialogStyles.listSpacing),
+                                  child: ListTile(
+                                    tileColor: Colors.white,
+                                    title: Text(projects[index].name ?? '',
+                                        style: AdminViewDialogStyles
+                                            .listTextStyle),
+                                    trailing: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                          icon: const Icon(Icons.edit),
+                                          onPressed: () {
+                                            _showEditDialog(context, index);
+                                          },
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.delete),
+                                          onPressed: () {
+                                            _showDeleteDialog(
+                                                context, projects[index]);
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                    onTap: () {
+                                      _showEditDialog(context, index);
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
+                    ],
+                  ),
+                ),
               ),
-              ElevatedButton(
-                onPressed: () async {
-                  Navigator.of(dialogContext).pop();
-                  _showExistingProjectsDialog(context, projects!);
-                },
-                child: const Text('Update Existing Project'),
-              ),
+            ),
+            actions: <Widget>[
+              Container(
+                  padding: AdminViewDialogStyles.actionsContPadding,
+                  color: AdminViewDialogStyles.bgColor,
+                  child: Column(
+                    children: [
+                      const Divider(),
+                      const SizedBox(height: AdminViewDialogStyles.listSpacing),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ReorderDialog(
+                            controller: _adminController,
+                            onReorder: () {
+                              Navigator.of(dialogContext).pop();
+                              Navigator.of(parentContext).pop();
+                              _showList(parentContext);
+                            },
+                          ),
+                          ElevatedButton(
+                            style: AdminViewDialogStyles.elevatedButtonStyle,
+                            onPressed: () {
+                              _showAddNewDialog(context, projects);
+                            },
+                            child: Text(
+                              'Add New',
+                              style: AdminViewDialogStyles.buttonTextStyle,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ))
             ],
           ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-          ],
         );
       },
     );
   }
 
-  void _showAddProjectDialog(BuildContext context, List<Project> projects) {
-    TextEditingController nameController = TextEditingController();
-    TextEditingController descriptionController = TextEditingController();
-    TextEditingController linkController = TextEditingController(); 
-    //Uint8List? pickedImageBytes;
-    Project newProject =
-        Project(ppid: '', name: '', creationTimestamp: Timestamp.now());
+  void _showAddNewDialog(
+      BuildContext context, List<Project> projectList) async {
+    final id = const Uuid().v4();
+    final project = Project(
+      creationTimestamp: Timestamp.now(),
+      ppid: id,
+      index: projectList.length,
+      name: '',
+      link: '',
+      description: '',
+    );
+
+    _showProjectDialog(context, project, (a) async {
+      return await a.create(id);
+    });
+  }
+
+  void _showEditDialog(BuildContext context, int i) async {
+    final projectSectionData = await _adminController.getSectionData();
+    final project = projectSectionData![i];
+
+    _showProjectDialog(context, project, (a) async {
+      return await a.update() ?? false;
+    });
+  }
+
+  void _showProjectDialog(BuildContext context, Project project,
+      Future<bool> Function(Project) onProjectUpdated) {
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+    String title, successMessage, errorMessage;
+    if (project.name == '') {
+      title = 'Add New Personal Project';
+      successMessage = 'Personal Project info added successfully';
+      errorMessage = 'Error adding new Personal Project info';
+    } else {
+      title = 'Edit info for \'${project.name}\'';
+      successMessage = 'Personal Project info updated successfully';
+      errorMessage = 'Error updating Personal Project info';
+    }
 
     showDialog(
-      context: context,
+      context: parentContext,
       builder: (BuildContext dialogContext) {
         return StatefulBuilder(
           builder: (context, setState) {
-            return AlertDialog(
-              title: const Text('Add Project'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextField(
-                    controller: nameController,
-                    onChanged: (value) => newProject.name = value,
-                    decoration: const InputDecoration(labelText: 'Name'),
-                  ),
-                  TextField(
-                    controller: descriptionController,
-                    onChanged: (value) => newProject.description = value,
-                    decoration: const InputDecoration(labelText: 'Description'),
-                  ),
-                  TextField(
-                    controller: linkController,
-                    onChanged: (value) => newProject.link = value,
-                    decoration: const InputDecoration(labelText: 'Link'),
-                  ),
-                ],
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () async {
-                    if (nameController.text.isEmpty ||
-                        descriptionController.text.isEmpty) {
-                      log('Name or description is empty');
-                      return;
-                    }
-                    // await _adminController.addProject(newProject);
-                    newProject.create();
-                    projects.add(newProject);
-                    Navigator.of(dialogContext).pop();
-                    setState(() {});
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Added a new project')),
-                    );
-                  },
-                  child: const Text('Add'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(dialogContext).pop();
-                  },
-                  child: const Text('Cancel'),
-                ),
-              ],
-            );
-          },
-        );
-      },
-    );
-  }
-
-  void _showExistingProjectsDialog(
-      BuildContext context, List<Project> projects) {
-    showDialog(
-      context: context,
-      builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          title: const Text('Project List'),
-          content: SizedBox(
-            width: 300,
-            height: 300,
-            child: projects.isNotEmpty
-                ? ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: projects.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(projects[index].name!),
-                        // subtitle: Text(Projects[index].description),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.edit),
-                              onPressed: () {
-                                _showUpdateProjectDialog(context, index);
-                              },
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.delete),
-                              onPressed: () {
-                                _showDeleteDialog(context, index);
-                              },
-                            ),
-                          ],
+            return Theme(
+                data: AdminViewDialogStyles.dialogThemeData,
+                child: AlertDialog(
+                  scrollable: true,
+                  titlePadding: AdminViewDialogStyles.titleDialogPadding,
+                  contentPadding: AdminViewDialogStyles.contentDialogPadding,
+                  actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
+                  title: Container(
+                      padding: AdminViewDialogStyles.titleContPadding,
+                      color: AdminViewDialogStyles.bgColor,
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(title),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: IconButton(
+                                  icon: const Icon(Icons.close),
+                                  iconSize: AdminViewDialogStyles.closeIconSize,
+                                  hoverColor: Colors.transparent,
+                                  onPressed: () {
+                                    Navigator.of(dialogContext).pop();
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Divider(),
+                          // Align(
+                          //   alignment: Alignment.centerLeft,
+                          //   child: Text(
+                          //     '* indicates required field',
+                          //     style: AdminViewDialogStyles.indicatesTextStyle,
+                          //   ),
+                          // ),
+                        ],
+                      )),
+                  content: SizedBox(
+                      height: AdminViewDialogStyles.showDialogHeight,
+                      child: SingleChildScrollView(
+                        child: SizedBox(
+                          width: AdminViewDialogStyles.showDialogWidth,
+                          child: Form(
+                              key: formKey,
+                              child: SizedBox(
+                                width: AdminViewDialogStyles.showDialogWidth,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      '* indicates required field',
+                                      style: AdminViewDialogStyles
+                                          .indicatesTextStyle,
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Project Name*',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    TextFormField(
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      initialValue: project.name,
+                                      decoration:
+                                          AdminViewDialogStyles.inputDecoration,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter a project name';
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) {
+                                        project.name = value;
+                                      },
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Description',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    TextFormField(
+                                      maxLines:
+                                          AdminViewDialogStyles.textBoxLines,
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      initialValue: project.description,
+                                      decoration:
+                                          AdminViewDialogStyles.inputDecoration,
+                                      onSaved: (value) {
+                                        project.description = value;
+                                      },
+                                    ),
+                                    AdminViewDialogStyles.spacer,
+                                    const Text('Project Link',
+                                        textAlign: TextAlign.left),
+                                    AdminViewDialogStyles.interTitleField,
+                                    TextFormField(
+                                      style:
+                                          AdminViewDialogStyles.inputTextStyle,
+                                      initialValue: project.link,
+                                      decoration:
+                                          AdminViewDialogStyles.inputDecoration,
+                                      onSaved: (value) {
+                                        project.link = value;
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              )),
                         ),
-                        onTap: () {
-                          _showUpdateProjectDialog(context, index);
-                        },
-                      );
-                    },
-                  )
-                : const Text('No projects available'),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-          ],
+                      )),
+                  actions: <Widget>[
+                    Container(
+                      padding: AdminViewDialogStyles.actionsContPadding,
+                      color: AdminViewDialogStyles.bgColor,
+                      child: Column(
+                        children: [
+                          const Divider(),
+                          const SizedBox(
+                              height: AdminViewDialogStyles.listSpacing),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ElevatedButton(
+                                style:
+                                    AdminViewDialogStyles.elevatedButtonStyle,
+                                onPressed: () async {
+                                  if (formKey.currentState!.validate()) {
+                                    formKey.currentState!.save();
+                                    project.creationTimestamp = Timestamp.now();
+                                    bool isSuccess =
+                                        await onProjectUpdated(project);
+                                    if (isSuccess) {
+                                      ScaffoldMessenger.of(parentContext)
+                                          .showSnackBar(
+                                        SnackBar(content: Text(successMessage)),
+                                      );
+                                    } else {
+                                      ScaffoldMessenger.of(parentContext)
+                                          .showSnackBar(
+                                        SnackBar(content: Text(errorMessage)),
+                                      );
+                                    }
+                                    Navigator.of(dialogContext).pop();
+                                    Navigator.of(parentContext).pop();
+                                    _showList(parentContext); // Show new list
+                                  }
+                                },
+                                child: Text('Save',
+                                    style:
+                                        AdminViewDialogStyles.buttonTextStyle),
+                              ),
+                              TextButton(
+                                style: AdminViewDialogStyles.textButtonStyle,
+                                onPressed: () {
+                                  Navigator.of(dialogContext).pop();
+                                },
+                                child: Text('Cancel',
+                                    style:
+                                        AdminViewDialogStyles.buttonTextStyle),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ));
+          },
         );
       },
     );
   }
 
-  void _showUpdateProjectDialog(BuildContext context, int i) async {
-    final projects = await _adminController.getProjectList();
-    final selectedProject = projects?[i];
-
-    TextEditingController nameController =
-        TextEditingController(text: selectedProject?.name);
-    TextEditingController descriptionController =
-        TextEditingController(text: selectedProject?.description);
-    TextEditingController linkController =
-        TextEditingController(text: selectedProject?.link);
+  void _showDeleteDialog(BuildContext context, Project x) async {
+    final name = x.name ?? 'Personal Project';
 
     showDialog(
-      context: context,
+      context: parentContext,
       builder: (BuildContext dialogContext) {
         return StatefulBuilder(
           builder: (context, setState) {
-            return AlertDialog(
-              title: const Text('Update Existing Project'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextField(
-                    controller: nameController,
-                    onChanged: (value) => projects?[i].name = value,
-                    decoration: const InputDecoration(labelText: 'Name'),
+            return Theme(
+              data: AdminViewDialogStyles.dialogThemeData,
+              child: Theme(
+                data: AdminViewDialogStyles.dialogThemeData,
+                child: AlertDialog(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Delete \'$name\'?'),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: IconButton(
+                          icon: const Icon(Icons.close),
+                          iconSize: AdminViewDialogStyles.closeIconSize,
+                          hoverColor: Colors.transparent,
+                          onPressed: () {
+                            Navigator.of(dialogContext).pop();
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                  TextField(
-                    controller: descriptionController,
-                    onChanged: (value) => projects?[i].description = value,
-                    decoration: const InputDecoration(labelText: 'Description'),
+                  content: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                          'Are you sure you want to delete info for \'$name\'?'),
+                    ],
                   ),
-                  TextField(
-                    controller: linkController,
-                    onChanged: (value) => projects?[i].link = value,
-                    decoration: const InputDecoration(labelText: 'Link'),
-                  ),
-                ],
+                  actions: <Widget>[
+                    Padding(
+                      padding: AdminViewDialogStyles.deleteActionsDialogPadding,
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            ElevatedButton(
+                              style: AdminViewDialogStyles.elevatedButtonStyle,
+                              onPressed: () async {
+                                final deleted = await x.delete() ?? false;
+                                if (deleted) {
+                                  setState(() {});
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content:
+                                            Text('$name deleted successfully')),
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content:
+                                            Text('Failed to delete $name')),
+                                  );
+                                }
+                                Navigator.of(dialogContext).pop();
+                                Navigator.of(parentContext).pop();
+                                _showList(parentContext);
+                              },
+                              child: Text('Delete',
+                                  style: AdminViewDialogStyles.buttonTextStyle),
+                            ),
+                            TextButton(
+                              style: AdminViewDialogStyles.textButtonStyle,
+                              onPressed: () {
+                                Navigator.of(dialogContext).pop();
+                              },
+                              child: Text('Cancel',
+                                  style: AdminViewDialogStyles.buttonTextStyle),
+                            ),
+                          ]),
+                    )
+                  ],
+                ),
               ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () async {
-                    if (nameController.text.isEmpty ||
-                        descriptionController.text.isEmpty) {
-                      log('Name or description is empty');
-                      return;
-                    }
-                    bool isSuccess = await _adminController.updateProjectData(
-                            i, projects![i]) ??
-                        false;
-                    if (isSuccess) {
-                      setState(() {});
-                      Navigator.of(dialogContext).pop();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text('Updated an existing project')),
-                      );
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content:
-                                Text('Failed to update an existing project')),
-                      );
-                    }
-                  },
-                  child: const Text('Update'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(dialogContext).pop();
-                  },
-                  child: const Text('Cancel'),
-                ),
-              ],
             );
           },
         );
       },
     );
   }
-
-  void _showDeleteDialog(BuildContext context, int i) async {
-    showDialog(
-      context: context,
-      builder: (BuildContext dialogContext) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: const Text('Confirm Deletion'),
-              content:
-                  const Text('Are you sure you want to delete this project?'),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(dialogContext).pop();
-                  },
-                  child: const Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () async {
-                    final deleted = await _adminController.deleteProject(i);
-                    Navigator.of(dialogContext).pop(); // Close the dialog.
-
-                    if (deleted) {
-                      setState(() {});
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text('Project deleted successfully')),
-                      );
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text('Failed to delete the project')),
-                      );
-                    }
-                  },
-                  child: const Text('Delete'),
-                ),
-              ],
-            );
-          },
-        );
-      },
-    );
-  }
-
-  // Future<Uint8List?> _pickImage() async {
-  //   final result = await FilePicker.platform.pickFiles(
-  //     type: FileType.image,
-  //   );
-
-  //   if (result != null && result.files.isNotEmpty) {
-  //     final pickedFile = result.files.single;
-  //     Uint8List imageBytes = pickedFile.bytes!;
-  //     return imageBytes;
-  //   }
-
-  //   return null;
-  // }
 }

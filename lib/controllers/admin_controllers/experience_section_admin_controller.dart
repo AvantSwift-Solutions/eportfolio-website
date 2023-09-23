@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:tuple/tuple.dart';
 import '../../models/Experience.dart';
 import '../../reposervice/experience_repo_services.dart';
 
@@ -9,7 +10,7 @@ class ExperienceSectionAdminController {
 
   ExperienceSectionAdminController(this.experienceRepoService); // Constructor
 
-  Future<List<Experience>?>? getExperienceSectionData() async {
+  Future<List<Experience>?>? getSectionData() async {
     try {
       List<Experience>? allExperiences =
           await experienceRepoService.getAllExperiences();
@@ -20,28 +21,70 @@ class ExperienceSectionAdminController {
     }
   }
 
-  Future<bool>? updateExperienceSectionData(
-      int index, Experience newExperience) async {
-    try {
-      List<Experience>? allExperiences =
-          await experienceRepoService.getAllExperiences();
+  String getSectionName() {
+    return 'Professional Experiences';
+  }
 
-      if (allExperiences!.isNotEmpty) {
-        allExperiences[index].jobTitle = newExperience.jobTitle;
-        allExperiences[index].companyName = newExperience.companyName;
-        allExperiences[index].logoURL = newExperience.logoURL;
-        allExperiences[index].location = newExperience.location;
-        allExperiences[index].startDate = newExperience.startDate;
-        allExperiences[index].endDate = newExperience.endDate;
-        allExperiences[index].description = newExperience.description;
-
-        bool updateSuccess = await allExperiences[index].update() ?? false;
-        return updateSuccess; // Return true if update is successful
-      } else {
-        return false;
+  Future<List<Tuple2<int, String>>> getSectionTitles() async {
+    List<Experience>? list = await getSectionData();
+    var ret = <Tuple2<int, String>>[];
+    if (list != null) {
+      for (var i = 0; i < list.length; i++) {
+        ret.add(Tuple2(
+            list[i].index!, '${list[i].jobTitle} at ${list[i].companyName}'));
       }
+    }
+    return ret;
+  }
+
+  Future<void> updateSectionOrder(List<Tuple2<int, String>> items) async {
+    List<Experience>? list = await getSectionData();
+    if (list == null) return;
+    for (var i = 0; i < items.length; i++) {
+      var x = list[items[i].item1];
+      x.index = i;
+      await x.update();
+    }
+  }
+
+  String defaultOrderName() {
+    // Button will say 'Order _'
+    return 'by End Date';
+  }
+
+  Future<void> applyDefaultOrder() async {
+    List<Experience>? list = await getSectionData();
+    if (list == null) return;
+
+    list.sort((a, b) {
+      if (a.endDate == null && b.endDate == null) {
+        return 0;
+      } else if (a.endDate == null) {
+        return -1;
+      } else if (b.endDate == null) {
+        return 1;
+      } else {
+        return b.endDate!.compareTo(a.endDate!);
+      }
+    });
+
+    for (var i = 0; i < list.length; i++) {
+      list[i].index = i;
+      await list[i].update();
+    }
+  }
+
+  Future<bool> deleteData(List<Experience> list, int index) async {
+    for (var i = index + 1; i < list.length; i++) {
+      list[i].index = list[i].index! - 1;
+      await list[i].update();
+    }
+
+    try {
+      await list[index].delete();
+      return true;
     } catch (e) {
-      log('Error updating Experience: $e');
+      log('Error deleting: $e');
       return false;
     }
   }

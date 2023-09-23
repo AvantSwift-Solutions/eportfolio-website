@@ -1,3 +1,4 @@
+import 'package:avantswift_portfolio/constants.dart';
 import 'package:avantswift_portfolio/controllers/view_controllers/contact_section_controller.dart';
 import 'package:avantswift_portfolio/reposervice/user_repo_services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -37,9 +38,9 @@ void main() {
     when(mockRepoService.getFirstUser()).thenAnswer((_) async => null);
     final contactSectionData = await controller.getContactSectionData();
 
-    expect(contactSectionData!.name, 'Unknown');
-    expect(contactSectionData.contactEmail, 'No email avaliable');
-    expect(contactSectionData.linkedinURL, 'No LinkedIn avaliable');
+    expect(contactSectionData!.name, Constants.defaultName);
+    expect(contactSectionData.contactEmail, Constants.defaultEmail);
+    expect(contactSectionData.linkedinURL, Constants.defaultLinkedinURL);
   });
 
   test('getContactSectionData returns error data on exception', () async {

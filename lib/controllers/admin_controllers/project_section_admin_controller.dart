@@ -1,6 +1,5 @@
 import 'dart:developer';
-import 'dart:typed_data';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:tuple/tuple.dart';
 
 import '../../models/Project.dart';
 import '../../reposervice/project_repo_services.dart'; // Import the Project class
@@ -10,7 +9,7 @@ class ProjectSectionAdminController {
 
   ProjectSectionAdminController(this.projectRepoService); // Constructor
 
-  Future<List<Project>?> getProjectList() async {
+  Future<List<Project>?> getSectionData() async {
     try {
       List<Project>? projects = await projectRepoService.getAllProjects();
       return projects;
@@ -20,44 +19,74 @@ class ProjectSectionAdminController {
     }
   }
 
-  Future<bool>? updateProjectData(int index, Project newProject) async {
-    try {
-      List<Project>? projects = await projectRepoService.getAllProjects();
+  String getSectionName() {
+    return 'Personal Projects';
+  }
 
-      projects?[index].name = newProject.name;
-      projects?[index].description = newProject.description;
-      projects?[index].link = newProject.link;
+  Future<List<Tuple2<int, String>>> getSectionTitles() async {
+    List<Project>? list = await getSectionData();
+    var ret = <Tuple2<int, String>>[];
+    if (list != null) {
+      for (var i = 0; i < list.length; i++) {
+        ret.add(Tuple2(list[i].index!, list[i].name!));
+      }
+    }
+    return ret;
+  }
 
-      bool? updateSuccess = await projects?[index].update() ?? false;
-      return updateSuccess;
-    } catch (e) {
-      log('Error updating  project: $e');
-      return false;
+  Future<void> updateSectionOrder(List<Tuple2<int, String>> items) async {
+    List<Project>? list = await getSectionData();
+    if (list == null) return;
+    for (var i = 0; i < items.length; i++) {
+      var x = list[items[i].item1];
+      x.index = i;
+      await x.update();
     }
   }
 
-  Future<bool> deleteProject(int index) async {
+  String defaultOrderName() {
+    // Button will say 'Order _'
+    return 'Alphabetically';
+  }
+
+  Future<void> applyDefaultOrder() async {
+    List<Project>? list = await getSectionData();
+    if (list == null) return;
+
+    list.sort((a, b) => a.name!.toLowerCase().compareTo(b.name!.toLowerCase()));
+
+    for (var i = 0; i < list.length; i++) {
+      list[i].index = i;
+      await list[i].update();
+    }
+  }
+
+  Future<bool> deleteData(List<Project> list, int index) async {
+    for (var i = index + 1; i < list.length; i++) {
+      list[i].index = list[i].index! - 1;
+      await list[i].update();
+    }
+
     try {
-      List<Project>? projects = await projectRepoService.getAllProjects();
-      await projects?[index].delete();
+      await list[index].delete();
       return true;
     } catch (e) {
-      log('Error deleting  project: $e');
+      log('Error deleting: $e');
       return false;
     }
   }
 
-  // Future<String?> uploadImageAndGetURL(
-  //     Uint8List imageBytes, String fileName) async {
-  //   try {
-  //     final ref = FirebaseStorage.instance.ref().child('images/$fileName');
-  //     final uploadTask = ref.putData(imageBytes);
-  //     final TaskSnapshot snapshot = await uploadTask;
-  //     final imageURL = await snapshot.ref.getDownloadURL();
-  //     return imageURL;
-  //   } catch (e) {
-  //     log('Error uploading image: $e');
-  //     return null;
-  //   }
-  // }
+  Future<String?> uploadImageAndGetURL(
+      Uint8List imageBytes, String fileName) async {
+    try {
+      final ref = FirebaseStorage.instance.ref().child('images/$fileName');
+      final uploadTask = ref.putData(imageBytes);
+      final TaskSnapshot snapshot = await uploadTask;
+      final imageURL = await snapshot.ref.getDownloadURL();
+      return imageURL;
+    } catch (e) {
+      log('Error uploading image: $e');
+      return null;
+    }
+  }
 }

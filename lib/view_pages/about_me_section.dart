@@ -1,4 +1,6 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import '../constants.dart';
 import '../controllers/view_controllers/about_me_section_controller.dart';
 import '../reposervice/user_repo_services.dart';
 import '../ui/custom_texts/public_view_text_styles.dart';
@@ -14,6 +16,13 @@ class AboutMeSectionState extends State<AboutMeSection> {
   final AboutMeSectionController _aboutMeSectionController =
       AboutMeSectionController(UserRepoService());
 
+  Future<String> getReplacementURL() async {
+    final storage = FirebaseStorage.instance;
+    final ref = storage.ref().child(Constants.replaceImageURL);
+    final url = await ref.getDownloadURL();
+    return url;
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -24,14 +33,21 @@ class AboutMeSectionState extends State<AboutMeSection> {
         } else if (snapshot.hasError) {
           return const Center(child: Text('Error loading data'));
         }
-
+        if (snapshot.data?.imageURL?.isEmpty ?? false) {
+          // If imageURL is empty, fetch the replacement URL and update it
+          getReplacementURL().then((replacementURL) {
+            if (replacementURL.isNotEmpty) {
+              snapshot.data?.imageURL = replacementURL;
+            }
+          });
+        }
         final aboutMeSectionData = snapshot.data;
+
         final screenWidth = MediaQuery.of(context).size.width;
 
         double titleFontSize = screenWidth * 0.05;
         double descriptionFontSize = screenWidth * 0.01;
         double spacing = screenWidth * 0.15;
-
         return Center(
           child: Padding(
             padding: const EdgeInsets.all(50.0),
@@ -70,8 +86,11 @@ class AboutMeSectionState extends State<AboutMeSection> {
                     padding: const EdgeInsets.only(
                         left: 100.0), // Adjust padding as needed
                     child: Image.network(
-                      aboutMeSectionData?.imageURL ??
-                          'https://example.com/default_image.jpg',
+                      aboutMeSectionData != null &&
+                              aboutMeSectionData.imageURL != "" &&
+                              aboutMeSectionData.imageURL!.isNotEmpty
+                          ? aboutMeSectionData.imageURL!
+                          : Constants.replaceImageURL,
                       width: 200,
                       height: 400,
                       fit: BoxFit.cover,

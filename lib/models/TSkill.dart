@@ -1,26 +1,33 @@
 // ignore_for_file: file_names
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:uuid/uuid.dart';
 
 class TSkill {
+  Timestamp? creationTimestamp;
   final String? tsid;
+  int? index;
   String? name;
   String? imageURL;
 
   TSkill({
+    required this.creationTimestamp,
     required this.tsid,
+    required this.index,
     required this.name,
-    this.imageURL,
+    required this.imageURL,
   });
 
   factory TSkill.fromDocumentSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;
+    final creationTimestamp = data['creationTimestamp'];
+    final index = data['index'];
     final name = data['name'];
     final imageURL = data['imageURL'];
 
     return TSkill(
+      creationTimestamp: creationTimestamp,
       tsid: snapshot.id,
+      index: index,
       name: name,
       imageURL: imageURL,
     );
@@ -28,21 +35,24 @@ class TSkill {
 
   Map<String, dynamic> toMap() {
     return {
+      'creationTimestamp': creationTimestamp,
       'tsid': tsid,
+      'index': index,
       'name': name,
       'imageURL': imageURL,
     };
   }
 
-  Future<void> create() async {
+  Future<bool> create(String id) async {
     try {
-      final tsid = const Uuid().v4();
       await FirebaseFirestore.instance
           .collection('TSkill')
-          .doc(tsid)
+          .doc(id)
           .set(toMap());
+      return true;
     } catch (e) {
       log('Error creating TSkill document: $e');
+      return false;
     }
   }
 
@@ -59,11 +69,13 @@ class TSkill {
     }
   }
 
-  Future<void> delete() async {
+  Future<bool>? delete() async {
     try {
       await FirebaseFirestore.instance.collection('TSkill').doc(tsid).delete();
+      return true;
     } catch (e) {
       log('Error deleting TSkill document: $e');
+      return false;
     }
   }
 }
