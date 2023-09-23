@@ -5,6 +5,7 @@ import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mat_month_picker_dialog/mat_month_picker_dialog.dart';
 import 'package:uuid/uuid.dart';
@@ -520,11 +521,23 @@ class ExperienceSectionAdmin extends StatelessWidget {
                                           AdminViewDialogStyles.textBoxLines,
                                       maxLength:
                                           AdminViewDialogStyles.maxDescLength,
+                                      maxLengthEnforcement:
+                                          MaxLengthEnforcement.none,
                                       initialValue: experience.description,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
                                       onSaved: (value) {
                                         experience.description = value;
+                                      },
+                                      validator: (value) {
+                                        if (value != null &&
+                                            value.isNotEmpty &&
+                                            value.length >=
+                                                AdminViewDialogStyles
+                                                    .maxDescLength) {
+                                          return 'Please reduce the length of the description';
+                                        }
+                                        return null;
                                       },
                                     ),
                                     AdminViewDialogStyles.spacer,

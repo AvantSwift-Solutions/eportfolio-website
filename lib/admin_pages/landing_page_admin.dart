@@ -4,6 +4,7 @@ import 'package:avantswift_portfolio/reposervice/user_repo_services.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../controllers/admin_controllers/landing_page_admin_controller.dart';
 
 class LandingPageAdmin extends StatelessWidget {
@@ -151,6 +152,8 @@ class LandingPageAdmin extends StatelessWidget {
                                           AdminViewDialogStyles.textBoxLines,
                                       maxLength:
                                           AdminViewDialogStyles.maxDescLength,
+                                      maxLengthEnforcement:
+                                          MaxLengthEnforcement.none,
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
                                       initialValue: landingPageData
@@ -160,6 +163,11 @@ class LandingPageAdmin extends StatelessWidget {
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
                                           return 'Please enter a description';
+                                        } else if (value.isNotEmpty &&
+                                            value.length >=
+                                                AdminViewDialogStyles
+                                                    .maxDescLength) {
+                                          return 'Please reduce the length of the description';
                                         }
                                         return null;
                                       },
@@ -182,58 +190,34 @@ class LandingPageAdmin extends StatelessWidget {
                                           width:
                                               AdminViewDialogStyles.imageWidth),
                                     AdminViewDialogStyles.interTitleField,
-                                    if (!noImage)
-                                      ElevatedButton(
-                                        onPressed: () async {
-                                          Uint8List? imageBytes =
-                                              await _pickImage();
-                                          if (imageBytes != null) {
-                                            noImage = false;
-                                            pickedImageBytes = imageBytes;
-                                            setState(() {});
-                                          }
-                                        },
-                                        style: AdminViewDialogStyles
-                                            .imageButtonStyle,
-                                        child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              const Icon(Icons.add),
-                                              Text(
-                                                landingPageData.imageURL == ''
-                                                    ? 'Add Image'
-                                                    : 'Change Image',
-                                                style: AdminViewDialogStyles
-                                                    .buttonTextStyle,
-                                              )
-                                            ]),
-                                      )
-                                    else
-                                      ElevatedButton(
-                                        onPressed: () async {
-                                          Uint8List? imageBytes =
-                                              await _pickImage();
-                                          if (imageBytes != null) {
-                                            noImage = false;
-                                            pickedImageBytes = imageBytes;
-                                            setState(() {});
-                                          }
-                                        },
-                                        style: AdminViewDialogStyles
-                                            .noImageButtonStyle,
-                                        child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              const Icon(Icons.add),
-                                              Text(
-                                                landingPageData.imageURL == ''
-                                                    ? 'Add Image'
-                                                    : 'Change Image',
-                                                style: AdminViewDialogStyles
-                                                    .buttonTextStyle,
-                                              )
-                                            ]),
-                                      ),
+                                    ElevatedButton(
+                                      onPressed: () async {
+                                        Uint8List? imageBytes =
+                                            await _pickImage();
+                                        if (imageBytes != null) {
+                                          noImage = false;
+                                          pickedImageBytes = imageBytes;
+                                          setState(() {});
+                                        }
+                                      },
+                                      style: noImage
+                                          ? AdminViewDialogStyles
+                                              .noImageButtonStyle
+                                          : AdminViewDialogStyles
+                                              .imageButtonStyle,
+                                      child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            const Icon(Icons.add),
+                                            Text(
+                                              landingPageData.imageURL == ''
+                                                  ? 'Add Image'
+                                                  : 'Change Image',
+                                              style: AdminViewDialogStyles
+                                                  .buttonTextStyle,
+                                            )
+                                          ]),
+                                    ),
                                     AdminViewDialogStyles.interTitleField,
                                     AdminViewDialogStyles.interTitleField,
                                     if (noImage)

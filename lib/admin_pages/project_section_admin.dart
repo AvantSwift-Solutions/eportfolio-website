@@ -3,6 +3,7 @@ import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:uuid/uuid.dart';
 import '../controllers/admin_controllers/project_section_admin_controller.dart';
 import '../models/Project.dart';
@@ -290,6 +291,8 @@ class ProjectSectionAdmin extends StatelessWidget {
                                           AdminViewDialogStyles.textBoxLines,
                                       maxLength:
                                           AdminViewDialogStyles.maxDescLength,
+                                      maxLengthEnforcement:
+                                          MaxLengthEnforcement.none,
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
                                       initialValue: project.description,
@@ -297,6 +300,16 @@ class ProjectSectionAdmin extends StatelessWidget {
                                           AdminViewDialogStyles.inputDecoration,
                                       onSaved: (value) {
                                         project.description = value;
+                                      },
+                                      validator: (value) {
+                                        if (value != null &&
+                                            value.isNotEmpty &&
+                                            value.length >=
+                                                AdminViewDialogStyles
+                                                    .maxDescLength) {
+                                          return 'Please reduce the length of the description';
+                                        }
+                                        return null;
                                       },
                                     ),
                                     AdminViewDialogStyles.spacer,
