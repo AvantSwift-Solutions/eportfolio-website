@@ -59,19 +59,20 @@ class SinglePageView extends StatelessWidget {
               LandingPage(
                 scrollToBottom: _scrollToContact,
               ),
+              const SizedBox(height: 100),
               MenuSection(
                 scrollToSection: _scrollToSection,
                 sectionKeys: sectionKeys, // Pass the map of section keys
               ),
               const AboutMeSection(),
-              const SizedBox(height: 500), // Add some spacing
-              ProjectSection(key: _projectsKey),
-              const SizedBox(height: 500), // Add some spacing
-              AwardCertSection(key: _awardsCertsKey),
-              const SizedBox(height: 500), // Add some spacing
+              const SizedBox(height: 100),
               ExperienceSection(key: _experienceKey),
-              const SizedBox(height: 500),
+              const SizedBox(height: 100),
               SkillsAndEducation(key: _skillsEduKey),
+              const SizedBox(height: 100),
+              ProjectSection(key: _projectsKey),
+              const SizedBox(height: 100),
+              AwardCertSection(key: _awardsCertsKey),
               const SizedBox(height: 100),
               ContactSection(key: _contactKey),
             ],
