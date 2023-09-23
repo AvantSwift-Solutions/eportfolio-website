@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../controllers/view_controllers/project_section_controller.dart';
@@ -6,14 +8,12 @@ import '../reposervice/project_repo_services.dart';
 import '../ui/custom_texts/public_view_text_styles.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-
 class ProjectSection extends StatefulWidget {
   const ProjectSection({Key? key}) : super(key: key);
 
   @override
   ProjectSectionState createState() => ProjectSectionState();
 }
-
 
 class ProjectSectionState extends State<ProjectSection> {
   final ProjectSectionController _projectController =
@@ -28,15 +28,14 @@ class ProjectSectionState extends State<ProjectSection> {
     Colors.blue.shade200,
     Colors.green.shade200
   ];
-  Color projectCardColor = Colors.orange.shade200; // Initialize with the first color
-
+  Color projectCardColor =
+      Colors.orange.shade200; // Initialize with the first color
 
   @override
   void initState() {
     super.initState();
     fetchData();
   }
-
 
   Future<void> fetchData() async {
     try {
@@ -46,47 +45,47 @@ class ProjectSectionState extends State<ProjectSection> {
         allProjects = fetchedProjects;
       });
     } catch (e) {
-      print('Error fetching projects: $e');
+      log('Error fetching projects: $e');
       // Handle the error, e.g., show an error message to the user.
     }
   }
 
-
-Color getNextColor() {
-  Color nextColor = projectCardColor;
-  colorIndex = (colorIndex + 1) % alternatingColors.length;
-  projectCardColor = alternatingColors[colorIndex]; // Update the project card color for the next iteration
-  return nextColor;
-}
-
+  Color getNextColor() {
+    Color nextColor = projectCardColor;
+    colorIndex = (colorIndex + 1) % alternatingColors.length;
+    projectCardColor = alternatingColors[
+        colorIndex]; // Update the project card color for the next iteration
+    return nextColor;
+  }
 
   void openLink(String link) async {
     if (await canLaunchUrlString(link)) {
       await launchUrlString(link);
     } else {
-      print('Could not launch $link');
+      log('Could not launch $link');
     }
   }
+
   void openSvgLink() {
-    const svgUrl = 'assets/external_link.svg'; // Replace with your desired URL for the SVG
+    const svgUrl =
+        'assets/external_link.svg'; // Replace with your desired URL for the SVG
     openLink(svgUrl);
   }
-
 
   void openCustomLink() async {
     const url = 'https://example.com'; // Replace with your desired URL (github)
     if (await canLaunchUrlString(url)) {
       await launchUrlString(url);
     } else {
-      print('Could not launch $url');
+      log('Could not launch $url');
     }
   }
-
 
   void toggleShowAllProjects() {
     setState(() {
       if (showAllProjects) {
-        initiallyDisplayedProjects = 3; // Show 3 projects initially on "Show Less"
+        initiallyDisplayedProjects =
+            3; // Show 3 projects initially on "Show Less"
       } else {
         initiallyDisplayedProjects =
             allProjects!.length; // Show all projects on "Show More"
@@ -95,26 +94,25 @@ Color getNextColor() {
     });
   }
 
-
   // Calculate the number of projects per row based on the screen width and desired project card width
   int calculateProjectsPerRow(BuildContext context, double cardWidth) {
     double screenWidth = MediaQuery.of(context).size.width;
     return (screenWidth / cardWidth).floor();
   }
 
-
   @override
   Widget build(BuildContext context) {
     // Inside the build method, calculate the projects per row and adjust spacing accordingly
     double cardWidth = 250; // Adjust the desired project card width
     double cardHeight = 250; // Adjust the desired project card height
-    int projectsPerRow = calculateProjectsPerRow(context, cardWidth); // Adjust the desired project card width
-    final screenWidth = MediaQuery.of(context).size.width;
-    bool _isSvgHovered = false;
+    int projectsPerRow = calculateProjectsPerRow(
+        context, cardWidth); // Adjust the desired project card width
+    // final screenWidth = MediaQuery.of(context).size.width;
+    // bool _isSvgHovered = false;
 
-    double titleFontSize = screenWidth * 0.05;
-    double descriptionFontSize = screenWidth * 0.01;
-    double spacing = screenWidth * 0.15;
+    // double titleFontSize = screenWidth * 0.05;
+    // double descriptionFontSize = screenWidth * 0.01;
+    // double spacing = screenWidth * 0.15;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -140,21 +138,24 @@ Color getNextColor() {
                   ),
                 ),
               ),
-              SizedBox(width: 200), // Add some spacing between title and quote
+              const SizedBox(
+                  width: 200), // Add some spacing between title and quote
               Expanded(
                 flex: 3,
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 150.0), // Change padding for quote
+                  padding: const EdgeInsets.only(
+                      right: 150.0), // Change padding for quote
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.black, width: 1.0),
                       borderRadius: BorderRadius.circular(5.0), // Border radius
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.2), // Adjust shadow color and opacity
+                          color: Colors.black.withOpacity(
+                              0.2), // Adjust shadow color and opacity
                           spreadRadius: 2, // Adjust the spread radius
                           blurRadius: 5, // Adjust the blur radius
-                          offset: Offset(0, 2),
+                          offset: const Offset(0, 2),
                         ),
                       ],
                     ),
@@ -190,20 +191,22 @@ Color getNextColor() {
                 Center(
                   child: Wrap(
                     alignment: WrapAlignment.center,
-                    children: List.generate(initiallyDisplayedProjects, (index) {
+                    children:
+                        List.generate(initiallyDisplayedProjects, (index) {
                       if (index < allProjects!.length) {
                         // Calculate spacing for the staggered effect
-                        double spacing = (index % (projectsPerRow-1)) * 50.0;
+                        double spacing = (index % (projectsPerRow - 1)) * 50.0;
                         return Padding(
                           padding: EdgeInsets.only(top: spacing, right: 50),
-                          child: Container(
+                          child: SizedBox(
                             width: cardWidth,
                             height: cardHeight,
                             child: Card(
                               elevation: 3,
                               color: getNextColor(),
                               shape: RoundedRectangleBorder(
-                                side: BorderSide(color: Colors.black, width: 1),
+                                side: const BorderSide(
+                                    color: Colors.black, width: 1),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Padding(
@@ -213,7 +216,7 @@ Color getNextColor() {
                                   children: [
                                     Text(
                                       allProjects![index].name!,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -221,40 +224,43 @@ Color getNextColor() {
                                     const SizedBox(height: 10),
                                     Text(
                                       allProjects![index].description!,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 16,
                                       ),
                                     ),
-                                    Spacer(),
+                                    const Spacer(),
                                     Align(
                                       alignment: Alignment.bottomRight,
                                       child: GestureDetector(
-                                        onTap: () {
-                                          if (allProjects![index].link != null) {
-                                            openLink(allProjects![index].link!);
-                                          } else {
-                                            print('Link is null.');
-                                          }
-                                        },
-                                        child: MouseRegion(
-                                          cursor: SystemMouseCursors.click,
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              if (allProjects![index].link != null) {
-                                                openLink(allProjects![index].link!);
-                                              } else {
-                                                print('Link is null.');
-                                              }
-                                            },
-                                            child: SvgPicture.asset(
-                                              'external_link.svg',
-                                              width: 50,
-                                              height: 50,
-                                              color: Colors.black,
+                                          onTap: () {
+                                            if (allProjects![index].link !=
+                                                null) {
+                                              openLink(
+                                                  allProjects![index].link!);
+                                            } else {
+                                              log('Link is null.');
+                                            }
+                                          },
+                                          child: MouseRegion(
+                                            cursor: SystemMouseCursors.click,
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                if (allProjects![index].link !=
+                                                    null) {
+                                                  openLink(allProjects![index]
+                                                      .link!);
+                                                } else {
+                                                  log('Link is null.');
+                                                }
+                                              },
+                                              child: SvgPicture.asset(
+                                                'external_link.svg',
+                                                width: 50,
+                                                height: 50,
+                                                // color: Colors.black,
+                                              ),
                                             ),
-                                          ),
-                                        )
-                                      ),              
+                                          )),
                                     )
                                   ],
                                 ),
@@ -294,19 +300,30 @@ Color getNextColor() {
                           child: TextButton(
                             onPressed: toggleShowAllProjects,
                             style: ButtonStyle(
-                              overlayColor: MaterialStateProperty.all(Colors.transparent),
-                              padding: MaterialStateProperty.all(EdgeInsets.zero),
+                              overlayColor:
+                                  MaterialStateProperty.all(Colors.transparent),
+                              padding:
+                                  MaterialStateProperty.all(EdgeInsets.zero),
                             ),
                             child: Row(
                               children: [
-                                Icon(Icons.keyboard_double_arrow_down_outlined, size:30, color: Colors.black),
-                                SizedBox(width: 5),
+                                const Icon(
+                                    Icons.keyboard_double_arrow_down_outlined,
+                                    size: 30,
+                                    color: Colors.black),
+                                const SizedBox(width: 5),
                                 Text(
                                   'Load More',
                                   style: TextStyle(
                                     fontSize: 20,
-                                    color: _isHovered ? Colors.black : Colors.black, // Change text color on hover
-                                    decoration: _isHovered ? TextDecoration.underline : TextDecoration.none, // Underline on hover
+                                    color: _isHovered
+                                        ? Colors.black
+                                        : Colors
+                                            .black, // Change text color on hover
+                                    decoration: _isHovered
+                                        ? TextDecoration.underline
+                                        : TextDecoration
+                                            .none, // Underline on hover
                                   ),
                                 ),
                               ],
@@ -339,22 +356,29 @@ Color getNextColor() {
                               _isHovered = false;
                             });
                           },
-                    child: TextButton(
-                      onPressed: toggleShowAllProjects,
-                      style: ButtonStyle(
-                        overlayColor: MaterialStateProperty.all(Colors.transparent),
-                        padding: MaterialStateProperty.all(EdgeInsets.zero),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(Icons.keyboard_double_arrow_up_outlined, size:30, color: Colors.black),
-                          SizedBox(width: 5),
-                          Text(
-                            'Load Less',
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.black, // Change text color
-                              decoration: _isHovered ? TextDecoration.underline : TextDecoration.none,
+                          child: TextButton(
+                            onPressed: toggleShowAllProjects,
+                            style: ButtonStyle(
+                              overlayColor:
+                                  MaterialStateProperty.all(Colors.transparent),
+                              padding:
+                                  MaterialStateProperty.all(EdgeInsets.zero),
+                            ),
+                            child: Row(
+                              children: [
+                                const Icon(
+                                    Icons.keyboard_double_arrow_up_outlined,
+                                    size: 30,
+                                    color: Colors.black),
+                                const SizedBox(width: 5),
+                                Text(
+                                  'Load Less',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black, // Change text color
+                                    decoration: _isHovered
+                                        ? TextDecoration.underline
+                                        : TextDecoration.none,
                                   ),
                                 ),
                               ],
@@ -372,7 +396,7 @@ Color getNextColor() {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 150.0, bottom: 150.0),
                     child: SvgPicture.asset(
-                      'github.svg',  // Replace with the path to your SVG file
+                      'github.svg', // Replace with the path to your SVG file
                       width: 250,
                       height: 250,
                       // color: Colors.transparent,
@@ -381,7 +405,7 @@ Color getNextColor() {
                 ),
               ),
               if (allProjects == null)
-                Text(
+                const Text(
                   'Error loading projects.',
                   style: TextStyle(
                     fontSize: 16,

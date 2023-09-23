@@ -90,22 +90,4 @@ class MockProject extends _i1.Mock implements _i4.Project {
         ),
         returnValue: <String, dynamic>{},
       ) as Map<String, dynamic>);
-  @override
-  _i3.Future<void> create() => (super.noSuchMethod(
-        Invocation.method(
-          #create,
-          [],
-        ),
-        returnValue: _i3.Future<void>.value(),
-        returnValueForMissingStub: _i3.Future<void>.value(),
-      ) as _i3.Future<void>);
-  @override
-  _i3.Future<void> delete() => (super.noSuchMethod(
-        Invocation.method(
-          #delete,
-          [],
-        ),
-        returnValue: _i3.Future<void>.value(),
-        returnValueForMissingStub: _i3.Future<void>.value(),
-      ) as _i3.Future<void>);
 }

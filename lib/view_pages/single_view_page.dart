@@ -65,18 +65,13 @@ class SinglePageView extends StatelessWidget {
               ),
               const AboutMeSection(),
               const SizedBox(height: 500), // Add some spacing
-              const ProjectSection(),
+              ProjectSection(key: _projectsKey),
               const SizedBox(height: 500), // Add some spacing
-              ContactSection(
-                  key: _contactKey
-              ), // Placeholder for contact section
               AwardCertSection(key: _awardsCertsKey),
               const SizedBox(height: 500), // Add some spacing
               ExperienceSection(key: _experienceKey),
               const SizedBox(height: 500),
-              SkillsAndEducation(
-                key: _skillsEduKey,
-              ),
+              SkillsAndEducation(key: _skillsEduKey),
               const SizedBox(height: 100),
               ContactSection(key: _contactKey),
             ],

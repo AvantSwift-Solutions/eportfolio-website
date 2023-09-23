@@ -1,6 +1,7 @@
 import 'package:avantswift_portfolio/controllers/view_controllers/project_section_controller.dart';
 import 'package:avantswift_portfolio/models/Project.dart';
 import 'package:avantswift_portfolio/reposervice/project_repo_services.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -8,7 +9,6 @@ import 'package:mockito/mockito.dart';
 import 'mocks/project_section_controller_test.mocks.dart';
 
 @GenerateMocks([ProjectRepoService, Project])
-
 void main() {
   group('ProjectController Tests', () {
     late ProjectSectionController controller;
@@ -21,15 +21,13 @@ void main() {
       when(mockProject1.ppid).thenReturn('mockId1');
       when(mockProject1.name).thenReturn('Mock Name 1');
       when(mockProject1.description).thenReturn('Mock Description 1');
-      when(mockProject1.link)
-          .thenReturn('http://example1.com');
+      when(mockProject1.link).thenReturn('http://example1.com');
 
       mockProject2 = MockProject();
       when(mockProject2.ppid).thenReturn('mockId2');
       when(mockProject2.name).thenReturn('Mock Name 2');
       when(mockProject2.description).thenReturn('Mock Description 2');
-      when(mockProject2.link)
-          .thenReturn('http://example2.com');
+      when(mockProject2.link).thenReturn('http://example2.com');
 
       mockRepoService = MockProjectRepoService();
       controller = ProjectSectionController(mockRepoService);
@@ -39,12 +37,16 @@ void main() {
       // ignore: non_constant_identifier_names
       final projects = [
         Project(
+          creationTimestamp: Timestamp.now(),
+          index: 0,
           ppid: 'mockId1',
           name: 'Mock Name 1',
           description: 'Mock Description 1',
           link: 'http://example1.com',
         ),
         Project(
+          creationTimestamp: Timestamp.now(),
+          index: 1,
           ppid: 'mockId2',
           name: 'Mock Name 2',
           description: 'Mock Description 2',
@@ -52,8 +54,7 @@ void main() {
         ),
       ];
 
-      when(mockRepoService.getAllProjects())
-          .thenAnswer((_) async => projects);
+      when(mockRepoService.getAllProjects()).thenAnswer((_) async => projects);
 
       final projectList = await controller.getProjectList();
 

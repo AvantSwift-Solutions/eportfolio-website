@@ -8,10 +8,6 @@ class Project {
   int? index;
   String? name;
   String? description;
-<<<<<<< HEAD
-  Timestamp? creationTimestamp;
-=======
->>>>>>> main
   String? link;
 
   Project({
@@ -19,14 +15,8 @@ class Project {
     required this.ppid,
     required this.index,
     required this.name,
-<<<<<<< HEAD
-    this.description,
-    this.creationTimestamp,
-    this.link,
-=======
     required this.description,
     required this.link,
->>>>>>> main
   });
 
   factory Project.fromDocumentSnapshot(DocumentSnapshot snapshot) {
@@ -35,10 +25,6 @@ class Project {
     final index = data['index'];
     final name = data['name'];
     final description = data['description'];
-<<<<<<< HEAD
-    final creationTimestamp = data['creationTimestamp'];
-=======
->>>>>>> main
     final link = data['link'];
 
     return Project(
@@ -47,10 +33,6 @@ class Project {
       ppid: snapshot.id,
       name: name,
       description: description,
-<<<<<<< HEAD
-      creationTimestamp: creationTimestamp,
-=======
->>>>>>> main
       link: link,
     );
   }
@@ -62,10 +44,6 @@ class Project {
       'index': index,
       'name': name,
       'description': description,
-<<<<<<< HEAD
-      'creationTimestamp': creationTimestamp,
-=======
->>>>>>> main
       'link': link
     };
   }

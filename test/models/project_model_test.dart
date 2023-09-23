@@ -15,11 +15,7 @@ void main() {
         index: 0,
         name: 'Project 1',
         description: 'This is my project',
-<<<<<<< HEAD
-        link: 'https://example.com',
-=======
         link: 'https://example.com/image.jpg',
->>>>>>> main
       );
       final projectMap = project.toMap();
 
