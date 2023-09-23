@@ -9,7 +9,7 @@ Khai Syuen Tan, khaisyuent@student.unimelb.edu.au, 1190030 \
 Vincent Luu, luuvl@student.unimelb.edu.au, 1269979
 
 ---------------------------------
-High level architecture overview
+High-level architecture overview
 
 ![image](https://github.com/AvantSwift-Solutions/AvantSwift-Solutions/assets/82506964/74a83e09-1a2b-44bd-992f-ba4aa2a99c04)
 
@@ -26,3 +26,18 @@ High level architecture overview
 **UI**: Custom UI components, such as buttons or specialized UI elements, are stored here for consistency and reusability.
 
 **Assets**: All images and static assets are stored in this folder for easy management.
+
+---------------------------------
+Further information:
+
+**4+1 architectural model**: https://avantswiftsolutions.atlassian.net/wiki/spaces/SD/pages/3309604/Architectural+Design+Documentation
+
+**Subject documentation**: https://avantswiftsolutions.atlassian.net/wiki/spaces/SD/pages/3112975/Progress+Checklists
+
+**Deployed viewer site**: https://avantswiftsolutions.web.app
+
+**Deployed admin site**: https://avantswiftsolutions.web.app/#/login
+
+**Contact email for team**: avantswiftsolutions@gmail.com - Expect a response within 1-2 business days
+
+

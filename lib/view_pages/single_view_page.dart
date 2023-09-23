@@ -1,7 +1,9 @@
+import 'package:avantswift_portfolio/view_pages/about_me_section.dart';
+import 'package:avantswift_portfolio/view_pages/project_section.dart';
+import 'package:avantswift_portfolio/view_pages/award_cert_section.dart';
 import 'package:avantswift_portfolio/view_pages/skills_education_section.dart';
 import 'package:flutter/material.dart';
 import 'landing_page.dart';
-import 'about_me_section.dart';
 import 'experience_section.dart';
 import 'contact_section.dart';
 import 'menu_section.dart';
@@ -57,17 +59,20 @@ class SinglePageView extends StatelessWidget {
               LandingPage(
                 scrollToBottom: _scrollToContact,
               ),
+              const SizedBox(height: 100),
               MenuSection(
                 scrollToSection: _scrollToSection,
                 sectionKeys: sectionKeys, // Pass the map of section keys
               ),
               const AboutMeSection(),
-              const SizedBox(height: 500), // Add some spacing
-              const ExperienceSection(),
-              const SizedBox(height: 500),
-              SkillsAndEducation(
-                key: _skillsEduKey,
-              ),
+              const SizedBox(height: 100),
+              ExperienceSection(key: _experienceKey),
+              const SizedBox(height: 100),
+              SkillsAndEducation(key: _skillsEduKey),
+              const SizedBox(height: 100),
+              ProjectSection(key: _projectsKey),
+              const SizedBox(height: 100),
+              AwardCertSection(key: _awardsCertsKey),
               const SizedBox(height: 100),
               ContactSection(key: _contactKey),
             ],

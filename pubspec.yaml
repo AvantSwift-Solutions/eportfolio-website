@@ -87,6 +87,8 @@ flutter:
     - assets/logo.png
     - assets/linkedin.svg
     - assets/mail.svg
+    - assets/external_link.svg
+    - assets/github.svg
     - assets/login_graphic.svg
     - assets/logo-no-background.png
     - assets/email_icon.svg
