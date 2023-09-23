@@ -3,9 +3,6 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i3;
-
-import 'package:avantswift_portfolio/models/ISkill.dart' as _i4;
 import 'package:avantswift_portfolio/reposervice/iskill_repo_services.dart'
     as _i2;
 import 'package:mockito/mockito.dart' as _i1;
@@ -28,13 +25,4 @@ class MockISkillRepoService extends _i1.Mock implements _i2.ISkillRepoService {
   MockISkillRepoService() {
     _i1.throwOnMissingStub(this);
   }
-
-  @override
-  _i3.Future<List<_i4.ISkill>?> getAllISkill() => (super.noSuchMethod(
-        Invocation.method(
-          #getAllISkill,
-          [],
-        ),
-        returnValue: _i3.Future<List<_i4.ISkill>?>.value(),
-      ) as _i3.Future<List<_i4.ISkill>?>);
 }
