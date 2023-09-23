@@ -1,12 +1,12 @@
 import 'package:avantswift_portfolio/controllers/view_controllers/recommendation_section_controller.dart';
 import 'package:avantswift_portfolio/models/Recommendation.dart';
 import 'package:avantswift_portfolio/reposervice/recommendation_repo_services.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'mocks/recommendation_section_controller_test.mocks.dart';
-
 
 @GenerateMocks([RecommendationRepoService, Recommendation])
 void main() {
@@ -20,16 +20,20 @@ void main() {
       mockRecommendation1 = MockRecommendation();
       when(mockRecommendation1.rid).thenReturn('mockId1');
       when(mockRecommendation1.colleagueName).thenReturn('Mock Name 1');
-      when(mockRecommendation1.colleagueJobTitle).thenReturn('Mock Job Title 1');
+      when(mockRecommendation1.colleagueJobTitle)
+          .thenReturn('Mock Job Title 1');
       when(mockRecommendation1.description).thenReturn('Mock Description 1');
-      when(mockRecommendation1.imageURL).thenReturn('http://example.com/image1.png');
+      when(mockRecommendation1.imageURL)
+          .thenReturn('http://example.com/image1.png');
 
       mockRecommendation2 = MockRecommendation();
       when(mockRecommendation2.rid).thenReturn('mockId2');
       when(mockRecommendation2.colleagueName).thenReturn('Mock Name 2');
-      when(mockRecommendation2.colleagueJobTitle).thenReturn('Mock Job Title 2');
+      when(mockRecommendation2.colleagueJobTitle)
+          .thenReturn('Mock Job Title 2');
       when(mockRecommendation2.description).thenReturn('Mock Description 2');
-      when(mockRecommendation2.imageURL).thenReturn('http://example.com/image2.png');
+      when(mockRecommendation2.imageURL)
+          .thenReturn('http://example.com/image2.png');
 
       mockRepoService = MockRecommendationRepoService();
       controller = RecommendationSectionController(mockRepoService);
@@ -39,25 +43,30 @@ void main() {
       // ignore: non_constant_identifier_names
       final recommendations = [
         Recommendation(
-          rid: 'mockId1',
-          colleagueName: 'Mock Name 1',
-          colleagueJobTitle: 'Mock Job Title 1',
-          description: 'Mock Description 1',
-          imageURL: 'http://example.com/image1.png',
-        ),
+            creationTimestamp: Timestamp.now(),
+            index: 0,
+            rid: 'mockId1',
+            colleagueName: 'Mock Name 1',
+            colleagueJobTitle: 'Mock Job Title 1',
+            description: 'Mock Description 1',
+            imageURL: 'http://example.com/image1.png',
+            dateReceived: Timestamp.fromMicrosecondsSinceEpoch(0)),
         Recommendation(
-          rid: 'mockId2',
-          colleagueName: 'Mock Name 2',
-          colleagueJobTitle: 'Mock Job Title 2',
-          description: 'Mock Description 2',
-          imageURL: 'http://example.com/image2.png',
-        ),
+            creationTimestamp: Timestamp.now(),
+            index: 1,
+            rid: 'mockId2',
+            colleagueName: 'Mock Name 2',
+            colleagueJobTitle: 'Mock Job Title 2',
+            description: 'Mock Description 2',
+            imageURL: 'http://example.com/image2.png',
+            dateReceived: Timestamp.fromMicrosecondsSinceEpoch(999999)),
       ];
 
       when(mockRepoService.getAllRecommendations())
           .thenAnswer((_) async => recommendations);
 
-      final recommendationList = await controller.getRecommendationSectionData();
+      final recommendationList =
+          await controller.getRecommendationSectionData();
 
       expect(recommendationList!.length, 2);
 
@@ -65,12 +74,14 @@ void main() {
       var recommendation2 = recommendationList[1];
 
       expect(recommendation1.colleagueName, mockRecommendation1.colleagueName);
-      expect(recommendation1.colleagueJobTitle, mockRecommendation1.colleagueJobTitle);
+      expect(recommendation1.colleagueJobTitle,
+          mockRecommendation1.colleagueJobTitle);
       expect(recommendation1.description, mockRecommendation1.description);
       expect(recommendation1.imageURL, mockRecommendation1.imageURL);
 
       expect(recommendation2.colleagueName, mockRecommendation2.colleagueName);
-      expect(recommendation2.colleagueJobTitle, mockRecommendation2.colleagueJobTitle);
+      expect(recommendation2.colleagueJobTitle,
+          mockRecommendation2.colleagueJobTitle);
       expect(recommendation2.description, mockRecommendation2.description);
       expect(recommendation2.imageURL, mockRecommendation2.imageURL);
 

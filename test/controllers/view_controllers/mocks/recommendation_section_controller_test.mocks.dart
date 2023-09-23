@@ -8,6 +8,7 @@ import 'dart:async' as _i3;
 import 'package:avantswift_portfolio/models/Recommendation.dart' as _i4;
 import 'package:avantswift_portfolio/reposervice/recommendation_repo_services.dart'
     as _i2;
+import 'package:cloud_firestore/cloud_firestore.dart' as _i5;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -50,6 +51,23 @@ class MockRecommendation extends _i1.Mock implements _i4.Recommendation {
   }
 
   @override
+  set creationTimestamp(_i5.Timestamp? _creationTimestamp) =>
+      super.noSuchMethod(
+        Invocation.setter(
+          #creationTimestamp,
+          _creationTimestamp,
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  set index(int? _index) => super.noSuchMethod(
+        Invocation.setter(
+          #index,
+          _index,
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
   set colleagueName(String? _colleagueName) => super.noSuchMethod(
         Invocation.setter(
           #colleagueName,
@@ -82,6 +100,14 @@ class MockRecommendation extends _i1.Mock implements _i4.Recommendation {
         returnValueForMissingStub: null,
       );
   @override
+  set dateReceived(_i5.Timestamp? _dateReceived) => super.noSuchMethod(
+        Invocation.setter(
+          #dateReceived,
+          _dateReceived,
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
   Map<String, dynamic> toMap() => (super.noSuchMethod(
         Invocation.method(
           #toMap,
@@ -90,21 +116,11 @@ class MockRecommendation extends _i1.Mock implements _i4.Recommendation {
         returnValue: <String, dynamic>{},
       ) as Map<String, dynamic>);
   @override
-  _i3.Future<void> create() => (super.noSuchMethod(
+  _i3.Future<bool> create(String? id) => (super.noSuchMethod(
         Invocation.method(
           #create,
-          [],
+          [id],
         ),
-        returnValue: _i3.Future<void>.value(),
-        returnValueForMissingStub: _i3.Future<void>.value(),
-      ) as _i3.Future<void>);
-  @override
-  _i3.Future<void> delete() => (super.noSuchMethod(
-        Invocation.method(
-          #delete,
-          [],
-        ),
-        returnValue: _i3.Future<void>.value(),
-        returnValueForMissingStub: _i3.Future<void>.value(),
-      ) as _i3.Future<void>);
+        returnValue: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
 }

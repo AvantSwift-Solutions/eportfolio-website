@@ -50,6 +50,23 @@ class MockAwardCert extends _i1.Mock implements _i4.AwardCert {
   }
 
   @override
+  set creationTimestamp(_i5.Timestamp? _creationTimestamp) =>
+      super.noSuchMethod(
+        Invocation.setter(
+          #creationTimestamp,
+          _creationTimestamp,
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  set index(int? _index) => super.noSuchMethod(
+        Invocation.setter(
+          #index,
+          _index,
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
   set name(String? _name) => super.noSuchMethod(
         Invocation.setter(
           #name,
@@ -82,11 +99,10 @@ class MockAwardCert extends _i1.Mock implements _i4.AwardCert {
         returnValueForMissingStub: null,
       );
   @override
-  set creationTimestamp(_i5.Timestamp? _creationTimestamp) =>
-      super.noSuchMethod(
+  set dateIssued(_i5.Timestamp? _dateIssued) => super.noSuchMethod(
         Invocation.setter(
-          #creationTimestamp,
-          _creationTimestamp,
+          #dateIssued,
+          _dateIssued,
         ),
         returnValueForMissingStub: null,
       );
@@ -99,21 +115,11 @@ class MockAwardCert extends _i1.Mock implements _i4.AwardCert {
         returnValue: <String, dynamic>{},
       ) as Map<String, dynamic>);
   @override
-  _i3.Future<void> create() => (super.noSuchMethod(
+  _i3.Future<bool> create(String? id) => (super.noSuchMethod(
         Invocation.method(
           #create,
-          [],
+          [id],
         ),
-        returnValue: _i3.Future<void>.value(),
-        returnValueForMissingStub: _i3.Future<void>.value(),
-      ) as _i3.Future<void>);
-  @override
-  _i3.Future<void> delete() => (super.noSuchMethod(
-        Invocation.method(
-          #delete,
-          [],
-        ),
-        returnValue: _i3.Future<void>.value(),
-        returnValueForMissingStub: _i3.Future<void>.value(),
-      ) as _i3.Future<void>);
+        returnValue: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
 }

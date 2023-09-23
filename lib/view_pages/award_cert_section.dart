@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:avantswift_portfolio/models/AwardCert.dart';
 import 'package:avantswift_portfolio/reposervice/award_cert_repo_services.dart';
 import 'package:avantswift_portfolio/view_pages/recommendation_section.dart';
@@ -15,7 +17,8 @@ class AwardCertSection extends StatefulWidget {
 class AwardCertSectionState extends State<AwardCertSection> {
   final AwardCertRepoService _awardCertRepoService = AwardCertRepoService();
   List<AwardCert>? awardCerts;
-  PageController _pageController = PageController(viewportFraction: 1.0, initialPage: 0);
+  final PageController _pageController =
+      PageController(viewportFraction: 1.0, initialPage: 0);
   static const int awardsPerRow = 3;
   int _currentPage = 0;
 
@@ -39,7 +42,7 @@ class AwardCertSectionState extends State<AwardCertSection> {
         awardCerts = fetchedAwardCerts;
       });
     } catch (e) {
-      print('Error fetching awards and certificates: $e');
+      log('Error fetching awards and certificates: $e');
       // Handle the error, e.g., show an error message to the user.
     }
   }
@@ -48,17 +51,15 @@ class AwardCertSectionState extends State<AwardCertSection> {
     if (await canLaunchUrlString(link)) {
       await launchUrlString(link);
     } else {
-      print('Could not launch $link');
+      log('Could not launch $link');
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
     int totalPages = (awardCerts?.length ?? 0) ~/ (awardsPerRow * 2) + 1;
     final screenWidth = MediaQuery.of(context).size.width;
     double titleFontSize = screenWidth * 0.03;
-
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,7 +77,7 @@ class AwardCertSectionState extends State<AwardCertSection> {
                   style: PublicViewTextStyles.generalHeading.copyWith(
                     fontWeight: FontWeight.bold,
                     fontSize: titleFontSize,
-                    ),
+                  ),
                   // style: TextStyle(
                   //   fontSize: 64,
                   //   fontWeight: FontWeight.bold,
@@ -92,24 +93,28 @@ class AwardCertSectionState extends State<AwardCertSection> {
                     height: 450,
                     child: PageView.builder(
                       controller: _pageController,
-                      physics: BouncingScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       itemCount: totalPages,
                       itemBuilder: (context, pageIndex) {
                         int startIndex = pageIndex * (awardsPerRow * 2);
                         int endIndex = (pageIndex + 1) * (awardsPerRow * 2);
-                        endIndex = endIndex < awardCerts!.length ? endIndex : awardCerts!.length;
+                        endIndex = endIndex < awardCerts!.length
+                            ? endIndex
+                            : awardCerts!.length;
 
                         return GridView.builder(
-                          padding: EdgeInsets.all(20),
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          padding: const EdgeInsets.all(20),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: awardsPerRow,
                           ),
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: endIndex - startIndex,
                           itemBuilder: (context, index) {
-                            return _buildAwardCertCircle(awardCerts![startIndex + index]);
+                            return _buildAwardCertCircle(
+                                awardCerts![startIndex + index]);
                           },
                         );
                       },
@@ -140,9 +145,9 @@ class AwardCertSectionState extends State<AwardCertSection> {
             ],
           ),
         ),
-        SizedBox(width: 200),
+        const SizedBox(width: 200),
         // Right Section (Peer Recommendations or other content)
-        Expanded(
+        const Expanded(
           flex: 1,
           child: RecommendationSection(),
         ),
@@ -156,14 +161,16 @@ class AwardCertSectionState extends State<AwardCertSection> {
         InkWell(
           onTap: () => openLink(awardCert.link ?? ''),
           child: CircleAvatar(
-            backgroundColor: Color(0xffD9EACB),
+            backgroundColor: const Color(0xffD9EACB),
             radius: 80.0,
-            backgroundImage: awardCert.imageURL != null ? NetworkImage(awardCert.imageURL!) : null,
+            backgroundImage: awardCert.imageURL != null
+                ? NetworkImage(awardCert.imageURL!)
+                : null,
             child: awardCert.imageURL == null
                 ? Center(
                     child: Text(
                       awardCert.source ?? 'Source',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
@@ -172,10 +179,10 @@ class AwardCertSectionState extends State<AwardCertSection> {
                 : null,
           ),
         ),
-        SizedBox(height: 10.0),
+        const SizedBox(height: 10.0),
         Text(
           awardCert.name ?? 'Certificate Name',
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
@@ -185,7 +192,6 @@ class AwardCertSectionState extends State<AwardCertSection> {
     );
   }
 
-
   Widget _buildPageIndicator(bool isActive, int pageIndex) {
     double buttonWidth = 8.0;
     double buttonRadius = buttonWidth / 2;
@@ -194,12 +200,12 @@ class AwardCertSectionState extends State<AwardCertSection> {
       onTap: () {
         _pageController.animateToPage(
           pageIndex,
-          duration: Duration(milliseconds: 500),
+          duration: const Duration(milliseconds: 500),
           curve: Curves.ease,
         );
       },
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 4.0),
+        margin: const EdgeInsets.symmetric(horizontal: 4.0),
         height: buttonWidth,
         width: isActive ? buttonWidth : buttonWidth,
         decoration: BoxDecoration(
@@ -209,5 +215,4 @@ class AwardCertSectionState extends State<AwardCertSection> {
       ),
     );
   }
-
 }

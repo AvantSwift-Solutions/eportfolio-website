@@ -1,12 +1,12 @@
 import 'package:avantswift_portfolio/controllers/view_controllers/award_cert_section_controller.dart';
 import 'package:avantswift_portfolio/models/AwardCert.dart';
 import 'package:avantswift_portfolio/reposervice/award_cert_repo_services.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'mocks/award_cert_section_controller_test.mocks.dart';
-
 
 @GenerateMocks([AwardCertRepoService, AwardCert])
 void main() {
@@ -39,19 +39,23 @@ void main() {
       // ignore: non_constant_identifier_names
       final awardCerts = [
         AwardCert(
-          acid: 'mockId1',
-          name: 'Mock Name 1',
-          imageURL: 'http://example.com/image1.png',
-          link: 'http://example1.com',
-          source: 'Mock Source 1',
-        ),
+            creationTimestamp: Timestamp.now(),
+            acid: 'mockId1',
+            index: 0,
+            name: 'Mock Name 1',
+            imageURL: 'http://example.com/image1.png',
+            link: 'http://example1.com',
+            source: 'Mock Source 1',
+            dateIssued: Timestamp.fromMicrosecondsSinceEpoch(0)),
         AwardCert(
-          acid: 'mockId2',
-          name: 'Mock Name 2',
-          imageURL: 'http://example.com/image2.png',
-          link: 'http://example2.com',
-          source: 'Mock Source 2',
-        ),
+            creationTimestamp: Timestamp.now(),
+            acid: 'mockId2',
+            index: 0,
+            name: 'Mock Name 2',
+            imageURL: 'http://example.com/image2.png',
+            link: 'http://example2.com',
+            source: 'Mock Source 2',
+            dateIssued: Timestamp.fromMicrosecondsSinceEpoch(0)),
       ];
 
       when(mockRepoService.getAllAwardCert())
