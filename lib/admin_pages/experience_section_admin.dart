@@ -1,5 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-import 'dart:typed_data';
 import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -86,7 +85,11 @@ class ExperienceSectionAdmin extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       experiences.isEmpty
-                          ? const Text('No Professional Experiences available')
+                          ? const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: AdminViewDialogStyles.listSpacing),
+                              child:
+                                  Text('No Professional Experiences available'))
                           : ListView.builder(
                               shrinkWrap: true,
                               itemCount: experiences.length,

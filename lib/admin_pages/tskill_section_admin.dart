@@ -248,15 +248,18 @@ class TSkillSectionAdmin extends StatelessWidget {
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const Icon(Icons.add),
-                                Text('Change Center Image',
+                                Text('Change Center Image ',
                                     style:
-                                        AdminViewDialogStyles.buttonTextStyle)
+                                        AdminViewDialogStyles.buttonTextStyle),
+                                const Icon(Icons.edit),
                               ],
                             )),
                       ),
                       tskills.isEmpty
-                          ? const Text('No Technical Skills available')
+                          ? const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: AdminViewDialogStyles.listSpacing),
+                              child: Text('No Technical Skills available'))
                           : ListView.builder(
                               shrinkWrap: true,
                               itemCount: tskills.length,

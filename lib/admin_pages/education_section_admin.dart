@@ -1,5 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-import 'dart:typed_data';
 import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -85,7 +84,10 @@ class EducationSectionAdmin extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       educations.isEmpty
-                          ? const Text('No Educations available')
+                          ? const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: AdminViewDialogStyles.listSpacing),
+                              child: Text('No Educations available'))
                           : ListView.builder(
                               shrinkWrap: true,
                               itemCount: educations.length,

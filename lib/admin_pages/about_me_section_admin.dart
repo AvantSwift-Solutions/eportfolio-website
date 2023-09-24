@@ -1,5 +1,4 @@
 // ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
-import 'dart:typed_data';
 import 'package:avantswift_portfolio/reposervice/user_repo_services.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:file_picker/file_picker.dart';

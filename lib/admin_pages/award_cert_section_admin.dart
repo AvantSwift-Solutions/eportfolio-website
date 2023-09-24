@@ -84,7 +84,11 @@ class AwardCertSectionAdmin extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       awardcerts.isEmpty
-                          ? const Text('No Award & Certifications available')
+                          ? const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: AdminViewDialogStyles.listSpacing),
+                              child:
+                                  Text('No Award & Certifications available'))
                           : ListView.builder(
                               shrinkWrap: true,
                               itemCount: awardcerts.length,

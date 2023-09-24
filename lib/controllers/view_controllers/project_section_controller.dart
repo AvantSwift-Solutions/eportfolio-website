@@ -17,4 +17,11 @@ class ProjectSectionController {
       return null;
     }
   }
+
+  Future<String> getSectionDescription() async {
+    Map<String, dynamic>? data =
+        await projectRepoService.getDocumentById('Description');
+    if (data == null) return '';
+    return data['text'];
+  }
 }

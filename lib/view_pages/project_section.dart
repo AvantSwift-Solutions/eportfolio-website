@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:avantswift_portfolio/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../controllers/view_controllers/project_section_controller.dart';
@@ -19,6 +20,7 @@ class ProjectSectionState extends State<ProjectSection> {
   final ProjectSectionController _projectController =
       ProjectSectionController(ProjectRepoService());
   List<Project>? allProjects;
+  String sectionDescription = Constants.defaultProjectSectionDescription;
   bool showAllProjects = false;
   int initiallyDisplayedProjects = 3;
   int colorIndex = 0;
@@ -39,6 +41,8 @@ class ProjectSectionState extends State<ProjectSection> {
 
   Future<void> fetchData() async {
     try {
+      sectionDescription = await _projectController.getSectionDescription();
+      sectionDescription = '"$sectionDescription"';
       final List<Project>? fetchedProjects =
           await _projectController.getProjectList();
       setState(() {
@@ -163,7 +167,7 @@ class ProjectSectionState extends State<ProjectSection> {
                       padding: const EdgeInsets.all(16.0),
                       color: Colors.white, // Background color
                       child: Text(
-                        '"I enjoy working on projects during my personal time as it provides an opportunity to experiment with something new and continuously enrich my current skill-set."',
+                        sectionDescription,
                         textAlign: TextAlign.left,
                         softWrap: true,
                         style: PublicViewTextStyles.generalBodyText.copyWith(

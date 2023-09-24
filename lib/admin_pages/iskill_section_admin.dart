@@ -80,7 +80,10 @@ class ISkillSectionAdmin extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       iskills.isEmpty
-                          ? const Text('No Interpersonal Skills available')
+                          ? const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: AdminViewDialogStyles.listSpacing),
+                              child: Text('No Interpersonal Skills available'))
                           : ListView.builder(
                               shrinkWrap: true,
                               itemCount: iskills.length,

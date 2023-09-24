@@ -19,6 +19,18 @@ class ProjectSectionAdminController {
     }
   }
 
+  Future<String> getSectionDescription() async {
+    Map<String, dynamic>? data =
+        await projectRepoService.getDocumentById('Description');
+    if (data == null) return '';
+    return data['text'];
+  }
+
+  Future<void> updateSectionDescription(String? description) async {
+    await projectRepoService.updateDocumentField(
+        'Description', 'text', description ?? '');
+  }
+
   String getSectionName() {
     return 'Personal Projects';
   }

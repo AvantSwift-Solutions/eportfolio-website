@@ -85,7 +85,11 @@ class RecommendationSectionAdmin extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       recommendations.isEmpty
-                          ? const Text('No Recommendations available')
+                          ? const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: AdminViewDialogStyles.listSpacing),
+                              child:
+                                  Text('No Award & Certifications available'))
                           : ListView.builder(
                               shrinkWrap: true,
                               itemCount: recommendations.length,
