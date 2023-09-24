@@ -509,7 +509,7 @@ class EducationSectionAdmin extends StatelessWidget {
                                       validator: (value) {
                                         if (value != null &&
                                             value.isNotEmpty &&
-                                            value.length >=
+                                            value.length >
                                                 AdminViewDialogStyles
                                                     .maxDescLength) {
                                           return 'Please reduce the length of the description';

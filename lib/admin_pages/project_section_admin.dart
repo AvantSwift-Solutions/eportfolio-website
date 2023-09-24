@@ -113,7 +113,7 @@ class ProjectSectionAdmin extends StatelessWidget {
                                         if (value == null || value.isEmpty) {
                                           return 'Please enter a description';
                                         } else if (value.isNotEmpty &&
-                                            value.length >=
+                                            value.length >
                                                 AdminViewDialogStyles
                                                     .maxDescLength) {
                                           return 'Please reduce the length of the description';
@@ -469,7 +469,7 @@ class ProjectSectionAdmin extends StatelessWidget {
                                       validator: (value) {
                                         if (value != null &&
                                             value.isNotEmpty &&
-                                            value.length >=
+                                            value.length >
                                                 AdminViewDialogStyles
                                                     .maxDescLength) {
                                           return 'Please reduce the length of the description';

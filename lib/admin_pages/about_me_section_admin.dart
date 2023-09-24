@@ -119,7 +119,7 @@ class AboutMeSectionAdmin extends StatelessWidget {
                                         if (value == null || value.isEmpty) {
                                           return 'Please enter a biography';
                                         } else if (value.isNotEmpty &&
-                                            value.length >= maxBioLength) {
+                                            value.length > maxBioLength) {
                                           return 'Please reduce the length of the biography';
                                         }
                                         return null;
