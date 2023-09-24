@@ -1,10 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
-import 'dart:typed_data';
 import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mat_month_picker_dialog/mat_month_picker_dialog.dart';
 import 'package:uuid/uuid.dart';
@@ -47,7 +47,6 @@ class EducationSectionAdmin extends StatelessWidget {
         return Theme(
           data: AdminViewDialogStyles.dialogThemeData,
           child: AlertDialog(
-            scrollable: true,
             titlePadding: AdminViewDialogStyles.titleDialogPadding,
             contentPadding: AdminViewDialogStyles.contentDialogPadding,
             actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
@@ -85,7 +84,10 @@ class EducationSectionAdmin extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       educations.isEmpty
-                          ? const Text('No Educations available')
+                          ? const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: AdminViewDialogStyles.listSpacing),
+                              child: Text('No Educations available'))
                           : ListView.builder(
                               shrinkWrap: true,
                               itemCount: educations.length,
@@ -240,7 +242,6 @@ class EducationSectionAdmin extends StatelessWidget {
             return Theme(
                 data: AdminViewDialogStyles.dialogThemeData,
                 child: AlertDialog(
-                  scrollable: true,
                   titlePadding: AdminViewDialogStyles.titleDialogPadding,
                   contentPadding: AdminViewDialogStyles.contentDialogPadding,
                   actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
@@ -267,13 +268,6 @@ class EducationSectionAdmin extends StatelessWidget {
                             ],
                           ),
                           const Divider(),
-                          // Align(
-                          //   alignment: Alignment.centerLeft,
-                          //   child: Text(
-                          //     '* indicates required field',
-                          //     style: AdminViewDialogStyles.indicatesTextStyle,
-                          //   ),
-                          // ),
                         ],
                       )),
                   content: SizedBox(
@@ -301,6 +295,8 @@ class EducationSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
+                                      maxLength:
+                                          AdminViewDialogStyles.maxFieldLength,
                                       initialValue: education.schoolName,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
@@ -321,6 +317,8 @@ class EducationSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
+                                      maxLength:
+                                          AdminViewDialogStyles.maxFieldLength,
                                       initialValue: education.degree,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
@@ -341,6 +339,8 @@ class EducationSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
+                                      maxLength:
+                                          AdminViewDialogStyles.maxFieldLength,
                                       initialValue: education.major,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
@@ -450,13 +450,18 @@ class EducationSectionAdmin extends StatelessWidget {
                                       validator: (value) {
                                         if (value != null && value.isNotEmpty) {
                                           if (double.tryParse(value) == null) {
-                                            return 'Please enter a number';
+                                            return 'Please enter a valid number';
+                                          } else if (double.tryParse(value)! <
+                                              0) {
+                                            return 'Please enter a positive number';
                                           }
                                         }
                                         return null;
                                       },
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
+                                      maxLength:
+                                          AdminViewDialogStyles.maxFieldLength,
                                       onSaved: (value) {
                                         education.grade =
                                             double.tryParse(value ?? '-1') ??
@@ -470,6 +475,8 @@ class EducationSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
+                                      maxLength:
+                                          AdminViewDialogStyles.maxFieldLength,
                                       initialValue: education.gradeDescription,
                                       decoration: AdminViewDialogStyles
                                           .inputDecoration
@@ -489,11 +496,25 @@ class EducationSectionAdmin extends StatelessWidget {
                                           AdminViewDialogStyles.inputTextStyle,
                                       maxLines:
                                           AdminViewDialogStyles.textBoxLines,
+                                      maxLength:
+                                          AdminViewDialogStyles.maxDescLength,
+                                      maxLengthEnforcement:
+                                          MaxLengthEnforcement.none,
                                       initialValue: education.description,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
                                       onSaved: (value) {
                                         education.description = value;
+                                      },
+                                      validator: (value) {
+                                        if (value != null &&
+                                            value.isNotEmpty &&
+                                            value.length >
+                                                AdminViewDialogStyles
+                                                    .maxDescLength) {
+                                          return 'Please reduce the length of the description';
+                                        }
+                                        return null;
                                       },
                                     ),
                                     AdminViewDialogStyles.spacer,

@@ -1,9 +1,9 @@
 // ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
-import 'dart:typed_data';
 import 'package:avantswift_portfolio/reposervice/user_repo_services.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../controllers/admin_controllers/about_me_section_admin_controller.dart';
 
 class AboutMeSectionAdmin extends StatelessWidget {
@@ -11,6 +11,8 @@ class AboutMeSectionAdmin extends StatelessWidget {
       AboutMeSectionAdminController(UserRepoService());
 
   AboutMeSectionAdmin({super.key});
+
+  final maxBioLength = 400;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +54,6 @@ class AboutMeSectionAdmin extends StatelessWidget {
             return Theme(
                 data: AdminViewDialogStyles.dialogThemeData,
                 child: AlertDialog(
-                  scrollable: true,
                   titlePadding: AdminViewDialogStyles.titleDialogPadding,
                   contentPadding: AdminViewDialogStyles.contentDialogPadding,
                   actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
@@ -79,13 +80,6 @@ class AboutMeSectionAdmin extends StatelessWidget {
                             ],
                           ),
                           const Divider(),
-                          // Align(
-                          //   alignment: Alignment.centerLeft,
-                          //   child: Text(
-                          //     '* indicates required field',
-                          //     style: AdminViewDialogStyles.indicatesTextStyle,
-                          //   ),
-                          // ),
                         ],
                       )),
                   content: SizedBox(
@@ -113,6 +107,9 @@ class AboutMeSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       maxLines:
                                           AdminViewDialogStyles.textBoxLines,
+                                      maxLength: maxBioLength,
+                                      maxLengthEnforcement:
+                                          MaxLengthEnforcement.none,
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
                                       initialValue: aboutMeData.aboutMe,
@@ -121,6 +118,9 @@ class AboutMeSectionAdmin extends StatelessWidget {
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
                                           return 'Please enter a biography';
+                                        } else if (value.isNotEmpty &&
+                                            value.length > maxBioLength) {
+                                          return 'Please reduce the length of the biography';
                                         }
                                         return null;
                                       },
@@ -142,58 +142,34 @@ class AboutMeSectionAdmin extends StatelessWidget {
                                           width:
                                               AdminViewDialogStyles.imageWidth),
                                     AdminViewDialogStyles.interTitleField,
-                                    if (!noImage)
-                                      ElevatedButton(
-                                        onPressed: () async {
-                                          Uint8List? imageBytes =
-                                              await _pickImage();
-                                          if (imageBytes != null) {
-                                            noImage = false;
-                                            pickedImageBytes = imageBytes;
-                                            setState(() {});
-                                          }
-                                        },
-                                        style: AdminViewDialogStyles
-                                            .imageButtonStyle,
-                                        child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              const Icon(Icons.add),
-                                              Text(
-                                                aboutMeData.imageURL == ''
-                                                    ? 'Add Image'
-                                                    : 'Change Image',
-                                                style: AdminViewDialogStyles
-                                                    .buttonTextStyle,
-                                              )
-                                            ]),
-                                      )
-                                    else
-                                      ElevatedButton(
-                                        onPressed: () async {
-                                          Uint8List? imageBytes =
-                                              await _pickImage();
-                                          if (imageBytes != null) {
-                                            noImage = false;
-                                            pickedImageBytes = imageBytes;
-                                            setState(() {});
-                                          }
-                                        },
-                                        style: AdminViewDialogStyles
-                                            .noImageButtonStyle,
-                                        child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              const Icon(Icons.add),
-                                              Text(
-                                                aboutMeData.imageURL == ''
-                                                    ? 'Add Image'
-                                                    : 'Change Image',
-                                                style: AdminViewDialogStyles
-                                                    .buttonTextStyle,
-                                              )
-                                            ]),
-                                      ),
+                                    ElevatedButton(
+                                      onPressed: () async {
+                                        Uint8List? imageBytes =
+                                            await _pickImage();
+                                        if (imageBytes != null) {
+                                          noImage = false;
+                                          pickedImageBytes = imageBytes;
+                                          setState(() {});
+                                        }
+                                      },
+                                      style: noImage
+                                          ? AdminViewDialogStyles
+                                              .noImageButtonStyle
+                                          : AdminViewDialogStyles
+                                              .imageButtonStyle,
+                                      child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            const Icon(Icons.add),
+                                            Text(
+                                              aboutMeData.imageURL == ''
+                                                  ? 'Add Image'
+                                                  : 'Change Image',
+                                              style: AdminViewDialogStyles
+                                                  .buttonTextStyle,
+                                            )
+                                          ]),
+                                    ),
                                     AdminViewDialogStyles.interTitleField,
                                     AdminViewDialogStyles.interTitleField,
                                     if (noImage)

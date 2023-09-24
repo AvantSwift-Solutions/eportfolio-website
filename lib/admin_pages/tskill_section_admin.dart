@@ -52,7 +52,6 @@ class TSkillSectionAdmin extends StatelessWidget {
             return Theme(
                 data: AdminViewDialogStyles.dialogThemeData,
                 child: AlertDialog(
-                  scrollable: true,
                   titlePadding: AdminViewDialogStyles.titleDialogPadding,
                   contentPadding: AdminViewDialogStyles.contentDialogPadding,
                   actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
@@ -203,7 +202,6 @@ class TSkillSectionAdmin extends StatelessWidget {
         return Theme(
           data: AdminViewDialogStyles.dialogThemeData,
           child: AlertDialog(
-            scrollable: true,
             titlePadding: AdminViewDialogStyles.titleDialogPadding,
             contentPadding: AdminViewDialogStyles.contentDialogPadding,
             actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
@@ -250,15 +248,18 @@ class TSkillSectionAdmin extends StatelessWidget {
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const Icon(Icons.add),
-                                Text('Change Center Image',
+                                Text('Change Center Image ',
                                     style:
-                                        AdminViewDialogStyles.buttonTextStyle)
+                                        AdminViewDialogStyles.buttonTextStyle),
+                                const Icon(Icons.edit),
                               ],
                             )),
                       ),
                       tskills.isEmpty
-                          ? const Text('No Technical Skills available')
+                          ? const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: AdminViewDialogStyles.listSpacing),
+                              child: Text('No Technical Skills available'))
                           : ListView.builder(
                               shrinkWrap: true,
                               itemCount: tskills.length,
@@ -390,7 +391,6 @@ class TSkillSectionAdmin extends StatelessWidget {
             return Theme(
                 data: AdminViewDialogStyles.dialogThemeData,
                 child: AlertDialog(
-                  scrollable: true,
                   titlePadding: AdminViewDialogStyles.titleDialogPadding,
                   contentPadding: AdminViewDialogStyles.contentDialogPadding,
                   actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
@@ -417,13 +417,6 @@ class TSkillSectionAdmin extends StatelessWidget {
                             ],
                           ),
                           const Divider(),
-                          // Align(
-                          //   alignment: Alignment.centerLeft,
-                          //   child: Text(
-                          //     '* indicates required field',
-                          //     style: AdminViewDialogStyles.indicatesTextStyle,
-                          //   ),
-                          // ),
                         ],
                       )),
                   content: SizedBox(
@@ -451,6 +444,8 @@ class TSkillSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
+                                      maxLength:
+                                          AdminViewDialogStyles.maxFieldLength,
                                       initialValue: tskill.name,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,

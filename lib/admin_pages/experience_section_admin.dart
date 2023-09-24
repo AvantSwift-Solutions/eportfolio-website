@@ -1,10 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
-import 'dart:typed_data';
 import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mat_month_picker_dialog/mat_month_picker_dialog.dart';
 import 'package:uuid/uuid.dart';
@@ -48,7 +48,6 @@ class ExperienceSectionAdmin extends StatelessWidget {
         return Theme(
           data: AdminViewDialogStyles.dialogThemeData,
           child: AlertDialog(
-            scrollable: true,
             titlePadding: AdminViewDialogStyles.titleDialogPadding,
             contentPadding: AdminViewDialogStyles.contentDialogPadding,
             actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
@@ -86,7 +85,11 @@ class ExperienceSectionAdmin extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       experiences.isEmpty
-                          ? const Text('No Professional Experiences available')
+                          ? const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: AdminViewDialogStyles.listSpacing),
+                              child:
+                                  Text('No Professional Experiences available'))
                           : ListView.builder(
                               shrinkWrap: true,
                               itemCount: experiences.length,
@@ -252,7 +255,6 @@ class ExperienceSectionAdmin extends StatelessWidget {
             return Theme(
                 data: AdminViewDialogStyles.dialogThemeData,
                 child: AlertDialog(
-                  scrollable: true,
                   titlePadding: AdminViewDialogStyles.titleDialogPadding,
                   contentPadding: AdminViewDialogStyles.contentDialogPadding,
                   actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
@@ -279,13 +281,6 @@ class ExperienceSectionAdmin extends StatelessWidget {
                             ],
                           ),
                           const Divider(),
-                          // Align(
-                          //   alignment: Alignment.centerLeft,
-                          //   child: Text(
-                          //     '* indicates required field',
-                          //     style: AdminViewDialogStyles.indicatesTextStyle,
-                          //   ),
-                          // ),
                         ],
                       )),
                   content: SizedBox(
@@ -313,6 +308,8 @@ class ExperienceSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
+                                      maxLength:
+                                          AdminViewDialogStyles.maxFieldLength,
                                       initialValue: experience.jobTitle,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
@@ -374,6 +371,9 @@ class ExperienceSectionAdmin extends StatelessWidget {
                                             .otherDecoration,
                                         style: AdminViewDialogStyles
                                             .inputTextStyle,
+                                        maxLength: AdminViewDialogStyles
+                                            .maxFieldLength,
+                                        initialValue: experience.employmentType,
                                         onChanged: (value) {
                                           setState(() {
                                             experience.employmentType = value;
@@ -393,6 +393,8 @@ class ExperienceSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
+                                      maxLength:
+                                          AdminViewDialogStyles.maxFieldLength,
                                       initialValue: experience.companyName,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
@@ -413,6 +415,8 @@ class ExperienceSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
+                                      maxLength:
+                                          AdminViewDialogStyles.maxFieldLength,
                                       initialValue: experience.location,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
@@ -518,11 +522,25 @@ class ExperienceSectionAdmin extends StatelessWidget {
                                           AdminViewDialogStyles.inputTextStyle,
                                       maxLines:
                                           AdminViewDialogStyles.textBoxLines,
+                                      maxLength:
+                                          AdminViewDialogStyles.maxDescLength,
+                                      maxLengthEnforcement:
+                                          MaxLengthEnforcement.none,
                                       initialValue: experience.description,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
                                       onSaved: (value) {
                                         experience.description = value;
+                                      },
+                                      validator: (value) {
+                                        if (value != null &&
+                                            value.isNotEmpty &&
+                                            value.length >
+                                                AdminViewDialogStyles
+                                                    .maxDescLength) {
+                                          return 'Please reduce the length of the description';
+                                        }
+                                        return null;
                                       },
                                     ),
                                     AdminViewDialogStyles.spacer,

@@ -47,7 +47,6 @@ class AwardCertSectionAdmin extends StatelessWidget {
         return Theme(
           data: AdminViewDialogStyles.dialogThemeData,
           child: AlertDialog(
-            scrollable: true,
             titlePadding: AdminViewDialogStyles.titleDialogPadding,
             contentPadding: AdminViewDialogStyles.contentDialogPadding,
             actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
@@ -85,7 +84,11 @@ class AwardCertSectionAdmin extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       awardcerts.isEmpty
-                          ? const Text('No Award & Certifications available')
+                          ? const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: AdminViewDialogStyles.listSpacing),
+                              child:
+                                  Text('No Award & Certifications available'))
                           : ListView.builder(
                               shrinkWrap: true,
                               itemCount: awardcerts.length,
@@ -233,7 +236,6 @@ class AwardCertSectionAdmin extends StatelessWidget {
             return Theme(
                 data: AdminViewDialogStyles.dialogThemeData,
                 child: AlertDialog(
-                  scrollable: true,
                   titlePadding: AdminViewDialogStyles.titleDialogPadding,
                   contentPadding: AdminViewDialogStyles.contentDialogPadding,
                   actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
@@ -260,13 +262,6 @@ class AwardCertSectionAdmin extends StatelessWidget {
                             ],
                           ),
                           const Divider(),
-                          // Align(
-                          //   alignment: Alignment.centerLeft,
-                          //   child: Text(
-                          //     '* indicates required field',
-                          //     style: AdminViewDialogStyles.indicatesTextStyle,
-                          //   ),
-                          // ),
                         ],
                       )),
                   content: SizedBox(
@@ -294,6 +289,8 @@ class AwardCertSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
+                                      maxLength:
+                                          AdminViewDialogStyles.maxFieldLength,
                                       initialValue: awardcert.name,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
@@ -314,6 +311,8 @@ class AwardCertSectionAdmin extends StatelessWidget {
                                     TextFormField(
                                       style:
                                           AdminViewDialogStyles.inputTextStyle,
+                                      maxLength:
+                                          AdminViewDialogStyles.maxFieldLength,
                                       initialValue: awardcert.source,
                                       decoration:
                                           AdminViewDialogStyles.inputDecoration,
