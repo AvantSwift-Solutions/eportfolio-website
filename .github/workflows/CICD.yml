@@ -1,11 +1,11 @@
 name: CI/CD
 
 on:
-  pull_request:
-    branches: main
+  push:
+    branches: all
 
 jobs:
-  build_and_test:
+  test_and_build:
     runs-on: ubuntu-latest
 
     steps:
@@ -44,11 +44,24 @@ jobs:
           
           if [[ "$(awk -v a=$coverage -v b=$threshold 'BEGIN { print (a >= b) }')" == "1" ]]; then
               echo "Code coverage is above threshold. CI/CD passes. Coverage: $coverage"
+              export COVERAGE=$coverage
               exit 0
           else
               echo "Code coverage is below threshold. CI/CD fails. Coverage: $coverage"
               exit 1
           fi
+
+      - name: Post coverage comment
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const { number } = context.issue;
+            const coverage = parseFloat(process.env.COVERAGE).toFixed(2);
+            const comment = `Code coverage is ${coverage}%.`;
+
+            github.issues.createComment({ owner, repo, issue_number: number, body: comment });
       
       - name: Build app
         run: flutter build web
