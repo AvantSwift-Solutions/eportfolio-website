@@ -2,7 +2,7 @@ name: CI/CD
 
 on:
   push:
-    branches: all
+    branches: feature/EP-71
 
 jobs:
   test_and_build:
