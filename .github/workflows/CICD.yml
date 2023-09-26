@@ -52,16 +52,16 @@ jobs:
           fi
 
       - name: Post coverage comment
-        uses: actions/github-script@v4
+        uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const { owner, repo } = context.repo;
-            const { number } = context.issue;
-            const coverage = parseFloat(process.env.COVERAGE).toFixed(2);
-            const comment = `Code coverage is ${coverage}%.`;
-
-            github.issues.createComment({ owner, repo, issue_number: number, body: comment });
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Code coverage is ${coverage}%.'
+            })
       
       - name: Build app
         run: flutter build web
