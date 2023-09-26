@@ -149,19 +149,20 @@ void main() {
     });
 
     test('applyDefaultOrder should sort objects in default order', () async {
-      final list = [mockExperience1, mockExperience2];
+      MockExperience mockExperience3 = MockExperience();
+      final list = [mockExperience3, mockExperience1, mockExperience2];
       when(controller.getSectionData()).thenAnswer((_) async => list);
-      when(mockExperience1.endDate)
-          .thenReturn(Timestamp.fromMicrosecondsSinceEpoch(1));
-      when(mockExperience2.endDate)
-          .thenReturn(Timestamp.fromMicrosecondsSinceEpoch(2));
+      when(mockExperience1.endDate).thenReturn(Timestamp.fromMicrosecondsSinceEpoch(1));
+      when(mockExperience2.endDate).thenReturn(Timestamp.fromMicrosecondsSinceEpoch(2));
+      when(mockExperience3.endDate).thenReturn(null);
       when(mockExperience1.update()).thenAnswer((_) async => true);
       when(mockExperience2.update()).thenAnswer((_) async => false);
 
       await controller.applyDefaultOrder();
 
-      expect(list[0].endDate, Timestamp.fromMicrosecondsSinceEpoch(2));
-      expect(list[1].endDate, Timestamp.fromMicrosecondsSinceEpoch(1));
+      expect(list[0].endDate, null);
+      expect(list[1].endDate, Timestamp.fromMicrosecondsSinceEpoch(2));
+      expect(list[2].endDate, Timestamp.fromMicrosecondsSinceEpoch(1));
     });
 
     test(

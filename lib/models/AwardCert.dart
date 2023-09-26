@@ -25,6 +25,7 @@ class AwardCert {
 
   factory AwardCert.fromDocumentSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;
+    final acid = data['acid'];
     final creationTimestamp = data['creationTimestamp'];
     final index = data['index'];
     final name = data['name'];
@@ -36,7 +37,7 @@ class AwardCert {
     return AwardCert(
       creationTimestamp: creationTimestamp,
       index: index,
-      acid: snapshot.id,
+      acid: acid,
       name: name,
       imageURL: imageURL,
       link: link,

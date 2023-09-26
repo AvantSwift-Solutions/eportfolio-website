@@ -1,8 +1,5 @@
 import 'dart:developer';
-import 'dart:typed_data';
-
 import 'package:avantswift_portfolio/reposervice/tskill_repo_services.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../models/TSkill.dart';
@@ -79,17 +76,4 @@ class TSkillSectionAdminController {
     }
   }
 
-  Future<String?> uploadImageAndGetURL(
-      Uint8List imageBytes, String fileName) async {
-    try {
-      final ref = FirebaseStorage.instance.ref().child('images/$fileName');
-      final uploadTask = ref.putData(imageBytes);
-      final TaskSnapshot snapshot = await uploadTask;
-      final imageURL = await snapshot.ref.getDownloadURL();
-      return imageURL;
-    } catch (e) {
-      log('Error uploading image: $e');
-      return null;
-    }
-  }
 }

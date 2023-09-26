@@ -38,4 +38,28 @@ class MockProjectRepoService extends _i1.Mock
         ),
         returnValue: _i3.Future<List<_i4.Project>?>.value(),
       ) as _i3.Future<List<_i4.Project>?>);
+  @override
+  _i3.Future<Map<String, dynamic>?>? getDocumentById(String? documentId) =>
+      (super.noSuchMethod(Invocation.method(
+        #getDocumentById,
+        [documentId],
+      )) as _i3.Future<Map<String, dynamic>?>?);
+  @override
+  _i3.Future<void> updateDocumentField(
+    String? documentId,
+    String? fieldName,
+    dynamic newValue,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateDocumentField,
+          [
+            documentId,
+            fieldName,
+            newValue,
+          ],
+        ),
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
 }

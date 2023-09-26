@@ -65,6 +65,39 @@ void main() {
       expect(project2?.link, pp2.link);
     });
 
+    test('getSectionDescription should return empty string if data is null', () async {
+      when(mockRepoService.getDocumentById('Description')).thenAnswer((_) async => null);
+
+      final result = await controller.getSectionDescription();
+
+      expect(result, '');
+      verify(mockRepoService.getDocumentById('Description'));
+    });
+
+    test('getSectionDescription should return text if data is not null', () async {
+      final data = {'text': 'Lorem ipsum'};
+      when(mockRepoService.getDocumentById('Description')).thenAnswer((_) async => data);
+
+      final result = await controller.getSectionDescription();
+
+      expect(result, 'Lorem ipsum');
+      verify(mockRepoService.getDocumentById('Description'));
+    });
+
+    test('updateSectionDescription should update document field', () async {
+      const description = 'Lorem ipsum';
+
+      await controller.updateSectionDescription(description);
+
+      verify(mockRepoService.updateDocumentField('Description', 'text', description));
+    });
+
+    test('updateSectionDescription should update document field with empty string if description is null', () async {
+      await controller.updateSectionDescription(null);
+
+      verify(mockRepoService.updateDocumentField('Description', 'text', ''));
+    });
+
     test('getAllProjects returns null on error', () async {
       when(mockRepoService.getAllProjects())
           .thenThrow(Exception('Test Exception'));

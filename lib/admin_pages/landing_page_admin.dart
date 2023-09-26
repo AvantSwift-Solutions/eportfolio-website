@@ -1,4 +1,5 @@
 // ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
+import 'package:avantswift_portfolio/controllers/admin_controllers/upload_image_admin_controller.dart';
 import 'package:avantswift_portfolio/reposervice/user_repo_services.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:file_picker/file_picker.dart';
@@ -255,7 +256,7 @@ class LandingPageAdmin extends StatelessWidget {
                                       !noImage) {
                                     formKey.currentState!.save();
                                     if (pickedImageBytes != null) {
-                                      String? imageURL = await _adminController
+                                      String? imageURL = await UploadImageAdminController()
                                           .uploadImageAndGetURL(
                                               pickedImageBytes!,
                                               'landing_page_image.jpg');

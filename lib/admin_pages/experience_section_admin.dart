@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
+import 'package:avantswift_portfolio/controllers/admin_controllers/upload_image_admin_controller.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
@@ -607,7 +608,7 @@ class ExperienceSectionAdmin extends StatelessWidget {
                                     experience.creationTimestamp =
                                         Timestamp.now();
                                     if (pickedImageBytes != null) {
-                                      String? imageURL = await _adminController
+                                      String? imageURL = await UploadImageAdminController()
                                           .uploadImageAndGetURL(
                                               pickedImageBytes!,
                                               '${experience.peid}_image.jpg');

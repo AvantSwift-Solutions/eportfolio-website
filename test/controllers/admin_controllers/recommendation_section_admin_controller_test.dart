@@ -139,20 +139,21 @@ void main() {
       expect(controller.defaultOrderName(), 'by Date Recieved');
     });
 
-    test('applyDefaultOrder should sort objects in default order', () async {
-      final list = [mockRecommendation1, mockRecommendation2];
+     test('applyDefaultOrder should sort objects in default order', () async {
+      MockRecommendation mockRecommendation3 = MockRecommendation();
+      final list = [mockRecommendation3, mockRecommendation1, mockRecommendation2];
       when(controller.getSectionData()).thenAnswer((_) async => list);
-      when(mockRecommendation1.dateReceived)
-          .thenReturn(Timestamp.fromMicrosecondsSinceEpoch(1));
-      when(mockRecommendation2.dateReceived)
-          .thenReturn(Timestamp.fromMicrosecondsSinceEpoch(2));
+      when(mockRecommendation1.dateReceived).thenReturn(Timestamp.fromMicrosecondsSinceEpoch(1));
+      when(mockRecommendation2.dateReceived).thenReturn(Timestamp.fromMicrosecondsSinceEpoch(2));
+      when(mockRecommendation3.dateReceived).thenReturn(null);
       when(mockRecommendation1.update()).thenAnswer((_) async => true);
       when(mockRecommendation2.update()).thenAnswer((_) async => false);
 
       await controller.applyDefaultOrder();
 
-      expect(list[0].dateReceived, Timestamp.fromMicrosecondsSinceEpoch(2));
-      expect(list[1].dateReceived, Timestamp.fromMicrosecondsSinceEpoch(1));
+      expect(list[0].dateReceived, null);
+      expect(list[1].dateReceived, Timestamp.fromMicrosecondsSinceEpoch(2));
+      expect(list[2].dateReceived, Timestamp.fromMicrosecondsSinceEpoch(1));
     });
 
     test(

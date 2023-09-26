@@ -108,5 +108,23 @@ void main() {
 
       verifyNever(mockUser.update());
     });
+
+    test('updateLandingPageData returns false when execption is caught', () async {
+      when(mockRepoService.getFirstUser()).thenThrow(Exception('Test Exception'));
+
+      final updateResult = await controller.updateLandingPageData(
+        LandingPageDTO(
+          name: 'New Name',
+          nickname: 'New Title',
+          landingPageDescription: 'New Description',
+          imageURL: 'http://example.com/new_image.jpg',
+        ),
+      );
+
+      expect(updateResult, false);
+
+      verifyNever(mockUser.update());
+    });
+
   });
 }

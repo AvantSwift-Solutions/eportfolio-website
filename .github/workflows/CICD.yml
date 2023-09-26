@@ -1,8 +1,8 @@
 name: CI/CD
 
 on:
-  push:
-    branches: feature/EP-71
+  pull_request:
+    branches: main
 
 jobs:
   test_and_build:

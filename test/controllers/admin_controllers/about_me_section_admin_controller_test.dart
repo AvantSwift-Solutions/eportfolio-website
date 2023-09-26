@@ -34,66 +34,86 @@ void main() {
     controller = AboutMeSectionAdminController(mockRepoService);
   });
 
-  test('getAboutMeSectionData returns correct data when user is not null',
-      () async {
-    when(mockRepoService.getFirstUser()).thenAnswer((_) async => mockUser);
-    final aboutMeSectionData = await controller.getAboutMeSectionData();
+  group('About Me section admin controller tests:', () {
 
-    // Make assertions on the returned data
-    expect(aboutMeSectionData!.aboutMe, mockUser.aboutMe);
-    expect(aboutMeSectionData.imageURL, mockUser.aboutMeURL);
-    // Add more assertions as needed
+    test('getAboutMeSectionData returns correct data when user is not null',
+        () async {
+      when(mockRepoService.getFirstUser()).thenAnswer((_) async => mockUser);
+      final aboutMeSectionData = await controller.getAboutMeSectionData();
+
+      // Make assertions on the returned data
+      expect(aboutMeSectionData!.aboutMe, mockUser.aboutMe);
+      expect(aboutMeSectionData.imageURL, mockUser.aboutMeURL);
+      // Add more assertions as needed
+    });
+
+    test('getAboutMeSectionData returns default data when user is null',
+        () async {
+      when(mockRepoService.getFirstUser()).thenAnswer((_) async => null);
+
+      final aboutMeSectionData = await controller.getAboutMeSectionData();
+
+      expect(aboutMeSectionData!.aboutMe, 'No description available');
+      expect(
+          aboutMeSectionData.imageURL, 'https://example.com/default_image.jpg');
+    });
+
+    test('getAboutMeSectionData returns error data on exception', () async {
+      when(mockRepoService.getFirstUser()).thenThrow(Exception('Test Exception'));
+
+      final aboutMeSectionData = await controller.getAboutMeSectionData();
+
+      expect(aboutMeSectionData!.aboutMe, 'Error');
+      expect(aboutMeSectionData.imageURL, 'https://example.com/error.jpg');
+    });
+
+    test('updateAboutMeSectionData returns true on successful update', () async {
+      when(mockRepoService.getFirstUser()).thenAnswer((_) async => mockUser);
+      when(mockUser.update()).thenAnswer((_) async => true);
+
+      final updateResult = await controller.updateAboutMeSectionData(
+        AboutMeSectionDTO(
+          aboutMe: 'New About Me',
+          imageURL: 'http://example.com/new_image.jpg',
+        ),
+      );
+
+      expect(updateResult, true);
+      verify(mockUser.aboutMe = 'New About Me');
+      verify(mockUser.aboutMeURL = 'http://example.com/new_image.jpg');
+      verify(mockUser.update()); // Verify that the method was called
+    });
+
+    test('updateAboutMeSectionData returns false when user is null', () async {
+      when(mockRepoService.getFirstUser()).thenAnswer((_) async => null);
+
+      final updateResult = await controller.updateAboutMeSectionData(
+        AboutMeSectionDTO(
+          aboutMe: 'New About Me',
+          imageURL: 'http://example.com/new_image.jpg',
+        ),
+      );
+
+      expect(updateResult, false);
+
+      verifyNever(mockUser.update());
+    });
+
+    test('updateAboutMeSectionData returns false when expection is throw', () async {
+      when(mockRepoService.getFirstUser()).thenThrow(Exception('Test Exception'));
+
+      final updateResult = await controller.updateAboutMeSectionData(
+        AboutMeSectionDTO(
+          aboutMe: 'New About Me',
+          imageURL: 'http://example.com/new_image.jpg',
+        ),
+      );
+
+      expect(updateResult, false);
+
+      verifyNever(mockUser.update());
+    });
+  
   });
 
-  test('getAboutMeSectionData returns default data when user is null',
-      () async {
-    when(mockRepoService.getFirstUser()).thenAnswer((_) async => null);
-
-    final aboutMeSectionData = await controller.getAboutMeSectionData();
-
-    expect(aboutMeSectionData!.aboutMe, 'No description available');
-    expect(
-        aboutMeSectionData.imageURL, 'https://example.com/default_image.jpg');
-  });
-
-  test('getAboutMeSectionData returns error data on exception', () async {
-    when(mockRepoService.getFirstUser()).thenThrow(Exception('Test Exception'));
-
-    final aboutMeSectionData = await controller.getAboutMeSectionData();
-
-    expect(aboutMeSectionData!.aboutMe, 'Error');
-    expect(aboutMeSectionData.imageURL, 'https://example.com/error.jpg');
-  });
-
-  test('updateAboutMeSectionData returns true on successful update', () async {
-    when(mockRepoService.getFirstUser()).thenAnswer((_) async => mockUser);
-    when(mockUser.update()).thenAnswer((_) async => true);
-
-    final updateResult = await controller.updateAboutMeSectionData(
-      AboutMeSectionDTO(
-        aboutMe: 'New About Me',
-        imageURL: 'http://example.com/new_image.jpg',
-      ),
-    );
-
-    expect(updateResult, true);
-    verify(mockUser.aboutMe = 'New About Me');
-    verify(mockUser.aboutMeURL = 'http://example.com/new_image.jpg');
-    verify(mockUser.update()); // Verify that the method was called
-  });
-
-  test('updateAboutMeSectionData returns false when user is null', () async {
-    when(mockRepoService.getFirstUser()).thenAnswer((_) async => null);
-
-    final updateResult = await controller.updateAboutMeSectionData(
-      AboutMeSectionDTO(
-        aboutMe: 'New About Me',
-        imageURL: 'http://example.com/new_image.jpg',
-      ),
-    );
-
-    expect(updateResult, false);
-
-    verifyNever(mockUser.update());
-  });
 }
