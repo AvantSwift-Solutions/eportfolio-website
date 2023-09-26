@@ -146,9 +146,11 @@ class TSkillSectionAdmin extends StatelessWidget {
                                     AdminViewDialogStyles.elevatedButtonStyle,
                                 onPressed: () async {
                                   if (pickedImageBytes != null) {
-                                    String? imageURL = await UploadImageAdminController()
-                                        .uploadImageAndGetURL(pickedImageBytes!,
-                                            'technical_skills_image');
+                                    String? imageURL =
+                                        await UploadImageAdminController()
+                                            .uploadImageAndGetURL(
+                                                pickedImageBytes!,
+                                                'technical_skills_image');
                                     if (imageURL != null) {
                                       ScaffoldMessenger.of(parentContext)
                                           .showSnackBar(
@@ -523,10 +525,11 @@ class TSkillSectionAdmin extends StatelessWidget {
                                     formKey.currentState!.save();
                                     tskill.creationTimestamp = Timestamp.now();
                                     if (pickedImageBytes != null) {
-                                      String? imageURL = await UploadImageAdminController()
-                                          .uploadImageAndGetURL(
-                                              pickedImageBytes!,
-                                              '${tskill.tsid}_image.jpg');
+                                      String? imageURL =
+                                          await UploadImageAdminController()
+                                              .uploadImageAndGetURL(
+                                                  pickedImageBytes!,
+                                                  '${tskill.tsid}_image.jpg');
                                       if (imageURL != null) {
                                         tskill.imageURL = imageURL;
                                       }

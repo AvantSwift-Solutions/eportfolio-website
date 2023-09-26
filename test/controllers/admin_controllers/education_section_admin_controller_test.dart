@@ -156,8 +156,10 @@ void main() {
       MockEducation mockEducation3 = MockEducation();
       final list = [mockEducation3, mockEducation1, mockEducation2];
       when(controller.getSectionData()).thenAnswer((_) async => list);
-      when(mockEducation1.endDate).thenReturn(Timestamp.fromMicrosecondsSinceEpoch(1));
-      when(mockEducation2.endDate).thenReturn(Timestamp.fromMicrosecondsSinceEpoch(2));
+      when(mockEducation1.endDate)
+          .thenReturn(Timestamp.fromMicrosecondsSinceEpoch(1));
+      when(mockEducation2.endDate)
+          .thenReturn(Timestamp.fromMicrosecondsSinceEpoch(2));
       when(mockEducation3.endDate).thenReturn(null);
       when(mockEducation1.update()).thenAnswer((_) async => true);
       when(mockEducation2.update()).thenAnswer((_) async => false);

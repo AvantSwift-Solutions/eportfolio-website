@@ -86,5 +86,4 @@ class EducationSectionAdminController {
       return false;
     }
   }
-
 }

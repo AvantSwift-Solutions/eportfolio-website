@@ -209,10 +209,11 @@ class AboutMeSectionAdmin extends StatelessWidget {
                                       !noImage) {
                                     formKey.currentState!.save();
                                     if (pickedImageBytes != null) {
-                                      String? imageURL = await UploadImageAdminController()
-                                          .uploadImageAndGetURL(
-                                              pickedImageBytes!,
-                                              'about_me_image.jpg');
+                                      String? imageURL =
+                                          await UploadImageAdminController()
+                                              .uploadImageAndGetURL(
+                                                  pickedImageBytes!,
+                                                  'about_me_image.jpg');
                                       if (imageURL != null) {
                                         aboutMeData.imageURL = imageURL;
                                       }

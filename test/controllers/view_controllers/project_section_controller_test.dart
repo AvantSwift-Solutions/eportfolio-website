@@ -33,8 +33,10 @@ void main() {
       controller = ProjectSectionController(mockRepoService);
     });
 
-    test('getSectionDescription should return empty string if data is null', () async {
-      when(mockRepoService.getDocumentById('Description')).thenAnswer((_) async => null);
+    test('getSectionDescription should return empty string if data is null',
+        () async {
+      when(mockRepoService.getDocumentById('Description'))
+          .thenAnswer((_) async => null);
 
       final result = await controller.getSectionDescription();
 
@@ -42,9 +44,11 @@ void main() {
       verify(mockRepoService.getDocumentById('Description'));
     });
 
-    test('getSectionDescription should return text if data is not null', () async {
+    test('getSectionDescription should return text if data is not null',
+        () async {
       final data = {'text': 'Lorem ipsum'};
-      when(mockRepoService.getDocumentById('Description')).thenAnswer((_) async => data);
+      when(mockRepoService.getDocumentById('Description'))
+          .thenAnswer((_) async => data);
 
       final result = await controller.getSectionDescription();
 

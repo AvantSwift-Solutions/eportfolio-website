@@ -469,10 +469,11 @@ class AwardCertSectionAdmin extends StatelessWidget {
                                     awardcert.creationTimestamp =
                                         Timestamp.now();
                                     if (pickedImageBytes != null) {
-                                      String? imageURL = await UploadImageAdminController()
-                                          .uploadImageAndGetURL(
-                                              pickedImageBytes!,
-                                              '${awardcert.acid}_image.jpg');
+                                      String? imageURL =
+                                          await UploadImageAdminController()
+                                              .uploadImageAndGetURL(
+                                                  pickedImageBytes!,
+                                                  '${awardcert.acid}_image.jpg');
                                       if (imageURL != null) {
                                         awardcert.imageURL = imageURL;
                                       }

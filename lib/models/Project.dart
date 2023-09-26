@@ -22,6 +22,7 @@ class Project {
   factory Project.fromDocumentSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;
     final creationTimestamp = data['creationTimestamp'];
+    final ppid = data['ppid'];
     final index = data['index'];
     final name = data['name'];
     final description = data['description'];
@@ -30,7 +31,7 @@ class Project {
     return Project(
       creationTimestamp: creationTimestamp,
       index: index,
-      ppid: snapshot.id,
+      ppid: ppid,
       name: name,
       description: description,
       link: link,

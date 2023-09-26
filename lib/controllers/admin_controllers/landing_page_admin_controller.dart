@@ -60,5 +60,4 @@ class LandingPageAdminController {
       return false;
     }
   }
-
 }

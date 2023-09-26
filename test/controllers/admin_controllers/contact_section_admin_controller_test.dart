@@ -101,8 +101,10 @@ void main() {
       verifyNever(mockUser.update());
     });
 
-    test('updateContactSectionData returns false when exception is throw', () async {
-      when(mockRepoService.getFirstUser()).thenThrow(Exception('Test Exception'));
+    test('updateContactSectionData returns false when exception is throw',
+        () async {
+      when(mockRepoService.getFirstUser())
+          .thenThrow(Exception('Test Exception'));
 
       final updateResult = await controller.updateContactSectionData(
         ContactSectionDTO(
@@ -116,6 +118,5 @@ void main() {
 
       verifyNever(mockUser.update());
     });
-
   });
 }

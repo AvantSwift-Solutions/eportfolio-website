@@ -24,29 +24,26 @@ class Recommendation {
   });
 
   factory Recommendation.fromDocumentSnapshot(DocumentSnapshot snapshot) {
-    try {
-      final data = snapshot.data() as Map<String, dynamic>;
-      final creationTimestamp = data['creationTimestamp'];
-      final index = data['index'];
-      final colleagueName = data['colleagueName'];
-      final colleagueJobTitle = data['colleagueJobTitle'];
-      final description = data['description'];
-      final imageURL = data['imageURL'];
-      final dateReceived = data['dateReceived'];
+    final data = snapshot.data() as Map<String, dynamic>;
+    final creationTimestamp = data['creationTimestamp'];
+    final rid = data['rid'];
+    final index = data['index'];
+    final colleagueName = data['colleagueName'];
+    final colleagueJobTitle = data['colleagueJobTitle'];
+    final description = data['description'];
+    final imageURL = data['imageURL'];
+    final dateReceived = data['dateReceived'];
 
-      return Recommendation(
-        creationTimestamp: creationTimestamp,
-        rid: snapshot.id,
-        index: index,
-        colleagueName: colleagueName,
-        colleagueJobTitle: colleagueJobTitle,
-        description: description,
-        imageURL: imageURL,
-        dateReceived: dateReceived,
-      );
-    } catch (e) {
-      rethrow;
-    }
+    return Recommendation(
+      creationTimestamp: creationTimestamp,
+      rid: rid,
+      index: index,
+      colleagueName: colleagueName,
+      colleagueJobTitle: colleagueJobTitle,
+      description: description,
+      imageURL: imageURL,
+      dateReceived: dateReceived,
+    );
   }
 
   Map<String, dynamic> toMap() {

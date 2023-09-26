@@ -139,12 +139,18 @@ void main() {
       expect(controller.defaultOrderName(), 'by Date Recieved');
     });
 
-     test('applyDefaultOrder should sort objects in default order', () async {
+    test('applyDefaultOrder should sort objects in default order', () async {
       MockRecommendation mockRecommendation3 = MockRecommendation();
-      final list = [mockRecommendation3, mockRecommendation1, mockRecommendation2];
+      final list = [
+        mockRecommendation3,
+        mockRecommendation1,
+        mockRecommendation2
+      ];
       when(controller.getSectionData()).thenAnswer((_) async => list);
-      when(mockRecommendation1.dateReceived).thenReturn(Timestamp.fromMicrosecondsSinceEpoch(1));
-      when(mockRecommendation2.dateReceived).thenReturn(Timestamp.fromMicrosecondsSinceEpoch(2));
+      when(mockRecommendation1.dateReceived)
+          .thenReturn(Timestamp.fromMicrosecondsSinceEpoch(1));
+      when(mockRecommendation2.dateReceived)
+          .thenReturn(Timestamp.fromMicrosecondsSinceEpoch(2));
       when(mockRecommendation3.dateReceived).thenReturn(null);
       when(mockRecommendation1.update()).thenAnswer((_) async => true);
       when(mockRecommendation2.update()).thenAnswer((_) async => false);

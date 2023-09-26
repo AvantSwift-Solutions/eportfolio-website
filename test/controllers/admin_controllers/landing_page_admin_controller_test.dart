@@ -109,8 +109,10 @@ void main() {
       verifyNever(mockUser.update());
     });
 
-    test('updateLandingPageData returns false when execption is caught', () async {
-      when(mockRepoService.getFirstUser()).thenThrow(Exception('Test Exception'));
+    test('updateLandingPageData returns false when execption is caught',
+        () async {
+      when(mockRepoService.getFirstUser())
+          .thenThrow(Exception('Test Exception'));
 
       final updateResult = await controller.updateLandingPageData(
         LandingPageDTO(
@@ -125,6 +127,5 @@ void main() {
 
       verifyNever(mockUser.update());
     });
-
   });
 }

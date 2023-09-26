@@ -582,10 +582,11 @@ class EducationSectionAdmin extends StatelessWidget {
                                     education.creationTimestamp =
                                         Timestamp.now();
                                     if (pickedImageBytes != null) {
-                                      String? imageURL = await UploadImageAdminController()
-                                          .uploadImageAndGetURL(
-                                              pickedImageBytes!,
-                                              '${education.eid}_image.jpg');
+                                      String? imageURL =
+                                          await UploadImageAdminController()
+                                              .uploadImageAndGetURL(
+                                                  pickedImageBytes!,
+                                                  '${education.eid}_image.jpg');
                                       if (imageURL != null) {
                                         education.logoURL = imageURL;
                                       }

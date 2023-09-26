@@ -472,10 +472,11 @@ class RecommendationSectionAdmin extends StatelessWidget {
                                     recommendation.creationTimestamp =
                                         Timestamp.now();
                                     if (pickedImageBytes != null) {
-                                      String? imageURL = await UploadImageAdminController()
-                                          .uploadImageAndGetURL(
-                                              pickedImageBytes!,
-                                              '${recommendation.rid}_image.jpg');
+                                      String? imageURL =
+                                          await UploadImageAdminController()
+                                              .uploadImageAndGetURL(
+                                                  pickedImageBytes!,
+                                                  '${recommendation.rid}_image.jpg');
                                       if (imageURL != null) {
                                         recommendation.imageURL = imageURL;
                                       }

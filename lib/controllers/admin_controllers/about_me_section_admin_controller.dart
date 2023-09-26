@@ -50,5 +50,4 @@ class AboutMeSectionAdminController {
       return false;
     }
   }
-
 }

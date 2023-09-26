@@ -35,7 +35,6 @@ void main() {
   });
 
   group('About Me section admin controller tests:', () {
-
     test('getAboutMeSectionData returns correct data when user is not null',
         () async {
       when(mockRepoService.getFirstUser()).thenAnswer((_) async => mockUser);
@@ -59,7 +58,8 @@ void main() {
     });
 
     test('getAboutMeSectionData returns error data on exception', () async {
-      when(mockRepoService.getFirstUser()).thenThrow(Exception('Test Exception'));
+      when(mockRepoService.getFirstUser())
+          .thenThrow(Exception('Test Exception'));
 
       final aboutMeSectionData = await controller.getAboutMeSectionData();
 
@@ -67,7 +67,8 @@ void main() {
       expect(aboutMeSectionData.imageURL, 'https://example.com/error.jpg');
     });
 
-    test('updateAboutMeSectionData returns true on successful update', () async {
+    test('updateAboutMeSectionData returns true on successful update',
+        () async {
       when(mockRepoService.getFirstUser()).thenAnswer((_) async => mockUser);
       when(mockUser.update()).thenAnswer((_) async => true);
 
@@ -99,8 +100,10 @@ void main() {
       verifyNever(mockUser.update());
     });
 
-    test('updateAboutMeSectionData returns false when expection is throw', () async {
-      when(mockRepoService.getFirstUser()).thenThrow(Exception('Test Exception'));
+    test('updateAboutMeSectionData returns false when expection is throw',
+        () async {
+      when(mockRepoService.getFirstUser())
+          .thenThrow(Exception('Test Exception'));
 
       final updateResult = await controller.updateAboutMeSectionData(
         AboutMeSectionDTO(
@@ -113,7 +116,5 @@ void main() {
 
       verifyNever(mockUser.update());
     });
-  
   });
-
 }

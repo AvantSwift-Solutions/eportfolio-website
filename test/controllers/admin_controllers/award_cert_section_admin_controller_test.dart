@@ -91,13 +91,16 @@ void main() {
       expect(controller.getSectionName(), 'Awards & Certifications');
     });
 
-    test('getSectionTitles returns empty list when section data is null', () async {
+    test('getSectionTitles returns empty list when section data is null',
+        () async {
       when(controller.getSectionData()).thenAnswer((_) => Future.value(null));
       final titles = await controller.getSectionTitles();
       expect(titles, isEmpty);
     });
 
-    test('getSectionTitles returns list of titles when section data is not null', () async {
+    test(
+        'getSectionTitles returns list of titles when section data is not null',
+        () async {
       when(controller.getSectionData())
           .thenAnswer((_) => Future.value([ac1, ac2]));
       final titles = await controller.getSectionTitles();
@@ -107,7 +110,8 @@ void main() {
       ]);
     });
 
-    test('getSectionTitles returns empty list when exception is thrown', () async {
+    test('getSectionTitles returns empty list when exception is thrown',
+        () async {
       when(controller.getSectionData()).thenThrow(Exception());
       final titles = await controller.getSectionTitles();
       expect(titles, isEmpty);

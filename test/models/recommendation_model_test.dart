@@ -1,11 +1,42 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:avantswift_portfolio/models/Recommendation.dart';
+import 'package:mockito/mockito.dart';
+
+// ignore: subtype_of_sealed_class
+class DocumentSnapshotMock extends Mock implements DocumentSnapshot {
+  DocumentSnapshotMock({required this.d});
+  final Map<String, dynamic> d;
+  @override
+  Map<String, dynamic> data() => d;
+}
 
 void main() {
   group('Recommendation Model tests', () {
-    // Could not test fromDocumentSnapshot because it uses a
-    // DocumentSnapshot which is a final class and cannot be extended?
+    test('fromDocumentSnapshot should return a Recommendation object', () {
+      final data = {
+        'creationTimestamp': Timestamp.now(),
+        'rid': '123',
+        'index': 1,
+        'colleagueName': 'Test Colleague',
+        'colleagueJobTitle': 'Test Job Title',
+        'description': 'Test Description',
+        'imageURL': 'https://example.com/image.jpg',
+        'dateReceived': Timestamp.now(),
+      };
+      final snapshot = DocumentSnapshotMock(d: data);
+
+      final result = Recommendation.fromDocumentSnapshot(snapshot);
+
+      expect(result.creationTimestamp, data['creationTimestamp']);
+      expect(result.rid, '123');
+      expect(result.index, 1);
+      expect(result.colleagueName, 'Test Colleague');
+      expect(result.colleagueJobTitle, 'Test Job Title');
+      expect(result.description, 'Test Description');
+      expect(result.imageURL, 'https://example.com/image.jpg');
+      expect(result.dateReceived, data['dateReceived']);
+    });
 
     test('Recommendation.toMap should convert recommendation to a map', () {
       final recommendation = Recommendation(

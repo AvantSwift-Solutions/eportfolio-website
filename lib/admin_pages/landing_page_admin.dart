@@ -256,10 +256,11 @@ class LandingPageAdmin extends StatelessWidget {
                                       !noImage) {
                                     formKey.currentState!.save();
                                     if (pickedImageBytes != null) {
-                                      String? imageURL = await UploadImageAdminController()
-                                          .uploadImageAndGetURL(
-                                              pickedImageBytes!,
-                                              'landing_page_image.jpg');
+                                      String? imageURL =
+                                          await UploadImageAdminController()
+                                              .uploadImageAndGetURL(
+                                                  pickedImageBytes!,
+                                                  'landing_page_image.jpg');
                                       if (imageURL != null) {
                                         landingPageData.imageURL = imageURL;
                                       }

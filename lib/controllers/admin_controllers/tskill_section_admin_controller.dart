@@ -75,5 +75,4 @@ class TSkillSectionAdminController {
       return false;
     }
   }
-
 }

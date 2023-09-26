@@ -608,10 +608,11 @@ class ExperienceSectionAdmin extends StatelessWidget {
                                     experience.creationTimestamp =
                                         Timestamp.now();
                                     if (pickedImageBytes != null) {
-                                      String? imageURL = await UploadImageAdminController()
-                                          .uploadImageAndGetURL(
-                                              pickedImageBytes!,
-                                              '${experience.peid}_image.jpg');
+                                      String? imageURL =
+                                          await UploadImageAdminController()
+                                              .uploadImageAndGetURL(
+                                                  pickedImageBytes!,
+                                                  '${experience.peid}_image.jpg');
                                       if (imageURL != null) {
                                         experience.logoURL = imageURL;
                                       }

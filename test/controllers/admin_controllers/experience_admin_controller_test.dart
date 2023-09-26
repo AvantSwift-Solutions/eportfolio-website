@@ -152,8 +152,10 @@ void main() {
       MockExperience mockExperience3 = MockExperience();
       final list = [mockExperience3, mockExperience1, mockExperience2];
       when(controller.getSectionData()).thenAnswer((_) async => list);
-      when(mockExperience1.endDate).thenReturn(Timestamp.fromMicrosecondsSinceEpoch(1));
-      when(mockExperience2.endDate).thenReturn(Timestamp.fromMicrosecondsSinceEpoch(2));
+      when(mockExperience1.endDate)
+          .thenReturn(Timestamp.fromMicrosecondsSinceEpoch(1));
+      when(mockExperience2.endDate)
+          .thenReturn(Timestamp.fromMicrosecondsSinceEpoch(2));
       when(mockExperience3.endDate).thenReturn(null);
       when(mockExperience1.update()).thenAnswer((_) async => true);
       when(mockExperience2.update()).thenAnswer((_) async => false);
