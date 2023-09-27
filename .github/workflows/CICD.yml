@@ -40,7 +40,7 @@ jobs:
         run: |
           coverage=$(lcov --summary coverage/lcov.info | grep lines | awk '{print $2}')
 
-          threshold=30.0
+          threshold=70.0
           
           if [[ "$(awk -v a=$coverage -v b=$threshold 'BEGIN { print (a >= b) }')" == "1" ]]; then
               echo "Code coverage is above threshold. CI/CD passes. Coverage: $coverage"
@@ -60,7 +60,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'Code coverage is ${coverage}%.'
+              body: 'Code coverage is ${{env.COVERAGE}}%.'
             })
       
       - name: Build app
