@@ -24,6 +24,63 @@ void main() {
       mockController = MockAboutMeSectionController();
     });
 
+    group("AboutMeSection shows circular loading when DTO has no data", () {
+      testWidgets('aboutMe and imageURL are both Null',
+          (WidgetTester tester) async {
+        final mockAboutMeSectionData =
+            AboutMeSectionDTO(aboutMe: null, imageURL: null);
+        when(mockController.getAboutMeSectionData())
+            .thenAnswer((_) => Future.value(mockAboutMeSectionData));
+
+        // Build the widget
+        await tester.pumpWidget(
+          MaterialApp(
+            home: AboutMeSection(
+              controller: mockController,
+            ),
+          ),
+        );
+
+        expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      });
+
+      testWidgets('only aboutMe is Null', (WidgetTester tester) async {
+        final mockAboutMeSectionData =
+            AboutMeSectionDTO(aboutMe: null, imageURL: mockUser.imageURL);
+        when(mockController.getAboutMeSectionData())
+            .thenAnswer((_) => Future.value(mockAboutMeSectionData));
+
+        // Build the widget
+        await tester.pumpWidget(
+          MaterialApp(
+            home: AboutMeSection(
+              controller: mockController,
+            ),
+          ),
+        );
+
+        expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      });
+
+      testWidgets('only imageURL is Null', (WidgetTester tester) async {
+        final mockAboutMeSectionData =
+            AboutMeSectionDTO(aboutMe: mockUser.aboutMe, imageURL: null);
+        when(mockController.getAboutMeSectionData())
+            .thenAnswer((_) => Future.value(mockAboutMeSectionData));
+
+        // Build the widget
+        await tester.pumpWidget(
+          MaterialApp(
+            home: AboutMeSection(
+              controller: mockController,
+            ),
+          ),
+        );
+
+        expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      });
+    });
+
     testWidgets('AboutMeSection shows expected data',
         (WidgetTester tester) async {
       final mockAboutMeSectionData = AboutMeSectionDTO(
