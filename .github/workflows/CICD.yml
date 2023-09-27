@@ -47,7 +47,7 @@ jobs:
           
           if [[ "$(awk -v a=$coverage -v b=$threshold 'BEGIN { print (a >= b) }')" == "1" ]]; then
               echo "Code coverage is above threshold. CI/CD passes. Coverage: $coverage"
-              export COVERAGE=$coverage
+              echo "{COVERAGE}={$coverage}" >> $GITHUB_ENV
               exit 0
           else
               echo "Code coverage is below threshold. CI/CD fails. Coverage: $coverage"
