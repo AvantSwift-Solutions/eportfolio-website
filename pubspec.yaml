@@ -55,6 +55,8 @@ dependencies:
   dotted_border: ^2.0.0+3
   tuple: ^2.0.2
   mat_month_picker_dialog: ^1.1.1
+  http_mock_adapter: ^0.6.0
+  run_with_network_images: ^0.0.1
 
 dev_dependencies:
   build_runner: ^2.4.6
