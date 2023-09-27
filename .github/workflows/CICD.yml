@@ -42,12 +42,12 @@ jobs:
       - name: Check if coverage threshold is above 70%
         run: |
           threshold=70.0
-          
+
           coverage=$(lcov --summary coverage/lcov.info | grep lines | awk '{print $2}')
           
           if [[ "$(awk -v a=$coverage -v b=$threshold 'BEGIN { print (a >= b) }')" == "1" ]]; then
               echo "Code coverage is above threshold. CI/CD passes. Coverage: $coverage"
-              echo "{COVERAGE}={$coverage}" >> $GITHUB_ENV
+              echo "COVERAGE=$coverage" >> $GITHUB_ENV
               exit 0
           else
               echo "Code coverage is below threshold. CI/CD fails. Coverage: $coverage"
