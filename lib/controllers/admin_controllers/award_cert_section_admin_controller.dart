@@ -1,15 +1,12 @@
 import 'dart:developer';
-import 'dart:typed_data';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:tuple/tuple.dart';
-
 import '../../models/AwardCert.dart';
-import '../../reposervice/award_cert_repo_services.dart'; // Import the AwardCert class
+import '../../reposervice/award_cert_repo_services.dart';
 
 class AwardCertSectionAdminController {
   final AwardCertRepoService awardCertRepoService;
 
-  AwardCertSectionAdminController(this.awardCertRepoService); // Constructor
+  AwardCertSectionAdminController(this.awardCertRepoService);
 
   Future<List<AwardCert>?> getSectionData() async {
     try {
@@ -87,20 +84,6 @@ class AwardCertSectionAdminController {
     } catch (e) {
       log('Error deleting: $e');
       return false;
-    }
-  }
-
-  Future<String?> uploadImageAndGetURL(
-      Uint8List imageBytes, String fileName) async {
-    try {
-      final ref = FirebaseStorage.instance.ref().child('images/$fileName');
-      final uploadTask = ref.putData(imageBytes);
-      final TaskSnapshot snapshot = await uploadTask;
-      final imageURL = await snapshot.ref.getDownloadURL();
-      return imageURL;
-    } catch (e) {
-      log('Error uploading image: $e');
-      return null;
     }
   }
 }

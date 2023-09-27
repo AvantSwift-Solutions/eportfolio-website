@@ -1,12 +1,42 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:avantswift_portfolio/models/AwardCert.dart';
+import 'package:mockito/mockito.dart';
 
-import 'package:avantswift_portfolio/models/AwardCert.dart'; // Update this import based on your project structure
+// ignore: subtype_of_sealed_class
+class DocumentSnapshotMock extends Mock implements DocumentSnapshot {
+  DocumentSnapshotMock({required this.d});
+  final Map<String, dynamic> d;
+  @override
+  Map<String, dynamic> data() => d;
+}
 
 void main() {
   group('AwardCert Model tests', () {
-    // Could not test fromDocumentSnapshot because it uses a
-    // DocumentSnapshot which is a final class and cannot be extended?
+    test('fromDocumentSnapshot should return an AwardCert object', () {
+      final data = {
+        'acid': '123',
+        'creationTimestamp': Timestamp.now(),
+        'index': 1,
+        'name': 'Test Award',
+        'imageURL': 'https://example.com/image.jpg',
+        'link': 'https://example.com',
+        'source': 'Test Source',
+        'dateIssued': Timestamp.now(),
+      };
+      final snapshot = DocumentSnapshotMock(d: data);
+
+      final result = AwardCert.fromDocumentSnapshot(snapshot);
+
+      expect(result.acid, '123');
+      expect(result.creationTimestamp, data['creationTimestamp']);
+      expect(result.index, 1);
+      expect(result.name, 'Test Award');
+      expect(result.imageURL, 'https://example.com/image.jpg');
+      expect(result.link, 'https://example.com');
+      expect(result.source, 'Test Source');
+      expect(result.dateIssued, data['dateIssued']);
+    });
 
     test('PersonalProject.toMap should convert personal project to a map', () {
       final awardCerts = AwardCert(

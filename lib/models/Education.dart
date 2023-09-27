@@ -34,6 +34,7 @@ class Education {
   factory Education.fromDocumentSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;
     final creationTimestamp = data['creationTimestamp'];
+    final eid = data['eid'];
     final index = data['index'];
     final startDate = data['startDate'];
     final endDate = data['endDate'];
@@ -47,7 +48,7 @@ class Education {
 
     return Education(
       creationTimestamp: creationTimestamp,
-      eid: snapshot.id,
+      eid: eid,
       index: index,
       startDate: startDate,
       endDate: endDate,

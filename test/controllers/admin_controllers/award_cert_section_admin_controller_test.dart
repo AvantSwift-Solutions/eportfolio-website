@@ -42,8 +42,8 @@ void main() {
     when(ac2.dateIssued).thenReturn(Timestamp.now());
   });
 
-  group('Award Cert section admin controller tests', () {
-    test('getAwardCertList returns a list of awardcerts', () async {
+  group('Award Cert section admin controller tests:', () {
+    test('getSectionData returns a list of awardcerts', () async {
       when(mockRepoService.getAllAwardCert())
           .thenAnswer((_) async => [ac1, ac2]);
 
@@ -71,7 +71,7 @@ void main() {
       expect(awardCert2?.dateIssued, ac2.dateIssued);
     });
 
-    test('getAwardCertList returns null on error', () async {
+    test('getSectionData returns null on error', () async {
       when(mockRepoService.getAllAwardCert())
           .thenThrow(Exception('Test Exception'));
 
@@ -91,13 +91,16 @@ void main() {
       expect(controller.getSectionName(), 'Awards & Certifications');
     });
 
-    test('returns empty list when section data is null', () async {
+    test('getSectionTitles returns empty list when section data is null',
+        () async {
       when(controller.getSectionData()).thenAnswer((_) => Future.value(null));
       final titles = await controller.getSectionTitles();
       expect(titles, isEmpty);
     });
 
-    test('returns list of titles when section data is not null', () async {
+    test(
+        'getSectionTitles returns list of titles when section data is not null',
+        () async {
       when(controller.getSectionData())
           .thenAnswer((_) => Future.value([ac1, ac2]));
       final titles = await controller.getSectionTitles();
@@ -105,6 +108,13 @@ void main() {
         Tuple2(ac1.index, '${ac1.name} from ${ac1.source}'),
         Tuple2(ac2.index, '${ac2.name} from ${ac2.source}'),
       ]);
+    });
+
+    test('getSectionTitles returns empty list when exception is thrown',
+        () async {
+      when(controller.getSectionData()).thenThrow(Exception());
+      final titles = await controller.getSectionTitles();
+      expect(titles, isEmpty);
     });
 
     test('updateSectionOrder should update the indicies', () async {
@@ -132,17 +142,20 @@ void main() {
     });
 
     test('applyDefaultOrder should sort objects in default order', () async {
-      final list = [ac1, ac2];
+      MockAwardCert ac3 = MockAwardCert();
+      final list = [ac3, ac1, ac2];
       when(controller.getSectionData()).thenAnswer((_) async => list);
       when(ac1.dateIssued).thenReturn(Timestamp.fromMicrosecondsSinceEpoch(1));
       when(ac2.dateIssued).thenReturn(Timestamp.fromMicrosecondsSinceEpoch(2));
+      when(ac3.dateIssued).thenReturn(null);
       when(ac1.update()).thenAnswer((_) async => true);
       when(ac2.update()).thenAnswer((_) async => false);
 
       await controller.applyDefaultOrder();
 
-      expect(list[0].dateIssued, Timestamp.fromMicrosecondsSinceEpoch(2));
-      expect(list[1].dateIssued, Timestamp.fromMicrosecondsSinceEpoch(1));
+      expect(list[0].dateIssued, null);
+      expect(list[1].dateIssued, Timestamp.fromMicrosecondsSinceEpoch(2));
+      expect(list[2].dateIssued, Timestamp.fromMicrosecondsSinceEpoch(1));
     });
 
     test(

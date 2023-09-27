@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 import 'dart:typed_data';
 import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
+import 'package:avantswift_portfolio/controllers/admin_controllers/upload_image_admin_controller.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
@@ -468,10 +469,11 @@ class AwardCertSectionAdmin extends StatelessWidget {
                                     awardcert.creationTimestamp =
                                         Timestamp.now();
                                     if (pickedImageBytes != null) {
-                                      String? imageURL = await _adminController
-                                          .uploadImageAndGetURL(
-                                              pickedImageBytes!,
-                                              '${awardcert.acid}_image.jpg');
+                                      String? imageURL =
+                                          await UploadImageAdminController()
+                                              .uploadImageAndGetURL(
+                                                  pickedImageBytes!,
+                                                  '${awardcert.acid}_image.jpg');
                                       if (imageURL != null) {
                                         awardcert.imageURL = imageURL;
                                       }

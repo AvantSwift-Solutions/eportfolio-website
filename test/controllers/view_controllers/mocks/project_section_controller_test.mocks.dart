@@ -39,6 +39,30 @@ class MockProjectRepoService extends _i1.Mock
         ),
         returnValue: _i3.Future<List<_i4.Project>?>.value(),
       ) as _i3.Future<List<_i4.Project>?>);
+  @override
+  _i3.Future<Map<String, dynamic>?>? getDocumentById(String? documentId) =>
+      (super.noSuchMethod(Invocation.method(
+        #getDocumentById,
+        [documentId],
+      )) as _i3.Future<Map<String, dynamic>?>?);
+  @override
+  _i3.Future<void> updateDocumentField(
+    String? documentId,
+    String? fieldName,
+    dynamic newValue,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateDocumentField,
+          [
+            documentId,
+            fieldName,
+            newValue,
+          ],
+        ),
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
 }
 
 /// A class which mocks [Project].
@@ -49,6 +73,23 @@ class MockProject extends _i1.Mock implements _i4.Project {
     _i1.throwOnMissingStub(this);
   }
 
+  @override
+  set creationTimestamp(_i5.Timestamp? _creationTimestamp) =>
+      super.noSuchMethod(
+        Invocation.setter(
+          #creationTimestamp,
+          _creationTimestamp,
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  set index(int? _index) => super.noSuchMethod(
+        Invocation.setter(
+          #index,
+          _index,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
   set name(String? _name) => super.noSuchMethod(
         Invocation.setter(
@@ -62,15 +103,6 @@ class MockProject extends _i1.Mock implements _i4.Project {
         Invocation.setter(
           #description,
           _description,
-        ),
-        returnValueForMissingStub: null,
-      );
-  @override
-  set creationTimestamp(_i5.Timestamp? _creationTimestamp) =>
-      super.noSuchMethod(
-        Invocation.setter(
-          #creationTimestamp,
-          _creationTimestamp,
         ),
         returnValueForMissingStub: null,
       );
@@ -90,4 +122,12 @@ class MockProject extends _i1.Mock implements _i4.Project {
         ),
         returnValue: <String, dynamic>{},
       ) as Map<String, dynamic>);
+  @override
+  _i3.Future<bool> create(String? id) => (super.noSuchMethod(
+        Invocation.method(
+          #create,
+          [id],
+        ),
+        returnValue: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
 }
