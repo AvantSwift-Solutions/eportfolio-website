@@ -63,7 +63,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'Code coverage is ${{env.COVERAGE}}%.'
+              body: 'Code coverage is ${{env.COVERAGE}}.'
             })
       
       - name: Build app
