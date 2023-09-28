@@ -1,4 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
 import 'dart:typed_data';
 import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
 import 'package:avantswift_portfolio/controllers/admin_controllers/upload_image_admin_controller.dart';
@@ -9,16 +8,34 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mat_month_picker_dialog/mat_month_picker_dialog.dart';
 import 'package:uuid/uuid.dart';
-import '../controllers/admin_controllers/recommendation_section_admin_controller.dart';
-import '../models/Recommendation.dart';
-import '../reposervice/recommendation_repo_services.dart';
+import 'package:avantswift_portfolio/controllers/admin_controllers/recommendation_section_admin_controller.dart';
+import 'package:avantswift_portfolio/models/Recommendation.dart';
+import 'package:avantswift_portfolio/reposervice/recommendation_repo_services.dart';
 
-class RecommendationSectionAdmin extends StatelessWidget {
-  final RecommendationSectionAdminController _adminController =
-      RecommendationSectionAdminController(RecommendationRepoService());
+class RecommendationSectionAdmin extends StatefulWidget {
+  const RecommendationSectionAdmin({super.key});
+  @override
+  State<RecommendationSectionAdmin> createState() =>
+      _RecommendationSectionAdminState();
+}
+
+class _RecommendationSectionAdminState
+    extends State<RecommendationSectionAdmin> {
+  late RecommendationSectionAdminController _adminController;
+  late List<Recommendation> recommendations;
   late final BuildContext parentContext;
 
-  RecommendationSectionAdmin({super.key});
+  @override
+  void initState() {
+    super.initState();
+    _adminController =
+        RecommendationSectionAdminController(RecommendationRepoService());
+    _loadItems();
+  }
+
+  Future<void> _loadItems() async {
+    recommendations = await _adminController.getSectionData() ?? [];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +57,7 @@ class RecommendationSectionAdmin extends StatelessWidget {
     );
   }
 
-  Future<void> _showList(BuildContext context) async {
-    List<Recommendation> recommendations =
-        await _adminController.getSectionData() ?? [];
+  void _showList(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -157,7 +172,7 @@ class RecommendationSectionAdmin extends StatelessWidget {
                           ElevatedButton(
                             style: AdminViewDialogStyles.elevatedButtonStyle,
                             onPressed: () {
-                              _showAddNewDialog(context, recommendations);
+                              _showAddNewDialog(context);
                             },
                             child: Text(
                               'Add New',
@@ -175,13 +190,12 @@ class RecommendationSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showAddNewDialog(
-      BuildContext context, List<Recommendation> recommendationList) async {
+  void _showAddNewDialog(BuildContext context) {
     final id = const Uuid().v4();
     final recommendation = Recommendation(
       creationTimestamp: Timestamp.now(),
       rid: id,
-      index: recommendationList.length,
+      index: recommendations.length,
       colleagueName: '',
       colleagueJobTitle: '',
       description: '',
@@ -190,13 +204,13 @@ class RecommendationSectionAdmin extends StatelessWidget {
     );
 
     _showRecommendationDialog(context, recommendation, (a) async {
+      recommendations.add(recommendation);
       return await a.create(id);
     });
   }
 
-  void _showEditDialog(BuildContext context, int i) async {
-    final recommendationSectionData = await _adminController.getSectionData();
-    final recommendation = recommendationSectionData![i];
+  void _showEditDialog(BuildContext context, int i) {
+    final recommendation = recommendations[i];
 
     _showRecommendationDialog(context, recommendation, (a) async {
       return await a.update() ?? false;
@@ -484,6 +498,7 @@ class RecommendationSectionAdmin extends StatelessWidget {
                                     bool isSuccess =
                                         await onRecommendationUpdated(
                                             recommendation);
+                                    if (!mounted) return;
                                     if (isSuccess) {
                                       ScaffoldMessenger.of(parentContext)
                                           .showSnackBar(
@@ -526,7 +541,7 @@ class RecommendationSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showDeleteDialog(BuildContext context, Recommendation x) async {
+  void _showDeleteDialog(BuildContext context, Recommendation x) {
     final name = 'Recommendation from ${x.colleagueName}';
 
     showDialog(
@@ -575,19 +590,23 @@ class RecommendationSectionAdmin extends StatelessWidget {
                               onPressed: () async {
                                 final deleted = await x.delete() ?? false;
                                 if (deleted) {
+                                  recommendations.remove(x);
                                   setState(() {});
+                                  if (!mounted) return;
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                         content:
                                             Text('$name deleted successfully')),
                                   );
                                 } else {
+                                  if (!mounted) return;
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                         content:
                                             Text('Failed to delete $name')),
                                   );
                                 }
+                                if (!mounted) return;
                                 Navigator.of(dialogContext).pop();
                                 Navigator.of(parentContext).pop();
                                 _showList(parentContext);

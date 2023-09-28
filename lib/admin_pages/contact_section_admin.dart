@@ -1,15 +1,33 @@
-// ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
+import 'package:avantswift_portfolio/dto/contact_section_dto.dart';
 import 'package:avantswift_portfolio/reposervice/user_repo_services.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import '../controllers/admin_controllers/contact_section_admin_controller.dart';
 
-class ContactSectionAdmin extends StatelessWidget {
-  final ContactSectionAdminController _adminController =
-      ContactSectionAdminController(UserRepoService());
+class ContactSectionAdmin extends StatefulWidget {
+  const ContactSectionAdmin({super.key});
+  @override
+  State<ContactSectionAdmin> createState() => _ContactSectionAdminState();
+}
 
-  ContactSectionAdmin({super.key});
+class _ContactSectionAdminState extends State<ContactSectionAdmin> {
+  late ContactSectionAdminController _adminController;
+  late ContactSectionDTO contactSectionData;
+
+  @override
+  void initState() {
+    super.initState();
+    _adminController = ContactSectionAdminController(UserRepoService());
+    _loadItems();
+  }
+
+  Future<void> _loadItems() async {
+    contactSectionData = await _adminController.getContactSectionData()
+        // Should never be null as it is handled in the controller
+        ??
+        ContactSectionDTO(name: '', contactEmail: '', linkedinURL: '');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +48,7 @@ class ContactSectionAdmin extends StatelessWidget {
     );
   }
 
-  Future<void> _showEditDialog(BuildContext context) async {
-    final contactSectionData = await _adminController.getContactSectionData()!;
-
+  void _showEditDialog(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     String title, successMessage, errorMessage;
@@ -176,6 +192,7 @@ class ContactSectionAdmin extends StatelessWidget {
                                     bool? isSuccess = await _adminController
                                         .updateContactSectionData(
                                             contactSectionData);
+                                    if (!mounted) return;
                                     if (isSuccess != null && isSuccess) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(

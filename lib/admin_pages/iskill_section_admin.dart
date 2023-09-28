@@ -1,19 +1,33 @@
-// ignore_for_file: use_build_context_synchronously
 import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
-import '../controllers/admin_controllers/iskill_section_admin_controller.dart';
-import '../models/ISkill.dart';
-import '../reposervice/iskill_repo_services.dart';
+import 'package:avantswift_portfolio/controllers/admin_controllers/iskill_section_admin_controller.dart';
+import 'package:avantswift_portfolio/models/ISkill.dart';
+import 'package:avantswift_portfolio/reposervice/iskill_repo_services.dart';
 
-class ISkillSectionAdmin extends StatelessWidget {
-  final ISkillSectionAdminController _adminController =
-      ISkillSectionAdminController(ISkillRepoService());
+class ISkillSectionAdmin extends StatefulWidget {
+  const ISkillSectionAdmin({super.key});
+  @override
+  State<ISkillSectionAdmin> createState() => _ISkillSectionAdminState();
+}
+
+class _ISkillSectionAdminState extends State<ISkillSectionAdmin> {
+  late ISkillSectionAdminController _adminController;
+  late List<ISkill> iskills;
   late final BuildContext parentContext;
 
-  ISkillSectionAdmin({super.key});
+  @override
+  void initState() {
+    super.initState();
+    _adminController = ISkillSectionAdminController(ISkillRepoService());
+    _loadItems();
+  }
+
+  Future<void> _loadItems() async {
+    iskills = await _adminController.getSectionData() ?? [];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +49,7 @@ class ISkillSectionAdmin extends StatelessWidget {
     );
   }
 
-  Future<void> _showList(BuildContext context) async {
-    List<ISkill> iskills = await _adminController.getSectionData() ?? [];
+  void _showList(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -149,7 +162,7 @@ class ISkillSectionAdmin extends StatelessWidget {
                           ElevatedButton(
                             style: AdminViewDialogStyles.elevatedButtonStyle,
                             onPressed: () {
-                              _showAddNewDialog(context, iskills);
+                              _showAddNewDialog(context);
                             },
                             child: Text(
                               'Add New',
@@ -167,23 +180,23 @@ class ISkillSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showAddNewDialog(BuildContext context, List<ISkill> iskillList) async {
+  void _showAddNewDialog(BuildContext context) {
     final id = const Uuid().v4();
     final iskill = ISkill(
       creationTimestamp: Timestamp.now(),
       isid: id,
-      index: iskillList.length,
+      index: iskills.length,
       name: '',
     );
 
     _showISkillDialog(context, iskill, (a) async {
+      iskills.add(iskill);
       return await a.create(id);
     });
   }
 
-  void _showEditDialog(BuildContext context, int i) async {
-    final iskillSectionData = await _adminController.getSectionData();
-    final iskill = iskillSectionData![i];
+  void _showEditDialog(BuildContext context, int i) {
+    final iskill = iskills[i];
 
     _showISkillDialog(context, iskill, (a) async {
       return await a.update() ?? false;
@@ -307,6 +320,7 @@ class ISkillSectionAdmin extends StatelessWidget {
                                     iskill.creationTimestamp = Timestamp.now();
                                     bool isSuccess =
                                         await onISkillUpdated(iskill);
+                                    if (!mounted) return;
                                     if (isSuccess) {
                                       ScaffoldMessenger.of(parentContext)
                                           .showSnackBar(
@@ -349,7 +363,7 @@ class ISkillSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showDeleteDialog(BuildContext context, ISkill x) async {
+  void _showDeleteDialog(BuildContext context, ISkill x) {
     final name = x.name ?? 'Interpersonal Skill';
 
     showDialog(
@@ -398,19 +412,23 @@ class ISkillSectionAdmin extends StatelessWidget {
                               onPressed: () async {
                                 final deleted = await x.delete() ?? false;
                                 if (deleted) {
+                                  iskills.remove(x);
                                   setState(() {});
+                                  if (!mounted) return;
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                         content:
                                             Text('$name deleted successfully')),
                                   );
                                 } else {
+                                  if (!mounted) return;
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                         content:
                                             Text('Failed to delete $name')),
                                   );
                                 }
+                                if (!mounted) return;
                                 Navigator.of(dialogContext).pop();
                                 Navigator.of(parentContext).pop();
                                 _showList(parentContext);

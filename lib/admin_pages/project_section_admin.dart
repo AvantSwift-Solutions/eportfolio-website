@@ -1,20 +1,36 @@
-// ignore_for_file: use_build_context_synchronously
 import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:uuid/uuid.dart';
-import '../controllers/admin_controllers/project_section_admin_controller.dart';
-import '../models/Project.dart';
-import '../reposervice/project_repo_services.dart';
+import 'package:avantswift_portfolio/controllers/admin_controllers/project_section_admin_controller.dart';
+import 'package:avantswift_portfolio/models/Project.dart';
+import 'package:avantswift_portfolio/reposervice/project_repo_services.dart';
 
-class ProjectSectionAdmin extends StatelessWidget {
-  final ProjectSectionAdminController _adminController =
-      ProjectSectionAdminController(ProjectRepoService());
+class ProjectSectionAdmin extends StatefulWidget {
+  const ProjectSectionAdmin({super.key});
+  @override
+  State<ProjectSectionAdmin> createState() => _ProjectSectionAdminState();
+}
+
+class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
+  late ProjectSectionAdminController _adminController;
+  late List<Project> projects;
   late final BuildContext parentContext;
+  late String sectionDesc;
 
-  ProjectSectionAdmin({super.key});
+  @override
+  void initState() {
+    super.initState();
+    _adminController = ProjectSectionAdminController(ProjectRepoService());
+    _loadItems();
+  }
+
+  Future<void> _loadItems() async {
+    projects = await _adminController.getSectionData() ?? [];
+    sectionDesc = await _adminController.getSectionDescription();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +52,8 @@ class ProjectSectionAdmin extends StatelessWidget {
     );
   }
 
-  Future<void> _editSectionDescription(BuildContext context) async {
+  void _editSectionDescription(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    String sectionDesc = await _adminController.getSectionDescription();
 
     showDialog(
       context: parentContext,
@@ -181,8 +196,7 @@ class ProjectSectionAdmin extends StatelessWidget {
     );
   }
 
-  Future<void> _showList(BuildContext context) async {
-    List<Project> projects = await _adminController.getSectionData() ?? [];
+  void _showList(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -312,7 +326,7 @@ class ProjectSectionAdmin extends StatelessWidget {
                           ElevatedButton(
                             style: AdminViewDialogStyles.elevatedButtonStyle,
                             onPressed: () {
-                              _showAddNewDialog(context, projects);
+                              _showAddNewDialog(context);
                             },
                             child: Text(
                               'Add New',
@@ -330,26 +344,25 @@ class ProjectSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showAddNewDialog(
-      BuildContext context, List<Project> projectList) async {
+  void _showAddNewDialog(BuildContext context) {
     final id = const Uuid().v4();
     final project = Project(
       creationTimestamp: Timestamp.now(),
       ppid: id,
-      index: projectList.length,
+      index: projects.length,
       name: '',
       link: '',
       description: '',
     );
 
     _showProjectDialog(context, project, (a) async {
+      projects.add(project);
       return await a.create(id);
     });
   }
 
-  void _showEditDialog(BuildContext context, int i) async {
-    final projectSectionData = await _adminController.getSectionData();
-    final project = projectSectionData![i];
+  void _showEditDialog(BuildContext context, int i) {
+    final project = projects[i];
 
     _showProjectDialog(context, project, (a) async {
       return await a.update() ?? false;
@@ -517,6 +530,7 @@ class ProjectSectionAdmin extends StatelessWidget {
                                     project.creationTimestamp = Timestamp.now();
                                     bool isSuccess =
                                         await onProjectUpdated(project);
+                                    if (!mounted) return;
                                     if (isSuccess) {
                                       ScaffoldMessenger.of(parentContext)
                                           .showSnackBar(
@@ -559,7 +573,7 @@ class ProjectSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showDeleteDialog(BuildContext context, Project x) async {
+  void _showDeleteDialog(BuildContext context, Project x) {
     final name = x.name ?? 'Personal Project';
 
     showDialog(
@@ -608,19 +622,23 @@ class ProjectSectionAdmin extends StatelessWidget {
                               onPressed: () async {
                                 final deleted = await x.delete() ?? false;
                                 if (deleted) {
+                                  projects.remove(x);
                                   setState(() {});
+                                  if (!mounted) return;
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                         content:
                                             Text('$name deleted successfully')),
                                   );
                                 } else {
+                                  if (!mounted) return;
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                         content:
                                             Text('Failed to delete $name')),
                                   );
                                 }
+                                if (!mounted) return;
                                 Navigator.of(dialogContext).pop();
                                 Navigator.of(parentContext).pop();
                                 _showList(parentContext);

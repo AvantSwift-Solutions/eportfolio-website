@@ -1,4 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
 import 'dart:typed_data';
 import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
 import 'package:avantswift_portfolio/controllers/admin_controllers/upload_image_admin_controller.dart';
@@ -9,16 +8,31 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mat_month_picker_dialog/mat_month_picker_dialog.dart';
 import 'package:uuid/uuid.dart';
-import '../controllers/admin_controllers/award_cert_section_admin_controller.dart';
-import '../models/AwardCert.dart';
-import '../reposervice/award_cert_repo_services.dart';
+import 'package:avantswift_portfolio/controllers/admin_controllers/award_cert_section_admin_controller.dart';
+import 'package:avantswift_portfolio/models/AwardCert.dart';
+import 'package:avantswift_portfolio/reposervice/award_cert_repo_services.dart';
 
-class AwardCertSectionAdmin extends StatelessWidget {
-  final AwardCertSectionAdminController _adminController =
-      AwardCertSectionAdminController(AwardCertRepoService());
+class AwardCertSectionAdmin extends StatefulWidget {
+  const AwardCertSectionAdmin({super.key});
+  @override
+  State<AwardCertSectionAdmin> createState() => _AwardCertSectionAdminState();
+}
+
+class _AwardCertSectionAdminState extends State<AwardCertSectionAdmin> {
+  late AwardCertSectionAdminController _adminController;
+  late List<AwardCert> awardcerts;
   late final BuildContext parentContext;
 
-  AwardCertSectionAdmin({super.key});
+  @override
+  void initState() {
+    super.initState();
+    _adminController = AwardCertSectionAdminController(AwardCertRepoService());
+    _loadItems();
+  }
+
+  Future<void> _loadItems() async {
+    awardcerts = await _adminController.getSectionData() ?? [];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +54,7 @@ class AwardCertSectionAdmin extends StatelessWidget {
     );
   }
 
-  Future<void> _showList(BuildContext context) async {
-    List<AwardCert> awardcerts = await _adminController.getSectionData() ?? [];
+  void _showList(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -156,7 +169,7 @@ class AwardCertSectionAdmin extends StatelessWidget {
                           ElevatedButton(
                             style: AdminViewDialogStyles.elevatedButtonStyle,
                             onPressed: () {
-                              _showAddNewDialog(context, awardcerts);
+                              _showAddNewDialog(context);
                             },
                             child: Text(
                               'Add New',
@@ -174,13 +187,12 @@ class AwardCertSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showAddNewDialog(
-      BuildContext context, List<AwardCert> awardcertList) async {
+  void _showAddNewDialog(BuildContext context) {
     final id = const Uuid().v4();
     final awardcert = AwardCert(
       creationTimestamp: Timestamp.now(),
       acid: id,
-      index: awardcertList.length,
+      index: awardcerts.length,
       name: '',
       link: '',
       source: '',
@@ -189,13 +201,13 @@ class AwardCertSectionAdmin extends StatelessWidget {
     );
 
     _showAwardCertDialog(context, awardcert, (a) async {
+      awardcerts.add(awardcert);
       return await a.create(id);
     });
   }
 
-  void _showEditDialog(BuildContext context, int i) async {
-    final awardcertSectionData = await _adminController.getSectionData();
-    final awardcert = awardcertSectionData![i];
+  void _showEditDialog(BuildContext context, int i) {
+    final awardcert = awardcerts[i];
 
     _showAwardCertDialog(context, awardcert, (a) async {
       return await a.update() ?? false;
@@ -480,6 +492,7 @@ class AwardCertSectionAdmin extends StatelessWidget {
                                     }
                                     bool isSuccess =
                                         await onAwardCertUpdated(awardcert);
+                                    if (!mounted) return;
                                     if (isSuccess) {
                                       ScaffoldMessenger.of(parentContext)
                                           .showSnackBar(
@@ -522,7 +535,7 @@ class AwardCertSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showDeleteDialog(BuildContext context, AwardCert x) async {
+  void _showDeleteDialog(BuildContext context, AwardCert x) {
     final name = '${x.name} from ${x.source}';
 
     showDialog(
@@ -571,19 +584,23 @@ class AwardCertSectionAdmin extends StatelessWidget {
                               onPressed: () async {
                                 final deleted = await x.delete() ?? false;
                                 if (deleted) {
+                                  awardcerts.remove(x);
                                   setState(() {});
+                                  if (!mounted) return;
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                         content:
                                             Text('$name deleted successfully')),
                                   );
                                 } else {
+                                  if (!mounted) return;
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                         content:
                                             Text('Failed to delete $name')),
                                   );
                                 }
+                                if (!mounted) return;
                                 Navigator.of(dialogContext).pop();
                                 Navigator.of(parentContext).pop();
                                 _showList(parentContext);

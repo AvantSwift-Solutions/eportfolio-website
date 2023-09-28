@@ -1,4 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
 import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
 import 'package:avantswift_portfolio/controllers/admin_controllers/upload_image_admin_controller.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
@@ -9,16 +8,31 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mat_month_picker_dialog/mat_month_picker_dialog.dart';
 import 'package:uuid/uuid.dart';
-import '../controllers/admin_controllers/education_section_admin_controller.dart';
-import '../models/Education.dart';
-import '../reposervice/education_repo_services.dart';
+import 'package:avantswift_portfolio/controllers/admin_controllers/education_section_admin_controller.dart';
+import 'package:avantswift_portfolio/models/Education.dart';
+import 'package:avantswift_portfolio/reposervice/education_repo_services.dart';
 
-class EducationSectionAdmin extends StatelessWidget {
-  final EducationSectionAdminController _adminController =
-      EducationSectionAdminController(EducationRepoService());
+class EducationSectionAdmin extends StatefulWidget {
+  const EducationSectionAdmin({super.key});
+  @override
+  State<EducationSectionAdmin> createState() => _EducationSectionAdminState();
+}
+
+class _EducationSectionAdminState extends State<EducationSectionAdmin> {
+  late EducationSectionAdminController _adminController;
+  late List<Education> educations;
   late final BuildContext parentContext;
 
-  EducationSectionAdmin({super.key});
+  @override
+  void initState() {
+    super.initState();
+    _adminController = EducationSectionAdminController(EducationRepoService());
+    _loadItems();
+  }
+
+  Future<void> _loadItems() async {
+    educations = await _adminController.getSectionData() ?? [];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +54,7 @@ class EducationSectionAdmin extends StatelessWidget {
     );
   }
 
-  Future<void> _showList(BuildContext context) async {
-    List<Education> educations = await _adminController.getSectionData() ?? [];
+  void _showList(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -155,7 +168,7 @@ class EducationSectionAdmin extends StatelessWidget {
                           ElevatedButton(
                             style: AdminViewDialogStyles.elevatedButtonStyle,
                             onPressed: () {
-                              _showAddNewDialog(context, educations);
+                              _showAddNewDialog(context);
                             },
                             child: Text(
                               'Add New',
@@ -173,15 +186,14 @@ class EducationSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showAddNewDialog(
-      BuildContext context, List<Education> educationList) async {
+  void _showAddNewDialog(BuildContext context) {
     final id = const Uuid().v4();
     final education = Education(
       creationTimestamp: Timestamp.now(),
       eid: id,
       schoolName: '',
       degree: '',
-      index: educationList.length,
+      index: educations.length,
       startDate: Timestamp.now(),
       endDate: null,
       description: '',
@@ -192,13 +204,13 @@ class EducationSectionAdmin extends StatelessWidget {
     );
 
     _showEducationDialog(context, education, (a) async {
+      educations.add(education);
       return await a.create(id);
     });
   }
 
-  void _showEditDialog(BuildContext context, int i) async {
-    final educationSectionData = await _adminController.getSectionData();
-    final education = educationSectionData![i];
+  void _showEditDialog(BuildContext context, int i) {
+    final education = educations[i];
 
     _showEducationDialog(context, education, (a) async {
       return await a.update() ?? false;
@@ -593,6 +605,7 @@ class EducationSectionAdmin extends StatelessWidget {
                                     }
                                     bool isSuccess =
                                         await onEducationUpdated(education);
+                                    if (!mounted) return;
                                     if (isSuccess) {
                                       ScaffoldMessenger.of(parentContext)
                                           .showSnackBar(
@@ -635,7 +648,7 @@ class EducationSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showDeleteDialog(BuildContext context, Education x) async {
+  void _showDeleteDialog(BuildContext context, Education x) {
     final name = '${x.degree} at ${x.schoolName}';
 
     showDialog(
@@ -684,19 +697,23 @@ class EducationSectionAdmin extends StatelessWidget {
                               onPressed: () async {
                                 final deleted = await x.delete() ?? false;
                                 if (deleted) {
+                                  educations.remove(x);
                                   setState(() {});
+                                  if (!mounted) return;
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                         content:
                                             Text('$name deleted successfully')),
                                   );
                                 } else {
+                                  if (!mounted) return;
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                         content:
                                             Text('Failed to delete $name')),
                                   );
                                 }
+                                if (!mounted) return;
                                 Navigator.of(dialogContext).pop();
                                 Navigator.of(parentContext).pop();
                                 _showList(parentContext);
