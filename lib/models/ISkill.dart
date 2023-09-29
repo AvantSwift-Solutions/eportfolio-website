@@ -18,12 +18,13 @@ class ISkill {
   factory ISkill.fromDocumentSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;
     final creationTimestamp = data['creationTimestamp'];
+    final isid = data['isid'];
     final index = data['index'];
     final name = data['name'];
 
     return ISkill(
       creationTimestamp: creationTimestamp,
-      isid: snapshot.id,
+      isid: isid,
       index: index,
       name: name,
     );

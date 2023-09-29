@@ -4,8 +4,11 @@ on:
   pull_request:
     branches: main
 
+env:
+  COVERAGE: 0
+
 jobs:
-  build_and_test:
+  test_and_build:
     runs-on: ubuntu-latest
 
     steps:
@@ -36,19 +39,32 @@ jobs:
       - name: Run tests with coverage
         run: flutter test --coverage
 
-      - name: Check if coverage threshold is above 30%
+      - name: Check if coverage threshold is above 70%
         run: |
-          coverage=$(lcov --summary coverage/lcov.info | grep lines | awk '{print $2}')
+          threshold=70.0
 
-          threshold=30.0
+          coverage=$(lcov --summary coverage/lcov.info | grep lines | awk '{print $2}')
           
           if [[ "$(awk -v a=$coverage -v b=$threshold 'BEGIN { print (a >= b) }')" == "1" ]]; then
               echo "Code coverage is above threshold. CI/CD passes. Coverage: $coverage"
+              echo "COVERAGE=$coverage" >> $GITHUB_ENV
               exit 0
           else
               echo "Code coverage is below threshold. CI/CD fails. Coverage: $coverage"
               exit 1
           fi
+
+      - name: Post coverage comment
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Code coverage is ${{env.COVERAGE}}.'
+            })
       
       - name: Build app
         run: flutter build web
