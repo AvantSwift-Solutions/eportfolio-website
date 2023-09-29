@@ -45,13 +45,6 @@ class AboutMeSectionState extends State<AboutMeSection> {
     }
   }
 
-  Future<String> getReplacementURL() async {
-    final storage = FirebaseStorage.instance;
-    final ref = storage.ref().child(Constants.replaceImageURL);
-    final url = await ref.getDownloadURL();
-    return url;
-  }
-
   @override
   Widget build(BuildContext context) {
     if (_aboutMe == null || _imageURL == null) {
