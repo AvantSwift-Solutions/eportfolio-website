@@ -21,7 +21,7 @@ class EducationSectionAdmin extends StatefulWidget {
 class _EducationSectionAdminState extends State<EducationSectionAdmin> {
   late EducationSectionAdminController _adminController;
   late List<Education> educations;
-  late final BuildContext parentContext;
+  late BuildContext parentContext;
 
   @override
   void initState() {
@@ -37,21 +37,16 @@ class _EducationSectionAdminState extends State<EducationSectionAdmin> {
   @override
   Widget build(BuildContext context) {
     parentContext = context;
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              onPressed: () {
-                _showList(context);
-              },
-              child: const Text('Edit Education Info'),
-            ),
-          ),
-        ],
-      ),
-    );
+    return ElevatedButton(
+        onPressed: () {
+          _showList(context);
+        },
+        style: AdminViewDialogStyles.editSectionButtonStyle
+            .copyWith(backgroundColor: AdminViewDialogStyles.eduSkillsColor),
+        child: const FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text('Education'),
+        ));
   }
 
   void _showList(BuildContext context) {

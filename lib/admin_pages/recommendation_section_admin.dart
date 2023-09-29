@@ -40,21 +40,17 @@ class _RecommendationSectionAdminState
   @override
   Widget build(BuildContext context) {
     parentContext = context;
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              onPressed: () {
-                _showList(context);
-              },
-              child: const Text('Edit Recommendation Info'),
-            ),
-          ),
-        ],
-      ),
-    );
+    return ElevatedButton(
+        onPressed: () {
+          _showList(context);
+        },
+        style: AdminViewDialogStyles.editSectionButtonStyle.copyWith(
+            alignment: Alignment.topLeft,
+            backgroundColor: AdminViewDialogStyles.recACColor),
+        child: const FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text('Peer\nRecommendations'),
+        ));
   }
 
   void _showList(BuildContext context) {

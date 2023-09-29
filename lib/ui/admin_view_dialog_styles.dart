@@ -52,6 +52,37 @@ class AdminViewDialogStyles {
         iconColor: Colors.black,
       ));
 
+  /// Button colors for each section
+  static MaterialStateProperty<Color> expColor =
+      MaterialStateProperty.all<Color>(Colors.lightBlueAccent);
+  static MaterialStateProperty<Color> eduSkillsColor =
+      MaterialStateProperty.all<Color>(Colors.teal);
+  static MaterialStateProperty<Color> recACColor =
+      MaterialStateProperty.all<Color>(Colors.indigo);
+  static MaterialStateProperty<Color> projColor =
+      MaterialStateProperty.all<Color>(Colors.blueGrey);
+
+  static ButtonStyle editSectionButtonStyle = ButtonStyle(
+    backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+    // foregroundColor controls the text color
+    foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+      RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+    ),
+    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+        const EdgeInsets.symmetric(vertical: 40, horizontal: 20)),
+    alignment: Alignment.centerLeft,
+    textStyle: MaterialStateProperty.all<TextStyle>(
+      const TextStyle(
+        // fontSize will be scaled down to fit the box
+        fontSize: 1000,
+        // fontWeight: FontWeight.bold,
+      ),
+    ),
+  );
+
   static ButtonStyle elevatedButtonStyle = ButtonStyle(
     backgroundColor: MaterialStateProperty.all<Color>(buttonColor),
     padding: MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.all(20)),

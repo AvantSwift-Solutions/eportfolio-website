@@ -31,21 +31,15 @@ class _ContactSectionAdminState extends State<ContactSectionAdmin> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              onPressed: () {
-                _showEditDialog(context);
-              },
-              child: const Text('Edit Contact Info'),
-            ),
-          ),
-        ],
-      ),
-    );
+    return ElevatedButton(
+        onPressed: () {
+          _showEditDialog(context);
+        },
+        style: AdminViewDialogStyles.editSectionButtonStyle,
+        child: const FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text('Contact Info'),
+        ));
   }
 
   void _showEditDialog(BuildContext context) {

@@ -38,21 +38,17 @@ class ExperienceSectionAdminState extends State<ExperienceSectionAdmin> {
   @override
   Widget build(BuildContext context) {
     parentContext = context;
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              onPressed: () {
-                _showList(context);
-              },
-              child: const Text('Edit Professional Experience Info'),
-            ),
-          ),
-        ],
-      ),
-    );
+    return ElevatedButton(
+        onPressed: () {
+          _showList(context);
+        },
+        style: AdminViewDialogStyles.editSectionButtonStyle.copyWith(
+            alignment: Alignment.topLeft,
+            backgroundColor: AdminViewDialogStyles.expColor),
+        child: const FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text('Professional\nExperiences'),
+        ));
   }
 
   void _showList(BuildContext context) {

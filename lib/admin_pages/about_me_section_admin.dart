@@ -35,21 +35,16 @@ class _AboutMeSectionAdminState extends State<AboutMeSectionAdmin> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              onPressed: () {
-                _showEditDialog(context);
-              },
-              child: const Text('Edit About Me Info'),
-            ),
-          ),
-        ],
-      ),
-    );
+    return ElevatedButton(
+        onPressed: () {
+          _showEditDialog(context);
+        },
+        style: AdminViewDialogStyles.editSectionButtonStyle
+            .copyWith(alignment: Alignment.topLeft),
+        child: const FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text('About\nMe'),
+        ));
   }
 
   void _showEditDialog(BuildContext context) {

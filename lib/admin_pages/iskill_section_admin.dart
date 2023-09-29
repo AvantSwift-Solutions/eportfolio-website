@@ -32,21 +32,16 @@ class _ISkillSectionAdminState extends State<ISkillSectionAdmin> {
   @override
   Widget build(BuildContext context) {
     parentContext = context;
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              onPressed: () {
-                _showList(context);
-              },
-              child: const Text('Edit Interpersonal Skill Info'),
-            ),
-          ),
-        ],
-      ),
-    );
+    return ElevatedButton(
+        onPressed: () {
+          _showList(context);
+        },
+        style: AdminViewDialogStyles.editSectionButtonStyle
+            .copyWith(backgroundColor: AdminViewDialogStyles.eduSkillsColor),
+        child: const FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text('Interpersonal Skills'),
+        ));
   }
 
   void _showList(BuildContext context) {

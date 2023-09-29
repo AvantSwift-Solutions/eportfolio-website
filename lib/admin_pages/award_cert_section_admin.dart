@@ -21,7 +21,7 @@ class AwardCertSectionAdmin extends StatefulWidget {
 class _AwardCertSectionAdminState extends State<AwardCertSectionAdmin> {
   late AwardCertSectionAdminController _adminController;
   late List<AwardCert> awardcerts;
-  late final BuildContext parentContext;
+  late BuildContext parentContext;
 
   @override
   void initState() {
@@ -37,21 +37,17 @@ class _AwardCertSectionAdminState extends State<AwardCertSectionAdmin> {
   @override
   Widget build(BuildContext context) {
     parentContext = context;
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              onPressed: () {
-                _showList(context);
-              },
-              child: const Text('Edit Award & Certification Info'),
-            ),
-          ),
-        ],
-      ),
-    );
+    return ElevatedButton(
+        onPressed: () {
+          _showList(context);
+        },
+        style: AdminViewDialogStyles.editSectionButtonStyle.copyWith(
+            alignment: Alignment.topLeft,
+            backgroundColor: AdminViewDialogStyles.recACColor),
+        child: const FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text('Awards\n&\nCerts'),
+        ));
   }
 
   void _showList(BuildContext context) {

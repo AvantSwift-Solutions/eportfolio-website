@@ -35,21 +35,16 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
   @override
   Widget build(BuildContext context) {
     parentContext = context;
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              onPressed: () {
-                _showList(context);
-              },
-              child: const Text('Edit Personal Project Info'),
-            ),
-          ),
-        ],
-      ),
-    );
+    return ElevatedButton(
+        onPressed: () {
+          _showList(context);
+        },
+        style: AdminViewDialogStyles.editSectionButtonStyle
+            .copyWith(backgroundColor: AdminViewDialogStyles.projColor),
+        child: const FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text('Personal Projects'),
+        ));
   }
 
   void _editSectionDescription(BuildContext context) {
