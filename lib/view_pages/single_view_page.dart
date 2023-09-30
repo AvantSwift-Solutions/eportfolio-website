@@ -8,6 +8,7 @@ import 'experience_section.dart';
 import 'contact_section.dart';
 import 'menu_section.dart';
 import 'header_section.dart';
+import 'footer_section.dart';
 
 class SinglePageView extends StatelessWidget {
   final ScrollController _scrollController = ScrollController();
@@ -17,6 +18,7 @@ class SinglePageView extends StatelessWidget {
   final GlobalKey _projectsKey = GlobalKey();
   final GlobalKey _awardsCertsKey = GlobalKey();
   final GlobalKey _menuKey = GlobalKey();
+  final GlobalKey _landingPageKey = GlobalKey();
 
   SinglePageView({super.key});
 
@@ -50,7 +52,8 @@ class SinglePageView extends StatelessWidget {
       'projects': _projectsKey,
       'awards_certs': _awardsCertsKey,
       'contact': _contactKey,
-      'menu': _menuKey
+      'menu': _menuKey,
+      'landing_page': _landingPageKey,
     };
 
     return Scaffold(
@@ -68,6 +71,7 @@ class SinglePageView extends StatelessWidget {
                 child: Column(
                   children: [
                     LandingPage(
+                      key: _landingPageKey,
                       scrollToBottom: _scrollToContact,
                     ),
                     const SizedBox(height: 100),
@@ -87,6 +91,11 @@ class SinglePageView extends StatelessWidget {
                     AwardCertSection(key: _awardsCertsKey),
                     const SizedBox(height: 100),
                     ContactSection(key: _contactKey),
+                    const SizedBox(height: 100),
+                    FooterSection(
+                      scrollToSection: _scrollToSection,
+                      sectionKeys: sectionKeys
+                    )
                   ],
                 ),
               ),
