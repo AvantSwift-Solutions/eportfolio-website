@@ -44,9 +44,16 @@ class _LandingPageAdminState extends State<LandingPageAdmin> {
         },
         style: AdminViewDialogStyles.editSectionButtonStyle,
         child: const FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Text('Landing Page'),
-        ));
+            fit: BoxFit.fill,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Icon(
+                  Icons.home,
+                ),
+                Text('  Landing Page'),
+              ],
+            )));
   }
 
   void _showEditDialog(BuildContext context) {

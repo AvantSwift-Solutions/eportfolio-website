@@ -48,7 +48,7 @@ class _TSkillSectionAdminState extends State<TSkillSectionAdmin> {
             .copyWith(backgroundColor: AdminViewDialogStyles.eduSkillsColor),
         child: const FittedBox(
           fit: BoxFit.scaleDown,
-          child: Text('Techincal Skills'),
+          child: Text('Technical Skills'),
         ));
   }
 

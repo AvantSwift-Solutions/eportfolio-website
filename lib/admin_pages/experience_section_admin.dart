@@ -39,16 +39,38 @@ class ExperienceSectionAdminState extends State<ExperienceSectionAdmin> {
   Widget build(BuildContext context) {
     parentContext = context;
     return ElevatedButton(
-        onPressed: () {
-          _showList(context);
-        },
-        style: AdminViewDialogStyles.editSectionButtonStyle.copyWith(
-            alignment: Alignment.topLeft,
-            backgroundColor: AdminViewDialogStyles.expColor),
-        child: const FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Text('Professional\nExperiences'),
-        ));
+      onPressed: () {
+        _showList(context);
+      },
+      style: AdminViewDialogStyles.editSectionButtonStyle.copyWith(
+          alignment: Alignment.center,
+          backgroundColor: AdminViewDialogStyles.expColor),
+      child: const FittedBox(
+        fit: BoxFit.fill,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Professional\nExperiences\n'),
+            Row(
+              children: [
+                Icon(
+                  Icons.work,
+                ),
+                Icon(
+                  Icons.business,
+                ),
+                Icon(
+                  Icons.assignment_ind,
+                ),
+                Icon(
+                  Icons.computer,
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   void _showList(BuildContext context) {

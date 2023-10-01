@@ -45,7 +45,10 @@ class _EducationSectionAdminState extends State<EducationSectionAdmin> {
             .copyWith(backgroundColor: AdminViewDialogStyles.eduSkillsColor),
         child: const FittedBox(
           fit: BoxFit.scaleDown,
-          child: Text('Education'),
+          child:Row (children: [
+            Text('Education '),
+            Icon(Icons.school),
+          ],)
         ));
   }
 

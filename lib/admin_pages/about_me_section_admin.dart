@@ -36,15 +36,26 @@ class _AboutMeSectionAdminState extends State<AboutMeSectionAdmin> {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-        onPressed: () {
-          _showEditDialog(context);
-        },
-        style: AdminViewDialogStyles.editSectionButtonStyle
-            .copyWith(alignment: Alignment.topLeft),
-        child: const FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Text('About\nMe'),
-        ));
+      onPressed: () {
+        _showEditDialog(context);
+      },
+      style: AdminViewDialogStyles.editSectionButtonStyle.copyWith(
+          alignment: Alignment.center,
+          iconSize: MaterialStateProperty.all<double>(
+              AdminViewDialogStyles.sectionButtonLargeIconSize)),
+      child: const FittedBox(
+        fit: BoxFit.fill,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('About\nMe\n'),
+            Icon(
+              Icons.person,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   void _showEditDialog(BuildContext context) {

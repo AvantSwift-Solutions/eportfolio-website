@@ -38,16 +38,27 @@ class _AwardCertSectionAdminState extends State<AwardCertSectionAdmin> {
   Widget build(BuildContext context) {
     parentContext = context;
     return ElevatedButton(
-        onPressed: () {
-          _showList(context);
-        },
-        style: AdminViewDialogStyles.editSectionButtonStyle.copyWith(
-            alignment: Alignment.topLeft,
-            backgroundColor: AdminViewDialogStyles.recACColor),
-        child: const FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Text('Awards\n&\nCerts'),
-        ));
+      onPressed: () {
+        _showList(context);
+      },
+      style: AdminViewDialogStyles.editSectionButtonStyle.copyWith(
+          alignment: Alignment.center,
+          backgroundColor: AdminViewDialogStyles.recACColor,
+          iconSize: MaterialStateProperty.all<double>(
+              AdminViewDialogStyles.sectionButtonLargeIconSize)),
+      child: const FittedBox(
+        fit: BoxFit.fill,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Awards\n&\nCerts\n'),
+            Icon(
+              Icons.emoji_events,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   void _showList(BuildContext context) {

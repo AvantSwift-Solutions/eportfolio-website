@@ -37,9 +37,16 @@ class _ContactSectionAdminState extends State<ContactSectionAdmin> {
         },
         style: AdminViewDialogStyles.editSectionButtonStyle,
         child: const FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Text('Contact Info'),
-        ));
+            fit: BoxFit.fill,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Contact Info  '),
+                Icon(
+                  Icons.email,
+                ),
+              ],
+            )));
   }
 
   void _showEditDialog(BuildContext context) {

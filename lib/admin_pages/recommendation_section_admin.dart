@@ -44,9 +44,8 @@ class _RecommendationSectionAdminState
         onPressed: () {
           _showList(context);
         },
-        style: AdminViewDialogStyles.editSectionButtonStyle.copyWith(
-            alignment: Alignment.topLeft,
-            backgroundColor: AdminViewDialogStyles.recACColor),
+        style: AdminViewDialogStyles.editSectionButtonStyle
+            .copyWith(backgroundColor: AdminViewDialogStyles.recACColor),
         child: const FittedBox(
           fit: BoxFit.scaleDown,
           child: Text('Peer\nRecommendations'),
