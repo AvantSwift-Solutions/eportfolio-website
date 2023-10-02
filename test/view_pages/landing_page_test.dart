@@ -9,7 +9,6 @@ import 'package:mockito/mockito.dart';
 import 'package:run_with_network_images/run_with_network_images.dart';
 
 import 'mocks/landing_page_test.mocks.dart';
-import 'test_helpers.dart';
 
 // Create a mock for your scrollToBottom function
 class MockScrollToBottom extends Mock {
@@ -31,7 +30,8 @@ void main() {
   });
 
   testWidgets('LandingPage Widget Test', (WidgetTester tester) async {
-    FlutterError.onError = ignoreOverflowErrors;
+    tester.view.physicalSize = const Size(1080, 1080);
+    tester.view.devicePixelRatio = 1.0;
     // Create a mock function for scrollToBottom
     final mockScrollToBottom = MockScrollToBottom();
 
