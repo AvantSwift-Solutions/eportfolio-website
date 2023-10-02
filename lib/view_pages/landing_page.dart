@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import '../constants.dart';
@@ -7,9 +9,11 @@ import '../ui/custom_view_button.dart';
 import '../ui/custom_texts/public_view_text_styles.dart';
 
 class LandingPage extends StatefulWidget {
+  final LandingPageController? controller;
+
   final Function scrollToBottom;
 
-  const LandingPage({super.key, required this.scrollToBottom});
+  const LandingPage({super.key, this.controller, required this.scrollToBottom});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -17,34 +21,35 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-  final LandingPageController _landingPageController =
-      LandingPageController(UserRepoService());
-
-  late String _name;
-  late String _nickname;
-  late String _imageURL;
-  late String _landingPageDescription;
+  late LandingPageController _landingPageController;
+  String? _name;
+  String? _nickname;
+  String? _landingPageDescription;
+  String? _imageURL;
 
   @override
   void initState() {
     super.initState();
-    init();
+    _landingPageController =
+        widget.controller ?? LandingPageController(UserRepoService());
+
+    // Load data in initState
+    _loadData();
   }
 
-  Future<void> init() async {
-    final landingPageData = await _landingPageController.getLandingPageData();
+  Future<void> _loadData() async {
+    try {
+      final landingPageData = await _landingPageController.getLandingPageData();
 
-    if (landingPageData != null) {
       setState(() {
-        _name = landingPageData.name!;
-        _nickname = landingPageData.nickname!;
-        _imageURL =
-            landingPageData.imageURL ?? 'https://example.com/default_image.jpg';
-        _landingPageDescription =
-            landingPageData.landingPageDescription ?? 'Default Description';
+        _name = landingPageData?.name;
+        _nickname = landingPageData?.nickname;
+        _landingPageDescription = landingPageData?.landingPageDescription;
+        _imageURL = landingPageData?.imageURL;
       });
-    } else {
-      // Handle the case where data couldn't be loaded
+    } catch (e) {
+      // Handle errors, e.g., display an error message
+      log('Error loading data: $e');
     }
   }
 
@@ -57,6 +62,7 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unnecessary_null_comparison
     if (_nickname == null || _name == null) {
       // Data is still loading or an error occurred
       return const Center(child: CircularProgressIndicator());
@@ -89,7 +95,7 @@ class _LandingPageState extends State<LandingPage> {
                           text: 'Hey there, \nI\'m ',
                         ),
                         TextSpan(
-                          text: _name,
+                          text: '${_name} ',
                           style: const TextStyle(
                             color: Color(0xffe6aa68),
                             fontWeight: FontWeight.w600,
@@ -100,7 +106,7 @@ class _LandingPageState extends State<LandingPage> {
                           text: 'but you \ncan call me ',
                         ),
                         TextSpan(
-                          text: _nickname,
+                          text: '${_nickname}',
                           style: const TextStyle(
                             color: Color(0xffe6aa68),
                             fontWeight: FontWeight.w600,
@@ -152,7 +158,7 @@ class _LandingPageState extends State<LandingPage> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 20.0),
                 child: Image.network(
-                  _imageURL,
+                  _imageURL!,
                   width: 300,
                   height: 600,
                   fit: BoxFit.cover,
@@ -162,32 +168,35 @@ class _LandingPageState extends State<LandingPage> {
             const Padding(
               padding: EdgeInsets.only(left: 40),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  height: 300,
-                  width: 1.0,
-                  color: Colors.black, // Divider color
-                ),
-                const SizedBox(height: 20),
-                const RotatedBox(
-                  quarterTurns: 1,
-                  child: Text(
-                    'Scroll down to learn more about me',
-                    style: TextStyle(
-                      fontSize: 12.0,
+            Container(
+              width: screenWidth * 0.01,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    height: 300,
+                    width: 1.0,
+                    color: Colors.black, // Divider color
+                  ),
+                  const SizedBox(height: 20),
+                  const RotatedBox(
+                    quarterTurns: 1,
+                    child: Text(
+                      'Scroll down to learn more about me',
+                      style: TextStyle(
+                        fontSize: 12.0,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                Container(
-                  height: 200, // Adjust the height of the divider as needed
-                  width: 1.0, // Width of the vertical divider
-                  color: Colors.black, // Divider color
-                ),
-              ],
+                  const SizedBox(height: 20),
+                  Container(
+                    height: 200, // Adjust the height of the divider as needed
+                    width: 1.0, // Width of the vertical divider
+                    color: Colors.black, // Divider color
+                  ),
+                ],
+              ),
             ),
           ],
         ),

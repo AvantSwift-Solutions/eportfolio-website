@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import '../constants.dart';
 import '../controllers/view_controllers/about_me_section_controller.dart';
