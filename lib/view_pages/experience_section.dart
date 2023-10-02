@@ -12,15 +12,15 @@ import '../ui/custom_texts/public_view_text_styles.dart';
 import '../ui/dashed_vertical_line_painter.dart';
 
 class ExperienceSection extends StatefulWidget {
-  const ExperienceSection({Key? key}) : super(key: key);
+  final ExperienceSectionController? controller;
+  const ExperienceSection({Key? key, this.controller}) : super(key: key);
 
   @override
   ExperienceSectionState createState() => ExperienceSectionState();
 }
 
 class ExperienceSectionState extends State<ExperienceSection> {
-  final ExperienceSectionController _experienceSectionController =
-      ExperienceSectionController(ExperienceRepoService());
+  late ExperienceSectionController _experienceSectionController;
 
   // Variable to track whether to show all experiences or not
   bool showAllExperiences = false;
@@ -30,6 +30,9 @@ class ExperienceSectionState extends State<ExperienceSection> {
   @override
   void initState() {
     super.initState();
+
+    _experienceSectionController = widget.controller ??
+        ExperienceSectionController(ExperienceRepoService());
     _loadExperienceData();
   }
 
@@ -52,6 +55,7 @@ class ExperienceSectionState extends State<ExperienceSection> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     double titleFontSize = screenWidth * 0.05;
 
     // Determine the number of experiences to display based on showAllExperiences
@@ -65,7 +69,7 @@ class ExperienceSectionState extends State<ExperienceSection> {
 
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(50.0),
+        padding: EdgeInsets.all(screenWidth * 0.035),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -85,7 +89,7 @@ class ExperienceSectionState extends State<ExperienceSection> {
               ),
             ),
 
-            const SizedBox(height: 60.0),
+            SizedBox(height: screenWidth * 0.042),
 
             isLoading
                 ? const Center(child: CircularProgressIndicator())
@@ -144,11 +148,9 @@ class ExperienceWidget extends StatelessWidget {
                   Container(
                     width: screenWidth * 0.048,
                     height: screenWidth * 0.048,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage(experienceDTO.logoURL as String),
-                        fit: BoxFit.cover,
-                      ),
+                    child: Image.network(
+                      experienceDTO.logoURL as String,
+                      fit: BoxFit.cover,
                     ),
                   ),
                   Container(
@@ -159,7 +161,8 @@ class ExperienceWidget extends StatelessWidget {
                       children: [
                         Text(
                           (experienceDTO.companyName as String) +
-                              (experienceDTO.location!.isNotEmpty
+                              ((experienceDTO.location ?? 'Default Location')
+                                      .isNotEmpty
                                   ? ', ${experienceDTO.location as String}'
                                   : ''),
                           style: PublicViewTextStyles
@@ -216,8 +219,8 @@ class ExperienceWidget extends StatelessWidget {
                     borderType: BorderType.Circle,
                     dashPattern: const [5, 10],
                     child: Container(
-                      height: 50,
-                      width: 50,
+                      height: screenWidth * 0.04,
+                      width: screenWidth * 0.04,
                       decoration: const BoxDecoration(
                           shape: BoxShape.circle, color: Colors.white),
                     ),
