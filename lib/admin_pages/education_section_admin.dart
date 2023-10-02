@@ -44,12 +44,13 @@ class _EducationSectionAdminState extends State<EducationSectionAdmin> {
         style: AdminViewDialogStyles.editSectionButtonStyle
             .copyWith(backgroundColor: AdminViewDialogStyles.eduSkillsColor),
         child: const FittedBox(
-          fit: BoxFit.scaleDown,
-          child:Row (children: [
-            Text('Education '),
-            Icon(Icons.school),
-          ],)
-        ));
+            fit: BoxFit.scaleDown,
+            child: Row(
+              children: [
+                Text('Education '),
+                Icon(Icons.school),
+              ],
+            )));
   }
 
   void _showList(BuildContext context) {

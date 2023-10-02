@@ -24,7 +24,6 @@ class DefaultPage extends StatelessWidget {
     Color.fromRGBO(3, 169, 244, 1),
   ];
   static ButtonStyle analyticStyle = ButtonStyle(
-
     // foregroundColor controls the text color
     foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -53,7 +52,10 @@ class DefaultPage extends StatelessWidget {
       EdgeInsets halfPadding = EdgeInsets.symmetric(
           horizontal: bc.maxWidth * 0.03,
           vertical: bc.maxHeight * verticalPaddingMultiplier);
-      double maxWelcomeFontSize = 60, titleFontSize = 42, subtitleFontSize = 22, navbarFontSize = 23;
+      double maxWelcomeFontSize = 60,
+          titleFontSize = 42,
+          subtitleFontSize = 22,
+          navbarFontSize = 23;
       TextStyle navbarTextStyle = TextStyle(fontSize: navbarFontSize);
       SizedBox navbarInterItemSpacing = SizedBox(width: bc.maxWidth * 0.02);
       double navbarBottomSpacingMultiplier = 0.06;
@@ -90,466 +92,473 @@ class DefaultPage extends StatelessWidget {
               2 * subtitleFontSize +
               navbarFontSize +
               titleFontSize);
-      
+
       if (bc.maxWidth < 1200) {
         // maxWelcomeFontSize = 55;
         // titleFontSize = 48;
         // subtitleFontSize = 22;
       }
 
-      return Scaffold(
-        body: SizedBox(
-            height: bc.maxHeight,
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                      child: Padding(
-                    padding: halfPadding,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            TextButton(
-                              onPressed: () {},
-                              child: Text('Logout', style: navbarTextStyle),
-                            ),
-                            navbarInterItemSpacing,
-                            TextButton(
-                              onPressed: () {},
-                              child: Text('Help', style: navbarTextStyle),
-                            ),
-                            navbarInterItemSpacing,
-                            TextButton(
-                              onPressed: () {},
-                              child: Text('About ASS', style: navbarTextStyle),
-                            ),
-                          ],
-                        ),
-                        navbarBottomSpacing,
-                        FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Text(
-                            'Welcome to your ePortfolio\nAdmin Panel, ${user.nickname}',
-                            style: PublicViewTextStyles.generalHeading
-                                .copyWith(fontSize: maxWelcomeFontSize),
-                          ),
-                        ),
-                        interWelcomePoweredSpacing,
-                        Row(
-                          children: [
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'Powered by  ',
-                                style: PublicViewTextStyles.generalBodyText
-                                    .copyWith(
-                                  fontSize: subtitleFontSize,
-                                ),
-                              ),
-                            ),
-                            Image.asset(
-                              'assets/logo-no-background.png',
-                              scale: logoScale,
-                            ),
-                          ],
-                        ),
-                        interPowerViewSpacing,
-                        SizedBox(
-                          height: viewbuttonHeight,
-                          width: double.infinity,
-                          child: ElevatedButton(
-                              onPressed: () {
-                                launchUrlString('/');
-                              },
-                              style: analyticStyle.copyWith(
-                                backgroundColor: MaterialStateProperty.all<Color>(palette[0]),
-                              ),
-                              child: FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  child: Row(
-                                    children: [
-                                      Text('View your ePortfolio   ',
-                                          style: TextStyle(
-                                              fontSize: titleFontSize)),
-                                      Icon(
-                                        Icons.launch,
-                                        size: titleFontSize,
-                                      ),
-                                    ],
-                                  ))),
-                        ),
-                        interViewAnalyticsSpacing,
-                        Text(
-                          '––– Site Analytics',
-                          style: PublicViewTextStyles.generalHeading
-                              .copyWith(fontSize: titleFontSize),
-                        ),
-                        Text(
-                          'See how well your ePortfolio is doing.',
-                          style: PublicViewTextStyles.generalBodyText
-                              .copyWith(fontSize: subtitleFontSize),
-                        ),
-                        interAnalysticCardsSpacing,
-                        Expanded(
-                            child: CustomScrollView(
-                          primary: false,
-                          slivers: <Widget>[
-                            SliverGrid.count(
-                              crossAxisSpacing: analyticsGridSpacing,
-                              mainAxisSpacing: analyticsGridSpacing,
-                              crossAxisCount: analyticCardRowCount,
-                              childAspectRatio: analyticCardAspectRatio,
-                              children: <Widget>[
-                                ElevatedButton(
-                                    onPressed: () {
-                                      showDialog(
-                                          context: context,
-                                          builder: (context) =>
-                                              const AlertDialog(
-                                                title: Text('Views'),
-                                              ));
-                                    },
-                                    style: analyticStyle.copyWith(
-                                      backgroundColor: MaterialStateProperty.all<Color>(palette[1]),
-                                    ),
-                                    child: const FittedBox(
-                                      fit: BoxFit.scaleDown,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Text('8',
-                                                  style: TextStyle(
-                                                      fontSize:
-                                                          valueAnalyticRatio *
-                                                              maxAnalyticSize,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              Text(
-                                                  'ePortfolio views in the past week',
-                                                  style: TextStyle(
-                                                      fontSize: maxAnalyticSize,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              SizedBox(
-                                                  height:
-                                                      interAnalyticIconSpacingRatio *
-                                                          maxAnalyticSize),
-                                            ],
-                                          ),
-                                          Icon(
-                                            Icons.visibility,
-                                            size: iconAnalyticRatio *
-                                                maxAnalyticSize,
-                                          ),
-                                        ],
-                                      ),
-                                    )),
-                                ElevatedButton(
-                                    onPressed: () {
-                                      showDialog(
-                                          context: context,
-                                          builder: (context) =>
-                                              const AlertDialog(
-                                                title: Text('Views'),
-                                              ));
-                                    },
-                                    style: analyticStyle.copyWith(
-                                      backgroundColor: MaterialStateProperty.all<Color>(palette[2]),
-                                    ),
-                                    child: const FittedBox(
-                                      fit: BoxFit.scaleDown,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Text('3',
-                                                  style: TextStyle(
-                                                      fontSize:
-                                                          valueAnalyticRatio *
-                                                              maxAnalyticSize,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              Text(
-                                                  'New messages in the past month',
-                                                  style: TextStyle(
-                                                      fontSize: maxAnalyticSize,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              SizedBox(
-                                                  height:
-                                                      interAnalyticIconSpacingRatio *
-                                                          maxAnalyticSize),
-                                            ],
-                                          ),
-                                          Icon(
-                                            Icons.chat,
-                                            size: iconAnalyticRatio *
-                                                maxAnalyticSize,
-                                          ),
-                                        ],
-                                      ),
-                                    )),
-                                ElevatedButton(
-                                    onPressed: () {
-                                      showDialog(
-                                          context: context,
-                                          builder: (context) =>
-                                              const AlertDialog(
-                                                title: Text('Views'),
-                                              ));
-                                    },
-                                    style: analyticStyle.copyWith(
-                                      backgroundColor: MaterialStateProperty.all<Color>(palette[3]),
-                                    ),
-                                    child: const FittedBox(
-                                      fit: BoxFit.scaleDown,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Text('16',
-                                                  style: TextStyle(
-                                                      fontSize:
-                                                          valueAnalyticRatio *
-                                                              maxAnalyticSize,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              Text(
-                                                  'Days since ePortfolio was edited',
-                                                  style: TextStyle(
-                                                      fontSize: maxAnalyticSize,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              SizedBox(
-                                                  height:
-                                                      interAnalyticIconSpacingRatio *
-                                                          maxAnalyticSize),
-                                            ],
-                                          ),
-                                          Icon(
-                                            Icons.edit,
-                                            size: iconAnalyticRatio *
-                                                maxAnalyticSize,
-                                          ),
-                                        ],
-                                      ),
-                                    )),
-                                ElevatedButton(
-                                    onPressed: () {
-                                      showDialog(
-                                          context: context,
-                                          builder: (context) =>
-                                              const AlertDialog(
-                                                title: Text('Views'),
-                                              ));
-                                    },
-                                    style: analyticStyle.copyWith(
-                                      backgroundColor: MaterialStateProperty.all<Color>(palette[4]),
-                                    ),
-                                    child: const FittedBox(
-                                      fit: BoxFit.scaleDown,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Text('16',
-                                                  style: TextStyle(
-                                                      fontSize:
-                                                          valueAnalyticRatio *
-                                                              maxAnalyticSize,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              Text(
-                                                  'Days since ePortfolio was edited',
-                                                  style: TextStyle(
-                                                      fontSize: maxAnalyticSize,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              SizedBox(
-                                                  height:
-                                                      interAnalyticIconSpacingRatio *
-                                                          maxAnalyticSize),
-                                            ],
-                                          ),
-                                          Icon(
-                                            Icons.edit,
-                                            size: iconAnalyticRatio *
-                                                maxAnalyticSize,
-                                          ),
-                                        ],
-                                      ),
-                                    )),
-                                    ElevatedButton(
-                                    onPressed: () {
-                                      showDialog(
-                                          context: context,
-                                          builder: (context) =>
-                                              const AlertDialog(
-                                                title: Text('Views'),
-                                              ));
-                                    },
-                                    style: analyticStyle.copyWith(
-                                      backgroundColor: MaterialStateProperty.all<Color>(palette[1]),
-                                    ),
-                                    child: const FittedBox(
-                                      fit: BoxFit.scaleDown,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Text('16',
-                                                  style: TextStyle(
-                                                      fontSize:
-                                                          valueAnalyticRatio *
-                                                              maxAnalyticSize,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              Text(
-                                                  'Days since ePortfolio was edited',
-                                                  style: TextStyle(
-                                                      fontSize: maxAnalyticSize,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              SizedBox(
-                                                  height:
-                                                      interAnalyticIconSpacingRatio *
-                                                          maxAnalyticSize),
-                                            ],
-                                          ),
-                                          Icon(
-                                            Icons.edit,
-                                            size: iconAnalyticRatio *
-                                                maxAnalyticSize,
-                                          ),
-                                        ],
-                                      ),
-                                    )),
-                              ],
-                            ),
-                          ],
-                        ))
-                      ],
-                    ),
-                  )),
-                  Expanded(
-                      child: Container(
-                          padding: halfPadding,
-                          color: greyBg,
-                          child: Column(
-                            children: [
-                              aboveEditorSpacing,
-                              Align(
-                                  alignment: Alignment.center,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        '––– Editor',
-                                        style: PublicViewTextStyles
-                                            .generalHeading
-                                            .copyWith(fontSize: titleFontSize),
-                                      ),
-                                      Text(
-                                        'Start editing your ePortfolio by clicking on a section below.',
-                                        style: PublicViewTextStyles
-                                            .generalBodyText
-                                            .copyWith(
-                                                fontSize: subtitleFontSize),
-                                      ),
-                                    ],
-                                  )),
-                              interEditorButtonsSpacing,
-                              SizedBox(
-                                width: editorButtonsWidth,
-                                child: StaggeredGrid.count(
-                                  crossAxisCount: 5,
-                                  mainAxisSpacing: editorGridSpacing,
-                                  crossAxisSpacing: editorGridSpacing,
-                                  children: const [
-                                    StaggeredGridTile.count(
-                                      crossAxisCellCount: 4,
-                                      mainAxisCellCount: 1,
-                                      child: LandingPageAdmin(),
-                                    ),
-                                    StaggeredGridTile.count(
-                                      crossAxisCellCount: 1,
-                                      mainAxisCellCount: 2,
-                                      child: AboutMeSectionAdmin(),
-                                    ),
-                                    StaggeredGridTile.count(
-                                      crossAxisCellCount: 2,
-                                      mainAxisCellCount: 2,
-                                      child: ExperienceSectionAdmin(),
-                                    ),
-                                    StaggeredGridTile.count(
-                                      crossAxisCellCount: 2,
-                                      mainAxisCellCount: 1,
-                                      child: EducationSectionAdmin(),
-                                    ),
-                                    StaggeredGridTile.count(
-                                      crossAxisCellCount: 1,
-                                      mainAxisCellCount: 2,
-                                      child: AwardCertSectionAdmin(),
-                                    ),
-                                    StaggeredGridTile.count(
-                                      crossAxisCellCount: 2,
-                                      mainAxisCellCount: 1,
-                                      child: TSkillSectionAdmin(),
-                                    ),
-                                    StaggeredGridTile.count(
-                                      crossAxisCellCount: 2,
-                                      mainAxisCellCount: 1,
-                                      child: RecommendationSectionAdmin(),
-                                    ),
-                                    StaggeredGridTile.count(
-                                      crossAxisCellCount: 2,
-                                      mainAxisCellCount: 1,
-                                      child: ISkillSectionAdmin(),
-                                    ),
-                                    StaggeredGridTile.count(
-                                      crossAxisCellCount: 2,
-                                      mainAxisCellCount: 1,
-                                      child: ProjectSectionAdmin(),
-                                    ),
-                                    StaggeredGridTile.count(
-                                      crossAxisCellCount: 3,
-                                      mainAxisCellCount: 1,
-                                      child: ContactSectionAdmin(),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ))),
-                ])),
+      Widget navbarWidget = Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          TextButton(
+            onPressed: () {},
+            child: Text('Logout', style: navbarTextStyle),
+          ),
+          navbarInterItemSpacing,
+          TextButton(
+            onPressed: () {},
+            child: Text('Help', style: navbarTextStyle),
+          ),
+          navbarInterItemSpacing,
+          TextButton(
+            onPressed: () {},
+            child: Text('About ASS', style: navbarTextStyle),
+          ),
+        ],
       );
+
+      Widget welcomeWidget = FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Text(
+          'Welcome to your ePortfolio\nAdmin Panel, ${user.nickname}',
+          style: PublicViewTextStyles.generalHeading
+              .copyWith(fontSize: maxWelcomeFontSize),
+        ),
+      );
+
+      Widget poweredWidget = Row(
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Powered by  ',
+              style: PublicViewTextStyles.generalBodyText.copyWith(
+                fontSize: subtitleFontSize,
+              ),
+            ),
+          ),
+          Image.asset(
+            'assets/logo-no-background.png',
+            scale: logoScale,
+          ),
+        ],
+      );
+
+      Widget viewButtonWidget = SizedBox(
+        height: viewbuttonHeight,
+        width: double.infinity,
+        child: ElevatedButton(
+            onPressed: () {
+              launchUrlString('/');
+            },
+            style: analyticStyle.copyWith(
+              backgroundColor: MaterialStateProperty.all<Color>(palette[0]),
+            ),
+            child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Row(
+                  children: [
+                    Text('View your ePortfolio   ',
+                        style: TextStyle(fontSize: titleFontSize)),
+                    Icon(
+                      Icons.launch,
+                      size: titleFontSize,
+                    ),
+                  ],
+                ))),
+      );
+
+      Widget analyticsTitleWidget = Text(
+        '––– Site Analytics',
+        style: PublicViewTextStyles.generalHeading
+            .copyWith(fontSize: titleFontSize),
+      );
+
+      Widget analyticsSubtitleWidget = Text(
+        'See how well your ePortfolio is doing.',
+        style: PublicViewTextStyles.generalBodyText
+            .copyWith(fontSize: subtitleFontSize),
+      );
+
+      List<Widget> analyticsWidgetList = [
+        ElevatedButton(
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (context) => const AlertDialog(
+                        title: Text('Views'),
+                      ));
+            },
+            style: analyticStyle.copyWith(
+              backgroundColor: MaterialStateProperty.all<Color>(palette[1]),
+            ),
+            child: const FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text('8',
+                          style: TextStyle(
+                              fontSize: valueAnalyticRatio * maxAnalyticSize,
+                              fontWeight: FontWeight.bold)),
+                      Text('ePortfolio views in the past week',
+                          style: TextStyle(
+                              fontSize: maxAnalyticSize,
+                              fontWeight: FontWeight.bold)),
+                      SizedBox(
+                          height:
+                              interAnalyticIconSpacingRatio * maxAnalyticSize),
+                    ],
+                  ),
+                  Icon(
+                    Icons.visibility,
+                    size: iconAnalyticRatio * maxAnalyticSize,
+                  ),
+                ],
+              ),
+            )),
+        ElevatedButton(
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (context) => const AlertDialog(
+                        title: Text('Views'),
+                      ));
+            },
+            style: analyticStyle.copyWith(
+              backgroundColor: MaterialStateProperty.all<Color>(palette[2]),
+            ),
+            child: const FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text('3',
+                          style: TextStyle(
+                              fontSize: valueAnalyticRatio * maxAnalyticSize,
+                              fontWeight: FontWeight.bold)),
+                      Text('New messages in the past month',
+                          style: TextStyle(
+                              fontSize: maxAnalyticSize,
+                              fontWeight: FontWeight.bold)),
+                      SizedBox(
+                          height:
+                              interAnalyticIconSpacingRatio * maxAnalyticSize),
+                    ],
+                  ),
+                  Icon(
+                    Icons.chat,
+                    size: iconAnalyticRatio * maxAnalyticSize,
+                  ),
+                ],
+              ),
+            )),
+        ElevatedButton(
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (context) => const AlertDialog(
+                        title: Text('Views'),
+                      ));
+            },
+            style: analyticStyle.copyWith(
+              backgroundColor: MaterialStateProperty.all<Color>(palette[3]),
+            ),
+            child: const FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text('16',
+                          style: TextStyle(
+                              fontSize: valueAnalyticRatio * maxAnalyticSize,
+                              fontWeight: FontWeight.bold)),
+                      Text('Days since ePortfolio was edited',
+                          style: TextStyle(
+                              fontSize: maxAnalyticSize,
+                              fontWeight: FontWeight.bold)),
+                      SizedBox(
+                          height:
+                              interAnalyticIconSpacingRatio * maxAnalyticSize),
+                    ],
+                  ),
+                  Icon(
+                    Icons.edit,
+                    size: iconAnalyticRatio * maxAnalyticSize,
+                  ),
+                ],
+              ),
+            )),
+        ElevatedButton(
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (context) => const AlertDialog(
+                        title: Text('Views'),
+                      ));
+            },
+            style: analyticStyle.copyWith(
+              backgroundColor: MaterialStateProperty.all<Color>(palette[4]),
+            ),
+            child: const FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text('16',
+                          style: TextStyle(
+                              fontSize: valueAnalyticRatio * maxAnalyticSize,
+                              fontWeight: FontWeight.bold)),
+                      Text('Days since ePortfolio was edited',
+                          style: TextStyle(
+                              fontSize: maxAnalyticSize,
+                              fontWeight: FontWeight.bold)),
+                      SizedBox(
+                          height:
+                              interAnalyticIconSpacingRatio * maxAnalyticSize),
+                    ],
+                  ),
+                  Icon(
+                    Icons.edit,
+                    size: iconAnalyticRatio * maxAnalyticSize,
+                  ),
+                ],
+              ),
+            )),
+        ElevatedButton(
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (context) => const AlertDialog(
+                        title: Text('Views'),
+                      ));
+            },
+            style: analyticStyle.copyWith(
+              backgroundColor: MaterialStateProperty.all<Color>(palette[1]),
+            ),
+            child: const FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text('16',
+                          style: TextStyle(
+                              fontSize: valueAnalyticRatio * maxAnalyticSize,
+                              fontWeight: FontWeight.bold)),
+                      Text('Days since ePortfolio was edited',
+                          style: TextStyle(
+                              fontSize: maxAnalyticSize,
+                              fontWeight: FontWeight.bold)),
+                      SizedBox(
+                          height:
+                              interAnalyticIconSpacingRatio * maxAnalyticSize),
+                    ],
+                  ),
+                  Icon(
+                    Icons.edit,
+                    size: iconAnalyticRatio * maxAnalyticSize,
+                  ),
+                ],
+              ),
+            ))
+      ];
+
+      Widget analyticsGridWidget = SizedBox(
+        height: analyticsWidgetList.length%3 * 300,
+        child: CustomScrollView(
+        primary: true,
+        slivers: <Widget>[
+          SliverGrid.count(
+            crossAxisSpacing: analyticsGridSpacing,
+            mainAxisSpacing: analyticsGridSpacing,
+            crossAxisCount: analyticCardRowCount,
+            childAspectRatio: analyticCardAspectRatio,
+            children: analyticsWidgetList,
+          ),
+        ],
+        )
+      );
+
+      Widget editorTitleWidget = Text(
+        '––– Editor',
+        style: PublicViewTextStyles.generalHeading
+            .copyWith(fontSize: titleFontSize),
+      );
+
+      Widget editorSubtitleWidget = Text(
+        'Start editing your ePortfolio by clicking on a section below.',
+        style: PublicViewTextStyles.generalBodyText
+            .copyWith(fontSize: subtitleFontSize),
+      );
+
+      Widget editorGridWidget = SizedBox(
+        width: editorButtonsWidth,
+        child: StaggeredGrid.count(
+          crossAxisCount: 5,
+          mainAxisSpacing: editorGridSpacing,
+          crossAxisSpacing: editorGridSpacing,
+          children: const [
+            StaggeredGridTile.count(
+              crossAxisCellCount: 4,
+              mainAxisCellCount: 1,
+              child: LandingPageAdmin(),
+            ),
+            StaggeredGridTile.count(
+              crossAxisCellCount: 1,
+              mainAxisCellCount: 2,
+              child: AboutMeSectionAdmin(),
+            ),
+            StaggeredGridTile.count(
+              crossAxisCellCount: 2,
+              mainAxisCellCount: 2,
+              child: ExperienceSectionAdmin(),
+            ),
+            StaggeredGridTile.count(
+              crossAxisCellCount: 2,
+              mainAxisCellCount: 1,
+              child: EducationSectionAdmin(),
+            ),
+            StaggeredGridTile.count(
+              crossAxisCellCount: 1,
+              mainAxisCellCount: 2,
+              child: AwardCertSectionAdmin(),
+            ),
+            StaggeredGridTile.count(
+              crossAxisCellCount: 2,
+              mainAxisCellCount: 1,
+              child: TSkillSectionAdmin(),
+            ),
+            StaggeredGridTile.count(
+              crossAxisCellCount: 2,
+              mainAxisCellCount: 1,
+              child: RecommendationSectionAdmin(),
+            ),
+            StaggeredGridTile.count(
+              crossAxisCellCount: 2,
+              mainAxisCellCount: 1,
+              child: ISkillSectionAdmin(),
+            ),
+            StaggeredGridTile.count(
+              crossAxisCellCount: 2,
+              mainAxisCellCount: 1,
+              child: ProjectSectionAdmin(),
+            ),
+            StaggeredGridTile.count(
+              crossAxisCellCount: 3,
+              mainAxisCellCount: 1,
+              child: ContactSectionAdmin(),
+            ),
+          ],
+        ),
+      );
+
+      if (bc.maxWidth > 1200) {
+        return Scaffold(
+          body: SizedBox(
+              height: bc.maxHeight,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                        child: Padding(
+                      padding: halfPadding,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          navbarWidget,
+                          navbarBottomSpacing,
+                          welcomeWidget,
+                          interWelcomePoweredSpacing,
+                          poweredWidget,
+                          interPowerViewSpacing,
+                          viewButtonWidget,
+                          interViewAnalyticsSpacing,
+                          analyticsTitleWidget,
+                          analyticsSubtitleWidget,
+                          interAnalysticCardsSpacing,
+                          Expanded(child: analyticsGridWidget)
+                        ],
+                      ),
+                    )),
+                    Expanded(
+                        child: Container(
+                            padding: halfPadding,
+                            color: greyBg,
+                            child: Column(
+                              children: [
+                                aboveEditorSpacing,
+                                Align(
+                                    alignment: Alignment.center,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        editorTitleWidget,
+                                        editorSubtitleWidget,
+                                      ],
+                                    )),
+                                interEditorButtonsSpacing,
+                                editorGridWidget,
+                              ],
+                            ))),
+                  ])),
+        );
+      } else {
+        return Scaffold(
+          body: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                navbarWidget,
+                navbarBottomSpacing,
+                welcomeWidget,
+                interWelcomePoweredSpacing,
+                poweredWidget,
+                interPowerViewSpacing,
+                viewButtonWidget,
+                interViewAnalyticsSpacing,
+                aboveEditorSpacing,
+                Align(
+                  alignment: Alignment.center,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      editorTitleWidget,
+                      editorSubtitleWidget,
+                    ],
+                  ),
+                ),
+                interEditorButtonsSpacing,
+                editorGridWidget,
+                analyticsTitleWidget,
+                analyticsSubtitleWidget,
+                interAnalysticCardsSpacing,
+                analyticsGridWidget,
+              ],
+            ),
+          ),
+        );
+      }
     });
   }
 }
