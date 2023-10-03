@@ -29,8 +29,6 @@ String formatEndDateTimestamp(Timestamp? timestamp) {
   return formatTimestamp(timestamp);
 }
 
-const Duration _frameDuration = Duration(milliseconds: 100);
-
 @GenerateMocks([Education, EducationSectionController])
 void main() {
   group('Experience Section Widget Test', () {
@@ -169,7 +167,7 @@ void main() {
 
         await tester.fling(
             find.byType(PageView), const Offset(-200.0, 0.0), 1000.0);
-        await tester.pumpAndSettle(_frameDuration);
+        await tester.pumpAndSettle();
 
         expect(
             find.byType(EducationWidget),
