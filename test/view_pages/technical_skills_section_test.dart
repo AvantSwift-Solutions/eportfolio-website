@@ -1,7 +1,6 @@
 import 'package:avantswift_portfolio/controllers/view_controllers/technical_skills_controller.dart';
 import 'package:avantswift_portfolio/models/TSkill.dart';
 import 'package:avantswift_portfolio/ui/tskill_image.dart';
-import 'package:avantswift_portfolio/view_pages/interpersonal_skills_section.dart';
 import 'package:avantswift_portfolio/view_pages/technical_skills_section.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +8,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:run_with_network_images/run_with_network_images.dart';
-import 'mocks/interpersonal_skills_section_test.mocks.dart';
 import 'mocks/technical_skills_section_test.mocks.dart';
 
 @GenerateMocks([TSkill, TechnicalSkillsController])
