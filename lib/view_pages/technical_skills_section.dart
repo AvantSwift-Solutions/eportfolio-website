@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import '../ui/custom_texts/public_view_text_styles.dart';
 
 class TechnicalSkillsWidget extends StatefulWidget {
-  const TechnicalSkillsWidget({Key? key}) : super(key: key);
+  final TechnicalSkillsController? controller;
+  const TechnicalSkillsWidget({Key? key, this.controller}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -16,14 +17,16 @@ class TechnicalSkillsWidget extends StatefulWidget {
 class _TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
   final PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
-  final TechnicalSkillsController _technicalSkillsController =
-      TechnicalSkillsController(TSkillRepoService());
+  late TechnicalSkillsController _technicalSkillsController;
   List<Image> allSurroundingImages = [];
   Image? centreImage;
 
   @override
   void initState() {
     super.initState();
+    _technicalSkillsController =
+        widget.controller ?? TechnicalSkillsController(TSkillRepoService());
+
     _loadImages();
   }
 
