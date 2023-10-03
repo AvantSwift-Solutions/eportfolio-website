@@ -1,17 +1,12 @@
-import 'package:avantswift_portfolio/controllers/view_controllers/about_me_section_controller.dart';
 import 'package:avantswift_portfolio/controllers/view_controllers/interpersonal_skills_section_controller.dart';
-import 'package:avantswift_portfolio/dto/about_me_section_dto.dart';
 import 'package:avantswift_portfolio/models/ISkill.dart';
-import 'package:avantswift_portfolio/view_pages/about_me_section.dart';
 import 'package:avantswift_portfolio/view_pages/interpersonal_skills_section.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:avantswift_portfolio/models/User.dart';
 import 'package:run_with_network_images/run_with_network_images.dart';
-import 'mocks/about_me_section_test.mocks.dart';
 import 'mocks/interpersonal_skills_section_test.mocks.dart';
 
 @GenerateMocks([ISkill, InterpersonalSkillsController])
