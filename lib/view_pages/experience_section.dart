@@ -55,7 +55,6 @@ class ExperienceSectionState extends State<ExperienceSection> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
     double titleFontSize = screenWidth * 0.05;
 
     // Determine the number of experiences to display based on showAllExperiences
@@ -145,7 +144,7 @@ class ExperienceWidget extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Container(
+                  SizedBox(
                     width: screenWidth * 0.048,
                     height: screenWidth * 0.048,
                     child: Image.network(
