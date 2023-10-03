@@ -3,6 +3,7 @@ import 'package:avantswift_portfolio/view_pages/project_section.dart';
 import 'package:avantswift_portfolio/view_pages/award_cert_section.dart';
 import 'package:avantswift_portfolio/view_pages/skills_education_section.dart';
 import 'package:flutter/material.dart';
+import 'app_bar_and_search_section.dart';
 import 'landing_page.dart';
 import 'experience_section.dart';
 import 'contact_section.dart';
@@ -56,6 +57,7 @@ class SinglePageView extends StatelessWidget {
           controller: _scrollController,
           child: Column(
             children: [
+              AppBarAndSearchSection(),
               LandingPage(
                 scrollToBottom: _scrollToContact,
               ),

@@ -82,7 +82,7 @@ class RecommendationSectionState extends State<RecommendationSection> {
           ),
         ),
         SizedBox(
-          height: 700,
+          height: 900,      // Changed it manually due to RenderFlex overflow
           child: PageView.builder(
             controller: _pageController,
             itemCount: totalPages,

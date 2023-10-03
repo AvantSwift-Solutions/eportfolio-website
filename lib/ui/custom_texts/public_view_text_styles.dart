@@ -35,6 +35,7 @@ class PublicViewTextStyles {
     fontFamily: 'Montserrat',
   );
 
+
   static TextStyle generalSubHeading = const TextStyle(
     fontSize: 32,
     fontWeight: FontWeight.w600,
