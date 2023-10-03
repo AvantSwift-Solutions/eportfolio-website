@@ -65,6 +65,20 @@ class AdminViewDialogStyles {
   static MaterialStateProperty<Color> projColor =
       MaterialStateProperty.all<Color>(const Color.fromRGBO(3, 169, 244, 1));
 
+  static void reduceEditSectionButtonPadding() {
+    editSectionButtonStyle = editSectionButtonStyle.copyWith(
+      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+          const EdgeInsets.symmetric(vertical: 10, horizontal: 8)),
+    );
+  }
+
+  static void increaseEditSectionButtonPadding() {
+    editSectionButtonStyle = editSectionButtonStyle.copyWith(
+      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+          const EdgeInsets.symmetric(vertical: 20, horizontal: 15)),
+    );
+  }
+
   static ButtonStyle editSectionButtonStyle = ButtonStyle(
     backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF0074D9)),
     // foregroundColor controls the text color

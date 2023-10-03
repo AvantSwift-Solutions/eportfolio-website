@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:avantswift_portfolio/admin_pages/award_cert_section_admin.dart';
 import 'package:avantswift_portfolio/admin_pages/education_section_admin.dart';
 import 'package:avantswift_portfolio/admin_pages/landing_page_admin.dart';
@@ -9,6 +11,7 @@ import 'package:avantswift_portfolio/admin_pages/recommendation_section_admin.da
 import 'package:avantswift_portfolio/admin_pages/tskill_section_admin.dart';
 import 'package:avantswift_portfolio/admin_pages/iskill_section_admin.dart';
 import 'package:avantswift_portfolio/models/User.dart';
+import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:avantswift_portfolio/ui/custom_texts/public_view_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -48,10 +51,16 @@ class DefaultPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (BuildContext context, BoxConstraints bc) {
+      // print("width: ${bc.maxWidth}, height: ${bc.maxHeight}");
       double verticalPaddingMultiplier = 0.05;
       EdgeInsets halfPadding = EdgeInsets.symmetric(
           horizontal: bc.maxWidth * 0.03,
           vertical: bc.maxHeight * verticalPaddingMultiplier);
+      EdgeInsets mobilePadding = EdgeInsets.only(
+                left: bc.maxWidth * 0.04,
+                right: bc.maxWidth * 0.04,
+                top: 30);
+      String welcomeMessage = 'Welcome to your ePortfolio\nAdmin Panel, ${user.nickname}';
       double maxWelcomeFontSize = 60,
           titleFontSize = 42,
           subtitleFontSize = 22,
@@ -72,6 +81,7 @@ class DefaultPage extends StatelessWidget {
           SizedBox(height: bc.maxHeight * 0.02);
       int analyticCardRowCount = 3;
       double analyticCardAspectRatio = 1.4;
+      double analyticsHeightPerRow = bc.maxWidth * 0.25;
 
       SizedBox aboveEditorSpacing = SizedBox(
           height: bc.maxHeight * (navbarBottomSpacingMultiplier + 0.01) +
@@ -93,10 +103,19 @@ class DefaultPage extends StatelessWidget {
               navbarFontSize +
               titleFontSize);
 
+      if (bc.maxWidth > 1200) {
+        AdminViewDialogStyles.increaseEditSectionButtonPadding();
+      }
       if (bc.maxWidth < 1200) {
-        // maxWelcomeFontSize = 55;
-        // titleFontSize = 48;
-        // subtitleFontSize = 22;
+        editorButtonsWidth = min(800, bc.maxWidth);
+        interEditorButtonsSpacing = SizedBox(height: bc.maxHeight * 0.03);
+        interAnalysticCardsSpacing = interEditorButtonsSpacing;
+        AdminViewDialogStyles.reduceEditSectionButtonPadding();
+      }
+      if (bc.maxWidth < 800) {
+        welcomeMessage = 'Welcome to your\nePortfolio Admin\nPanel, ${user.nickname}';
+        analyticCardRowCount = 2;
+        analyticsHeightPerRow = bc.maxWidth*1.1;
       }
 
       Widget navbarWidget = Row(
@@ -121,8 +140,7 @@ class DefaultPage extends StatelessWidget {
 
       Widget welcomeWidget = FittedBox(
         fit: BoxFit.scaleDown,
-        child: Text(
-          'Welcome to your ePortfolio\nAdmin Panel, ${user.nickname}',
+        child: Text(welcomeMessage,
           style: PublicViewTextStyles.generalHeading
               .copyWith(fontSize: maxWelcomeFontSize),
         ),
@@ -381,20 +399,19 @@ class DefaultPage extends StatelessWidget {
       ];
 
       Widget analyticsGridWidget = SizedBox(
-        height: analyticsWidgetList.length%3 * 300,
-        child: CustomScrollView(
-        primary: true,
-        slivers: <Widget>[
-          SliverGrid.count(
-            crossAxisSpacing: analyticsGridSpacing,
-            mainAxisSpacing: analyticsGridSpacing,
-            crossAxisCount: analyticCardRowCount,
-            childAspectRatio: analyticCardAspectRatio,
-            children: analyticsWidgetList,
-          ),
-        ],
-        )
-      );
+          height: analyticsWidgetList.length % analyticCardRowCount * analyticsHeightPerRow,
+          child: CustomScrollView(
+            primary: true,
+            slivers: <Widget>[
+              SliverGrid.count(
+                crossAxisSpacing: analyticsGridSpacing,
+                mainAxisSpacing: analyticsGridSpacing,
+                crossAxisCount: analyticCardRowCount,
+                childAspectRatio: analyticCardAspectRatio,
+                children: analyticsWidgetList,
+              ),
+            ],
+          ));
 
       Widget editorTitleWidget = Text(
         '––– Editor',
@@ -525,38 +542,39 @@ class DefaultPage extends StatelessWidget {
       } else {
         return Scaffold(
           body: SingleChildScrollView(
+              child: Padding(
+            padding: mobilePadding,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                navbarWidget,
+                FittedBox(
+                  child: navbarWidget
+                ),
                 navbarBottomSpacing,
                 welcomeWidget,
                 interWelcomePoweredSpacing,
-                poweredWidget,
+                FittedBox(
+                  child: poweredWidget
+                ),                
                 interPowerViewSpacing,
                 viewButtonWidget,
-                interViewAnalyticsSpacing,
-                aboveEditorSpacing,
+                interPowerViewSpacing,
+                editorTitleWidget,
+                editorSubtitleWidget,
+                interEditorButtonsSpacing,
                 Align(
                   alignment: Alignment.center,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      editorTitleWidget,
-                      editorSubtitleWidget,
-                    ],
-                  ),
+                  child: editorGridWidget,
                 ),
-                interEditorButtonsSpacing,
-                editorGridWidget,
+                interPowerViewSpacing,
                 analyticsTitleWidget,
                 analyticsSubtitleWidget,
                 interAnalysticCardsSpacing,
                 analyticsGridWidget,
               ],
             ),
-          ),
+          )),
         );
       }
     });
