@@ -5,16 +5,18 @@ import 'package:avantswift_portfolio/reposervice/recommendation_repo_services.da
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+import '../controllers/view_controllers/recommendation_section_controller.dart';
+
 class RecommendationSection extends StatefulWidget {
-  const RecommendationSection({Key? key}) : super(key: key);
+  final RecommendationSectionController? controller;
+  const RecommendationSection({Key? key, this.controller}) : super(key: key);
 
   @override
   RecommendationSectionState createState() => RecommendationSectionState();
 }
 
 class RecommendationSectionState extends State<RecommendationSection> {
-  final RecommendationRepoService _recommendationRepoService =
-      RecommendationRepoService();
+  late RecommendationSectionController _recommendationSectionController;
   List<Recommendation>? recommendations;
   final PageController _pageController =
       PageController(viewportFraction: 1.0, initialPage: 0);
@@ -24,6 +26,8 @@ class RecommendationSectionState extends State<RecommendationSection> {
   @override
   void initState() {
     super.initState();
+    _recommendationSectionController = widget.controller ??
+        RecommendationSectionController(RecommendationRepoService());
     _pageController.addListener(() {
       setState(() {
         _currentPage = _pageController.page?.toInt() ?? 0;
@@ -36,7 +40,7 @@ class RecommendationSectionState extends State<RecommendationSection> {
   Future<void> fetchData() async {
     try {
       final List<Recommendation>? fetchedRecommendations =
-          await _recommendationRepoService.getAllRecommendations();
+          await _recommendationSectionController.getRecommendationSectionData();
       setState(() {
         recommendations = fetchedRecommendations;
       });
