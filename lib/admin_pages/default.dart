@@ -39,7 +39,6 @@ class DefaultPage extends StatelessWidget {
   static const double maxAnalyticSize = 100;
   static const double valueAnalyticRatio = 3;
   static const double iconAnalyticRatio = 3;
-  static const double interAnalyticIconSpacingRatio = 2;
 
   static const double analyticsGridSpacing = 15;
   static const double editorGridSpacing = 10;
@@ -57,10 +56,9 @@ class DefaultPage extends StatelessWidget {
           horizontal: bc.maxWidth * 0.03,
           vertical: bc.maxHeight * verticalPaddingMultiplier);
       EdgeInsets mobilePadding = EdgeInsets.only(
-                left: bc.maxWidth * 0.04,
-                right: bc.maxWidth * 0.04,
-                top: 30);
-      String welcomeMessage = 'Welcome to your ePortfolio\nAdmin Panel, ${user.nickname}';
+          left: bc.maxWidth * 0.04, right: bc.maxWidth * 0.04, top: 30);
+      String welcomeMessage =
+          'Welcome to your ePortfolio\nAdmin Panel, ${user.nickname}';
       double maxWelcomeFontSize = 60,
           titleFontSize = 42,
           subtitleFontSize = 22,
@@ -82,6 +80,8 @@ class DefaultPage extends StatelessWidget {
       int analyticCardRowCount = 3;
       double analyticCardAspectRatio = 1.4;
       double analyticsHeightPerRow = bc.maxWidth * 0.25;
+      double interAnalyticIconSpacingRatio = 2;
+      double analyticBotPaddingRatio = 0.5;
 
       SizedBox aboveEditorSpacing = SizedBox(
           height: bc.maxHeight * (navbarBottomSpacingMultiplier + 0.01) +
@@ -111,11 +111,13 @@ class DefaultPage extends StatelessWidget {
         interEditorButtonsSpacing = SizedBox(height: bc.maxHeight * 0.03);
         interAnalysticCardsSpacing = interEditorButtonsSpacing;
         AdminViewDialogStyles.reduceEditSectionButtonPadding();
+        interAnalyticIconSpacingRatio = 1;
       }
       if (bc.maxWidth < 800) {
-        welcomeMessage = 'Welcome to your\nePortfolio Admin\nPanel, ${user.nickname}';
+        welcomeMessage =
+            'Welcome to your\nePortfolio Admin\nPanel, ${user.nickname}';
         analyticCardRowCount = 2;
-        analyticsHeightPerRow = bc.maxWidth*1.1;
+        analyticsHeightPerRow = bc.maxWidth * 1.1;
       }
 
       Widget navbarWidget = Row(
@@ -140,7 +142,8 @@ class DefaultPage extends StatelessWidget {
 
       Widget welcomeWidget = FittedBox(
         fit: BoxFit.scaleDown,
-        child: Text(welcomeMessage,
+        child: Text(
+          welcomeMessage,
           style: PublicViewTextStyles.generalHeading
               .copyWith(fontSize: maxWelcomeFontSize),
         ),
@@ -212,7 +215,7 @@ class DefaultPage extends StatelessWidget {
             style: analyticStyle.copyWith(
               backgroundColor: MaterialStateProperty.all<Color>(palette[1]),
             ),
-            child: const FittedBox(
+            child: FittedBox(
               fit: BoxFit.scaleDown,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -220,12 +223,15 @@ class DefaultPage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text('8',
+                      const Text('x',
                           style: TextStyle(
                               fontSize: valueAnalyticRatio * maxAnalyticSize,
                               fontWeight: FontWeight.bold)),
-                      Text('ePortfolio views in the past week',
-                          style: TextStyle(
+                      Text(
+                          (bc.maxWidth > 1200)
+                              ? 'ePortfolio views last week'
+                              : 'Views last week',
+                          style: const TextStyle(
                               fontSize: maxAnalyticSize,
                               fontWeight: FontWeight.bold)),
                       SizedBox(
@@ -233,10 +239,11 @@ class DefaultPage extends StatelessWidget {
                               interAnalyticIconSpacingRatio * maxAnalyticSize),
                     ],
                   ),
-                  Icon(
+                  const Icon(
                     Icons.visibility,
                     size: iconAnalyticRatio * maxAnalyticSize,
                   ),
+                  SizedBox(height: analyticBotPaddingRatio * maxAnalyticSize),
                 ],
               ),
             )),
@@ -245,13 +252,13 @@ class DefaultPage extends StatelessWidget {
               showDialog(
                   context: context,
                   builder: (context) => const AlertDialog(
-                        title: Text('Views'),
+                        title: Text('Messages'),
                       ));
             },
             style: analyticStyle.copyWith(
               backgroundColor: MaterialStateProperty.all<Color>(palette[2]),
             ),
-            child: const FittedBox(
+            child: FittedBox(
               fit: BoxFit.scaleDown,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -259,12 +266,15 @@ class DefaultPage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text('3',
+                      const Text('x',
                           style: TextStyle(
                               fontSize: valueAnalyticRatio * maxAnalyticSize,
                               fontWeight: FontWeight.bold)),
-                      Text('New messages in the past month',
-                          style: TextStyle(
+                      Text(
+                          (bc.maxWidth > 1200)
+                              ? 'Messages in the last month'
+                              : 'Messages last month',
+                          style: const TextStyle(
                               fontSize: maxAnalyticSize,
                               fontWeight: FontWeight.bold)),
                       SizedBox(
@@ -272,25 +282,20 @@ class DefaultPage extends StatelessWidget {
                               interAnalyticIconSpacingRatio * maxAnalyticSize),
                     ],
                   ),
-                  Icon(
+                  const Icon(
                     Icons.chat,
                     size: iconAnalyticRatio * maxAnalyticSize,
                   ),
+                  SizedBox(height: analyticBotPaddingRatio * maxAnalyticSize),
                 ],
               ),
             )),
         ElevatedButton(
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (context) => const AlertDialog(
-                        title: Text('Views'),
-                      ));
-            },
+            onPressed: () {},
             style: analyticStyle.copyWith(
               backgroundColor: MaterialStateProperty.all<Color>(palette[3]),
             ),
-            child: const FittedBox(
+            child: FittedBox(
               fit: BoxFit.scaleDown,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -298,12 +303,15 @@ class DefaultPage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text('16',
+                      const Text('x',
                           style: TextStyle(
                               fontSize: valueAnalyticRatio * maxAnalyticSize,
                               fontWeight: FontWeight.bold)),
-                      Text('Days since ePortfolio was edited',
-                          style: TextStyle(
+                      Text(
+                          (bc.maxWidth > 1200)
+                              ? 'Days since last ePortfolio edit'
+                              : 'Days since last edit',
+                          style: const TextStyle(
                               fontSize: maxAnalyticSize,
                               fontWeight: FontWeight.bold)),
                       SizedBox(
@@ -311,25 +319,20 @@ class DefaultPage extends StatelessWidget {
                               interAnalyticIconSpacingRatio * maxAnalyticSize),
                     ],
                   ),
-                  Icon(
+                  const Icon(
                     Icons.edit,
                     size: iconAnalyticRatio * maxAnalyticSize,
                   ),
+                  SizedBox(height: analyticBotPaddingRatio * maxAnalyticSize),
                 ],
               ),
             )),
         ElevatedButton(
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (context) => const AlertDialog(
-                        title: Text('Views'),
-                      ));
-            },
+            onPressed: () {},
             style: analyticStyle.copyWith(
               backgroundColor: MaterialStateProperty.all<Color>(palette[4]),
             ),
-            child: const FittedBox(
+            child: FittedBox(
               fit: BoxFit.scaleDown,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -337,12 +340,15 @@ class DefaultPage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text('16',
+                      const Text('x',
                           style: TextStyle(
                               fontSize: valueAnalyticRatio * maxAnalyticSize,
                               fontWeight: FontWeight.bold)),
-                      Text('Days since ePortfolio was edited',
-                          style: TextStyle(
+                      Text(
+                          (bc.maxWidth > 1200)
+                              ? 'Days since last ePortfolio edit'
+                              : 'Days since last edit',
+                          style: const TextStyle(
                               fontSize: maxAnalyticSize,
                               fontWeight: FontWeight.bold)),
                       SizedBox(
@@ -350,25 +356,20 @@ class DefaultPage extends StatelessWidget {
                               interAnalyticIconSpacingRatio * maxAnalyticSize),
                     ],
                   ),
-                  Icon(
+                  const Icon(
                     Icons.edit,
                     size: iconAnalyticRatio * maxAnalyticSize,
                   ),
+                  SizedBox(height: analyticBotPaddingRatio * maxAnalyticSize),
                 ],
               ),
             )),
         ElevatedButton(
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (context) => const AlertDialog(
-                        title: Text('Views'),
-                      ));
-            },
+            onPressed: () {},
             style: analyticStyle.copyWith(
               backgroundColor: MaterialStateProperty.all<Color>(palette[1]),
             ),
-            child: const FittedBox(
+            child: FittedBox(
               fit: BoxFit.scaleDown,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -376,12 +377,15 @@ class DefaultPage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text('16',
+                      const Text('x',
                           style: TextStyle(
                               fontSize: valueAnalyticRatio * maxAnalyticSize,
                               fontWeight: FontWeight.bold)),
-                      Text('Days since ePortfolio was edited',
-                          style: TextStyle(
+                      Text(
+                          (bc.maxWidth > 1200)
+                              ? 'Days since last ePortfolio edit'
+                              : 'Days since last edit',
+                          style: const TextStyle(
                               fontSize: maxAnalyticSize,
                               fontWeight: FontWeight.bold)),
                       SizedBox(
@@ -389,17 +393,20 @@ class DefaultPage extends StatelessWidget {
                               interAnalyticIconSpacingRatio * maxAnalyticSize),
                     ],
                   ),
-                  Icon(
+                  const Icon(
                     Icons.edit,
                     size: iconAnalyticRatio * maxAnalyticSize,
                   ),
+                  SizedBox(height: analyticBotPaddingRatio * maxAnalyticSize),
                 ],
               ),
-            ))
+            )),
       ];
 
       Widget analyticsGridWidget = SizedBox(
-          height: analyticsWidgetList.length % analyticCardRowCount * analyticsHeightPerRow,
+          height: analyticsWidgetList.length %
+              analyticCardRowCount *
+              analyticsHeightPerRow,
           child: CustomScrollView(
             primary: true,
             slivers: <Widget>[
@@ -548,15 +555,11 @@ class DefaultPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                FittedBox(
-                  child: navbarWidget
-                ),
+                FittedBox(child: navbarWidget),
                 navbarBottomSpacing,
                 welcomeWidget,
                 interWelcomePoweredSpacing,
-                FittedBox(
-                  child: poweredWidget
-                ),                
+                FittedBox(child: poweredWidget),
                 interPowerViewSpacing,
                 viewButtonWidget,
                 interPowerViewSpacing,
