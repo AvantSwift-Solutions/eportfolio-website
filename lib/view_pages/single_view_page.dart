@@ -1,3 +1,4 @@
+import 'package:avantswift_portfolio/dto/section_keys_dto.dart';
 import 'package:avantswift_portfolio/view_pages/about_me_section.dart';
 import 'package:avantswift_portfolio/view_pages/project_section.dart';
 import 'package:avantswift_portfolio/view_pages/award_cert_section.dart';
@@ -11,6 +12,7 @@ import 'menu_section.dart';
 
 class SinglePageView extends StatelessWidget {
   final ScrollController _scrollController = ScrollController();
+  final GlobalKey _aboutMeKey = GlobalKey();
   final GlobalKey _contactKey = GlobalKey();
   final GlobalKey _experienceKey = GlobalKey();
   final GlobalKey _skillsEduKey = GlobalKey();
@@ -43,21 +45,26 @@ class SinglePageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sectionKeys = {
-      'experience': _experienceKey,
-      'skills_edu': _skillsEduKey,
-      'projects': _projectsKey,
-      'awards_certs': _awardsCertsKey,
-      'contact': _contactKey
-    };
-
+    final sectionKeys = SectionKeysDTO(
+      experience: _experienceKey,
+      skillsEdu: _skillsEduKey,
+      projects: _projectsKey,
+      awardsCerts: _awardsCertsKey,
+      contact: _contactKey,
+      aboutMe: _aboutMeKey,
+    );
     return Scaffold(
       body: SizedBox(
         child: SingleChildScrollView(
           controller: _scrollController,
           child: Column(
             children: [
-              AppBarAndSearchSection(),
+              const SizedBox(height: 20),
+              AppBarAndSearchSection(
+                sectionKeys: sectionKeys,
+                scrollToSection: _scrollToSection,
+              ),
+              const SizedBox(height: 50),
               LandingPage(
                 scrollToBottom: _scrollToContact,
               ),
@@ -66,7 +73,7 @@ class SinglePageView extends StatelessWidget {
                 scrollToSection: _scrollToSection,
                 sectionKeys: sectionKeys, // Pass the map of section keys
               ),
-              const AboutMeSection(),
+              AboutMeSection(key: _aboutMeKey),
               const SizedBox(height: 100),
               ExperienceSection(key: _experienceKey),
               const SizedBox(height: 100),

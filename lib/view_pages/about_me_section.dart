@@ -6,7 +6,7 @@ import '../reposervice/user_repo_services.dart';
 import '../ui/custom_texts/public_view_text_styles.dart';
 
 class AboutMeSection extends StatefulWidget {
-  const AboutMeSection({super.key});
+  const AboutMeSection({Key? key}) : super(key: key);
 
   @override
   AboutMeSectionState createState() => AboutMeSectionState();
