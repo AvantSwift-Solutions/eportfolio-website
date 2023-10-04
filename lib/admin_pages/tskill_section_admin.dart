@@ -1,4 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
 import 'dart:typed_data';
 import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
 import 'package:avantswift_portfolio/controllers/admin_controllers/upload_image_admin_controller.dart';
@@ -7,42 +6,53 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
-import '../controllers/admin_controllers/tskill_section_admin_controller.dart';
-import '../models/TSkill.dart';
-import '../reposervice/tskill_repo_services.dart';
+import 'package:avantswift_portfolio/controllers/admin_controllers/tskill_section_admin_controller.dart';
+import 'package:avantswift_portfolio/models/TSkill.dart';
+import 'package:avantswift_portfolio/reposervice/tskill_repo_services.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-class TSkillSectionAdmin extends StatelessWidget {
-  final TSkillSectionAdminController _adminController =
-      TSkillSectionAdminController(TSkillRepoService());
-  late final BuildContext parentContext;
+class TSkillSectionAdmin extends StatefulWidget {
+  const TSkillSectionAdmin({super.key});
+  @override
+  State<TSkillSectionAdmin> createState() => _TSkillSectionAdminState();
+}
 
-  TSkillSectionAdmin({super.key});
+class _TSkillSectionAdminState extends State<TSkillSectionAdmin> {
+  late TSkillSectionAdminController _adminController;
+  late List<TSkill> tskills;
+  late final BuildContext parentContext;
+  late String centerImageURL;
+
+  @override
+  void initState() {
+    super.initState();
+    _adminController = TSkillSectionAdminController(TSkillRepoService());
+    _loadItems();
+  }
+
+  Future<void> _loadItems() async {
+    tskills = await _adminController.getSectionData() ?? [];
+    centerImageURL = await FirebaseStorage.instance
+        .ref('images/technical_skills_image')
+        .getDownloadURL();
+  }
 
   @override
   Widget build(BuildContext context) {
     parentContext = context;
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              onPressed: () {
-                _showList(context);
-              },
-              child: const Text('Edit Technical Skill Info'),
-            ),
-          ),
-        ],
-      ),
-    );
+    return ElevatedButton(
+        onPressed: () {
+          _showList(context);
+        },
+        style: AdminViewDialogStyles.editSectionButtonStyle
+            .copyWith(backgroundColor: AdminViewDialogStyles.eduSkillsColor),
+        child: const FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text('Technical Skills'),
+        ));
   }
 
-  Future<void> _editCenterImage(BuildContext context) async {
-    String curimageURL = await FirebaseStorage.instance
-        .ref('images/technical_skills_image')
-        .getDownloadURL();
+  void _editCenterImage(BuildContext context) {
     Uint8List? pickedImageBytes;
 
     showDialog(
@@ -97,9 +107,9 @@ class TSkillSectionAdmin extends StatelessWidget {
                                 if (pickedImageBytes != null)
                                   Image.memory(pickedImageBytes!,
                                       width: AdminViewDialogStyles.imageWidth),
-                                if (curimageURL != '' &&
+                                if (centerImageURL != '' &&
                                     pickedImageBytes == null)
-                                  Image.network(curimageURL,
+                                  Image.network(centerImageURL,
                                       width: AdminViewDialogStyles.imageWidth),
                                 AdminViewDialogStyles.interTitleField,
                                 ElevatedButton(
@@ -116,7 +126,7 @@ class TSkillSectionAdmin extends StatelessWidget {
                                       children: [
                                         const Icon(Icons.add),
                                         Text(
-                                          curimageURL == ''
+                                          centerImageURL == ''
                                               ? 'Add Image'
                                               : 'Change Image',
                                           style: AdminViewDialogStyles
@@ -151,6 +161,7 @@ class TSkillSectionAdmin extends StatelessWidget {
                                             .uploadImageAndGetURL(
                                                 pickedImageBytes!,
                                                 'technical_skills_image');
+                                    if (!mounted) return;
                                     if (imageURL != null) {
                                       ScaffoldMessenger.of(parentContext)
                                           .showSnackBar(
@@ -197,8 +208,7 @@ class TSkillSectionAdmin extends StatelessWidget {
     );
   }
 
-  Future<void> _showList(BuildContext context) async {
-    List<TSkill> tskills = await _adminController.getSectionData() ?? [];
+  void _showList(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -328,7 +338,7 @@ class TSkillSectionAdmin extends StatelessWidget {
                           ElevatedButton(
                             style: AdminViewDialogStyles.elevatedButtonStyle,
                             onPressed: () {
-                              _showAddNewDialog(context, tskills);
+                              _showAddNewDialog(context);
                             },
                             child: Text(
                               'Add New',
@@ -346,24 +356,24 @@ class TSkillSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showAddNewDialog(BuildContext context, List<TSkill> tskillList) async {
+  void _showAddNewDialog(BuildContext context) {
     final id = const Uuid().v4();
     final tskill = TSkill(
       creationTimestamp: Timestamp.now(),
       tsid: id,
-      index: tskillList.length,
+      index: tskills.length,
       name: '',
       imageURL: '',
     );
 
     _showTSkillDialog(context, tskill, (a) async {
+      tskills.add(tskill);
       return await a.create(id);
     });
   }
 
-  void _showEditDialog(BuildContext context, int i) async {
-    final tskillSectionData = await _adminController.getSectionData();
-    final tskill = tskillSectionData![i];
+  void _showEditDialog(BuildContext context, int i) {
+    final tskill = tskills[i];
 
     _showTSkillDialog(context, tskill, (a) async {
       return await a.update() ?? false;
@@ -536,6 +546,7 @@ class TSkillSectionAdmin extends StatelessWidget {
                                     }
                                     bool isSuccess =
                                         await onTSkillUpdated(tskill);
+                                    if (!mounted) return;
                                     if (isSuccess) {
                                       ScaffoldMessenger.of(parentContext)
                                           .showSnackBar(
@@ -578,7 +589,7 @@ class TSkillSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showDeleteDialog(BuildContext context, TSkill x) async {
+  void _showDeleteDialog(BuildContext context, TSkill x) {
     final name = '${x.name}';
 
     showDialog(
@@ -627,19 +638,23 @@ class TSkillSectionAdmin extends StatelessWidget {
                               onPressed: () async {
                                 final deleted = await x.delete() ?? false;
                                 if (deleted) {
+                                  tskills.remove(x);
                                   setState(() {});
+                                  if (!mounted) return;
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                         content:
                                             Text('$name deleted successfully')),
                                   );
                                 } else {
+                                  if (!mounted) return;
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                         content:
                                             Text('Failed to delete $name')),
                                   );
                                 }
+                                if (!mounted) return;
                                 Navigator.of(dialogContext).pop();
                                 Navigator.of(parentContext).pop();
                                 _showList(parentContext);
