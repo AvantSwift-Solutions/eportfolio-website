@@ -15,7 +15,6 @@ class SearchSectionController {
 
     // Use searchAllCollections to get search results
     final searchResults = await searchAllCollections(query);
-    print(searchResults);
     List<SectionResultDTO> resultsWithSection = [
       SectionResultDTO(sectionName: 'No Results', section: Sections.Experience)
     ];
@@ -43,10 +42,10 @@ class SearchSectionController {
           result.documentData['snippet'] = snippet;
 
           // Split the snippet into words
-          String formatted_snippet =
+          String formattedSnippet =
               snippet.replaceAll(',', ' ').replaceAll('}', ' ');
 
-          List<String> relevantWords = formatted_snippet.split(' ');
+          List<String> relevantWords = formattedSnippet.split(' ');
           List<String> wordsToDisplay = [relevantWords.removeAt(0)];
 
           for (var word in relevantWords) {
@@ -62,7 +61,7 @@ class SearchSectionController {
             section: SectionResultDTO.toSectionsEnumFromString(
                 result.collectionName),
             sectionName:
-                '${SectionResultDTO.StringFromEnum(SectionResultDTO.toSectionsEnumFromString(result.collectionName))}$stringToDisplay',
+                '${SectionResultDTO.stringFromEnum(SectionResultDTO.toSectionsEnumFromString(result.collectionName))}$stringToDisplay',
           ));
           result.documentData['searchResult'] = stringToDisplay;
 
@@ -78,7 +77,6 @@ class SearchSectionController {
       resultsWithSection.removeAt(0);
     }
 
-    print(resultsWithSection);
     // print('$query: $finalResults\n\n\n\n\n');
     return resultsWithSection;
     // return filteredResults.take(5).toList(); // Return the first 5 filtered results

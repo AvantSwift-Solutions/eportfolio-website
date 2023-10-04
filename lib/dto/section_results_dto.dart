@@ -47,7 +47,7 @@ class SectionResultDTO {
     }
   }
 
-  static String StringFromEnum(Sections section) {
+  static String stringFromEnum(Sections section) {
     switch (section) {
       case Sections.Experience:
         return 'Experience: ';
