@@ -10,15 +10,15 @@ import '../ui/custom_texts/public_view_text_styles.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ProjectSection extends StatefulWidget {
-  const ProjectSection({Key? key}) : super(key: key);
+  final ProjectSectionController? controller;
+  const ProjectSection({Key? key, this.controller}) : super(key: key);
 
   @override
   ProjectSectionState createState() => ProjectSectionState();
 }
 
 class ProjectSectionState extends State<ProjectSection> {
-  final ProjectSectionController _projectController =
-      ProjectSectionController(ProjectRepoService());
+  late ProjectSectionController _projectController;
   List<Project>? allProjects;
   String sectionDescription = Constants.defaultProjectSectionDescription;
   bool showAllProjects = false;
@@ -36,6 +36,8 @@ class ProjectSectionState extends State<ProjectSection> {
   @override
   void initState() {
     super.initState();
+    _projectController =
+        widget.controller ?? ProjectSectionController(ProjectRepoService());
     fetchData();
   }
 
