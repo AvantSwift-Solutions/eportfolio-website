@@ -1,5 +1,4 @@
 import 'package:avantswift_portfolio/dto/about_me_section_dto.dart';
-import 'package:avantswift_portfolio/models/User.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import '../constants.dart';
@@ -55,16 +54,16 @@ class AboutMeSectionState extends State<AboutMeSection> {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         final screenWidth = constraints.maxWidth;
-
+        bool isMobileView = screenWidth <= 600;
         double titleFontSize = screenWidth * 0.05;
         double descriptionFontSize = screenWidth * 0.01;
-        double imageSize = screenWidth > 600 ? screenWidth * 0.4 : screenWidth * 0.8;
+        double imageSize = isMobileView ? screenWidth * 0.8 : screenWidth * 0.4;
 
         // Check if it's a wide screen (desktop/tablet) or not (mobile)
-        if (screenWidth > 600) {
+        if (!isMobileView) {
           return Center(
             child: Padding(
-              padding: EdgeInsets.all(screenWidth * 0.1),
+              padding: EdgeInsets.all(screenWidth * 0.04),
               child: Flex(
                 direction: Axis.horizontal,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,24 +113,24 @@ class AboutMeSectionState extends State<AboutMeSection> {
         } else {
           return Center(
             child: Padding(
-              padding: EdgeInsets.all(screenWidth * 0.1),
+              padding: EdgeInsets.all(screenWidth * 0.2),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'A Bit About Myself...',
                     style: PublicViewTextStyles.generalHeading.copyWith(
-                      fontSize: titleFontSize * 0.8,
+                      fontSize: titleFontSize * 1.5,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 20),
                   Padding(
-                    padding: EdgeInsets.only(right: screenWidth * 0.15),
+                    padding: EdgeInsets.only(right: 0),
                     child: Text(
                       _dataLoaded ? (aboutMeData.aboutMe ?? 'Default Description') : 'Loading...',
                       style: PublicViewTextStyles.generalBodyText.copyWith(
-                        fontSize: descriptionFontSize * 2,
+                        fontSize: descriptionFontSize * 2.5,
                       ),
                     ),
                   ),
