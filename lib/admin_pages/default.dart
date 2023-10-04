@@ -538,10 +538,10 @@ class DefaultPage extends StatelessWidget {
                                       children: [
                                         editorTitleWidget,
                                         editorSubtitleWidget,
+                                        interEditorButtonsSpacing,
+                                        editorGridWidget,
                                       ],
                                     )),
-                                interEditorButtonsSpacing,
-                                editorGridWidget,
                               ],
                             ))),
                   ])),
