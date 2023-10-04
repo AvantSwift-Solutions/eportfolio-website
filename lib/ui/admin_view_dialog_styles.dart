@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 class AdminViewDialogStyles {
+  static const sectionButtonIconSize = 60.0;
+  static const sectionButtonLargeIconSize = 100.0;
+
   static const double _titleSize = 28;
   static const double _bodySize = 20;
 
@@ -51,6 +54,51 @@ class AdminViewDialogStyles {
       listTileTheme: const ListTileThemeData(
         iconColor: Colors.black,
       ));
+
+  /// Button colors for each section
+  static MaterialStateProperty<Color> expColor =
+      MaterialStateProperty.all<Color>(const Color(0xFF1F2041));
+  static MaterialStateProperty<Color> eduSkillsColor =
+      MaterialStateProperty.all<Color>(const Color.fromRGBO(96, 125, 139, 1));
+  static MaterialStateProperty<Color> recACColor =
+      MaterialStateProperty.all<Color>(const Color.fromRGBO(48, 63, 159, 1));
+  static MaterialStateProperty<Color> projColor =
+      MaterialStateProperty.all<Color>(const Color.fromRGBO(3, 169, 244, 1));
+
+  static void reduceEditSectionButtonPadding() {
+    editSectionButtonStyle = editSectionButtonStyle.copyWith(
+      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+          const EdgeInsets.symmetric(vertical: 10, horizontal: 8)),
+    );
+  }
+
+  static void increaseEditSectionButtonPadding() {
+    editSectionButtonStyle = editSectionButtonStyle.copyWith(
+      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+          const EdgeInsets.symmetric(vertical: 20, horizontal: 15)),
+    );
+  }
+
+  static ButtonStyle editSectionButtonStyle = ButtonStyle(
+    backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF0074D9)),
+    // foregroundColor controls the text color
+    foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+      RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+    ),
+    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+        const EdgeInsets.symmetric(vertical: 20, horizontal: 15)),
+    alignment: Alignment.centerLeft,
+    textStyle: MaterialStateProperty.all<TextStyle>(
+      const TextStyle(
+        // This is max size. FontSize will be scaled down to fit the box.
+        fontSize: 45,
+      ),
+    ),
+    iconSize: MaterialStateProperty.all<double>(sectionButtonIconSize),
+  );
 
   static ButtonStyle elevatedButtonStyle = ButtonStyle(
     backgroundColor: MaterialStateProperty.all<Color>(buttonColor),
