@@ -72,6 +72,11 @@ class _AppBarAndSearchSectionState extends State<AppBarAndSearchSection> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    // Calculate padding based on screen width
+    double horizontalPadding = screenWidth < 600 ? 8.0 : 106.0;
+
     return AppBar(
       title: Row(
         children: [
@@ -84,8 +89,7 @@ class _AppBarAndSearchSectionState extends State<AppBarAndSearchSection> {
           ),
           const Spacer(),
           Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 106.0), // Adjust the padding as needed
+            padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
             child: Container(
               width: 170.0, // Adjust the width as needed
               decoration: BoxDecoration(
@@ -98,49 +102,52 @@ class _AppBarAndSearchSectionState extends State<AppBarAndSearchSection> {
               child: Row(
                 children: [
                   Expanded(
-                      child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: TextField(
-                      onChanged: (text) {
-                        currentQuery = text;
-                        // Call the async method to update search results
-                      },
-                      decoration: InputDecoration(
-                        hintStyle: PublicViewTextStyles.generalBodyText,
-                        hintText: 'Search', // Left-aligned hintText
-                        border: InputBorder.none,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: TextField(
+                        onChanged: (text) {
+                          currentQuery = text;
+                          // Call the async method to update search results
+                        },
+                        decoration: InputDecoration(
+                          hintStyle: PublicViewTextStyles.generalBodyText,
+                          hintText: 'Search', // Left-aligned hintText
+                          border: InputBorder.none,
+                        ),
                       ),
                     ),
-                  )),
+                  ),
                   MenuAnchor(
-                      alignmentOffset: const Offset(-150, 5),
-                      menuChildren: searchResults.map((result) {
-                        return MenuItemButton(
-                          onPressed: () => setState(() {
-                            scrollToSection(result.section);
-                            setState(() {
-                              selectedResult = result.sectionName;
-                            });
-                          }),
-                          child: Text(
-                            result.sectionName,
-                            style: PublicViewTextStyles.generalBodyText,
-                          ),
-                        );
-                      }).toList(),
-                      builder: (BuildContext context, MenuController controller,
-                          Widget? child) {
-                        return IconButton(
-                            onPressed: () {
-                              updateSearchResults(currentQuery);
-                              if (controller.isOpen) {
-                                controller.close();
-                              } else {
-                                controller.open();
-                              }
-                            },
-                            icon: const Icon(Icons.search));
-                      })
+                    alignmentOffset: const Offset(-150, 5),
+                    menuChildren: searchResults.map((result) {
+                      return MenuItemButton(
+                        onPressed: () => setState(() {
+                          scrollToSection(result.section);
+                          setState(() {
+                            selectedResult = result.sectionName;
+                          });
+                        }),
+                        child: Text(
+                          result.sectionName,
+                          style: PublicViewTextStyles.generalBodyText,
+                        ),
+                      );
+                    }).toList(),
+                    builder: (BuildContext context, MenuController controller,
+                        Widget? child) {
+                      return IconButton(
+                        onPressed: () {
+                          updateSearchResults(currentQuery);
+                          if (controller.isOpen) {
+                            controller.close();
+                          } else {
+                            controller.open();
+                          }
+                        },
+                        icon: const Icon(Icons.search),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),

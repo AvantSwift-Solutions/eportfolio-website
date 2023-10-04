@@ -64,7 +64,7 @@ class SinglePageView extends StatelessWidget {
                 sectionKeys: sectionKeys,
                 scrollToSection: _scrollToSection,
               ),
-              const SizedBox(height: 50),
+              // const SizedBox(height: 20),
               LandingPage(
                 scrollToBottom: _scrollToContact,
               ),
