@@ -72,7 +72,10 @@ void main() {
       expect(find.text('Get in touch'), findsOneWidget);
 
       // NOTE: Unable to expect and find text widget of LandingPageDescription
-      // due to WidgetSpan inside of the RichText widget
+      expect(
+          find.textContaining(mockUser.landingPageDescription as String,
+              findRichText: true),
+          findsOneWidget);
 
       // Simulate a button press
       await tester.tap(find.text('Get in touch'));
