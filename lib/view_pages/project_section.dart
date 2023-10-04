@@ -129,7 +129,7 @@ class ProjectSectionState extends State<ProjectSection> {
       children: [
         if (isMobileView)
           Container(
-            margin: EdgeInsets.only(bottom: 16.0),
+            margin: const EdgeInsets.only(bottom: 16.0),
             child: Text(
               'Personal Projects',
               style: PublicViewTextStyles.generalHeading.copyWith(
@@ -138,6 +138,7 @@ class ProjectSectionState extends State<ProjectSection> {
               ),
             ),
           ),
+          const SizedBox(height: 25),
         if (isMobileView)
           Container(
             width: double.infinity,
@@ -214,7 +215,7 @@ class ProjectSectionState extends State<ProjectSection> {
               )
             ],
           ),
-        SizedBox(height: 25),
+        const SizedBox(height: 25),
           if (allProjects != null && !isMobileView)
             Center(
               child: Wrap(
@@ -222,7 +223,6 @@ class ProjectSectionState extends State<ProjectSection> {
                 children: List.generate(initiallyDisplayedProjects, (index) {
                   if (index < allProjects!.length) {
                     double spacing = (index % (projectsPerRow - 1)) * 50.0;
-                    // print(spacing);
                     return Padding(
                       padding: EdgeInsets.only(top: spacing, right: 50),
                       child: SizedBox(
@@ -296,7 +296,7 @@ class ProjectSectionState extends State<ProjectSection> {
                 }),
               ),
             ),
-          SizedBox(height: 50),
+          const SizedBox(height: 50),
           if (allProjects != null && !isMobileView && allProjects!.length > initiallyDisplayedProjects)
             Align(
               alignment: Alignment.bottomRight,
@@ -345,7 +345,7 @@ class ProjectSectionState extends State<ProjectSection> {
                 ),
               ),
             ),
-          SizedBox(height: 30),
+          const SizedBox(height: 30),
           if (showAllProjects && !isMobileView)
             Align(
               alignment: Alignment.bottomRight,
@@ -497,7 +497,7 @@ class ProjectSectionState extends State<ProjectSection> {
                       const SizedBox(width: 5),
                       Text(
                         showAllProjects ? 'Load Less' : 'Load More',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 20,
                           color: Colors.black,
                         ),
@@ -507,13 +507,13 @@ class ProjectSectionState extends State<ProjectSection> {
                 ),
               ),
             ),
-          SizedBox(height: 30),
+          const SizedBox(height: 30),
           if (isMobileView)
             Center(
               child: GestureDetector(
                 onTap: openCustomLink,
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: 16.0),
+                  padding: const EdgeInsets.only(bottom: 16.0),
                   child: SvgPicture.asset(
                     'github.svg',
                     width: 250,
@@ -538,7 +538,7 @@ class ProjectSectionState extends State<ProjectSection> {
               ),
             ),
           if (allProjects == null)
-            Text(
+            const Text(
               'Error loading projects.',
               style: TextStyle(
                 fontSize: 16,
