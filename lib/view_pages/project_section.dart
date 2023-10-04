@@ -113,7 +113,9 @@ class ProjectSectionState extends State<ProjectSection> {
 
     double cardWidth = 250;
     double cardHeight = 250;
-
+    double githubSvgSize = 250;
+    double externalLinkSvgSize = 50;
+  
     int projectsPerRow = calculateProjectsPerRow(context, cardWidth);
 
     double titleFontSize = isMobileView ? screenWidth * 0.08 : screenWidth * 0.05;
@@ -121,15 +123,18 @@ class ProjectSectionState extends State<ProjectSection> {
     double gap = screenWidth * 0.11;
     double titlePadding = screenWidth * 0.05;
     double descriptionPadding = screenWidth * 0.05;
+    double generalPadding = 16.0;
+    double loadMorePadding = 375.0;
+    double cardSpacing = 50.0;
 
   return Padding(
-    padding: const EdgeInsets.all(16.0),
+    padding: EdgeInsets.all(generalPadding),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (isMobileView)
           Container(
-            margin: const EdgeInsets.only(bottom: 16.0),
+            margin: EdgeInsets.only(bottom: generalPadding),
             child: Text(
               'Personal Projects',
               style: PublicViewTextStyles.generalHeading.copyWith(
@@ -142,7 +147,7 @@ class ProjectSectionState extends State<ProjectSection> {
         if (isMobileView)
           Container(
             width: double.infinity,
-            margin: const EdgeInsets.only(bottom: 16.0),
+            margin: EdgeInsets.only(bottom: generalPadding),
             decoration: BoxDecoration(
               border: Border.all(color: Colors.black, width: 1.0),
               borderRadius: BorderRadius.circular(5.0),
@@ -156,7 +161,7 @@ class ProjectSectionState extends State<ProjectSection> {
               ],
             ),
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(generalPadding),
               child: Text(
                 sectionDescription,
                 textAlign: TextAlign.left,
@@ -186,7 +191,7 @@ class ProjectSectionState extends State<ProjectSection> {
                 padding: EdgeInsets.only(right: descriptionPadding),
                 child: Container(
                   width: screenWidth * 0.4,
-                  margin: EdgeInsets.only(top: isMobileView ? 16.0 : 0.0),
+                  margin: EdgeInsets.only(top: isMobileView ? generalPadding : 0.0),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.black, width: 1.0),
                     borderRadius: BorderRadius.circular(5.0),
@@ -200,7 +205,7 @@ class ProjectSectionState extends State<ProjectSection> {
                     ],
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: EdgeInsets.all(generalPadding),
                     child: Text(
                       sectionDescription,
                       textAlign: TextAlign.left,
@@ -224,7 +229,7 @@ class ProjectSectionState extends State<ProjectSection> {
                   if (index < allProjects!.length) {
                     double spacing = (index % (projectsPerRow - 1)) * 50.0;
                     return Padding(
-                      padding: EdgeInsets.only(top: spacing, right: 50),
+                      padding: EdgeInsets.only(top: spacing, right: cardSpacing),
                       child: SizedBox(
                         width: cardWidth,
                         height: cardHeight,
@@ -236,7 +241,7 @@ class ProjectSectionState extends State<ProjectSection> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(16.0),
+                            padding: EdgeInsets.all(generalPadding),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -277,8 +282,8 @@ class ProjectSectionState extends State<ProjectSection> {
                                         },
                                         child: SvgPicture.asset(
                                           'external_link.svg',
-                                          width: 50,
-                                          height: 50,
+                                          width: externalLinkSvgSize,
+                                          height: externalLinkSvgSize,
                                         ),
                                       ),
                                     ),
@@ -301,7 +306,7 @@ class ProjectSectionState extends State<ProjectSection> {
             Align(
               alignment: Alignment.bottomRight,
               child: Padding(
-                padding: const EdgeInsets.only(right: 375.0, bottom: 16.0),
+                padding: EdgeInsets.only(right: loadMorePadding, bottom: generalPadding),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -350,7 +355,7 @@ class ProjectSectionState extends State<ProjectSection> {
             Align(
               alignment: Alignment.bottomRight,
               child: Padding(
-                padding: const EdgeInsets.only(right: 375.0, bottom: 16.0),
+                padding: EdgeInsets.only(right: loadMorePadding, bottom: generalPadding),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -413,7 +418,7 @@ class ProjectSectionState extends State<ProjectSection> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(16.0),
+                            padding: EdgeInsets.all(generalPadding),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -454,8 +459,8 @@ class ProjectSectionState extends State<ProjectSection> {
                                         },
                                         child: SvgPicture.asset(
                                           'external_link.svg',
-                                          width: 50,
-                                          height: 50,
+                                          width: externalLinkSvgSize,
+                                          height: externalLinkSvgSize,
                                         ),
                                       ),
                                     ),
@@ -475,7 +480,7 @@ class ProjectSectionState extends State<ProjectSection> {
             ),
           if (isMobileView)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: EdgeInsets.symmetric(horizontal: generalPadding),
               child: Align(
                 alignment: Alignment.center,
                 child: TextButton(
@@ -513,11 +518,11 @@ class ProjectSectionState extends State<ProjectSection> {
               child: GestureDetector(
                 onTap: openCustomLink,
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 16.0),
+                  padding: EdgeInsets.only(bottom: generalPadding),
                   child: SvgPicture.asset(
                     'github.svg',
-                    width: 250,
-                    height: 250,
+                    width: githubSvgSize,
+                    height: githubSvgSize,
                   ),
                 ),
               ),
@@ -528,11 +533,11 @@ class ProjectSectionState extends State<ProjectSection> {
               child: GestureDetector(
                 onTap: openCustomLink,
                 child: Padding(
-                  padding: EdgeInsets.only(left: gap, bottom: 16.0),
+                  padding: EdgeInsets.only(left: gap, bottom: generalPadding),
                   child: SvgPicture.asset(
                     'github.svg',
-                    width: 250,
-                    height: 250,
+                    width: githubSvgSize,
+                    height: githubSvgSize,
                   ),
                 ),
               ),
