@@ -109,7 +109,7 @@ class ProjectSectionState extends State<ProjectSection> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    bool isMobileView = screenWidth < 600;
+    bool isMobileView = screenWidth <= 600;
 
     double cardWidth = 250;
     double cardHeight = 250;
@@ -118,7 +118,9 @@ class ProjectSectionState extends State<ProjectSection> {
 
     double titleFontSize = isMobileView ? screenWidth * 0.08 : screenWidth * 0.05;
     double descriptionFontSize = isMobileView ? screenWidth * 0.03 : screenWidth * 0.015;
-    // double spacing = screenWidth * 0.15;
+    double gap = screenWidth * 0.11;
+    double titlePadding = screenWidth * 0.05;
+    double descriptionPadding = screenWidth * 0.05;
 
   return Padding(
     padding: const EdgeInsets.all(16.0),
@@ -169,44 +171,50 @@ class ProjectSectionState extends State<ProjectSection> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Personal Projects',
-                style: PublicViewTextStyles.generalHeading.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: titleFontSize * 0.8,
-                ),
-              ),
-              Container(
-                width: screenWidth * 0.4,
-                margin: EdgeInsets.only(top: isMobileView ? 16.0 : 0.0),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black, width: 1.0),
-                  borderRadius: BorderRadius.circular(5.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      spreadRadius: 2,
-                      blurRadius: 5,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    sectionDescription,
-                    textAlign: TextAlign.left,
-                    softWrap: true,
-                    style: PublicViewTextStyles.generalBodyText.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: descriptionFontSize * 1.0,
-                    ),
+              Padding(
+                padding: EdgeInsets.only(left: titlePadding), // Add padding here
+                child: Text(
+                  'Personal Projects',
+                  style: PublicViewTextStyles.generalHeading.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: titleFontSize * 0.8,
                   ),
                 ),
               ),
+              Padding(
+                padding: EdgeInsets.only(right: descriptionPadding),
+                child: Container(
+                  width: screenWidth * 0.4,
+                  margin: EdgeInsets.only(top: isMobileView ? 16.0 : 0.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black, width: 1.0),
+                    borderRadius: BorderRadius.circular(5.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      sectionDescription,
+                      textAlign: TextAlign.left,
+                      softWrap: true,
+                      style: PublicViewTextStyles.generalBodyText.copyWith(
+                        fontWeight: FontWeight.bold,
+                        fontSize: descriptionFontSize * 1.0,
+                      ),
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
-        SizedBox(height: 16),
+        SizedBox(height: 25),
           if (allProjects != null && !isMobileView)
             Center(
               child: Wrap(
@@ -214,7 +222,7 @@ class ProjectSectionState extends State<ProjectSection> {
                 children: List.generate(initiallyDisplayedProjects, (index) {
                   if (index < allProjects!.length) {
                     double spacing = (index % (projectsPerRow - 1)) * 50.0;
-                    // print(spacing >= 0);
+                    // print(spacing);
                     return Padding(
                       padding: EdgeInsets.only(top: spacing, right: 50),
                       child: SizedBox(
@@ -465,55 +473,70 @@ class ProjectSectionState extends State<ProjectSection> {
                 }),
               ),
             ),
-if (isMobileView)
-  Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-    child: Align(
-      alignment: Alignment.center,
-      child: TextButton(
-        onPressed: toggleShowAllProjects,
-        style: ButtonStyle(
-          overlayColor: MaterialStateProperty.all(Colors.transparent),
-          padding: MaterialStateProperty.all(EdgeInsets.zero),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              showAllProjects
-                  ? Icons.keyboard_double_arrow_up_outlined
-                  : Icons.keyboard_double_arrow_down_outlined,
-              size: 30,
-              color: Colors.black,
-            ),
-            const SizedBox(width: 5),
-            Text(
-              showAllProjects ? 'Load Less' : 'Load More',
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.black,
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
-  ),
-          SizedBox(height: 30),
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: GestureDetector(
-              onTap: openCustomLink,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
-                child: SvgPicture.asset(
-                  'github.svg',
-                  width: 250,
-                  height: 250,
+          if (isMobileView)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Align(
+                alignment: Alignment.center,
+                child: TextButton(
+                  onPressed: toggleShowAllProjects,
+                  style: ButtonStyle(
+                    overlayColor: MaterialStateProperty.all(Colors.transparent),
+                    padding: MaterialStateProperty.all(EdgeInsets.zero),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        showAllProjects
+                            ? Icons.keyboard_double_arrow_up_outlined
+                            : Icons.keyboard_double_arrow_down_outlined,
+                        size: 30,
+                        color: Colors.black,
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        showAllProjects ? 'Load Less' : 'Load More',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
+          SizedBox(height: 30),
+          if (isMobileView)
+            Center(
+              child: GestureDetector(
+                onTap: openCustomLink,
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: 16.0),
+                  child: SvgPicture.asset(
+                    'github.svg',
+                    width: 250,
+                    height: 250,
+                  ),
+                ),
+              ),
+            ),
+          if (!isMobileView)
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: GestureDetector(
+                onTap: openCustomLink,
+                child: Padding(
+                  padding: EdgeInsets.only(left: gap, bottom: 16.0),
+                  child: SvgPicture.asset(
+                    'github.svg',
+                    width: 250,
+                    height: 250,
+                  ),
+                ),
+              ),
+            ),
           if (allProjects == null)
             Text(
               'Error loading projects.',
