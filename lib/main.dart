@@ -1,7 +1,6 @@
 import 'package:avantswift_portfolio/controllers/login_controller.dart';
 import 'package:avantswift_portfolio/models/User.dart';
 import 'package:avantswift_portfolio/admin_pages/default.dart';
-import 'package:avantswift_portfolio/admin_pages/login.dart';
 import 'package:avantswift_portfolio/services/auth_state.dart';
 import 'package:avantswift_portfolio/view_pages/single_view_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,6 +9,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'admin_pages/reset_password.dart';
 import 'firebase_options.dart';
+import 'package:avantswift_portfolio/admin_pages/login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
