@@ -4,6 +4,7 @@ import '../ui/custom_menu_button.dart';
 
 class FooterSection extends StatelessWidget {
   static const double dividerThickness = 1.0;
+  static const double verticalPadding = 20;
   final Function(GlobalKey) scrollToSection;
   final Map<String, GlobalKey> sectionKeys;
 
@@ -23,7 +24,7 @@ class FooterSection extends StatelessWidget {
         ),
         Container(
           color: const Color.fromRGBO(253, 252, 255, 1.0),
-          padding: const EdgeInsets.symmetric(vertical: 20.0),
+          padding: const EdgeInsets.symmetric(vertical: verticalPadding),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
