@@ -32,7 +32,7 @@ class TechnicalSkillsController {
     }
   }
 
-  Future<Image> getCentralImage() async {
+  Future<Image?> getCentralImage() async {
     try {
       final storage = FirebaseStorage.instance;
       final ref = storage.ref().child(Constants.centralImageURL);
@@ -40,7 +40,7 @@ class TechnicalSkillsController {
       return Image.network(url, fit: BoxFit.contain);
     } catch (e) {
       log('Error getting central image: $e');
-      rethrow;
+      return null;
     }
   }
 }

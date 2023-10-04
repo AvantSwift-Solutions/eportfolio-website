@@ -30,35 +30,32 @@ class Experience {
   });
 
   factory Experience.fromDocumentSnapshot(DocumentSnapshot snapshot) {
-    try {
-      final data = snapshot.data() as Map<String, dynamic>;
-      final creationTimestamp = data['creationTimestamp'];
-      final index = data['index'];
-      final jobTitle = data['jobTitle'];
-      final employmentType = data['employmentType'];
-      final companyName = data['companyName'];
-      final location = data['location'];
-      final description = data['description'];
-      final startDate = data['startDate'];
-      final endDate = data['endDate'];
-      final logoURL = data['logoURL'];
+    final data = snapshot.data() as Map<String, dynamic>;
+    final creationTimestamp = data['creationTimestamp'];
+    final peid = data['peid'];
+    final index = data['index'];
+    final jobTitle = data['jobTitle'];
+    final employmentType = data['employmentType'];
+    final companyName = data['companyName'];
+    final location = data['location'];
+    final description = data['description'];
+    final startDate = data['startDate'];
+    final endDate = data['endDate'];
+    final logoURL = data['logoURL'];
 
-      return Experience(
-        creationTimestamp: creationTimestamp,
-        peid: snapshot.id,
-        index: index,
-        jobTitle: jobTitle,
-        employmentType: employmentType,
-        companyName: companyName,
-        location: location,
-        description: description,
-        startDate: startDate,
-        endDate: endDate,
-        logoURL: logoURL,
-      );
-    } catch (e) {
-      rethrow;
-    }
+    return Experience(
+      creationTimestamp: creationTimestamp,
+      peid: peid,
+      index: index,
+      jobTitle: jobTitle,
+      employmentType: employmentType,
+      companyName: companyName,
+      location: location,
+      description: description,
+      startDate: startDate,
+      endDate: endDate,
+      logoURL: logoURL,
+    );
   }
 
   Map<String, dynamic> toMap() {

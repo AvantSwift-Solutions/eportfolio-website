@@ -35,7 +35,7 @@ void main() {
     expect((images[0]).image, isA<NetworkImage>());
   });
 
-  test('throws error if getting image fails', () async {
+  test('getTechnicalSkillImages throws error if getting image fails', () async {
     when(mockRepoService.getAllTSkill()).thenThrow(Exception('Test Exception'));
     var expectedData = controller.getTechnicalSkillImages();
     expect(expectedData, throwsException);

@@ -1,5 +1,5 @@
-// ignore_for_file: use_build_context_synchronously
 import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
+import 'package:avantswift_portfolio/controllers/admin_controllers/upload_image_admin_controller.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
@@ -8,40 +8,72 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mat_month_picker_dialog/mat_month_picker_dialog.dart';
 import 'package:uuid/uuid.dart';
-import '../controllers/admin_controllers/experience_section_admin_controller.dart';
-import '../models/Experience.dart';
-import '../reposervice/experience_repo_services.dart';
+import 'package:avantswift_portfolio/controllers/admin_controllers/experience_section_admin_controller.dart';
+import 'package:avantswift_portfolio/models/Experience.dart';
+import 'package:avantswift_portfolio/reposervice/experience_repo_services.dart';
 
-class ExperienceSectionAdmin extends StatelessWidget {
-  final ExperienceSectionAdminController _adminController =
-      ExperienceSectionAdminController(ExperienceRepoService());
+class ExperienceSectionAdmin extends StatefulWidget {
+  const ExperienceSectionAdmin({super.key});
+  @override
+  State<ExperienceSectionAdmin> createState() => ExperienceSectionAdminState();
+}
+
+class ExperienceSectionAdminState extends State<ExperienceSectionAdmin> {
+  late ExperienceSectionAdminController _adminController;
+  late List<Experience> experiences;
   late final BuildContext parentContext;
 
-  ExperienceSectionAdmin({super.key});
+  @override
+  void initState() {
+    super.initState();
+    _adminController =
+        ExperienceSectionAdminController(ExperienceRepoService());
+    _loadItems();
+  }
+
+  Future<void> _loadItems() async {
+    experiences = await _adminController.getSectionData() ?? [];
+  }
 
   @override
   Widget build(BuildContext context) {
     parentContext = context;
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              onPressed: () {
-                _showList(context);
-              },
-              child: const Text('Edit Professional Experience Info'),
-            ),
-          ),
-        ],
+    return ElevatedButton(
+      onPressed: () {
+        _showList(context);
+      },
+      style: AdminViewDialogStyles.editSectionButtonStyle.copyWith(
+          alignment: Alignment.center,
+          backgroundColor: AdminViewDialogStyles.expColor),
+      child: const FittedBox(
+        fit: BoxFit.fill,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Professional\nExperiences\n'),
+            Row(
+              children: [
+                Icon(
+                  Icons.work,
+                ),
+                Icon(
+                  Icons.business,
+                ),
+                Icon(
+                  Icons.assignment_ind,
+                ),
+                Icon(
+                  Icons.computer,
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
 
-  Future<void> _showList(BuildContext context) async {
-    List<Experience> experiences =
-        await _adminController.getSectionData() ?? [];
+  void _showList(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -156,7 +188,7 @@ class ExperienceSectionAdmin extends StatelessWidget {
                           ElevatedButton(
                             style: AdminViewDialogStyles.elevatedButtonStyle,
                             onPressed: () {
-                              _showAddNewDialog(context, experiences);
+                              _showAddNewDialog(context);
                             },
                             child: Text(
                               'Add New',
@@ -174,13 +206,12 @@ class ExperienceSectionAdmin extends StatelessWidget {
     );
   }
 
-  void _showAddNewDialog(
-      BuildContext context, List<Experience> experienceList) async {
+  void _showAddNewDialog(BuildContext context) {
     final id = const Uuid().v4();
     final experience = Experience(
       creationTimestamp: Timestamp.now(),
       peid: id,
-      index: experienceList.length,
+      index: experiences.length,
       jobTitle: '',
       employmentType: '',
       companyName: '',
@@ -192,13 +223,13 @@ class ExperienceSectionAdmin extends StatelessWidget {
     );
 
     _showExperienceDialog(context, experience, (a) async {
+      experiences.add(experience);
       return await a.create(id);
     });
   }
 
-  void _showEditDialog(BuildContext context, int i) async {
-    final experienceSectionData = await _adminController.getSectionData();
-    final experience = experienceSectionData![i];
+  void _showEditDialog(BuildContext context, int i) {
+    final experience = experiences[i];
 
     _showExperienceDialog(context, experience, (a) async {
       return await a.update() ?? false;
@@ -607,16 +638,18 @@ class ExperienceSectionAdmin extends StatelessWidget {
                                     experience.creationTimestamp =
                                         Timestamp.now();
                                     if (pickedImageBytes != null) {
-                                      String? imageURL = await _adminController
-                                          .uploadImageAndGetURL(
-                                              pickedImageBytes!,
-                                              '${experience.peid}_image.jpg');
+                                      String? imageURL =
+                                          await UploadImageAdminController()
+                                              .uploadImageAndGetURL(
+                                                  pickedImageBytes!,
+                                                  '${experience.peid}_image.jpg');
                                       if (imageURL != null) {
                                         experience.logoURL = imageURL;
                                       }
                                     }
                                     bool isSuccess =
                                         await onExperienceUpdated(experience);
+                                    if (!mounted) return;
                                     if (isSuccess) {
                                       ScaffoldMessenger.of(parentContext)
                                           .showSnackBar(
@@ -708,19 +741,23 @@ class ExperienceSectionAdmin extends StatelessWidget {
                               onPressed: () async {
                                 final deleted = await x.delete() ?? false;
                                 if (deleted) {
+                                  experiences.remove(x);
                                   setState(() {});
+                                  if (!mounted) return;
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                         content:
                                             Text('$name deleted successfully')),
                                   );
                                 } else {
+                                  if (!mounted) return;
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                         content:
                                             Text('Failed to delete $name')),
                                   );
                                 }
+                                if (!mounted) return;
                                 Navigator.of(dialogContext).pop();
                                 Navigator.of(parentContext).pop();
                                 _showList(parentContext);

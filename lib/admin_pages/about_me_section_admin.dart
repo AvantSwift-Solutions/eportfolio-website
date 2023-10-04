@@ -1,41 +1,64 @@
-// ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
+import 'package:avantswift_portfolio/controllers/admin_controllers/upload_image_admin_controller.dart';
+import 'package:avantswift_portfolio/dto/about_me_section_dto.dart';
 import 'package:avantswift_portfolio/reposervice/user_repo_services.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../controllers/admin_controllers/about_me_section_admin_controller.dart';
+import 'package:avantswift_portfolio/controllers/admin_controllers/about_me_section_admin_controller.dart';
 
-class AboutMeSectionAdmin extends StatelessWidget {
-  final AboutMeSectionAdminController _adminController =
-      AboutMeSectionAdminController(UserRepoService());
+class AboutMeSectionAdmin extends StatefulWidget {
+  const AboutMeSectionAdmin({super.key});
 
-  AboutMeSectionAdmin({super.key});
+  @override
+  State<AboutMeSectionAdmin> createState() => _AboutMeSectionAdminState();
+}
 
+class _AboutMeSectionAdminState extends State<AboutMeSectionAdmin> {
   final maxBioLength = 400;
+  late AboutMeSectionAdminController _adminController;
+  late AboutMeSectionDTO aboutMeData;
+
+  @override
+  void initState() {
+    super.initState();
+    _adminController = AboutMeSectionAdminController(UserRepoService());
+    _loadItems();
+  }
+
+  Future<void> _loadItems() async {
+    aboutMeData = await _adminController.getAboutMeSectionData()
+        // Should never be null as it is handled in the controller
+        ??
+        AboutMeSectionDTO(aboutMe: '', imageURL: '');
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              onPressed: () {
-                _showEditDialog(context);
-              },
-              child: const Text('Edit About Me Info'),
+    return ElevatedButton(
+      onPressed: () {
+        _showEditDialog(context);
+      },
+      style: AdminViewDialogStyles.editSectionButtonStyle.copyWith(
+          alignment: Alignment.center,
+          iconSize: MaterialStateProperty.all<double>(
+              AdminViewDialogStyles.sectionButtonLargeIconSize)),
+      child: const FittedBox(
+        fit: BoxFit.fill,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('About\nMe\n'),
+            Icon(
+              Icons.person,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  Future<void> _showEditDialog(BuildContext context) async {
-    final aboutMeData = await _adminController.getAboutMeSectionData()!;
-
+  void _showEditDialog(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     Uint8List? pickedImageBytes;
     // Flag to check if user tried to sumbit without picking a required image
@@ -208,16 +231,18 @@ class AboutMeSectionAdmin extends StatelessWidget {
                                       !noImage) {
                                     formKey.currentState!.save();
                                     if (pickedImageBytes != null) {
-                                      String? imageURL = await _adminController
-                                          .uploadImageAndGetURL(
-                                              pickedImageBytes!,
-                                              'about_me_image.jpg');
+                                      String? imageURL =
+                                          await UploadImageAdminController()
+                                              .uploadImageAndGetURL(
+                                                  pickedImageBytes!,
+                                                  'about_me_image.jpg');
                                       if (imageURL != null) {
                                         aboutMeData.imageURL = imageURL;
                                       }
                                     }
                                     bool? isSuccess = await _adminController
                                         .updateAboutMeSectionData(aboutMeData);
+                                    if (!mounted) return;
                                     if (isSuccess != null && isSuccess) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(

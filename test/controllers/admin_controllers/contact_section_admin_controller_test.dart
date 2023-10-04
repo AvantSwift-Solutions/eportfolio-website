@@ -100,5 +100,23 @@ void main() {
 
       verifyNever(mockUser.update());
     });
+
+    test('updateContactSectionData returns false when exception is throw',
+        () async {
+      when(mockRepoService.getFirstUser())
+          .thenThrow(Exception('Test Exception'));
+
+      final updateResult = await controller.updateContactSectionData(
+        ContactSectionDTO(
+          name: 'New Name',
+          contactEmail: 'New Email',
+          linkedinURL: 'New LinkedIn',
+        ),
+      );
+
+      expect(updateResult, false);
+
+      verifyNever(mockUser.update());
+    });
   });
 }

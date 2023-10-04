@@ -20,13 +20,14 @@ class TSkill {
   factory TSkill.fromDocumentSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;
     final creationTimestamp = data['creationTimestamp'];
+    final tsid = data['tsid'];
     final index = data['index'];
     final name = data['name'];
     final imageURL = data['imageURL'];
 
     return TSkill(
       creationTimestamp: creationTimestamp,
-      tsid: snapshot.id,
+      tsid: tsid,
       index: index,
       name: name,
       imageURL: imageURL,
