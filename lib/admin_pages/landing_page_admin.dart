@@ -1,40 +1,62 @@
-// ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
 import 'package:avantswift_portfolio/controllers/admin_controllers/upload_image_admin_controller.dart';
+import 'package:avantswift_portfolio/dto/landing_page_dto.dart';
 import 'package:avantswift_portfolio/reposervice/user_repo_services.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../controllers/admin_controllers/landing_page_admin_controller.dart';
+import 'package:avantswift_portfolio/controllers/admin_controllers/landing_page_admin_controller.dart';
 
-class LandingPageAdmin extends StatelessWidget {
-  final LandingPageAdminController _adminController =
-      LandingPageAdminController(UserRepoService());
+class LandingPageAdmin extends StatefulWidget {
+  const LandingPageAdmin({super.key});
+  @override
+  State<LandingPageAdmin> createState() => _LandingPageAdminState();
+}
 
-  LandingPageAdmin({super.key});
+class _LandingPageAdminState extends State<LandingPageAdmin> {
+  late LandingPageAdminController _adminController;
+  late LandingPageDTO landingPageData;
+
+  @override
+  void initState() {
+    super.initState();
+    _adminController = LandingPageAdminController(UserRepoService());
+    _loadItems();
+  }
+
+  Future<void> _loadItems() async {
+    landingPageData = await _adminController.getLandingPageData()
+        // Should never be null as it is handled in the controller
+        ??
+        LandingPageDTO(
+          name: '',
+          nickname: '',
+          landingPageDescription: '',
+          imageURL: '',
+        );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              onPressed: () {
-                _showEditDialog(context);
-              },
-              child: const Text('Edit Landing Page Info'),
-            ),
-          ),
-        ],
-      ),
-    );
+    return ElevatedButton(
+        onPressed: () {
+          _showEditDialog(context);
+        },
+        style: AdminViewDialogStyles.editSectionButtonStyle,
+        child: const FittedBox(
+            fit: BoxFit.fill,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Icon(
+                  Icons.home,
+                ),
+                Text('  Landing Page'),
+              ],
+            )));
   }
 
-  Future<void> _showEditDialog(BuildContext context) async {
-    final landingPageData = await _adminController.getLandingPageData()!;
-
+  void _showEditDialog(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     Uint8List? pickedImageBytes;
     // Flag to check if user tried to sumbit without picking a required image
@@ -267,6 +289,7 @@ class LandingPageAdmin extends StatelessWidget {
                                     }
                                     bool? isSuccess = await _adminController
                                         .updateLandingPageData(landingPageData);
+                                    if (!mounted) return;
                                     if (isSuccess != null && isSuccess) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
