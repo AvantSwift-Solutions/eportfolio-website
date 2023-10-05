@@ -1,10 +1,11 @@
 import 'package:avantswift_portfolio/dto/section_keys_dto.dart';
 import 'package:avantswift_portfolio/view_pages/about_me_section.dart';
-import 'package:avantswift_portfolio/view_pages/app_bar_and_search_section.dart';
 import 'package:avantswift_portfolio/view_pages/project_section.dart';
 import 'package:avantswift_portfolio/view_pages/award_cert_section.dart';
 import 'package:avantswift_portfolio/view_pages/skills_education_section.dart';
 import 'package:flutter/material.dart';
+import 'footer_section.dart';
+import 'header_section.dart';
 import 'landing_page.dart';
 import 'experience_section.dart';
 import 'contact_section.dart';
@@ -57,39 +58,51 @@ class SinglePageView extends StatelessWidget {
       landingPage: _landingPageKey,
     );
     return Scaffold(
-      body: SizedBox(
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
-              AppBarAndSearchSection(
-                sectionKeys: sectionKeys,
-                scrollToSection: _scrollToSection,
+      body: CustomScrollView(
+        controller: _scrollController,
+        slivers: [
+          HeaderSection(
+              scrollToSection: _scrollToSection,
+              sectionKeys: sectionKeys), // Add the StickyHeader widget here
+          SliverToBoxAdapter(
+            child: SizedBox(
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                child: Column(
+                  children: [
+                    LandingPage(
+                      key: _landingPageKey,
+                      scrollToBottom: _scrollToContact,
+                    ),
+                    const SizedBox(height: 100),
+                    MenuSection(
+                      key: _menuKey,
+                      scrollToSection: _scrollToSection,
+                      sectionKeys: sectionKeys,
+                    ),
+                    AboutMeSection(
+                      key: _aboutMeKey,
+                    ),
+                    const SizedBox(height: 100),
+                    ExperienceSection(key: _experienceKey),
+                    const SizedBox(height: 100),
+                    SkillsAndEducation(key: _skillsEduKey),
+                    const SizedBox(height: 100),
+                    ProjectSection(key: _projectsKey),
+                    const SizedBox(height: 100),
+                    AwardCertSection(key: _awardsCertsKey),
+                    const SizedBox(height: 100),
+                    ContactSection(key: _contactKey),
+                    const SizedBox(height: 100),
+                    FooterSection(
+                        scrollToSection: _scrollToSection,
+                        sectionKeys: sectionKeys)
+                  ],
+                ),
               ),
-              // const SizedBox(height: 20),
-              LandingPage(
-                scrollToBottom: _scrollToContact,
-              ),
-              const SizedBox(height: 100),
-              MenuSection(
-                scrollToSection: _scrollToSection,
-                sectionKeys: sectionKeys, // Pass the map of section keys
-              ),
-              AboutMeSection(key: _aboutMeKey),
-              const SizedBox(height: 100),
-              ExperienceSection(key: _experienceKey),
-              const SizedBox(height: 100),
-              SkillsAndEducation(key: _skillsEduKey),
-              const SizedBox(height: 100),
-              ProjectSection(key: _projectsKey),
-              const SizedBox(height: 100),
-              AwardCertSection(key: _awardsCertsKey),
-              const SizedBox(height: 100),
-              ContactSection(key: _contactKey),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

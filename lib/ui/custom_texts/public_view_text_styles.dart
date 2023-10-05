@@ -2,23 +2,23 @@
 import 'package:flutter/material.dart';
 
 class PublicViewTextStyles {
-  static Widget styledLogo() {
+  static Widget styledLogo({double size = 42}) {
     return RichText(
-      text: const TextSpan(
+      text:  TextSpan(
         children: [
           TextSpan(
             text: 'Steven. ',
             style: TextStyle(
               color: Colors.black, // Color for "Steven."
-              fontSize: 42,
+              fontSize: size,
               fontFamily: 'Montserrat',
             ),
           ),
           TextSpan(
             text: 'Zhou',
             style: TextStyle(
-              color: Color(0xFFFBC9A7), // Color for "Zhou"
-              fontSize: 42,
+              color: const Color(0xFFFBC9A7), // Color for "Zhou"
+              fontSize: size,
               fontFamily: 'Montserrat',
             ),
           ),
