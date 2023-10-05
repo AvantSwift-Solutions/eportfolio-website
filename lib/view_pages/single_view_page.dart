@@ -7,6 +7,8 @@ import 'landing_page.dart';
 import 'experience_section.dart';
 import 'contact_section.dart';
 import 'menu_section.dart';
+import 'header_section.dart';
+import 'footer_section.dart';
 
 class SinglePageView extends StatelessWidget {
   final ScrollController _scrollController = ScrollController();
@@ -15,6 +17,8 @@ class SinglePageView extends StatelessWidget {
   final GlobalKey _skillsEduKey = GlobalKey();
   final GlobalKey _projectsKey = GlobalKey();
   final GlobalKey _awardsCertsKey = GlobalKey();
+  final GlobalKey _menuKey = GlobalKey();
+  final GlobalKey _landingPageKey = GlobalKey();
 
   SinglePageView({super.key});
 
@@ -47,38 +51,59 @@ class SinglePageView extends StatelessWidget {
       'skills_edu': _skillsEduKey,
       'projects': _projectsKey,
       'awards_certs': _awardsCertsKey,
-      'contact': _contactKey
+      'contact': _contactKey,
+      'menu': _menuKey,
+      'landing_page': _landingPageKey,
     };
 
     return Scaffold(
-      body: SizedBox(
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          child: Column(
-            children: [
-              LandingPage(
-                scrollToBottom: _scrollToContact,
+      body: CustomScrollView(
+        controller: _scrollController,
+        slivers: [
+          HeaderSection(
+            scrollToSection: _scrollToSection, 
+            sectionKeys: sectionKeys
+          ), // Add the StickyHeader widget here
+          SliverToBoxAdapter(
+            child: SizedBox(
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                child: Column(
+                  children: [
+                    LandingPage(
+                      key: _landingPageKey,
+                      scrollToBottom: _scrollToContact,
+                    ),
+                    const SizedBox(height: 100),
+                    MenuSection(
+                      key: _menuKey,
+                      scrollToSection: _scrollToSection,
+                      sectionKeys: sectionKeys,
+                    ),
+                    const AboutMeSection(),
+                    const SizedBox(height: 100),
+                    ExperienceSection(key: _experienceKey),
+                    const SizedBox(height: 100),
+                    SkillsAndEducation(key: _skillsEduKey),
+                    const SizedBox(height: 100),
+                    ProjectSection(key: _projectsKey),
+                    const SizedBox(height: 100),
+                    AwardCertSection(key: _awardsCertsKey),
+                    const SizedBox(height: 100),
+                    ContactSection(key: _contactKey),
+                    const SizedBox(height: 100),
+                    FooterSection(
+                      scrollToSection: _scrollToSection,
+                      sectionKeys: sectionKeys
+                    )
+                  ],
+                ),
               ),
-              const SizedBox(height: 100),
-              MenuSection(
-                scrollToSection: _scrollToSection,
-                sectionKeys: sectionKeys, // Pass the map of section keys
-              ),
-              const AboutMeSection(),
-              const SizedBox(height: 100),
-              ExperienceSection(key: _experienceKey),
-              const SizedBox(height: 100),
-              SkillsAndEducation(key: _skillsEduKey),
-              const SizedBox(height: 100),
-              ProjectSection(key: _projectsKey),
-              const SizedBox(height: 100),
-              AwardCertSection(key: _awardsCertsKey),
-              const SizedBox(height: 100),
-              ContactSection(key: _contactKey),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
+
   }
 }
