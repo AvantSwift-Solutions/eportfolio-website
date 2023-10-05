@@ -54,6 +54,8 @@ class _LandingPageState extends State<LandingPage> {
 
         // Determine if the screen width is smaller than a certain threshold (e.g., 600).
         bool isSmallScreen = screenWidth < 1140;
+        double titleFontSize = 80;
+        double descriptionFontSize = 30;
 
         return Center(
           child: Padding(
@@ -65,7 +67,7 @@ class _LandingPageState extends State<LandingPage> {
                       RichText(
                         text: TextSpan(
                           style: PublicViewTextStyles.generalHeading.copyWith(
-                              // fontSize: titleFontSize,
+                              // fontSize: titleFontSize,//
                               ),
                           children: [
                             const TextSpan(
@@ -155,8 +157,8 @@ class _LandingPageState extends State<LandingPage> {
                               text: TextSpan(
                                 style: PublicViewTextStyles.generalHeading
                                     .copyWith(
-                                        // fontSize: titleFontSize,
-                                        ),
+                                  fontSize: titleFontSize,
+                                ),
                                 children: [
                                   const TextSpan(
                                     text: 'Hey there, \nI\'m ',
@@ -191,8 +193,8 @@ class _LandingPageState extends State<LandingPage> {
                               text: TextSpan(
                                 style: PublicViewTextStyles.generalBodyText
                                     .copyWith(
-                                        // fontSize: descriptionFontSize,
-                                        ),
+                                  fontSize: descriptionFontSize,
+                                ),
                                 children: [
                                   const WidgetSpan(
                                     child: SizedBox(

@@ -78,6 +78,10 @@ class _AppBarAndSearchSectionState extends State<AppBarAndSearchSection> {
     double horizontalPadding = screenWidth < 600 ? 8.0 : 106.0;
 
     return AppBar(
+      backgroundColor: const Color.fromRGBO(253, 252, 255, 1.0),
+      // pinned: true,
+      scrolledUnderElevation: 0,
+      centerTitle: false,
       title: Row(
         children: [
           const Text(

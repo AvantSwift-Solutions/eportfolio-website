@@ -7,6 +7,8 @@ class SectionKeysDTO {
   final GlobalKey awardsCerts;
   final GlobalKey contact;
   final GlobalKey aboutMe;
+  final GlobalKey menu;
+  final GlobalKey landingPage;
 
   SectionKeysDTO(
       {required this.experience,
@@ -14,5 +16,7 @@ class SectionKeysDTO {
       required this.projects,
       required this.awardsCerts,
       required this.contact,
+      required this.menu,
+      required this.landingPage,
       required this.aboutMe});
 }

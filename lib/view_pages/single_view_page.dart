@@ -1,10 +1,10 @@
 import 'package:avantswift_portfolio/dto/section_keys_dto.dart';
 import 'package:avantswift_portfolio/view_pages/about_me_section.dart';
+import 'package:avantswift_portfolio/view_pages/app_bar_and_search_section.dart';
 import 'package:avantswift_portfolio/view_pages/project_section.dart';
 import 'package:avantswift_portfolio/view_pages/award_cert_section.dart';
 import 'package:avantswift_portfolio/view_pages/skills_education_section.dart';
 import 'package:flutter/material.dart';
-import 'app_bar_and_search_section.dart';
 import 'landing_page.dart';
 import 'experience_section.dart';
 import 'contact_section.dart';
@@ -18,7 +18,8 @@ class SinglePageView extends StatelessWidget {
   final GlobalKey _skillsEduKey = GlobalKey();
   final GlobalKey _projectsKey = GlobalKey();
   final GlobalKey _awardsCertsKey = GlobalKey();
-
+  final GlobalKey _landingPageKey = GlobalKey();
+  final GlobalKey _menuKey = GlobalKey();
   SinglePageView({super.key});
 
   void _scrollToContact() {
@@ -52,6 +53,8 @@ class SinglePageView extends StatelessWidget {
       awardsCerts: _awardsCertsKey,
       contact: _contactKey,
       aboutMe: _aboutMeKey,
+      menu: _menuKey,
+      landingPage: _landingPageKey,
     );
     return Scaffold(
       body: SizedBox(

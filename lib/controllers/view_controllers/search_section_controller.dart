@@ -5,13 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:english_words/english_words.dart' as english_words;
 
 class SearchSectionController {
-  // Simulate a database search and return results asynchronously.
-
-// ...
-
   Future<List<SectionResultDTO>> searchDatabase(String query) async {
-    // Simulate a delay to mimic an async operation.
-    await Future.delayed(const Duration(seconds: 1));
 
     // Use searchAllCollections to get search results
     final searchResults = await searchAllCollections(query);
