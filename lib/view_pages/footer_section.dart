@@ -1,3 +1,4 @@
+import 'package:avantswift_portfolio/dto/section_keys_dto.dart';
 import 'package:flutter/material.dart';
 import '../ui/custom_texts/public_view_text_styles.dart';
 import '../ui/custom_menu_button.dart';
@@ -6,7 +7,7 @@ class FooterSection extends StatelessWidget {
   static const double dividerThickness = 1.0;
   static const double verticalPadding = 20;
   final Function(GlobalKey) scrollToSection;
-  final Map<String, GlobalKey> sectionKeys;
+  final SectionKeysDTO sectionKeys;
 
   const FooterSection({
     Key? key,
@@ -39,7 +40,7 @@ class FooterSection extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   child: CustomMenuButton(
                     onPressed: () {
-                      scrollToSection(sectionKeys['landing_page']!);
+                      scrollToSection(sectionKeys.landingPage);
                     },
                     text: "Back to the Top",
                   ),

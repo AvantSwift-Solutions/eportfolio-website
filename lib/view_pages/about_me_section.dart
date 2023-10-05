@@ -84,8 +84,11 @@ class AboutMeSectionState extends State<AboutMeSection> {
                         Padding(
                           padding: EdgeInsets.only(right: screenWidth * 0.15),
                           child: Text(
-                            _dataLoaded ? (aboutMeData.aboutMe ?? 'Default Description') : 'Loading...',
-                            style: PublicViewTextStyles.generalBodyText.copyWith(
+                            _dataLoaded
+                                ? (aboutMeData.aboutMe ?? 'Default Description')
+                                : 'Loading...',
+                            style:
+                                PublicViewTextStyles.generalBodyText.copyWith(
                               fontSize: descriptionFontSize * 2,
                             ),
                           ),
@@ -126,9 +129,11 @@ class AboutMeSectionState extends State<AboutMeSection> {
                   ),
                   const SizedBox(height: 20),
                   Padding(
-                    padding: EdgeInsets.only(right: 0),
+                    padding: const EdgeInsets.only(right: 0),
                     child: Text(
-                      _dataLoaded ? (aboutMeData.aboutMe ?? 'Default Description') : 'Loading...',
+                      _dataLoaded
+                          ? (aboutMeData.aboutMe ?? 'Default Description')
+                          : 'Loading...',
                       style: PublicViewTextStyles.generalBodyText.copyWith(
                         fontSize: descriptionFontSize * 2.5,
                       ),
