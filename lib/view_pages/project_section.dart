@@ -106,8 +106,10 @@ class ProjectSectionState extends State<ProjectSection> {
     if (screenWidth >= 1000 && screenWidth < 1160) {
       return 3;
     }
-
-    return ((screenWidth/(cardWidth+50)).floor());
+    if (screenWidth < 250){
+      return 1;
+    }
+    return ((screenWidth / (cardWidth + 50)).floor());
   }
 
   @override
@@ -116,21 +118,21 @@ class ProjectSectionState extends State<ProjectSection> {
     bool isMobileView = screenWidth <= 600;
 
     double cardSize = isMobileView ? screenWidth * 0.8 : screenWidth * 0.2;
-    double githubSvgSize = 250;
+    double githubSvgSize = isMobileView ? screenWidth * 0.6 : screenWidth * 0.2;
     double externalLinkSvgSize = isMobileView ? screenWidth * 0.09 : screenWidth * 0.03;
     
 
     double titleFontSize = isMobileView ? screenWidth * 0.08 : screenWidth * 0.05;
     double descriptionFontSize = isMobileView ? screenWidth * 0.03 : screenWidth * 0.015;
-    double projectTitleFontSize = isMobileView ? screenWidth * 0.04 : screenWidth * 0.015;
-    double projectDescriptionFontSize = isMobileView ? screenWidth * 0.02 : screenWidth * 0.009;
+    double projectTitleFontSize = isMobileView ? screenWidth * 0.03 : screenWidth * 0.015;
+    double projectDescriptionFontSize = isMobileView ? screenWidth * 0.01 : screenWidth * 0.009;
     double arrowIconSize = isMobileView ? screenWidth * 0.1 : screenWidth * 0.02;
     double gap = screenWidth * 0.11;
     double titlePadding = screenWidth * 0.05;
     double descriptionPadding = screenWidth * 0.05;
     double generalPadding = 16.0;
     double loadMorePadding = 375.0;
-    double cardSpacing = 25.0;
+    double cardSpacing = 50.0;
 
   return Padding(
     padding: EdgeInsets.all(generalPadding),
@@ -237,9 +239,9 @@ class ProjectSectionState extends State<ProjectSection> {
                   if (index < allProjects!.length) {
                     int projectsPerRow = calculateProjectsPerRow(context, cardSize);
 
-                    double spacing = (index % (projectsPerRow )) * 25;
+                    double spacing = (index % (projectsPerRow )) * cardSpacing;
                     return Padding(
-                      padding: EdgeInsets.only(top: spacing, right: cardSpacing, left: cardSpacing),
+                      padding: EdgeInsets.only(top: spacing, right: cardSpacing),
                       child: SizedBox(
                         width: cardSize,
                         height: cardSize,
