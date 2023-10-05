@@ -24,7 +24,7 @@ class ProjectSectionState extends State<ProjectSection> {
   bool showAllProjects = false;
   int initiallyDisplayedProjects = 3;
   int colorIndex = 0;
-  bool _isHovered = false;
+  bool isHovered = false;
   final List<Color> alternatingColors = [
     Colors.orange.shade200,
     Colors.blue.shade200,
@@ -101,325 +101,471 @@ class ProjectSectionState extends State<ProjectSection> {
   // Calculate the number of projects per row based on the screen width and desired project card width
   int calculateProjectsPerRow(BuildContext context, double cardWidth) {
     double screenWidth = MediaQuery.of(context).size.width;
-    return (screenWidth / cardWidth).floor();
+    
+    // hard code issues
+    if (screenWidth >= 1000 && screenWidth < 1160) {
+      return 3;
+    }
+    if (screenWidth < 250){
+      return 1;
+    }
+    return ((screenWidth / (cardWidth + 50)).floor());
   }
 
   @override
   Widget build(BuildContext context) {
-    // Inside the build method, calculate the projects per row and adjust spacing accordingly
-    double cardWidth = 250; // Adjust the desired project card width
-    double cardHeight = 250; // Adjust the desired project card height
-    int projectsPerRow = calculateProjectsPerRow(
-        context, cardWidth); // Adjust the desired project card width
-    // final screenWidth = MediaQuery.of(context).size.width;
-    // bool _isSvgHovered = false;
+    final screenWidth = MediaQuery.of(context).size.width;
+    bool isMobileView = screenWidth <= 600;
 
-    // double titleFontSize = screenWidth * 0.05;
-    // double descriptionFontSize = screenWidth * 0.01;
-    // double spacing = screenWidth * 0.15;
+    double cardSize = isMobileView ? screenWidth * 0.8 : screenWidth * 0.2;
+    double githubSvgSize = isMobileView ? screenWidth * 0.6 : screenWidth * 0.2;
+    double externalLinkSvgSize = isMobileView ? screenWidth * 0.09 : screenWidth * 0.03;
+    
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+    double titleFontSize = isMobileView ? screenWidth * 0.08 : screenWidth * 0.05;
+    double descriptionFontSize = isMobileView ? screenWidth * 0.03 : screenWidth * 0.015;
+    double projectTitleFontSize = isMobileView ? screenWidth * 0.03 : screenWidth * 0.015;
+    double projectDescriptionFontSize = isMobileView ? screenWidth * 0.01 : screenWidth * 0.009;
+    double arrowIconSize = isMobileView ? screenWidth * 0.1 : screenWidth * 0.02;
+    double gap = screenWidth * 0.11;
+    double titlePadding = screenWidth * 0.05;
+    double descriptionPadding = screenWidth * 0.05;
+    double generalPadding = 16.0;
+    double loadMorePadding = 375.0;
+    double cardSpacing = 50.0;
+
+  return Padding(
+    padding: EdgeInsets.all(generalPadding),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(right: 100),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                flex: 3,
-                child: Center(
-                  child: Text(
-                    'Personal Projects',
-                    style: PublicViewTextStyles.generalHeading.copyWith(
-                      fontWeight: FontWeight.bold,
+        if (isMobileView)
+          Container(
+            margin: EdgeInsets.only(bottom: generalPadding, left: generalPadding),
+            child: Text(
+              'Personal Projects',
+              style: PublicViewTextStyles.generalHeading.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: titleFontSize * 0.8,
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+        if (isMobileView)
+            Center(
+              child: Container(
+                width: cardSize,
+                margin: EdgeInsets.only(bottom: generalPadding),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black, width: 1.0),
+                  borderRadius: BorderRadius.circular(5.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: const Offset(0, 2),
                     ),
-                    // style: TextStyle(
-                    //   fontSize: 40,
-                    //   fontFamily: 'Montserrat',
-                    //   fontWeight: FontWeight.bold,
-                    // ),
+                  ],
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(generalPadding),
+                  child: Text(
+                    sectionDescription,
+                    textAlign: TextAlign.center,
+                    softWrap: true,
+                    style: PublicViewTextStyles.generalBodyText.copyWith(
+                      fontWeight: FontWeight.bold,
+                      fontSize: descriptionFontSize * 1.3,
+                    ),
                   ),
                 ),
               ),
-              const SizedBox(
-                  width: 200), // Add some spacing between title and quote
-              Expanded(
-                flex: 3,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      right: 150.0), // Change padding for quote
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black, width: 1.0),
-                      borderRadius: BorderRadius.circular(5.0), // Border radius
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(
-                              0.2), // Adjust shadow color and opacity
-                          spreadRadius: 2, // Adjust the spread radius
-                          blurRadius: 5, // Adjust the blur radius
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Container(
-                      padding: const EdgeInsets.all(16.0),
-                      color: Colors.white, // Background color
-                      child: Text(
-                        sectionDescription,
-                        textAlign: TextAlign.left,
-                        softWrap: true,
-                        style: PublicViewTextStyles.generalBodyText.copyWith(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                        // style: TextStyle(
-                        //   fontSize: 18,
-                        //   fontFamily: 'Roboto',
-                        //   fontWeight: FontWeight.w300,
-                        // ),
+            ),
+
+        if (!isMobileView)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: titlePadding), // Add padding here
+                child: Text(
+                  'Personal Projects',
+                  style: PublicViewTextStyles.generalHeading.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: titleFontSize * 0.8,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(right: descriptionPadding),
+                child: Container(
+                  width: screenWidth * 0.4,
+                  margin: EdgeInsets.only(top: isMobileView ? generalPadding : 0.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black, width: 1.0),
+                    borderRadius: BorderRadius.circular(5.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(generalPadding),
+                    child: Text(
+                      sectionDescription,
+                      textAlign: TextAlign.left,
+                      softWrap: true,
+                      style: PublicViewTextStyles.generalBodyText.copyWith(
+                        fontWeight: FontWeight.bold,
+                        fontSize: descriptionFontSize * 1.0,
                       ),
                     ),
                   ),
                 ),
-              ),
+              )
             ],
           ),
-        ),
-        const SizedBox(height: 60), // Space between title and projects
-        Center(
-          child: Column(
-            children: [
-              if (allProjects != null)
-                Center(
-                  child: Wrap(
-                    alignment: WrapAlignment.center,
-                    children:
-                        List.generate(initiallyDisplayedProjects, (index) {
-                      if (index < allProjects!.length) {
-                        // Calculate spacing for the staggered effect
-                        double spacing = (index % (projectsPerRow - 1)) * 50.0;
-                        return Padding(
-                          padding: EdgeInsets.only(top: spacing, right: 50),
-                          child: SizedBox(
-                            width: cardWidth,
-                            height: cardHeight,
-                            child: Card(
-                              elevation: 3,
-                              color: getNextColor(),
-                              shape: RoundedRectangleBorder(
-                                side: const BorderSide(
-                                    color: Colors.black, width: 1),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      allProjects![index].name!,
-                                      style: const TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                      allProjects![index].description!,
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    const Spacer(),
-                                    Align(
-                                      alignment: Alignment.bottomRight,
+        const SizedBox(height: 25),
+          if (allProjects != null && !isMobileView)
+            Center(
+              child: Wrap(
+                alignment: WrapAlignment.center,
+                children: List.generate(initiallyDisplayedProjects, (index) {
+                  if (index < allProjects!.length) {
+                    int projectsPerRow = calculateProjectsPerRow(context, cardSize);
+
+                    double spacing = (index % (projectsPerRow )) * cardSpacing;
+                    return Padding(
+                      padding: EdgeInsets.only(top: spacing, right: cardSpacing),
+                      child: SizedBox(
+                        width: cardSize,
+                        height: cardSize,
+                        child: Card(
+                          elevation: 3,
+                          color: getNextColor(),
+                          shape: RoundedRectangleBorder(
+                            side: const BorderSide(color: Colors.black, width: 1),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(generalPadding),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  allProjects![index].name!,
+                                  style: TextStyle(
+                                    fontSize: projectTitleFontSize,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  allProjects![index].description!,
+                                  style: TextStyle(
+                                    fontSize: projectDescriptionFontSize,
+                                  ),
+                                ),
+                                const Spacer(),
+                                Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      if (allProjects![index].link != null) {
+                                        openLink(allProjects![index].link!);
+                                      } else {
+                                        log('Link is null.');
+                                      }
+                                    },
+                                    child: MouseRegion(
+                                      cursor: SystemMouseCursors.click,
                                       child: GestureDetector(
-                                          onTap: () {
-                                            if (allProjects![index].link !=
-                                                null) {
-                                              openLink(
-                                                  allProjects![index].link!);
-                                            } else {
-                                              log('Link is null.');
-                                            }
-                                          },
-                                          child: MouseRegion(
-                                            cursor: SystemMouseCursors.click,
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                if (allProjects![index].link !=
-                                                    null) {
-                                                  openLink(allProjects![index]
-                                                      .link!);
-                                                } else {
-                                                  log('Link is null.');
-                                                }
-                                              },
-                                              child: SvgPicture.asset(
-                                                'external_link.svg',
-                                                width: 50,
-                                                height: 50,
-                                                // color: Colors.black,
-                                              ),
-                                            ),
-                                          )),
-                                    )
-                                  ],
-                                ),
+                                        onTap: () {
+                                          if (allProjects![index].link != null) {
+                                            openLink(allProjects![index].link!);
+                                          } else {
+                                            log('Link is null.');
+                                          }
+                                        },
+                                        child: SvgPicture.asset(
+                                          'external_link.svg',
+                                          width: externalLinkSvgSize,
+                                          height: externalLinkSvgSize,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  } else {
+                    return Container();
+                  }
+                }),
+              ),
+            ),
+          const SizedBox(height: 50),
+          if (allProjects != null && !isMobileView && allProjects!.length > initiallyDisplayedProjects)
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: EdgeInsets.only(right: loadMorePadding, bottom: generalPadding),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    MouseRegion(
+                      onEnter: (_) {
+                        setState(() {
+                          isHovered = true;
+                        });
+                      },
+                      onExit: (_) {
+                        setState(() {
+                          isHovered = false;
+                        });
+                      },
+                      child: TextButton(
+                        onPressed: toggleShowAllProjects,
+                        style: ButtonStyle(
+                          overlayColor: MaterialStateProperty.all(Colors.transparent),
+                          padding: MaterialStateProperty.all(EdgeInsets.zero),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                                Icons.keyboard_double_arrow_down_outlined,
+                                size: arrowIconSize,
+                                color: Colors.black),
+                            const SizedBox(width: 5),
+                            Text(
+                              'Load More',
+                              style: TextStyle(
+                                fontSize: projectTitleFontSize,
+                                color: isHovered ? Colors.black : Colors.black,
+                                decoration: isHovered ? TextDecoration.underline : TextDecoration.none,
                               ),
                             ),
-                          ),
-                        );
-                      } else {
-                        return Container(); // Empty container if index exceeds project count
-                      }
-                    }),
-                  ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              const SizedBox(height: 50),
-              if (allProjects != null &&
-                  allProjects!.length > initiallyDisplayedProjects)
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 375.0, bottom: 16.0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        MouseRegion(
-                          onEnter: (_) {
-                            setState(() {
-                              // Change the style on hover
-                              _isHovered = true;
-                            });
-                          },
-                          onExit: (_) {
-                            setState(() {
-                              // Revert the style when not hovered
-                              _isHovered = false;
-                            });
-                          },
-                          child: TextButton(
-                            onPressed: toggleShowAllProjects,
-                            style: ButtonStyle(
-                              overlayColor:
-                                  MaterialStateProperty.all(Colors.transparent),
-                              padding:
-                                  MaterialStateProperty.all(EdgeInsets.zero),
+              ),
+            ),
+          const SizedBox(height: 30),
+          if (showAllProjects && !isMobileView)
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: EdgeInsets.only(right: loadMorePadding, bottom: generalPadding),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    MouseRegion(
+                      onEnter: (_) {
+                        setState(() {
+                          isHovered = true;
+                        });
+                      },
+                      onExit: (_) {
+                        setState(() {
+                          isHovered = false;
+                        });
+                      },
+                      child: TextButton(
+                        onPressed: toggleShowAllProjects,
+                        style: ButtonStyle(
+                          overlayColor: MaterialStateProperty.all(Colors.transparent),
+                          padding: MaterialStateProperty.all(EdgeInsets.zero),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                                Icons.keyboard_double_arrow_up_outlined,
+                                size: arrowIconSize,
+                                color: Colors.black),
+                            const SizedBox(width: 5),
+                            Text(
+                              'Load Less',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                                decoration: isHovered ? TextDecoration.underline : TextDecoration.none,
+                              ),
                             ),
-                            child: Row(
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          if (isMobileView && allProjects != null)
+            Center(
+              child: Column(
+                children: List.generate(initiallyDisplayedProjects, (index) {
+                  if (index < allProjects!.length) {
+                    int projectsPerRow = calculateProjectsPerRow(context, cardSize);
+
+                    double spacing = (index % (projectsPerRow)) * 50.0;
+                    return Padding(
+                      padding: EdgeInsets.only(top: spacing),
+                      child: SizedBox(
+                        width: cardSize,
+                        height: cardSize,
+                        child: Card(
+                          elevation: 3,
+                          color: getNextColor(),
+                          shape: RoundedRectangleBorder(
+                            side: const BorderSide(color: Colors.black, width: 1),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(generalPadding),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Icon(
-                                    Icons.keyboard_double_arrow_down_outlined,
-                                    size: 30,
-                                    color: Colors.black),
-                                const SizedBox(width: 5),
                                 Text(
-                                  'Load More',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: _isHovered
-                                        ? Colors.black
-                                        : Colors
-                                            .black, // Change text color on hover
-                                    decoration: _isHovered
-                                        ? TextDecoration.underline
-                                        : TextDecoration
-                                            .none, // Underline on hover
+                                  allProjects![index].name!,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  allProjects![index].description!,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                const Spacer(),
+                                Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      if (allProjects![index].link != null) {
+                                        openLink(allProjects![index].link!);
+                                      } else {
+                                        log('Link is null.');
+                                      }
+                                    },
+                                    child: MouseRegion(
+                                      cursor: SystemMouseCursors.click,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          if (allProjects![index].link != null) {
+                                            openLink(allProjects![index].link!);
+                                          } else {
+                                            log('Link is null.');
+                                          }
+                                        },
+                                        child: SvgPicture.asset(
+                                          'external_link.svg',
+                                          width: externalLinkSvgSize,
+                                          height: externalLinkSvgSize,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
                               ],
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    );
+                  } else {
+                    return Container();
+                  }
+                }),
+              ),
+            ),
+          if (isMobileView)
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: generalPadding),
+              child: Align(
+                alignment: Alignment.center,
+                child: TextButton(
+                  onPressed: toggleShowAllProjects,
+                  style: ButtonStyle(
+                    overlayColor: MaterialStateProperty.all(Colors.transparent),
+                    padding: MaterialStateProperty.all(EdgeInsets.zero),
                   ),
-                ),
-              const SizedBox(height: 30),
-              if (showAllProjects)
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 375.0, bottom: 16.0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        MouseRegion(
-                          onEnter: (_) {
-                            setState(() {
-                              // Change the style on hover
-                              _isHovered = true;
-                            });
-                          },
-                          onExit: (_) {
-                            setState(() {
-                              // Revert the style when not hovered
-                              _isHovered = false;
-                            });
-                          },
-                          child: TextButton(
-                            onPressed: toggleShowAllProjects,
-                            style: ButtonStyle(
-                              overlayColor:
-                                  MaterialStateProperty.all(Colors.transparent),
-                              padding:
-                                  MaterialStateProperty.all(EdgeInsets.zero),
-                            ),
-                            child: Row(
-                              children: [
-                                const Icon(
-                                    Icons.keyboard_double_arrow_up_outlined,
-                                    size: 30,
-                                    color: Colors.black),
-                                const SizedBox(width: 5),
-                                Text(
-                                  'Load Less',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black, // Change text color
-                                    decoration: _isHovered
-                                        ? TextDecoration.underline
-                                        : TextDecoration.none,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        showAllProjects
+                            ? Icons.keyboard_double_arrow_up_outlined
+                            : Icons.keyboard_double_arrow_down_outlined,
+                        size: arrowIconSize,
+                        color: Colors.black,
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        showAllProjects ? 'Load Less' : 'Load More',
+                        style: TextStyle(
+                          fontSize: projectTitleFontSize,
+                          color: Colors.black,
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: GestureDetector(
-                  onTap: openCustomLink,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 150.0, bottom: 150.0),
-                    child: SvgPicture.asset(
-                      'github.svg', // Replace with the path to your SVG file
-                      width: 250,
-                      height: 250,
-                      // color: Colors.transparent,
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              if (allProjects == null)
-                const Text(
-                  'Error loading projects.',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.red,
+            ),
+          const SizedBox(height: 30),
+          if (isMobileView)
+            Center(
+              child: GestureDetector(
+                onTap: openCustomLink,
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: generalPadding),
+                  child: SvgPicture.asset(
+                    'github.svg',
+                    width: githubSvgSize,
+                    height: githubSvgSize,
                   ),
                 ),
-            ],
-          ),
-        ),
-      ],
+              ),
+            ),
+          if (!isMobileView)
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: GestureDetector(
+                onTap: openCustomLink,
+                child: Padding(
+                  padding: EdgeInsets.only(left: gap, bottom: generalPadding),
+                  child: SvgPicture.asset(
+                    'github.svg',
+                    width: githubSvgSize,
+                    height: githubSvgSize,
+                  ),
+                ),
+              ),
+            ),
+          if (allProjects == null)
+            const Text(
+              'Error loading projects.',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.red,
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
