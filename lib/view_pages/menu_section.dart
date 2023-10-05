@@ -1,12 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:avantswift_portfolio/dto/section_keys_dto.dart';
 import 'package:flutter/material.dart';
 import '../ui/custom_texts/public_view_text_styles.dart';
 import '../ui/custom_menu_button.dart';
 
 class MenuSection extends StatefulWidget {
   final Function(GlobalKey) scrollToSection;
-  final Map<String, GlobalKey> sectionKeys; // Map to store section keys
+  final SectionKeysDTO sectionKeys; // Map to store section keys
   static const double dividerThickness = 1.0;
   static const double dividerIndent = 60.0;
   static const double dividerEndDent = 60.0;
@@ -46,7 +47,7 @@ class MenuSectionState extends State<MenuSection> {
                   right: MenuSection.rightPadding),
               child: CustomMenuButton(
                 onPressed: () {
-                  widget.scrollToSection(widget.sectionKeys['experience']!);
+                  widget.scrollToSection(widget.sectionKeys.experience);
                 },
                 text: "Experience",
               ),
@@ -61,7 +62,7 @@ class MenuSectionState extends State<MenuSection> {
                   right: MenuSection.rightPadding),
               child: CustomMenuButton(
                 onPressed: () {
-                  widget.scrollToSection(widget.sectionKeys['skills_edu']!);
+                  widget.scrollToSection(widget.sectionKeys.skillsEdu);
                 },
                 text: "Skills & Education",
               ),
@@ -76,7 +77,7 @@ class MenuSectionState extends State<MenuSection> {
                   right: MenuSection.rightPadding),
               child: CustomMenuButton(
                 onPressed: () {
-                  widget.scrollToSection(widget.sectionKeys['projects']!);
+                  widget.scrollToSection(widget.sectionKeys.projects);
                 },
                 text: "Projects",
               ),
@@ -93,7 +94,7 @@ class MenuSectionState extends State<MenuSection> {
                   right: MenuSection.rightPadding),
               child: CustomMenuButton(
                 onPressed: () {
-                  widget.scrollToSection(widget.sectionKeys['awards_certs']!);
+                  widget.scrollToSection(widget.sectionKeys.awardsCerts);
                 },
                 text: "Awards, Certifications & Peer Recommendations",
               ),
