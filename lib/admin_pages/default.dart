@@ -426,11 +426,13 @@ class DefaultPage extends StatelessWidget {
             .copyWith(fontSize: titleFontSize),
       );
 
-      Widget editorSubtitleWidget = Text(
-        'Start editing your ePortfolio by clicking on a section below.',
-        style: PublicViewTextStyles.generalBodyText
-            .copyWith(fontSize: subtitleFontSize),
-      );
+      Widget editorSubtitleWidget = SizedBox(
+          width: editorButtonsWidth,
+          child: Text(
+            'Start editing your ePortfolio by clicking on a section below.',
+            style: PublicViewTextStyles.generalBodyText
+                .copyWith(fontSize: subtitleFontSize),
+          ));
 
       Widget editorGridWidget = SizedBox(
         width: editorButtonsWidth,
