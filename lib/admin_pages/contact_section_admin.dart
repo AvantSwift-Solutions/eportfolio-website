@@ -189,7 +189,8 @@ class _ContactSectionAdminState extends State<ContactSectionAdmin> {
                                     AdminViewDialogStyles.elevatedButtonStyle,
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
-                                    await AnalyticController.wasEdited(AnalyticRepoService());
+                                    await AnalyticController.wasEdited(
+                                        AnalyticRepoService());
                                     formKey.currentState!.save();
                                     bool? isSuccess = await _adminController
                                         .updateContactSectionData(

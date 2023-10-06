@@ -147,7 +147,8 @@ class _TSkillSectionAdminState extends State<TSkillSectionAdmin> {
                                     AdminViewDialogStyles.elevatedButtonStyle,
                                 onPressed: () async {
                                   if (pickedImageBytes != null) {
-                                    await AnalyticController.wasEdited(AnalyticRepoService());
+                                    await AnalyticController.wasEdited(
+                                        AnalyticRepoService());
                                     String? imageURL =
                                         await UploadImageAdminController()
                                             .uploadImageAndGetURL(
@@ -550,7 +551,8 @@ class _TSkillSectionAdminState extends State<TSkillSectionAdmin> {
                                     AdminViewDialogStyles.elevatedButtonStyle,
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
-                                    await AnalyticController.wasEdited(AnalyticRepoService());
+                                    await AnalyticController.wasEdited(
+                                        AnalyticRepoService());
                                     formKey.currentState!.save();
                                     tskill.creationTimestamp = Timestamp.now();
                                     if (pickedImageBytes != null) {
@@ -647,7 +649,8 @@ class _TSkillSectionAdminState extends State<TSkillSectionAdmin> {
                               onPressed: () async {
                                 final deleted = await x.delete() ?? false;
                                 if (deleted) {
-                                  await AnalyticController.wasEdited(AnalyticRepoService());
+                                  await AnalyticController.wasEdited(
+                                      AnalyticRepoService());
                                   tskills.remove(x);
                                   setState(() {});
                                   if (!mounted) return;

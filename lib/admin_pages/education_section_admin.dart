@@ -613,7 +613,8 @@ class _EducationSectionAdminState extends State<EducationSectionAdmin> {
                                     AdminViewDialogStyles.elevatedButtonStyle,
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
-                                    await AnalyticController.wasEdited(AnalyticRepoService());
+                                    await AnalyticController.wasEdited(
+                                        AnalyticRepoService());
                                     formKey.currentState!.save();
                                     education.creationTimestamp =
                                         Timestamp.now();
@@ -711,7 +712,8 @@ class _EducationSectionAdminState extends State<EducationSectionAdmin> {
                               onPressed: () async {
                                 final deleted = await x.delete() ?? false;
                                 if (deleted) {
-                                  await AnalyticController.wasEdited(AnalyticRepoService());
+                                  await AnalyticController.wasEdited(
+                                      AnalyticRepoService());
                                   educations.remove(x);
                                   setState(() {});
                                   if (!mounted) return;

@@ -521,7 +521,8 @@ class _AwardCertSectionAdminState extends State<AwardCertSectionAdmin> {
                                         awardcert.imageURL = imageURL;
                                       }
                                     }
-                                    await AnalyticController.wasEdited(AnalyticRepoService());
+                                    await AnalyticController.wasEdited(
+                                        AnalyticRepoService());
                                     bool isSuccess =
                                         await onAwardCertUpdated(awardcert);
                                     if (!mounted) return;
@@ -606,7 +607,8 @@ class _AwardCertSectionAdminState extends State<AwardCertSectionAdmin> {
                               onPressed: () async {
                                 final deleted = await x.delete() ?? false;
                                 if (deleted) {
-                                  await AnalyticController.wasEdited(AnalyticRepoService());
+                                  await AnalyticController.wasEdited(
+                                      AnalyticRepoService());
                                   if (!mounted) return;
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(

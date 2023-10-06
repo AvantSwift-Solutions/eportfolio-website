@@ -236,7 +236,8 @@ class _AboutMeSectionAdminState extends State<AboutMeSectionAdmin> {
                                   }
                                   if (formKey.currentState!.validate() &&
                                       !noImage) {
-                                    await AnalyticController.wasEdited(AnalyticRepoService());
+                                    await AnalyticController.wasEdited(
+                                        AnalyticRepoService());
                                     DefaultPageState.setEdit();
                                     formKey.currentState!.save();
                                     if (pickedImageBytes != null) {

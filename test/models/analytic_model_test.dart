@@ -12,7 +12,6 @@ class DocumentSnapshotMock extends Mock implements DocumentSnapshot {
 }
 
 void main() {
-
   group('Analytic Model tests', () {
     test('fromDocumentSnapshot should return an Analytic object', () {
       final data = {

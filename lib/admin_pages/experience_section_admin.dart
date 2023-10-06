@@ -655,7 +655,8 @@ class ExperienceSectionAdminState extends State<ExperienceSectionAdmin> {
                                     AdminViewDialogStyles.elevatedButtonStyle,
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
-                                    await AnalyticController.wasEdited(AnalyticRepoService());
+                                    await AnalyticController.wasEdited(
+                                        AnalyticRepoService());
                                     formKey.currentState!.save();
                                     experience.creationTimestamp =
                                         Timestamp.now();
@@ -753,7 +754,8 @@ class ExperienceSectionAdminState extends State<ExperienceSectionAdmin> {
                               onPressed: () async {
                                 final deleted = await x.delete() ?? false;
                                 if (deleted) {
-                                  await AnalyticController.wasEdited(AnalyticRepoService());
+                                  await AnalyticController.wasEdited(
+                                      AnalyticRepoService());
                                   experiences.remove(x);
                                   setState(() {});
                                   if (!mounted) return;

@@ -282,7 +282,8 @@ class _LandingPageAdminState extends State<LandingPageAdmin> {
                                   }
                                   if (formKey.currentState!.validate() &&
                                       !noImage) {
-                                    await AnalyticController.wasEdited(AnalyticRepoService());
+                                    await AnalyticController.wasEdited(
+                                        AnalyticRepoService());
                                     formKey.currentState!.save();
                                     if (pickedImageBytes != null) {
                                       String? imageURL =

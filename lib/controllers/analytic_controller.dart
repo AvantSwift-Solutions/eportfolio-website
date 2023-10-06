@@ -4,11 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AnalyticController {
   static final defaultAnalytic = Analytic(
-            analyticId: '',
-            month: Timestamp.now(),
-            messages: -1,
-            views: -1,
-            lastEdit: Timestamp.now());
+      analyticId: '',
+      month: Timestamp.now(),
+      messages: -1,
+      views: -1,
+      lastEdit: Timestamp.now());
 
   static Future<Analytic> checkReset(AnalyticRepoService repoService) async {
     Analytic analytic = await repoService.getAnalytic() ?? defaultAnalytic;
@@ -31,14 +31,14 @@ class AnalyticController {
   }
 
   static Future<void> wasEdited(AnalyticRepoService repoService) async {
-    Analytic analytic = await repoService.getAnalytic() ??defaultAnalytic;
+    Analytic analytic = await repoService.getAnalytic() ?? defaultAnalytic;
 
     analytic.lastEdit = Timestamp.now();
     analytic.update();
   }
 
   static Future<void> incrementViews(AnalyticRepoService repoService) async {
-    Analytic analytic = await repoService.getAnalytic() ??defaultAnalytic;
+    Analytic analytic = await repoService.getAnalytic() ?? defaultAnalytic;
 
     if (isSameMonth(analytic.month ?? Timestamp.now())) {
       analytic.views ??= 0;
@@ -53,7 +53,7 @@ class AnalyticController {
   }
 
   static Future<void> incrementMessages(AnalyticRepoService repoService) async {
-    Analytic analytic = await repoService.getAnalytic() ??defaultAnalytic;
+    Analytic analytic = await repoService.getAnalytic() ?? defaultAnalytic;
 
     if (isSameMonth(analytic.month ?? Timestamp.now())) {
       analytic.messages ??= 0;

@@ -26,8 +26,6 @@ void main() {
     });
 
     test('checkReset should update analytic if month is different', () async {
-      
-      
       when(mockRepoService.getAnalytic()).thenAnswer((_) async => analytic);
 
       Analytic res = await AnalyticController.checkReset(mockRepoService);
@@ -36,7 +34,6 @@ void main() {
       expect(res.month?.toDate().month, equals(now.month));
       expect(res.views, 0);
       expect(res.messages, 0);
-
     });
 
     test('checkReset should not update analytic if month is same', () async {
@@ -48,7 +45,7 @@ void main() {
         lastEdit: Timestamp.fromDate(now),
       );
       when(mockRepoService.getAnalytic()).thenAnswer((_) async => analytic);
-      
+
       Analytic res = await AnalyticController.checkReset(mockRepoService);
       verify(mockRepoService.getAnalytic()).called(1);
       expect(res.views, equals(20));
@@ -69,7 +66,6 @@ void main() {
 
       verify(mockRepoService.getAnalytic()).called(1);
       expect(analytic.lastEdit?.toDate().day, equals(now.day));
-
     });
 
     test('incrementViews should increment views count', () async {
@@ -89,7 +85,9 @@ void main() {
       expect(analytic.messages, equals(10));
     });
 
-    test('incrementViews should reset views and messages count if month is different', () async {
+    test(
+        'incrementViews should reset views and messages count if month is different',
+        () async {
       when(mockRepoService.getAnalytic()).thenAnswer((_) async => analytic);
 
       await AnalyticController.incrementViews(mockRepoService);
@@ -117,7 +115,9 @@ void main() {
       expect(analytic.messages, equals(11));
     });
 
-    test('incrementMessages should reset views and messages count if month is different', () async {
+    test(
+        'incrementMessages should reset views and messages count if month is different',
+        () async {
       when(mockRepoService.getAnalytic()).thenAnswer((_) async => analytic);
 
       await AnalyticController.incrementMessages(mockRepoService);

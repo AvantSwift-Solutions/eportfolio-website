@@ -144,7 +144,8 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
                                     AdminViewDialogStyles.elevatedButtonStyle,
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
-                                    await AnalyticController.wasEdited(AnalyticRepoService());
+                                    await AnalyticController.wasEdited(
+                                        AnalyticRepoService());
                                     formKey.currentState!.save();
                                     if (!mounted) return;
                                     ScaffoldMessenger.of(parentContext)
@@ -540,7 +541,8 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
                                     AdminViewDialogStyles.elevatedButtonStyle,
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
-                                    await AnalyticController.wasEdited(AnalyticRepoService());
+                                    await AnalyticController.wasEdited(
+                                        AnalyticRepoService());
                                     formKey.currentState!.save();
                                     project.creationTimestamp = Timestamp.now();
                                     bool isSuccess =
@@ -629,7 +631,8 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
                               onPressed: () async {
                                 final deleted = await x.delete() ?? false;
                                 if (deleted) {
-                                  await AnalyticController.wasEdited(AnalyticRepoService());
+                                  await AnalyticController.wasEdited(
+                                      AnalyticRepoService());
                                   projects.remove(x);
                                   setState(() {});
                                   if (!mounted) return;

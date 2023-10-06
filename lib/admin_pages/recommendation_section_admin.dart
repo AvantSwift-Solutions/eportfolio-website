@@ -499,7 +499,8 @@ class _RecommendationSectionAdminState
                                     AdminViewDialogStyles.elevatedButtonStyle,
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
-                                    await AnalyticController.wasEdited(AnalyticRepoService());
+                                    await AnalyticController.wasEdited(
+                                        AnalyticRepoService());
                                     formKey.currentState!.save();
                                     recommendation.creationTimestamp =
                                         Timestamp.now();
@@ -600,7 +601,8 @@ class _RecommendationSectionAdminState
                               onPressed: () async {
                                 final deleted = await x.delete() ?? false;
                                 if (deleted) {
-                                  await AnalyticController.wasEdited(AnalyticRepoService());
+                                  await AnalyticController.wasEdited(
+                                      AnalyticRepoService());
                                   recommendations.remove(x);
                                   setState(() {});
                                   if (!mounted) return;

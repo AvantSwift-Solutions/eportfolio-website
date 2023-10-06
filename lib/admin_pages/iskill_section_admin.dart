@@ -337,7 +337,8 @@ class _ISkillSectionAdminState extends State<ISkillSectionAdmin> {
                                     AdminViewDialogStyles.elevatedButtonStyle,
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
-                                    await AnalyticController.wasEdited(AnalyticRepoService());
+                                    await AnalyticController.wasEdited(
+                                        AnalyticRepoService());
                                     setState(() {});
                                     formKey.currentState!.save();
                                     iskill.creationTimestamp = Timestamp.now();
@@ -425,7 +426,8 @@ class _ISkillSectionAdminState extends State<ISkillSectionAdmin> {
                               onPressed: () async {
                                 final deleted = await x.delete() ?? false;
                                 if (deleted) {
-                                  await AnalyticController.wasEdited(AnalyticRepoService());
+                                  await AnalyticController.wasEdited(
+                                      AnalyticRepoService());
                                   iskills.remove(x);
                                   if (!mounted) return;
                                   ScaffoldMessenger.of(context).showSnackBar(

@@ -183,7 +183,8 @@ class _ReorderDialogState extends State<ReorderDialog> {
                                     style: AdminViewDialogStyles
                                         .elevatedButtonStyle,
                                     onPressed: () async {
-                                      await AnalyticController.wasEdited(AnalyticRepoService());
+                                      await AnalyticController.wasEdited(
+                                          AnalyticRepoService());
                                       await _controller
                                           .updateSectionOrder(_items);
                                       widget.onReorder();
