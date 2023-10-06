@@ -7,7 +7,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:run_with_network_images/run_with_network_images.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 import 'mocks/award_cert_section_test.mocks.dart';
 

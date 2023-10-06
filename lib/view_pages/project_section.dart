@@ -401,12 +401,12 @@ class ProjectSectionState extends State<ProjectSection> {
                   onTap: openCustomLink,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 150.0, bottom: 150.0),
-                    child: SvgPicture.asset(
-                      'github.svg', // Replace with the path to your SVG file
-                      width: 250,
-                      height: 250,
-                      // color: Colors.transparent,
-                    ),
+                    // child: SvgPicture.asset(
+                    //   'github.svg', // Replace with the path to your SVG file
+                    //   width: 250,
+                    //   height: 250,
+                    //   // color: Colors.transparent,
+                    // ),
                   ),
                 ),
               ),
