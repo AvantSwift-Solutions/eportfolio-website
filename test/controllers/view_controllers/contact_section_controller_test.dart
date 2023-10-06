@@ -29,7 +29,7 @@ void main() {
     when(mockRepoService.getFirstUser()).thenAnswer((_) async => mockUser);
     final contactSectionData = await controller.getContactSectionData();
 
-    expect(contactSectionData!.name, mockUser.name);
+    expect(contactSectionData.name, mockUser.name);
     expect(contactSectionData.contactEmail, mockUser.contactEmail);
     expect(contactSectionData.linkedinURL, mockUser.linkedinURL);
   });
@@ -39,7 +39,7 @@ void main() {
     when(mockRepoService.getFirstUser()).thenAnswer((_) async => null);
     final contactSectionData = await controller.getContactSectionData();
 
-    expect(contactSectionData!.name, Constants.defaultName);
+    expect(contactSectionData.name, Constants.defaultName);
     expect(contactSectionData.contactEmail, Constants.defaultEmail);
     expect(contactSectionData.linkedinURL, Constants.defaultLinkedinURL);
   });
@@ -49,7 +49,7 @@ void main() {
 
     final contactSectionData = await controller.getContactSectionData();
 
-    expect(contactSectionData!.name, 'Error');
+    expect(contactSectionData.name, 'Error');
     expect(contactSectionData.contactEmail, 'Error');
     expect(contactSectionData.linkedinURL, 'Error');
   });

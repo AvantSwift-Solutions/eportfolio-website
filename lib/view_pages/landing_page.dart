@@ -161,8 +161,7 @@ class _LandingPageState extends State<LandingPage> {
                   const SizedBox(height: 20),
                   Center(
                     child: Image.network(
-                      landingPageData?.imageURL ??
-                          'https://example.com/default_image.jpg',
+                      landingPageData?.imageURL ?? Constants.replaceImageURL,
                       width: 300,
                       height: 200,
                       fit: BoxFit.fitWidth,
@@ -256,8 +255,7 @@ class _LandingPageState extends State<LandingPage> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20.0),
                       child: Image.network(
-                        landingPageData?.imageURL ??
-                            'https://example.com/default_image.jpg',
+                        landingPageData?.imageURL ?? Constants.replaceImageURL,
                         width: 300,
                         height: 300,
                         fit: BoxFit.fitWidth,
