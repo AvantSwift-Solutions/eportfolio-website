@@ -26,7 +26,7 @@ class _RecommendationSectionAdminState
     extends State<RecommendationSectionAdmin> {
   late RecommendationSectionAdminController _adminController;
   late List<Recommendation> recommendations;
-  late final BuildContext parentContext;
+  late BuildContext parentContext;
 
   @override
   void initState() {
@@ -157,30 +157,62 @@ class _RecommendationSectionAdminState
                     children: [
                       const Divider(),
                       const SizedBox(height: AdminViewDialogStyles.listSpacing),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ReorderDialog(
-                            controller: _adminController,
-                            onReorder: () async {
-                              await _loadItems();
-                              Navigator.of(dialogContext).pop();
-                              Navigator.of(parentContext).pop();
-                              _showList(parentContext);
-                            },
-                          ),
-                          ElevatedButton(
-                            style: AdminViewDialogStyles.elevatedButtonStyle,
-                            onPressed: () {
-                              _showAddNewDialog(context);
-                            },
-                            child: Text(
-                              'Add New',
-                              style: AdminViewDialogStyles.buttonTextStyle,
+                      if (MediaQuery.of(context).size.width >
+                          AdminViewDialogStyles.fitOptionsThreshold)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ReorderDialog(
+                              controller: _adminController,
+                              onReorder: () async {
+                                await _loadItems();
+                                Navigator.of(dialogContext).pop();
+                                Navigator.of(parentContext).pop();
+                                _showList(parentContext);
+                              },
                             ),
+                            ElevatedButton(
+                              style: AdminViewDialogStyles.elevatedButtonStyle,
+                              onPressed: () {
+                                _showAddNewDialog(context);
+                              },
+                              child: Text(
+                                'Add New',
+                                style: AdminViewDialogStyles.buttonTextStyle,
+                              ),
+                            ),
+                          ],
+                        ),
+                      if (MediaQuery.of(context).size.width <=
+                          AdminViewDialogStyles.fitOptionsThreshold)
+                        FittedBox(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ReorderDialog(
+                                controller: _adminController,
+                                onReorder: () async {
+                                  await _loadItems();
+                                  Navigator.of(dialogContext).pop();
+                                  Navigator.of(parentContext).pop();
+                                  _showList(parentContext);
+                                },
+                              ),
+                              AdminViewDialogStyles.reorderOKSpacing,
+                              ElevatedButton(
+                                style:
+                                    AdminViewDialogStyles.elevatedButtonStyle,
+                                onPressed: () {
+                                  _showAddNewDialog(context);
+                                },
+                                child: Text(
+                                  'Add New',
+                                  style: AdminViewDialogStyles.buttonTextStyle,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        )
                     ],
                   ))
             ],

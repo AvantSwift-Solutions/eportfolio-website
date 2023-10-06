@@ -117,7 +117,8 @@ class _ContactSectionAdminState extends State<ContactSectionAdmin> {
                                           .indicatesTextStyle,
                                     ),
                                     AdminViewDialogStyles.spacer,
-                                    const Text('Contact Email*',
+                                    const Text(
+                                        'Contact Email* (Won\'t be public)',
                                         textAlign: TextAlign.left),
                                     AdminViewDialogStyles.interTitleField,
                                     TextFormField(

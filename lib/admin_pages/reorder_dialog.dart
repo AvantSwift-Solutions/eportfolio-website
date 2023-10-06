@@ -15,6 +15,8 @@ class ReorderDialog extends StatefulWidget {
 }
 
 class _ReorderDialogState extends State<ReorderDialog> {
+  final stackOptionsThreshold = 1000;
+
   late dynamic _controller;
   late final List<Tuple2<int, String>> _items;
 
@@ -111,7 +113,8 @@ class _ReorderDialogState extends State<ReorderDialog> {
                             const Divider(),
                             const SizedBox(
                                 height: AdminViewDialogStyles.listSpacing),
-                            if (MediaQuery.of(context).size.width > 1000)
+                            if (MediaQuery.of(context).size.width >=
+                                stackOptionsThreshold)
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
@@ -152,7 +155,8 @@ class _ReorderDialogState extends State<ReorderDialog> {
                                   ),
                                 ],
                               ),
-                            if (MediaQuery.of(context).size.width < 1000)
+                            if (MediaQuery.of(context).size.width <
+                                stackOptionsThreshold)
                               Align(
                                 alignment: Alignment.centerRight,
                                 child: ElevatedButton(
@@ -168,7 +172,8 @@ class _ReorderDialogState extends State<ReorderDialog> {
                                           .buttonTextStyle),
                                 ),
                               ),
-                            if (MediaQuery.of(context).size.width < 1000)
+                            if (MediaQuery.of(context).size.width <
+                                stackOptionsThreshold)
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [

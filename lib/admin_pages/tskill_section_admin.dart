@@ -23,7 +23,7 @@ class TSkillSectionAdmin extends StatefulWidget {
 class _TSkillSectionAdminState extends State<TSkillSectionAdmin> {
   late TSkillSectionAdminController _adminController;
   late List<TSkill> tskills;
-  late final BuildContext parentContext;
+  late BuildContext parentContext;
   late String centerImageURL;
 
   @override
@@ -218,7 +218,10 @@ class _TSkillSectionAdminState extends State<TSkillSectionAdmin> {
                         child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Edit Technical Skills              '),
+                        MediaQuery.of(context).size.width >
+                                AdminViewDialogStyles.showDialogWidth
+                            ? const Text('Edit Technical Skills              ')
+                            : const Text('Edit Technical Skills'),
                         Align(
                           alignment: Alignment.topRight,
                           child: IconButton(
@@ -244,22 +247,26 @@ class _TSkillSectionAdminState extends State<TSkillSectionAdmin> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                            style: AdminViewDialogStyles.centerImageButtonStyle,
-                            onPressed: () {
-                              _editCenterImage(context);
-                            },
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text('Change Center Image ',
-                                    style:
-                                        AdminViewDialogStyles.buttonTextStyle),
-                                const Icon(Icons.edit),
-                              ],
-                            )),
-                      ),
+                          width: double.infinity,
+                          child: FittedBox(
+                            child: ElevatedButton(
+                                style: AdminViewDialogStyles
+                                    .centerImageButtonStyle,
+                                onPressed: () {
+                                  _editCenterImage(context);
+                                },
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const SizedBox(width: 40),
+                                    Text('Edit Center Image ',
+                                        style: AdminViewDialogStyles
+                                            .buttonTextStyle),
+                                    const Icon(Icons.edit),
+                                    const SizedBox(width: 40),
+                                  ],
+                                )),
+                          )),
                       tskills.isEmpty
                           ? const Padding(
                               padding: EdgeInsets.symmetric(
@@ -316,30 +323,62 @@ class _TSkillSectionAdminState extends State<TSkillSectionAdmin> {
                     children: [
                       const Divider(),
                       const SizedBox(height: AdminViewDialogStyles.listSpacing),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ReorderDialog(
-                            controller: _adminController,
-                            onReorder: () async {
-                              await _loadItems();
-                              Navigator.of(dialogContext).pop();
-                              Navigator.of(parentContext).pop();
-                              _showList(parentContext);
-                            },
-                          ),
-                          ElevatedButton(
-                            style: AdminViewDialogStyles.elevatedButtonStyle,
-                            onPressed: () {
-                              _showAddNewDialog(context);
-                            },
-                            child: Text(
-                              'Add New',
-                              style: AdminViewDialogStyles.buttonTextStyle,
+                      if (MediaQuery.of(context).size.width >
+                          AdminViewDialogStyles.fitOptionsThreshold)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ReorderDialog(
+                              controller: _adminController,
+                              onReorder: () async {
+                                await _loadItems();
+                                Navigator.of(dialogContext).pop();
+                                Navigator.of(parentContext).pop();
+                                _showList(parentContext);
+                              },
                             ),
+                            ElevatedButton(
+                              style: AdminViewDialogStyles.elevatedButtonStyle,
+                              onPressed: () {
+                                _showAddNewDialog(context);
+                              },
+                              child: Text(
+                                'Add New',
+                                style: AdminViewDialogStyles.buttonTextStyle,
+                              ),
+                            ),
+                          ],
+                        ),
+                      if (MediaQuery.of(context).size.width <=
+                          AdminViewDialogStyles.fitOptionsThreshold)
+                        FittedBox(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ReorderDialog(
+                                controller: _adminController,
+                                onReorder: () async {
+                                  await _loadItems();
+                                  Navigator.of(dialogContext).pop();
+                                  Navigator.of(parentContext).pop();
+                                  _showList(parentContext);
+                                },
+                              ),
+                              AdminViewDialogStyles.reorderOKSpacing,
+                              ElevatedButton(
+                                style:
+                                    AdminViewDialogStyles.elevatedButtonStyle,
+                                onPressed: () {
+                                  _showAddNewDialog(context);
+                                },
+                                child: Text(
+                                  'Add New',
+                                  style: AdminViewDialogStyles.buttonTextStyle,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        )
                     ],
                   ))
             ],

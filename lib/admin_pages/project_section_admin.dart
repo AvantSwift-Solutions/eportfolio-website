@@ -20,7 +20,7 @@ class ProjectSectionAdmin extends StatefulWidget {
 class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
   late ProjectSectionAdminController _adminController;
   late List<Project> projects;
-  late final BuildContext parentContext;
+  late BuildContext parentContext;
   late String sectionDesc;
 
   @override
@@ -150,7 +150,7 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
                                         .showSnackBar(
                                       const SnackBar(
                                           content: Text(
-                                              "Section Description updated")),
+                                              'Section Description updated')),
                                     );
                                     Navigator.of(dialogContext).pop();
                                     Navigator.of(parentContext).pop();
@@ -202,7 +202,10 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
                         child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Edit Personal Projects          '),
+                        MediaQuery.of(context).size.width >
+                                AdminViewDialogStyles.showDialogWidth
+                            ? const Text('Edit Personal Projects          ')
+                            : const Text('Edit Personal Projects'),
                         Align(
                           alignment: Alignment.topRight,
                           child: IconButton(
@@ -228,22 +231,26 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                            style: AdminViewDialogStyles.centerImageButtonStyle,
-                            onPressed: () {
-                              _editSectionDescription(context);
-                            },
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text('Edit Section Description ',
-                                    style:
-                                        AdminViewDialogStyles.buttonTextStyle),
-                                const Icon(Icons.edit),
-                              ],
-                            )),
-                      ),
+                          width: double.infinity,
+                          child: FittedBox(
+                            child: ElevatedButton(
+                                style: AdminViewDialogStyles
+                                    .centerImageButtonStyle,
+                                onPressed: () {
+                                  _editSectionDescription(context);
+                                },
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const SizedBox(width: 30),
+                                    Text('Edit Section Description ',
+                                        style: AdminViewDialogStyles
+                                            .buttonTextStyle),
+                                    const Icon(Icons.edit),
+                                    const SizedBox(width: 30),
+                                  ],
+                                )),
+                          )),
                       projects.isEmpty
                           ? const Padding(
                               padding: EdgeInsets.symmetric(
@@ -300,30 +307,62 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
                     children: [
                       const Divider(),
                       const SizedBox(height: AdminViewDialogStyles.listSpacing),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ReorderDialog(
-                            controller: _adminController,
-                            onReorder: () async {
-                              await _loadItems();
-                              Navigator.of(dialogContext).pop();
-                              Navigator.of(parentContext).pop();
-                              _showList(parentContext);
-                            },
-                          ),
-                          ElevatedButton(
-                            style: AdminViewDialogStyles.elevatedButtonStyle,
-                            onPressed: () {
-                              _showAddNewDialog(context);
-                            },
-                            child: Text(
-                              'Add New',
-                              style: AdminViewDialogStyles.buttonTextStyle,
+                      if (MediaQuery.of(context).size.width >
+                          AdminViewDialogStyles.fitOptionsThreshold)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ReorderDialog(
+                              controller: _adminController,
+                              onReorder: () async {
+                                await _loadItems();
+                                Navigator.of(dialogContext).pop();
+                                Navigator.of(parentContext).pop();
+                                _showList(parentContext);
+                              },
                             ),
+                            ElevatedButton(
+                              style: AdminViewDialogStyles.elevatedButtonStyle,
+                              onPressed: () {
+                                _showAddNewDialog(context);
+                              },
+                              child: Text(
+                                'Add New',
+                                style: AdminViewDialogStyles.buttonTextStyle,
+                              ),
+                            ),
+                          ],
+                        ),
+                      if (MediaQuery.of(context).size.width <=
+                          AdminViewDialogStyles.fitOptionsThreshold)
+                        FittedBox(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ReorderDialog(
+                                controller: _adminController,
+                                onReorder: () async {
+                                  await _loadItems();
+                                  Navigator.of(dialogContext).pop();
+                                  Navigator.of(parentContext).pop();
+                                  _showList(parentContext);
+                                },
+                              ),
+                              AdminViewDialogStyles.reorderOKSpacing,
+                              ElevatedButton(
+                                style:
+                                    AdminViewDialogStyles.elevatedButtonStyle,
+                                onPressed: () {
+                                  _showAddNewDialog(context);
+                                },
+                                child: Text(
+                                  'Add New',
+                                  style: AdminViewDialogStyles.buttonTextStyle,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        )
                     ],
                   ))
             ],
