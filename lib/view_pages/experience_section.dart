@@ -12,15 +12,15 @@ import '../ui/custom_texts/public_view_text_styles.dart';
 import '../ui/dashed_vertical_line_painter.dart';
 
 class ExperienceSection extends StatefulWidget {
-  const ExperienceSection({Key? key}) : super(key: key);
+  final ExperienceSectionController? controller;
+  const ExperienceSection({Key? key, this.controller}) : super(key: key);
 
   @override
   ExperienceSectionState createState() => ExperienceSectionState();
 }
 
 class ExperienceSectionState extends State<ExperienceSection> {
-  final ExperienceSectionController _experienceSectionController =
-      ExperienceSectionController(ExperienceRepoService());
+  late ExperienceSectionController _experienceSectionController;
 
   // Variable to track whether to show all experiences or not
   bool showAllExperiences = false;
@@ -30,6 +30,8 @@ class ExperienceSectionState extends State<ExperienceSection> {
   @override
   void initState() {
     super.initState();
+    _experienceSectionController = widget.controller ??
+        ExperienceSectionController(ExperienceRepoService());
     _loadExperienceData();
   }
 

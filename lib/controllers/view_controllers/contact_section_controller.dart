@@ -12,7 +12,7 @@ class ContactSectionController {
 
   ContactSectionController(this.userRepoService); // Constructor
 
-  Future<ContactSectionDTO>? getContactSectionData() async {
+  Future<ContactSectionDTO> getContactSectionData() async {
     try {
       User? user = await userRepoService.getFirstUser();
       if (user != null) {
