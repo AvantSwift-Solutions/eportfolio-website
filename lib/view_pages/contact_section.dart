@@ -11,7 +11,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ContactSection extends StatefulWidget {
-  const ContactSection({Key? key}) : super(key: key);
+  final ContactSectionController? controller;
+  const ContactSection({Key? key, this.controller}) : super(key: key);
 
   @override
   ContactSectionState createState() => ContactSectionState();
@@ -23,8 +24,7 @@ class ContactSectionState extends State<ContactSection> {
       contactEmail: Constants.defaultEmail,
       linkedinURL: Constants.defaultLinkedinURL);
 
-  final ContactSectionController _contactSectionController =
-      ContactSectionController(UserRepoService());
+  late ContactSectionController _contactSectionController;
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -33,8 +33,10 @@ class ContactSectionState extends State<ContactSection> {
 
   @override
   void initState() {
-    _loadData();
     super.initState();
+    _contactSectionController =
+        widget.controller ?? ContactSectionController(UserRepoService());
+    _loadData();
   }
 
   Future<void> _loadData() async {

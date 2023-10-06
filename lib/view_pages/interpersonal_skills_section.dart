@@ -6,26 +6,31 @@ import 'package:avantswift_portfolio/ui/custom_texts/public_view_text_styles.dar
 import 'package:flutter/material.dart';
 
 class InterpersonalSkillsWidget extends StatefulWidget {
+  final InterpersonalSkillsController? controller;
+  const InterpersonalSkillsWidget({Key? key, this.controller})
+      : super(key: key);
+
   @override
   _InterpersonalSkillsWidgetState createState() =>
       _InterpersonalSkillsWidgetState();
 }
 
 class _InterpersonalSkillsWidgetState extends State<InterpersonalSkillsWidget> {
+  late InterpersonalSkillsController _interpersonalSkillsController;
   List<String> skills = [];
 
   @override
   void initState() {
     super.initState();
+    _interpersonalSkillsController =
+        widget.controller ?? InterpersonalSkillsController(ISkillRepoService());
     fetchData();
   }
 
   Future<void> fetchData() async {
-    final InterpersonalSkillsController interpersonalSkillsController =
-        InterpersonalSkillsController(ISkillRepoService());
-
     // Assuming getIPersonalSkills is an async function that returns a List<String>
-    final skillsData = await interpersonalSkillsController.getIPersonalSkills();
+    final skillsData =
+        await _interpersonalSkillsController.getIPersonalSkills();
 
     if (skillsData != null) {
       setState(() {

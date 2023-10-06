@@ -13,16 +13,16 @@ import '../ui/custom_texts/public_view_text_styles.dart';
 
 class LandingPage extends StatefulWidget {
   final Function scrollToBottom;
+  final LandingPageController? controller;
 
-  const LandingPage({super.key, required this.scrollToBottom});
+  const LandingPage({super.key, required this.scrollToBottom, this.controller});
 
   @override
   LandingPageState createState() => LandingPageState();
 }
 
 class LandingPageState extends State<LandingPage> {
-  final LandingPageController _landingPageController =
-      LandingPageController(UserRepoService());
+  late LandingPageController _landingPageController;
   String? imageURL;
   LandingPageDTO? landingPageData;
   int buttonRequirementWidth = 325;
@@ -31,6 +31,8 @@ class LandingPageState extends State<LandingPage> {
   void initState() {
     AnalyticController.incrementViews(AnalyticRepoService());
     super.initState();
+    _landingPageController =
+        widget.controller ?? LandingPageController(UserRepoService());
     // Fetch the landing page data in initState
     _loadData();
   }

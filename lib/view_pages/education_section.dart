@@ -8,15 +8,15 @@ import '../ui/dashed_vertical_line_painter.dart';
 import '../constants.dart';
 
 class EducationSection extends StatefulWidget {
-  const EducationSection({Key? key}) : super(key: key);
+  final EducationSectionController? controller;
+  const EducationSection({Key? key, this.controller}) : super(key: key);
 
   @override
   EducationSectionState createState() => EducationSectionState();
 }
 
 class EducationSectionState extends State<EducationSection> {
-  final EducationSectionController _educationSectionController =
-      EducationSectionController(EducationRepoService());
+  late EducationSectionController _educationSectionController;
 
   List<EducationDTO> educationSectionData = [];
   bool showAllEducation = false;
@@ -27,6 +27,8 @@ class EducationSectionState extends State<EducationSection> {
   @override
   void initState() {
     super.initState();
+    _educationSectionController =
+        widget.controller ?? EducationSectionController(EducationRepoService());
     _pageController = PageController();
     _loadEducationData();
   }
