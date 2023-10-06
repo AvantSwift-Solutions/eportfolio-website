@@ -10,14 +10,61 @@ import 'package:avantswift_portfolio/admin_pages/experience_section_admin.dart';
 import 'package:avantswift_portfolio/admin_pages/recommendation_section_admin.dart';
 import 'package:avantswift_portfolio/admin_pages/tskill_section_admin.dart';
 import 'package:avantswift_portfolio/admin_pages/iskill_section_admin.dart';
+import 'package:avantswift_portfolio/controllers/analytic_controller.dart';
+import 'package:avantswift_portfolio/models/Analytic.dart';
 import 'package:avantswift_portfolio/models/User.dart';
+import 'package:avantswift_portfolio/reposervice/analytic_repo_services.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:avantswift_portfolio/ui/custom_texts/public_view_text_styles.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-class DefaultPage extends StatelessWidget {
+class DefaultPage extends StatefulWidget {
+  final User user;
+  const DefaultPage({super.key, required this.user});
+
+  @override
+  DefaultPageState createState() => DefaultPageState();
+}
+
+class DefaultPageState extends State<DefaultPage> {
+  late User user;
+  late int views = 0;
+  late int messages = 0;
+  static int daysSinceLastEdit = 0;
+  static void setEdit() {
+    daysSinceLastEdit = 0;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  void _loadData() async {
+    user = widget.user;
+
+    await AnalyticController.checkReset();
+
+    Analytic analytics = await AnalyticRepoService().getAnalytic() ??
+        Analytic(
+            analyticId: '',
+            month: Timestamp.now(),
+            messages: 0,
+            views: 0,
+            lastEdit: Timestamp.now());
+
+    views = analytics.views;
+    messages = analytics.messages;
+    Timestamp lastEdit = analytics.lastEdit ?? Timestamp.now();
+    daysSinceLastEdit = DateTime.now().difference(lastEdit.toDate()).inDays;
+
+    setState(() {});
+  }
+
   static Color greyBg = const Color.fromRGBO(238, 238, 238, 1);
   static const List<Color> palette = [
     Color(0xFF0074D9),
@@ -36,16 +83,14 @@ class DefaultPage extends StatelessWidget {
     ),
   );
 
+  static const double mobileWidthThreshold = 1200;
+
   static const double maxAnalyticSize = 100;
   static const double valueAnalyticRatio = 3;
   static const double iconAnalyticRatio = 3;
 
   static const double analyticsGridSpacing = 15;
   static const double editorGridSpacing = 10;
-
-  final User user;
-
-  const DefaultPage({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -103,10 +148,10 @@ class DefaultPage extends StatelessWidget {
               navbarFontSize +
               titleFontSize);
 
-      if (bc.maxWidth > 1200) {
+      if (bc.maxWidth > mobileWidthThreshold) {
         AdminViewDialogStyles.increaseEditSectionButtonPadding();
       }
-      if (bc.maxWidth < 1200) {
+      if (bc.maxWidth < mobileWidthThreshold) {
         editorButtonsWidth = min(800, bc.maxWidth);
         interEditorButtonsSpacing = SizedBox(height: bc.maxHeight * 0.03);
         interAnalysticCardsSpacing = interEditorButtonsSpacing;
@@ -205,13 +250,7 @@ class DefaultPage extends StatelessWidget {
 
       List<Widget> analyticsWidgetList = [
         ElevatedButton(
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (context) => const AlertDialog(
-                        title: Text('Views'),
-                      ));
-            },
+            onPressed: () {},
             style: analyticStyle.copyWith(
               backgroundColor: MaterialStateProperty.all<Color>(palette[1]),
             ),
@@ -223,12 +262,12 @@ class DefaultPage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Text('x',
-                          style: TextStyle(
+                      Text(views.toString(),
+                          style: const TextStyle(
                               fontSize: valueAnalyticRatio * maxAnalyticSize,
                               fontWeight: FontWeight.bold)),
                       Text(
-                          (bc.maxWidth > 1200)
+                          (bc.maxWidth > mobileWidthThreshold)
                               ? 'ePortfolio views last week'
                               : 'Views last week',
                           style: const TextStyle(
@@ -248,13 +287,7 @@ class DefaultPage extends StatelessWidget {
               ),
             )),
         ElevatedButton(
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (context) => const AlertDialog(
-                        title: Text('Messages'),
-                      ));
-            },
+            onPressed: () {},
             style: analyticStyle.copyWith(
               backgroundColor: MaterialStateProperty.all<Color>(palette[2]),
             ),
@@ -266,12 +299,12 @@ class DefaultPage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Text('x',
-                          style: TextStyle(
+                      Text(messages.toString(),
+                          style: const TextStyle(
                               fontSize: valueAnalyticRatio * maxAnalyticSize,
                               fontWeight: FontWeight.bold)),
                       Text(
-                          (bc.maxWidth > 1200)
+                          (bc.maxWidth > mobileWidthThreshold)
                               ? 'Messages in the last month'
                               : 'Messages last month',
                           style: const TextStyle(
@@ -303,86 +336,12 @@ class DefaultPage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Text('x',
-                          style: TextStyle(
-                              fontSize: valueAnalyticRatio * maxAnalyticSize,
-                              fontWeight: FontWeight.bold)),
-                      Text(
-                          (bc.maxWidth > 1200)
-                              ? 'Days since last ePortfolio edit'
-                              : 'Days since last edit',
+                      Text(daysSinceLastEdit.toString(),
                           style: const TextStyle(
-                              fontSize: maxAnalyticSize,
-                              fontWeight: FontWeight.bold)),
-                      SizedBox(
-                          height:
-                              interAnalyticIconSpacingRatio * maxAnalyticSize),
-                    ],
-                  ),
-                  const Icon(
-                    Icons.edit,
-                    size: iconAnalyticRatio * maxAnalyticSize,
-                  ),
-                  SizedBox(height: analyticBotPaddingRatio * maxAnalyticSize),
-                ],
-              ),
-            )),
-        ElevatedButton(
-            onPressed: () {},
-            style: analyticStyle.copyWith(
-              backgroundColor: MaterialStateProperty.all<Color>(palette[4]),
-            ),
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Text('x',
-                          style: TextStyle(
                               fontSize: valueAnalyticRatio * maxAnalyticSize,
                               fontWeight: FontWeight.bold)),
                       Text(
-                          (bc.maxWidth > 1200)
-                              ? 'Days since last ePortfolio edit'
-                              : 'Days since last edit',
-                          style: const TextStyle(
-                              fontSize: maxAnalyticSize,
-                              fontWeight: FontWeight.bold)),
-                      SizedBox(
-                          height:
-                              interAnalyticIconSpacingRatio * maxAnalyticSize),
-                    ],
-                  ),
-                  const Icon(
-                    Icons.edit,
-                    size: iconAnalyticRatio * maxAnalyticSize,
-                  ),
-                  SizedBox(height: analyticBotPaddingRatio * maxAnalyticSize),
-                ],
-              ),
-            )),
-        ElevatedButton(
-            onPressed: () {},
-            style: analyticStyle.copyWith(
-              backgroundColor: MaterialStateProperty.all<Color>(palette[1]),
-            ),
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Text('x',
-                          style: TextStyle(
-                              fontSize: valueAnalyticRatio * maxAnalyticSize,
-                              fontWeight: FontWeight.bold)),
-                      Text(
-                          (bc.maxWidth > 1200)
+                          (bc.maxWidth > mobileWidthThreshold)
                               ? 'Days since last ePortfolio edit'
                               : 'Days since last edit',
                           style: const TextStyle(
@@ -495,7 +454,7 @@ class DefaultPage extends StatelessWidget {
         ),
       );
 
-      if (bc.maxWidth > 1200) {
+      if (bc.maxWidth > mobileWidthThreshold) {
         return Scaffold(
           body: SizedBox(
               height: bc.maxHeight,

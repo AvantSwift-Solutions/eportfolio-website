@@ -70,28 +70,28 @@ class SinglePageView extends StatelessWidget {
                 controller: _scrollController,
                 child: Column(
                   children: [
-                    // LandingPage(
-                    //   key: _landingPageKey,
-                    //   scrollToBottom: _scrollToContact,
-                    // ),
-                    // const SizedBox(height: 100),
-                    // MenuSection(
-                    //   key: _menuKey,
-                    //   scrollToSection: _scrollToSection,
-                    //   sectionKeys: sectionKeys,
-                    // ),
-                    // AboutMeSection(
-                    //   key: _aboutMeKey,
-                    // ),
-                    // const SizedBox(height: 100),
-                    // ExperienceSection(key: _experienceKey),
-                    // const SizedBox(height: 100),
-                    // SkillsAndEducation(key: _skillsEduKey),
-                    // const SizedBox(height: 100),
-                    // ProjectSection(key: _projectsKey),
-                    // const SizedBox(height: 100),
-                    // AwardCertSection(key: _awardsCertsKey),
-                    // const SizedBox(height: 100),
+                    LandingPage(
+                      key: _landingPageKey,
+                      scrollToBottom: _scrollToContact,
+                    ),
+                    const SizedBox(height: 100),
+                    MenuSection(
+                      key: _menuKey,
+                      scrollToSection: _scrollToSection,
+                      sectionKeys: sectionKeys,
+                    ),
+                    AboutMeSection(
+                      key: _aboutMeKey,
+                    ),
+                    const SizedBox(height: 100),
+                    ExperienceSection(key: _experienceKey),
+                    const SizedBox(height: 100),
+                    SkillsAndEducation(key: _skillsEduKey),
+                    const SizedBox(height: 100),
+                    ProjectSection(key: _projectsKey),
+                    const SizedBox(height: 100),
+                    AwardCertSection(key: _awardsCertsKey),
+                    const SizedBox(height: 100),
                     ContactSection(key: _contactKey),
                     const SizedBox(height: 100),
                     FooterSection(

@@ -1,3 +1,4 @@
+import 'package:avantswift_portfolio/controllers/analytic_controller.dart';
 import 'package:avantswift_portfolio/dto/contact_section_dto.dart';
 import 'package:avantswift_portfolio/reposervice/user_repo_services.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
@@ -53,7 +54,10 @@ class _ContactSectionAdminState extends State<ContactSectionAdmin> {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     String title, successMessage, errorMessage;
-    title = 'Edit Contact Section Info      ';
+    title = MediaQuery.of(context).size.width >
+            AdminViewDialogStyles.showDialogWidth
+        ? 'Edit Contact Section Info                  '
+        : 'Edit Contact Section Info';
     successMessage = 'Contact Section info updated successfully';
     errorMessage = 'Error updating Contact Section info';
 
@@ -183,6 +187,7 @@ class _ContactSectionAdminState extends State<ContactSectionAdmin> {
                                     AdminViewDialogStyles.elevatedButtonStyle,
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
+                                    await AnalyticController.wasEdited();
                                     formKey.currentState!.save();
                                     bool? isSuccess = await _adminController
                                         .updateContactSectionData(

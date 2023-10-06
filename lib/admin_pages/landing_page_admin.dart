@@ -1,4 +1,5 @@
 import 'package:avantswift_portfolio/controllers/admin_controllers/upload_image_admin_controller.dart';
+import 'package:avantswift_portfolio/controllers/analytic_controller.dart';
 import 'package:avantswift_portfolio/dto/landing_page_dto.dart';
 import 'package:avantswift_portfolio/reposervice/user_repo_services.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
@@ -63,7 +64,10 @@ class _LandingPageAdminState extends State<LandingPageAdmin> {
     bool noImage = false;
 
     String title, successMessage, errorMessage;
-    title = 'Edit Landing Page Info           ';
+    title = MediaQuery.of(context).size.width >
+            AdminViewDialogStyles.showDialogWidth
+        ? 'Edit Landing Page Info                       '
+        : 'Edit Landing Page Info';
     successMessage = 'Landing Page info updated successfully';
     errorMessage = 'Error updating Landing Page info';
 
@@ -277,6 +281,7 @@ class _LandingPageAdminState extends State<LandingPageAdmin> {
                                   }
                                   if (formKey.currentState!.validate() &&
                                       !noImage) {
+                                    await AnalyticController.wasEdited();
                                     formKey.currentState!.save();
                                     if (pickedImageBytes != null) {
                                       String? imageURL =

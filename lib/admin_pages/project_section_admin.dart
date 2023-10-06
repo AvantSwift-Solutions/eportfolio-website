@@ -1,4 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
+import 'package:avantswift_portfolio/controllers/analytic_controller.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -140,7 +143,9 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
                                     AdminViewDialogStyles.elevatedButtonStyle,
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
+                                    await AnalyticController.wasEdited();
                                     formKey.currentState!.save();
+                                    if (!mounted) return;
                                     ScaffoldMessenger.of(parentContext)
                                         .showSnackBar(
                                       const SnackBar(
@@ -300,7 +305,8 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
                         children: [
                           ReorderDialog(
                             controller: _adminController,
-                            onReorder: () {
+                            onReorder: () async {
+                              await _loadItems();
                               Navigator.of(dialogContext).pop();
                               Navigator.of(parentContext).pop();
                               _showList(parentContext);
@@ -494,6 +500,7 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
                                     AdminViewDialogStyles.elevatedButtonStyle,
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
+                                    await AnalyticController.wasEdited();
                                     formKey.currentState!.save();
                                     project.creationTimestamp = Timestamp.now();
                                     bool isSuccess =
@@ -582,6 +589,7 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
                               onPressed: () async {
                                 final deleted = await x.delete() ?? false;
                                 if (deleted) {
+                                  await AnalyticController.wasEdited();
                                   projects.remove(x);
                                   setState(() {});
                                   if (!mounted) return;

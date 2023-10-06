@@ -1,6 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:typed_data';
 import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
 import 'package:avantswift_portfolio/controllers/admin_controllers/upload_image_admin_controller.dart';
+import 'package:avantswift_portfolio/controllers/analytic_controller.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
@@ -143,6 +146,7 @@ class _TSkillSectionAdminState extends State<TSkillSectionAdmin> {
                                     AdminViewDialogStyles.elevatedButtonStyle,
                                 onPressed: () async {
                                   if (pickedImageBytes != null) {
+                                    await AnalyticController.wasEdited();
                                     String? imageURL =
                                         await UploadImageAdminController()
                                             .uploadImageAndGetURL(
@@ -317,7 +321,8 @@ class _TSkillSectionAdminState extends State<TSkillSectionAdmin> {
                         children: [
                           ReorderDialog(
                             controller: _adminController,
-                            onReorder: () {
+                            onReorder: () async {
+                              await _loadItems();
                               Navigator.of(dialogContext).pop();
                               Navigator.of(parentContext).pop();
                               _showList(parentContext);
@@ -505,6 +510,7 @@ class _TSkillSectionAdminState extends State<TSkillSectionAdmin> {
                                     AdminViewDialogStyles.elevatedButtonStyle,
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
+                                    await AnalyticController.wasEdited();
                                     formKey.currentState!.save();
                                     tskill.creationTimestamp = Timestamp.now();
                                     if (pickedImageBytes != null) {
@@ -601,6 +607,7 @@ class _TSkillSectionAdminState extends State<TSkillSectionAdmin> {
                               onPressed: () async {
                                 final deleted = await x.delete() ?? false;
                                 if (deleted) {
+                                  await AnalyticController.wasEdited();
                                   tskills.remove(x);
                                   setState(() {});
                                   if (!mounted) return;

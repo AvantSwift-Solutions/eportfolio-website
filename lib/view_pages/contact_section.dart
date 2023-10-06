@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:avantswift_portfolio/dto/contact_section_dto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -230,6 +228,7 @@ class ContactSectionState extends State<ContactSection> {
                 );
                 final res = await _contactSectionController.sendEmail(
                     contactSectionData, fields);
+                if (!mounted) return;
                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
                 if (res) {
                   ScaffoldMessenger.of(context).showSnackBar(

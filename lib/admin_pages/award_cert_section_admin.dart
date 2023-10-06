@@ -1,6 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:typed_data';
 import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
 import 'package:avantswift_portfolio/controllers/admin_controllers/upload_image_admin_controller.dart';
+import 'package:avantswift_portfolio/controllers/analytic_controller.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
@@ -169,7 +172,8 @@ class _AwardCertSectionAdminState extends State<AwardCertSectionAdmin> {
                         children: [
                           ReorderDialog(
                             controller: _adminController,
-                            onReorder: () {
+                            onReorder: () async {
+                              await _loadItems();
                               Navigator.of(dialogContext).pop();
                               Navigator.of(parentContext).pop();
                               _showList(parentContext);
@@ -484,6 +488,7 @@ class _AwardCertSectionAdminState extends State<AwardCertSectionAdmin> {
                                         awardcert.imageURL = imageURL;
                                       }
                                     }
+                                    await AnalyticController.wasEdited();
                                     bool isSuccess =
                                         await onAwardCertUpdated(awardcert);
                                     if (!mounted) return;
@@ -568,8 +573,8 @@ class _AwardCertSectionAdminState extends State<AwardCertSectionAdmin> {
                               onPressed: () async {
                                 final deleted = await x.delete() ?? false;
                                 if (deleted) {
-                                  awardcerts.remove(x);
-                                  setState(() {});
+                                  await AnalyticController.wasEdited();
+                                  AnalyticController.wasEdited();
                                   if (!mounted) return;
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(

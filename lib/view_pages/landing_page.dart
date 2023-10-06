@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:avantswift_portfolio/controllers/analytic_controller.dart';
 import 'package:avantswift_portfolio/dto/landing_page_dto.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -15,18 +16,19 @@ class LandingPage extends StatefulWidget {
   const LandingPage({super.key, required this.scrollToBottom});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _LandingPageState createState() => _LandingPageState();
+  LandingPageState createState() => LandingPageState();
 }
 
-class _LandingPageState extends State<LandingPage> {
+class LandingPageState extends State<LandingPage> {
   final LandingPageController _landingPageController =
       LandingPageController(UserRepoService());
   String? imageURL;
   LandingPageDTO? landingPageData;
   int buttonRequirementWidth = 325;
+
   @override
   void initState() {
+    AnalyticController.incrementViews();
     super.initState();
     // Fetch the landing page data in initState
     _loadData();
