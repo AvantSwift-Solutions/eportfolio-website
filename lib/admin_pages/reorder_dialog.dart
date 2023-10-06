@@ -50,25 +50,10 @@ class _ReorderDialogState extends State<ReorderDialog> {
                       padding: AdminViewDialogStyles.titleContPadding,
                       color: AdminViewDialogStyles.bgColor,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('Reorder $sectionName'),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: IconButton(
-                                  icon: const Icon(Icons.close),
-                                  iconSize: AdminViewDialogStyles.closeIconSize,
-                                  hoverColor: Colors.transparent,
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Divider(),
+                          FittedBox(child: Text('Reorder $sectionName')),
+                          const Divider()
                         ],
                       )),
                   content: SizedBox(
@@ -125,10 +110,51 @@ class _ReorderDialogState extends State<ReorderDialog> {
                             const Divider(),
                             const SizedBox(
                                 height: AdminViewDialogStyles.listSpacing),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                ElevatedButton(
+                            if (MediaQuery.of(context).size.width > 1000)
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  ElevatedButton(
+                                    style: AdminViewDialogStyles
+                                        .elevatedButtonStyle,
+                                    onPressed: () async {
+                                      await _controller.applyDefaultOrder();
+                                      widget.onReorder();
+                                    },
+                                    child: Text(
+                                        'Order ${_controller.defaultOrderName()}',
+                                        style: AdminViewDialogStyles
+                                            .buttonTextStyle),
+                                  ),
+                                  Expanded(child: Container()),
+                                  ElevatedButton(
+                                    style: AdminViewDialogStyles
+                                        .elevatedButtonStyle,
+                                    onPressed: () async {
+                                      await _controller
+                                          .updateSectionOrder(_items);
+                                      widget.onReorder();
+                                    },
+                                    child: Text('OK',
+                                        style: AdminViewDialogStyles
+                                            .buttonTextStyle),
+                                  ),
+                                  TextButton(
+                                    style:
+                                        AdminViewDialogStyles.textButtonStyle,
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Cancel',
+                                        style: AdminViewDialogStyles
+                                            .buttonTextStyle),
+                                  ),
+                                ],
+                              ),
+                            if (MediaQuery.of(context).size.width < 1000)
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: ElevatedButton(
                                   style:
                                       AdminViewDialogStyles.elevatedButtonStyle,
                                   onPressed: () async {
@@ -140,30 +166,36 @@ class _ReorderDialogState extends State<ReorderDialog> {
                                       style: AdminViewDialogStyles
                                           .buttonTextStyle),
                                 ),
-                                Expanded(child: Container()),
-                                ElevatedButton(
-                                  style:
-                                      AdminViewDialogStyles.elevatedButtonStyle,
-                                  onPressed: () async {
-                                    await _controller
-                                        .updateSectionOrder(_items);
-                                    widget.onReorder();
-                                  },
-                                  child: Text('OK',
-                                      style: AdminViewDialogStyles
-                                          .buttonTextStyle),
-                                ),
-                                TextButton(
-                                  style: AdminViewDialogStyles.textButtonStyle,
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text('Cancel',
-                                      style: AdminViewDialogStyles
-                                          .buttonTextStyle),
-                                ),
-                              ],
-                            ),
+                              ),
+                            if (MediaQuery.of(context).size.width < 1000)
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  AdminViewDialogStyles.reorderOptionsSpacing,
+                                  ElevatedButton(
+                                    style: AdminViewDialogStyles
+                                        .elevatedButtonStyle,
+                                    onPressed: () async {
+                                      await _controller
+                                          .updateSectionOrder(_items);
+                                      widget.onReorder();
+                                    },
+                                    child: Text('OK',
+                                        style: AdminViewDialogStyles
+                                            .buttonTextStyle),
+                                  ),
+                                  TextButton(
+                                    style:
+                                        AdminViewDialogStyles.textButtonStyle,
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Cancel',
+                                        style: AdminViewDialogStyles
+                                            .buttonTextStyle),
+                                  ),
+                                ],
+                              ),
                           ],
                         ))
                   ],

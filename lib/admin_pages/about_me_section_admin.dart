@@ -65,7 +65,7 @@ class _AboutMeSectionAdminState extends State<AboutMeSectionAdmin> {
     bool noImage = false;
 
     String title, successMessage, errorMessage;
-    title = 'Edit About Me info';
+    title = 'Edit About Me Info                 ';
     successMessage = 'About Me info updated successfully';
     errorMessage = 'Error updating About Me info';
 
@@ -85,7 +85,8 @@ class _AboutMeSectionAdminState extends State<AboutMeSectionAdmin> {
                       color: AdminViewDialogStyles.bgColor,
                       child: Column(
                         children: [
-                          Row(
+                          FittedBox(
+                              child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(title),
@@ -101,8 +102,8 @@ class _AboutMeSectionAdminState extends State<AboutMeSectionAdmin> {
                                 ),
                               ),
                             ],
-                          ),
-                          const Divider(),
+                          )),
+                          const Divider()
                         ],
                       )),
                   content: SizedBox(

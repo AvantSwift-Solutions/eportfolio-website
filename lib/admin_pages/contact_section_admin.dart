@@ -53,9 +53,9 @@ class _ContactSectionAdminState extends State<ContactSectionAdmin> {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     String title, successMessage, errorMessage;
-    title = 'Edit About Me info';
-    successMessage = 'About Me info updated successfully';
-    errorMessage = 'Error updating About Me info';
+    title = 'Edit Contact Section Info      ';
+    successMessage = 'Contact Section info updated successfully';
+    errorMessage = 'Error updating Contact Section info';
 
     showDialog(
       context: context,
@@ -73,7 +73,8 @@ class _ContactSectionAdminState extends State<ContactSectionAdmin> {
                       color: AdminViewDialogStyles.bgColor,
                       child: Column(
                         children: [
-                          Row(
+                          FittedBox(
+                              child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(title),
@@ -89,15 +90,8 @@ class _ContactSectionAdminState extends State<ContactSectionAdmin> {
                                 ),
                               ),
                             ],
-                          ),
-                          const Divider(),
-                          // Align(
-                          //   alignment: Alignment.centerLeft,
-                          //   child: Text(
-                          //     '* indicates required field',
-                          //     style: AdminViewDialogStyles.indicatesTextStyle,
-                          //   ),
-                          // ),
+                          )),
+                          const Divider()
                         ],
                       )),
                   content: SizedBox(

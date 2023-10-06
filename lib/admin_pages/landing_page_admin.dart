@@ -63,7 +63,7 @@ class _LandingPageAdminState extends State<LandingPageAdmin> {
     bool noImage = false;
 
     String title, successMessage, errorMessage;
-    title = 'Edit Landing Page info';
+    title = 'Edit Landing Page Info           ';
     successMessage = 'Landing Page info updated successfully';
     errorMessage = 'Error updating Landing Page info';
 
@@ -83,7 +83,8 @@ class _LandingPageAdminState extends State<LandingPageAdmin> {
                       color: AdminViewDialogStyles.bgColor,
                       child: Column(
                         children: [
-                          Row(
+                          FittedBox(
+                              child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(title),
@@ -99,8 +100,8 @@ class _LandingPageAdminState extends State<LandingPageAdmin> {
                                 ),
                               ),
                             ],
-                          ),
-                          const Divider(),
+                          )),
+                          const Divider()
                         ],
                       )),
                   content: SizedBox(

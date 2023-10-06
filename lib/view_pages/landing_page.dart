@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:avantswift_portfolio/dto/landing_page_dto.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +52,7 @@ class _LandingPageState extends State<LandingPage> {
         }
       }
     } catch (error) {
-      print('Error loading data: $error');
+      log('Error loading data: $error');
     }
   }
 

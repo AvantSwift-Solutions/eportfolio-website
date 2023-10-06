@@ -71,7 +71,7 @@ class _EducationSectionAdminState extends State<EducationSectionAdmin> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Edit Educations'),
+                        const Text('Edit Education'),
                         Align(
                           alignment: Alignment.topRight,
                           child: IconButton(
@@ -240,8 +240,7 @@ class _EducationSectionAdminState extends State<EducationSectionAdmin> {
       successMessage = 'Education info added successfully';
       errorMessage = 'Error adding new Education info';
     } else {
-      title =
-          'Edit info for \'${education.degree} at ${education.schoolName}\'';
+      title = 'Edit ${education.degree} at ${education.schoolName}';
       successMessage = 'Education info updated successfully';
       errorMessage = 'Error updating Education info';
     }
@@ -261,25 +260,10 @@ class _EducationSectionAdminState extends State<EducationSectionAdmin> {
                       padding: AdminViewDialogStyles.titleContPadding,
                       color: AdminViewDialogStyles.bgColor,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(title),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: IconButton(
-                                  icon: const Icon(Icons.close),
-                                  iconSize: AdminViewDialogStyles.closeIconSize,
-                                  hoverColor: Colors.transparent,
-                                  onPressed: () {
-                                    Navigator.of(dialogContext).pop();
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Divider(),
+                          FittedBox(child: Text(title)),
+                          const Divider()
                         ],
                       )),
                   content: SizedBox(
@@ -443,8 +427,7 @@ class _EducationSectionAdminState extends State<EducationSectionAdmin> {
                                             });
                                           },
                                         ),
-                                        Text(
-                                            'I am currently completing this degree',
+                                        Text('Current',
                                             style: AdminViewDialogStyles
                                                 .inputTextStyle)
                                       ],
@@ -660,21 +643,11 @@ class _EducationSectionAdminState extends State<EducationSectionAdmin> {
               child: Theme(
                 data: AdminViewDialogStyles.dialogThemeData,
                 child: AlertDialog(
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Delete \'$name\'?'),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                          icon: const Icon(Icons.close),
-                          iconSize: AdminViewDialogStyles.closeIconSize,
-                          hoverColor: Colors.transparent,
-                          onPressed: () {
-                            Navigator.of(dialogContext).pop();
-                          },
-                        ),
-                      ),
+                      FittedBox(child: Text('Delete $name?')),
+                      const Divider()
                     ],
                   ),
                   content: Column(

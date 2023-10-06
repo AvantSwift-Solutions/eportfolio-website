@@ -64,26 +64,13 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
                   title: Container(
                       padding: AdminViewDialogStyles.titleContPadding,
                       color: AdminViewDialogStyles.bgColor,
-                      child: Column(
+                      child: const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text('Edit Section Description'),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: IconButton(
-                                  icon: const Icon(Icons.close),
-                                  iconSize: AdminViewDialogStyles.closeIconSize,
-                                  hoverColor: Colors.transparent,
-                                  onPressed: () {
-                                    Navigator.of(dialogContext).pop();
-                                  },
-                                ),
-                              ),
-                            ],
+                          FittedBox(
+                            child: Text('Edit Section Description'),
                           ),
-                          const Divider(),
+                          Divider()
                         ],
                       )),
                   content: SizedBox(
@@ -206,10 +193,11 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
                 color: AdminViewDialogStyles.bgColor,
                 child: Column(
                   children: [
-                    Row(
+                    FittedBox(
+                        child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Edit Personal Projects'),
+                        const Text('Edit Personal Projects          '),
                         Align(
                           alignment: Alignment.topRight,
                           child: IconButton(
@@ -222,8 +210,8 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
                           ),
                         ),
                       ],
-                    ),
-                    const Divider(),
+                    )),
+                    const Divider()
                   ],
                 )),
             content: SizedBox(
@@ -374,7 +362,7 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
       successMessage = 'Personal Project info added successfully';
       errorMessage = 'Error adding new Personal Project info';
     } else {
-      title = 'Edit info for \'${project.name}\'';
+      title = 'Edit ${project.name}';
       successMessage = 'Personal Project info updated successfully';
       errorMessage = 'Error updating Personal Project info';
     }
@@ -394,25 +382,10 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
                       padding: AdminViewDialogStyles.titleContPadding,
                       color: AdminViewDialogStyles.bgColor,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(title),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: IconButton(
-                                  icon: const Icon(Icons.close),
-                                  iconSize: AdminViewDialogStyles.closeIconSize,
-                                  hoverColor: Colors.transparent,
-                                  onPressed: () {
-                                    Navigator.of(dialogContext).pop();
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Divider(),
+                          FittedBox(child: Text(title)),
+                          const Divider()
                         ],
                       )),
                   content: SizedBox(
@@ -581,21 +554,13 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
               child: Theme(
                 data: AdminViewDialogStyles.dialogThemeData,
                 child: AlertDialog(
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Delete \'$name\'?'),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                          icon: const Icon(Icons.close),
-                          iconSize: AdminViewDialogStyles.closeIconSize,
-                          hoverColor: Colors.transparent,
-                          onPressed: () {
-                            Navigator.of(dialogContext).pop();
-                          },
-                        ),
+                      FittedBox(
+                        child: Text('Delete $name?'),
                       ),
+                      const Divider()
                     ],
                   ),
                   content: Column(

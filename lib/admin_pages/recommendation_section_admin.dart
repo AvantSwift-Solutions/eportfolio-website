@@ -67,10 +67,11 @@ class _RecommendationSectionAdminState
                 color: AdminViewDialogStyles.bgColor,
                 child: Column(
                   children: [
-                    Row(
+                    FittedBox(
+                        child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Edit Recommendations'),
+                        const Text('Edit Peer Recommendations'),
                         Align(
                           alignment: Alignment.topRight,
                           child: IconButton(
@@ -83,8 +84,8 @@ class _RecommendationSectionAdminState
                           ),
                         ),
                       ],
-                    ),
-                    const Divider(),
+                    )),
+                    const Divider()
                   ],
                 )),
             content: SizedBox(
@@ -236,8 +237,7 @@ class _RecommendationSectionAdminState
       successMessage = 'Recommendation info added successfully';
       errorMessage = 'Error adding new Recommendation info';
     } else {
-      title =
-          'Edit info for \'Recommendation from ${recommendation.colleagueName}\'';
+      title = 'Edit Recommendation from ${recommendation.colleagueName}';
       successMessage = 'Recommendation info updated successfully';
       errorMessage = 'Error updating Recommendation info';
     }
@@ -257,25 +257,10 @@ class _RecommendationSectionAdminState
                       padding: AdminViewDialogStyles.titleContPadding,
                       color: AdminViewDialogStyles.bgColor,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(title),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: IconButton(
-                                  icon: const Icon(Icons.close),
-                                  iconSize: AdminViewDialogStyles.closeIconSize,
-                                  hoverColor: Colors.transparent,
-                                  onPressed: () {
-                                    Navigator.of(dialogContext).pop();
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Divider(),
+                          FittedBox(child: Text(title)),
+                          const Divider()
                         ],
                       )),
                   content: SizedBox(
@@ -549,21 +534,13 @@ class _RecommendationSectionAdminState
               child: Theme(
                 data: AdminViewDialogStyles.dialogThemeData,
                 child: AlertDialog(
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Delete \'$name\'?'),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                          icon: const Icon(Icons.close),
-                          iconSize: AdminViewDialogStyles.closeIconSize,
-                          hoverColor: Colors.transparent,
-                          onPressed: () {
-                            Navigator.of(dialogContext).pop();
-                          },
-                        ),
+                      FittedBox(
+                        child: Text('Delete $name?'),
                       ),
+                      const Divider()
                     ],
                   ),
                   content: Column(

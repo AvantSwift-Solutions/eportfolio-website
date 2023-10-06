@@ -17,7 +17,7 @@ class AdminViewDialogStyles {
 
   static const double listDialogWidth = 400;
   static const double listDialogHeight = 300;
-  static const double showDialogWidth = 600;
+  static const double showDialogWidth = 500;
   static const double showDialogHeight = 600;
   static const double reorderDialogWidth = 500;
   static const double reorderDialogHeight = 300;
@@ -28,6 +28,7 @@ class AdminViewDialogStyles {
 
   static SizedBox interTitleField = const SizedBox(height: 4);
   static SizedBox spacer = const SizedBox(height: 24);
+  static SizedBox reorderOptionsSpacing = const SizedBox(height: 60);
 
   static ThemeData dialogThemeData = ThemeData(
       inputDecorationTheme: InputDecorationTheme(

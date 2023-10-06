@@ -69,26 +69,13 @@ class _TSkillSectionAdminState extends State<TSkillSectionAdmin> {
                   title: Container(
                       padding: AdminViewDialogStyles.titleContPadding,
                       color: AdminViewDialogStyles.bgColor,
-                      child: Column(
+                      child: const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text('Change Center Image'),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: IconButton(
-                                  icon: const Icon(Icons.close),
-                                  iconSize: AdminViewDialogStyles.closeIconSize,
-                                  hoverColor: Colors.transparent,
-                                  onPressed: () {
-                                    Navigator.of(dialogContext).pop();
-                                  },
-                                ),
-                              ),
-                            ],
+                          FittedBox(
+                            child: Text('Change Center Image'),
                           ),
-                          const Divider(),
+                          Divider()
                         ],
                       )),
                   content: SizedBox(
@@ -223,10 +210,11 @@ class _TSkillSectionAdminState extends State<TSkillSectionAdmin> {
                 color: AdminViewDialogStyles.bgColor,
                 child: Column(
                   children: [
-                    Row(
+                    FittedBox(
+                        child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Edit Technical Skills'),
+                        const Text('Edit Technical Skills              '),
                         Align(
                           alignment: Alignment.topRight,
                           child: IconButton(
@@ -239,8 +227,8 @@ class _TSkillSectionAdminState extends State<TSkillSectionAdmin> {
                           ),
                         ),
                       ],
-                    ),
-                    const Divider(),
+                    )),
+                    const Divider()
                   ],
                 )),
             content: SizedBox(
@@ -391,7 +379,7 @@ class _TSkillSectionAdminState extends State<TSkillSectionAdmin> {
       successMessage = 'Technical Skill info added successfully';
       errorMessage = 'Error adding new Technical Skill info';
     } else {
-      title = 'Edit info for \'${tskill.name}\'';
+      title = 'Edit ${tskill.name}';
       successMessage = 'Technical Skill info updated successfully';
       errorMessage = 'Error updating Technical Skill info';
     }
@@ -411,25 +399,10 @@ class _TSkillSectionAdminState extends State<TSkillSectionAdmin> {
                       padding: AdminViewDialogStyles.titleContPadding,
                       color: AdminViewDialogStyles.bgColor,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(title),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: IconButton(
-                                  icon: const Icon(Icons.close),
-                                  iconSize: AdminViewDialogStyles.closeIconSize,
-                                  hoverColor: Colors.transparent,
-                                  onPressed: () {
-                                    Navigator.of(dialogContext).pop();
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Divider(),
+                          FittedBox(child: Text(title)),
+                          const Divider()
                         ],
                       )),
                   content: SizedBox(
@@ -602,21 +575,11 @@ class _TSkillSectionAdminState extends State<TSkillSectionAdmin> {
               child: Theme(
                 data: AdminViewDialogStyles.dialogThemeData,
                 child: AlertDialog(
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Delete \'$name\'?'),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                          icon: const Icon(Icons.close),
-                          iconSize: AdminViewDialogStyles.closeIconSize,
-                          hoverColor: Colors.transparent,
-                          onPressed: () {
-                            Navigator.of(dialogContext).pop();
-                          },
-                        ),
-                      ),
+                      FittedBox(child: Text('Delete $name?')),
+                      const Divider()
                     ],
                   ),
                   content: Column(

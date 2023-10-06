@@ -88,7 +88,8 @@ class ExperienceSectionAdminState extends State<ExperienceSectionAdmin> {
                 color: AdminViewDialogStyles.bgColor,
                 child: Column(
                   children: [
-                    Row(
+                    FittedBox(
+                        child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text('Edit Professional Experiences'),
@@ -104,8 +105,8 @@ class ExperienceSectionAdminState extends State<ExperienceSectionAdmin> {
                           ),
                         ),
                       ],
-                    ),
-                    const Divider(),
+                    )),
+                    const Divider()
                   ],
                 )),
             content: SizedBox(
@@ -261,8 +262,7 @@ class ExperienceSectionAdminState extends State<ExperienceSectionAdmin> {
       successMessage = 'Professional Experience info added successfully';
       errorMessage = 'Error adding new Professional Experience info';
     } else {
-      title =
-          'Edit info for \'${experience.jobTitle} at ${experience.companyName}\'';
+      title = 'Edit ${experience.jobTitle} at ${experience.companyName}';
       successMessage = 'Professional Experience info updated successfully';
       errorMessage = 'Error updating Professional Experience info';
     }
@@ -293,25 +293,10 @@ class ExperienceSectionAdminState extends State<ExperienceSectionAdmin> {
                       padding: AdminViewDialogStyles.titleContPadding,
                       color: AdminViewDialogStyles.bgColor,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(title),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: IconButton(
-                                  icon: const Icon(Icons.close),
-                                  iconSize: AdminViewDialogStyles.closeIconSize,
-                                  hoverColor: Colors.transparent,
-                                  onPressed: () {
-                                    Navigator.of(dialogContext).pop();
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Divider(),
+                          FittedBox(child: Text(title)),
+                          const Divider()
                         ],
                       )),
                   content: SizedBox(
@@ -538,8 +523,7 @@ class ExperienceSectionAdminState extends State<ExperienceSectionAdmin> {
                                             });
                                           },
                                         ),
-                                        Text(
-                                            'I am currently working in this role',
+                                        Text('Current',
                                             style: AdminViewDialogStyles
                                                 .inputTextStyle)
                                       ],
@@ -705,21 +689,11 @@ class ExperienceSectionAdminState extends State<ExperienceSectionAdmin> {
               child: Theme(
                 data: AdminViewDialogStyles.dialogThemeData,
                 child: AlertDialog(
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Delete \'$name\'?'),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                          icon: const Icon(Icons.close),
-                          iconSize: AdminViewDialogStyles.closeIconSize,
-                          hoverColor: Colors.transparent,
-                          onPressed: () {
-                            Navigator.of(dialogContext).pop();
-                          },
-                        ),
-                      ),
+                      FittedBox(child: Text('Delete $name?')),
+                      const Divider()
                     ],
                   ),
                   content: Column(

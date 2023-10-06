@@ -101,12 +101,12 @@ class ProjectSectionState extends State<ProjectSection> {
   // Calculate the number of projects per row based on the screen width and desired project card width
   int calculateProjectsPerRow(BuildContext context, double cardWidth) {
     double screenWidth = MediaQuery.of(context).size.width;
-    
+
     // hard code issues
     if (screenWidth >= 1000 && screenWidth < 1160) {
       return 3;
     }
-    if (screenWidth < 250){
+    if (screenWidth < 250) {
       return 1;
     }
     return ((screenWidth / (cardWidth + 50)).floor());
@@ -119,14 +119,19 @@ class ProjectSectionState extends State<ProjectSection> {
 
     double cardSize = isMobileView ? screenWidth * 0.8 : screenWidth * 0.2;
     double githubSvgSize = isMobileView ? screenWidth * 0.6 : screenWidth * 0.2;
-    double externalLinkSvgSize = isMobileView ? screenWidth * 0.09 : screenWidth * 0.03;
-    
+    double externalLinkSvgSize =
+        isMobileView ? screenWidth * 0.09 : screenWidth * 0.03;
 
-    double titleFontSize = isMobileView ? screenWidth * 0.08 : screenWidth * 0.05;
-    double descriptionFontSize = isMobileView ? screenWidth * 0.03 : screenWidth * 0.015;
-    double projectTitleFontSize = isMobileView ? screenWidth * 0.03 : screenWidth * 0.015;
-    double projectDescriptionFontSize = isMobileView ? screenWidth * 0.01 : screenWidth * 0.009;
-    double arrowIconSize = isMobileView ? screenWidth * 0.1 : screenWidth * 0.02;
+    double titleFontSize =
+        isMobileView ? screenWidth * 0.08 : screenWidth * 0.05;
+    double descriptionFontSize =
+        isMobileView ? screenWidth * 0.03 : screenWidth * 0.015;
+    double projectTitleFontSize =
+        isMobileView ? screenWidth * 0.03 : screenWidth * 0.015;
+    double projectDescriptionFontSize =
+        isMobileView ? screenWidth * 0.01 : screenWidth * 0.009;
+    double arrowIconSize =
+        isMobileView ? screenWidth * 0.1 : screenWidth * 0.02;
     double gap = screenWidth * 0.11;
     double titlePadding = screenWidth * 0.05;
     double descriptionPadding = screenWidth * 0.05;
@@ -134,24 +139,25 @@ class ProjectSectionState extends State<ProjectSection> {
     double loadMorePadding = 375.0;
     double cardSpacing = 50.0;
 
-  return Padding(
-    padding: EdgeInsets.all(generalPadding),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (isMobileView)
-          Container(
-            margin: EdgeInsets.only(bottom: generalPadding, left: generalPadding),
-            child: Text(
-              'Personal Projects',
-              style: PublicViewTextStyles.generalHeading.copyWith(
-                fontWeight: FontWeight.bold,
-                fontSize: titleFontSize * 0.8,
+    return Padding(
+      padding: EdgeInsets.all(generalPadding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (isMobileView)
+            Container(
+              margin:
+                  EdgeInsets.only(bottom: generalPadding, left: generalPadding),
+              child: Text(
+                'Personal Projects',
+                style: PublicViewTextStyles.generalHeading.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontSize: titleFontSize * 0.8,
+                ),
               ),
             ),
-          ),
           const SizedBox(height: 20),
-        if (isMobileView)
+          if (isMobileView)
             Center(
               child: Container(
                 width: cardSize,
@@ -182,66 +188,69 @@ class ProjectSectionState extends State<ProjectSection> {
                 ),
               ),
             ),
-
-        if (!isMobileView)
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: titlePadding), // Add padding here
-                child: Text(
-                  'Personal Projects',
-                  style: PublicViewTextStyles.generalHeading.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: titleFontSize * 0.8,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(right: descriptionPadding),
-                child: Container(
-                  width: screenWidth * 0.4,
-                  margin: EdgeInsets.only(top: isMobileView ? generalPadding : 0.0),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black, width: 1.0),
-                    borderRadius: BorderRadius.circular(5.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(generalPadding),
-                    child: Text(
-                      sectionDescription,
-                      textAlign: TextAlign.left,
-                      softWrap: true,
-                      style: PublicViewTextStyles.generalBodyText.copyWith(
-                        fontWeight: FontWeight.bold,
-                        fontSize: descriptionFontSize * 1.0,
-                      ),
+          if (!isMobileView)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding:
+                      EdgeInsets.only(left: titlePadding), // Add padding here
+                  child: Text(
+                    'Personal Projects',
+                    style: PublicViewTextStyles.generalHeading.copyWith(
+                      fontWeight: FontWeight.bold,
+                      fontSize: titleFontSize * 0.8,
                     ),
                   ),
                 ),
-              )
-            ],
-          ),
-        const SizedBox(height: 25),
+                Padding(
+                  padding: EdgeInsets.only(right: descriptionPadding),
+                  child: Container(
+                    width: screenWidth * 0.4,
+                    margin: EdgeInsets.only(
+                        top: isMobileView ? generalPadding : 0.0),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black, width: 1.0),
+                      borderRadius: BorderRadius.circular(5.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(generalPadding),
+                      child: Text(
+                        sectionDescription,
+                        textAlign: TextAlign.left,
+                        softWrap: true,
+                        style: PublicViewTextStyles.generalBodyText.copyWith(
+                          fontWeight: FontWeight.bold,
+                          fontSize: descriptionFontSize * 1.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          const SizedBox(height: 25),
           if (allProjects != null && !isMobileView)
             Center(
               child: Wrap(
                 alignment: WrapAlignment.center,
                 children: List.generate(initiallyDisplayedProjects, (index) {
                   if (index < allProjects!.length) {
-                    int projectsPerRow = calculateProjectsPerRow(context, cardSize);
+                    int projectsPerRow =
+                        calculateProjectsPerRow(context, cardSize);
 
-                    double spacing = (index % (projectsPerRow )) * cardSpacing;
+                    double spacing = (index % (projectsPerRow)) * cardSpacing;
                     return Padding(
-                      padding: EdgeInsets.only(top: spacing, right: cardSpacing),
+                      padding:
+                          EdgeInsets.only(top: spacing, right: cardSpacing),
                       child: SizedBox(
                         width: cardSize,
                         height: cardSize,
@@ -249,7 +258,8 @@ class ProjectSectionState extends State<ProjectSection> {
                           elevation: 3,
                           color: getNextColor(),
                           shape: RoundedRectangleBorder(
-                            side: const BorderSide(color: Colors.black, width: 1),
+                            side:
+                                const BorderSide(color: Colors.black, width: 1),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Padding(
@@ -286,7 +296,8 @@ class ProjectSectionState extends State<ProjectSection> {
                                       cursor: SystemMouseCursors.click,
                                       child: GestureDetector(
                                         onTap: () {
-                                          if (allProjects![index].link != null) {
+                                          if (allProjects![index].link !=
+                                              null) {
                                             openLink(allProjects![index].link!);
                                           } else {
                                             log('Link is null.');
@@ -314,11 +325,14 @@ class ProjectSectionState extends State<ProjectSection> {
               ),
             ),
           const SizedBox(height: 50),
-          if (allProjects != null && !isMobileView && allProjects!.length > initiallyDisplayedProjects)
+          if (allProjects != null &&
+              !isMobileView &&
+              allProjects!.length > initiallyDisplayedProjects)
             Align(
               alignment: Alignment.bottomRight,
               child: Padding(
-                padding: EdgeInsets.only(right: loadMorePadding, bottom: generalPadding),
+                padding: EdgeInsets.only(
+                    right: loadMorePadding, bottom: generalPadding),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -336,22 +350,23 @@ class ProjectSectionState extends State<ProjectSection> {
                       child: TextButton(
                         onPressed: toggleShowAllProjects,
                         style: ButtonStyle(
-                          overlayColor: MaterialStateProperty.all(Colors.transparent),
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.transparent),
                           padding: MaterialStateProperty.all(EdgeInsets.zero),
                         ),
                         child: Row(
                           children: [
-                            Icon(
-                                Icons.keyboard_double_arrow_down_outlined,
-                                size: arrowIconSize,
-                                color: Colors.black),
+                            Icon(Icons.keyboard_double_arrow_down_outlined,
+                                size: arrowIconSize, color: Colors.black),
                             const SizedBox(width: 5),
                             Text(
                               'Load More',
                               style: TextStyle(
                                 fontSize: projectTitleFontSize,
                                 color: isHovered ? Colors.black : Colors.black,
-                                decoration: isHovered ? TextDecoration.underline : TextDecoration.none,
+                                decoration: isHovered
+                                    ? TextDecoration.underline
+                                    : TextDecoration.none,
                               ),
                             ),
                           ],
@@ -367,7 +382,8 @@ class ProjectSectionState extends State<ProjectSection> {
             Align(
               alignment: Alignment.bottomRight,
               child: Padding(
-                padding: EdgeInsets.only(right: loadMorePadding, bottom: generalPadding),
+                padding: EdgeInsets.only(
+                    right: loadMorePadding, bottom: generalPadding),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -385,22 +401,23 @@ class ProjectSectionState extends State<ProjectSection> {
                       child: TextButton(
                         onPressed: toggleShowAllProjects,
                         style: ButtonStyle(
-                          overlayColor: MaterialStateProperty.all(Colors.transparent),
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.transparent),
                           padding: MaterialStateProperty.all(EdgeInsets.zero),
                         ),
                         child: Row(
                           children: [
-                            Icon(
-                                Icons.keyboard_double_arrow_up_outlined,
-                                size: arrowIconSize,
-                                color: Colors.black),
+                            Icon(Icons.keyboard_double_arrow_up_outlined,
+                                size: arrowIconSize, color: Colors.black),
                             const SizedBox(width: 5),
                             Text(
                               'Load Less',
                               style: TextStyle(
                                 fontSize: 20,
                                 color: Colors.black,
-                                decoration: isHovered ? TextDecoration.underline : TextDecoration.none,
+                                decoration: isHovered
+                                    ? TextDecoration.underline
+                                    : TextDecoration.none,
                               ),
                             ),
                           ],
@@ -416,7 +433,8 @@ class ProjectSectionState extends State<ProjectSection> {
               child: Column(
                 children: List.generate(initiallyDisplayedProjects, (index) {
                   if (index < allProjects!.length) {
-                    int projectsPerRow = calculateProjectsPerRow(context, cardSize);
+                    int projectsPerRow =
+                        calculateProjectsPerRow(context, cardSize);
 
                     double spacing = (index % (projectsPerRow)) * 50.0;
                     return Padding(
@@ -428,7 +446,8 @@ class ProjectSectionState extends State<ProjectSection> {
                           elevation: 3,
                           color: getNextColor(),
                           shape: RoundedRectangleBorder(
-                            side: const BorderSide(color: Colors.black, width: 1),
+                            side:
+                                const BorderSide(color: Colors.black, width: 1),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Padding(
@@ -465,7 +484,8 @@ class ProjectSectionState extends State<ProjectSection> {
                                       cursor: SystemMouseCursors.click,
                                       child: GestureDetector(
                                         onTap: () {
-                                          if (allProjects![index].link != null) {
+                                          if (allProjects![index].link !=
+                                              null) {
                                             openLink(allProjects![index].link!);
                                           } else {
                                             log('Link is null.');

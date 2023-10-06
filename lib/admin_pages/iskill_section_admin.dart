@@ -59,10 +59,11 @@ class _ISkillSectionAdminState extends State<ISkillSectionAdmin> {
                 color: AdminViewDialogStyles.bgColor,
                 child: Column(
                   children: [
-                    Row(
+                    FittedBox(
+                        child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Edit Interpersonal Skills'),
+                        const Text('Edit Interpersonal Skills        '),
                         Align(
                           alignment: Alignment.topRight,
                           child: IconButton(
@@ -75,8 +76,8 @@ class _ISkillSectionAdminState extends State<ISkillSectionAdmin> {
                           ),
                         ),
                       ],
-                    ),
-                    const Divider(),
+                    )),
+                    const Divider()
                   ],
                 )),
             content: SizedBox(
@@ -208,7 +209,7 @@ class _ISkillSectionAdminState extends State<ISkillSectionAdmin> {
       successMessage = 'Interpersonal Skill info added successfully';
       errorMessage = 'Error adding new Interpersonal Skill info';
     } else {
-      title = 'Edit info for \'${iskill.name}\'';
+      title = 'Edit ${iskill.name}';
       successMessage = 'Interpersonal Skill info updated successfully';
       errorMessage = 'Error updating Interpersonal Skill info';
     }
@@ -228,25 +229,10 @@ class _ISkillSectionAdminState extends State<ISkillSectionAdmin> {
                       padding: AdminViewDialogStyles.titleContPadding,
                       color: AdminViewDialogStyles.bgColor,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(title),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: IconButton(
-                                  icon: const Icon(Icons.close),
-                                  iconSize: AdminViewDialogStyles.closeIconSize,
-                                  hoverColor: Colors.transparent,
-                                  onPressed: () {
-                                    Navigator.of(dialogContext).pop();
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Divider(),
+                          FittedBox(child: Text(title)),
+                          const Divider()
                         ],
                       )),
                   content: SizedBox(
@@ -371,21 +357,11 @@ class _ISkillSectionAdminState extends State<ISkillSectionAdmin> {
               child: Theme(
                 data: AdminViewDialogStyles.dialogThemeData,
                 child: AlertDialog(
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Delete \'$name\'?'),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                          icon: const Icon(Icons.close),
-                          iconSize: AdminViewDialogStyles.closeIconSize,
-                          hoverColor: Colors.transparent,
-                          onPressed: () {
-                            Navigator.of(dialogContext).pop();
-                          },
-                        ),
-                      ),
+                      FittedBox(child: Text('Delete $name?')),
+                      const Divider()
                     ],
                   ),
                   content: Column(

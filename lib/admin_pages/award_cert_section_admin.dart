@@ -75,11 +75,13 @@ class _AwardCertSectionAdminState extends State<AwardCertSectionAdmin> {
                 padding: AdminViewDialogStyles.titleContPadding,
                 color: AdminViewDialogStyles.bgColor,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
+                    FittedBox(
+                        child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Edit Award & Certifications'),
+                        const Text('Edit Awards & Certifications'),
                         Align(
                           alignment: Alignment.topRight,
                           child: IconButton(
@@ -92,8 +94,8 @@ class _AwardCertSectionAdminState extends State<AwardCertSectionAdmin> {
                           ),
                         ),
                       ],
-                    ),
-                    const Divider(),
+                    )),
+                    const Divider()
                   ],
                 )),
             content: SizedBox(
@@ -243,7 +245,7 @@ class _AwardCertSectionAdminState extends State<AwardCertSectionAdmin> {
       successMessage = 'Award & Certification info added successfully';
       errorMessage = 'Error adding new Award & Certification info';
     } else {
-      title = 'Edit info for \'${awardcert.name} from ${awardcert.source}\'';
+      title = 'Edit ${awardcert.name} from ${awardcert.source}';
       successMessage = 'Award & Certification info updated successfully';
       errorMessage = 'Error updating Award & Certification info';
     }
@@ -263,25 +265,10 @@ class _AwardCertSectionAdminState extends State<AwardCertSectionAdmin> {
                       padding: AdminViewDialogStyles.titleContPadding,
                       color: AdminViewDialogStyles.bgColor,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(title),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: IconButton(
-                                  icon: const Icon(Icons.close),
-                                  iconSize: AdminViewDialogStyles.closeIconSize,
-                                  hoverColor: Colors.transparent,
-                                  onPressed: () {
-                                    Navigator.of(dialogContext).pop();
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Divider(),
+                          FittedBox(child: Text(title)),
+                          const Divider()
                         ],
                       )),
                   content: SizedBox(
@@ -555,21 +542,11 @@ class _AwardCertSectionAdminState extends State<AwardCertSectionAdmin> {
               child: Theme(
                 data: AdminViewDialogStyles.dialogThemeData,
                 child: AlertDialog(
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Delete \'$name\'?'),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                          icon: const Icon(Icons.close),
-                          iconSize: AdminViewDialogStyles.closeIconSize,
-                          hoverColor: Colors.transparent,
-                          onPressed: () {
-                            Navigator.of(dialogContext).pop();
-                          },
-                        ),
-                      ),
+                      FittedBox(child: Text('Delete $name?')),
+                      const Divider()
                     ],
                   ),
                   content: Column(

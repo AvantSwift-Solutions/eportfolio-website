@@ -6,7 +6,6 @@ import 'package:english_words/english_words.dart' as english_words;
 
 class SearchSectionController {
   Future<List<SectionResultDTO>> searchDatabase(String query) async {
-
     // Use searchAllCollections to get search results
     final searchResults = await searchAllCollections(query);
     List<SectionResultDTO> resultsWithSection = [
