@@ -47,7 +47,7 @@ class DefaultPageState extends State<DefaultPage> {
   void _loadData() async {
     user = widget.user;
 
-    await AnalyticController.checkReset();
+    await AnalyticController.checkReset(AnalyticRepoService());
 
     Analytic analytics = await AnalyticRepoService().getAnalytic() ??
         Analytic(
@@ -57,8 +57,8 @@ class DefaultPageState extends State<DefaultPage> {
             views: 0,
             lastEdit: Timestamp.now());
 
-    views = analytics.views;
-    messages = analytics.messages;
+    views = analytics.views ?? 0;
+    messages = analytics.messages ?? 0;
     Timestamp lastEdit = analytics.lastEdit ?? Timestamp.now();
     daysSinceLastEdit = DateTime.now().difference(lastEdit.toDate()).inDays;
 

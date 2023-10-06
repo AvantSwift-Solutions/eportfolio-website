@@ -3,6 +3,7 @@
 import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
 import 'package:avantswift_portfolio/controllers/admin_controllers/upload_image_admin_controller.dart';
 import 'package:avantswift_portfolio/controllers/analytic_controller.dart';
+import 'package:avantswift_portfolio/reposervice/analytic_repo_services.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
@@ -22,7 +23,6 @@ class EducationSectionAdmin extends StatefulWidget {
 }
 
 class _EducationSectionAdminState extends State<EducationSectionAdmin> {
-
   late EducationSectionAdminController _adminController;
   late List<Education> educations;
   late BuildContext parentContext;
@@ -613,7 +613,7 @@ class _EducationSectionAdminState extends State<EducationSectionAdmin> {
                                     AdminViewDialogStyles.elevatedButtonStyle,
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
-                                    await AnalyticController.wasEdited();
+                                    await AnalyticController.wasEdited(AnalyticRepoService());
                                     formKey.currentState!.save();
                                     education.creationTimestamp =
                                         Timestamp.now();
@@ -711,7 +711,7 @@ class _EducationSectionAdminState extends State<EducationSectionAdmin> {
                               onPressed: () async {
                                 final deleted = await x.delete() ?? false;
                                 if (deleted) {
-                                  await AnalyticController.wasEdited();
+                                  await AnalyticController.wasEdited(AnalyticRepoService());
                                   educations.remove(x);
                                   setState(() {});
                                   if (!mounted) return;

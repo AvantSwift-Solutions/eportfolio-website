@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/Analytic.dart';
 
 class AnalyticRepoService {
-  Future<Analytic?> getAnalytic() async {
+  Future<Analytic?>? getAnalytic() async {
     try {
       QuerySnapshot snapshot = await FirebaseFirestore.instance
           .collection('Analytic')

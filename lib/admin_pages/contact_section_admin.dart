@@ -1,5 +1,6 @@
 import 'package:avantswift_portfolio/controllers/analytic_controller.dart';
 import 'package:avantswift_portfolio/dto/contact_section_dto.dart';
+import 'package:avantswift_portfolio/reposervice/analytic_repo_services.dart';
 import 'package:avantswift_portfolio/reposervice/user_repo_services.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:email_validator/email_validator.dart';
@@ -188,7 +189,7 @@ class _ContactSectionAdminState extends State<ContactSectionAdmin> {
                                     AdminViewDialogStyles.elevatedButtonStyle,
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
-                                    await AnalyticController.wasEdited();
+                                    await AnalyticController.wasEdited(AnalyticRepoService());
                                     formKey.currentState!.save();
                                     bool? isSuccess = await _adminController
                                         .updateContactSectionData(

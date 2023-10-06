@@ -1,4 +1,5 @@
 import 'package:avantswift_portfolio/controllers/analytic_controller.dart';
+import 'package:avantswift_portfolio/reposervice/analytic_repo_services.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:tuple/tuple.dart';
 import 'package:flutter/material.dart';
@@ -182,7 +183,7 @@ class _ReorderDialogState extends State<ReorderDialog> {
                                     style: AdminViewDialogStyles
                                         .elevatedButtonStyle,
                                     onPressed: () async {
-                                      await AnalyticController.wasEdited();
+                                      await AnalyticController.wasEdited(AnalyticRepoService());
                                       await _controller
                                           .updateSectionOrder(_items);
                                       widget.onReorder();

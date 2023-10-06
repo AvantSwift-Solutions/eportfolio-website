@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
 import 'package:avantswift_portfolio/controllers/admin_controllers/upload_image_admin_controller.dart';
 import 'package:avantswift_portfolio/controllers/analytic_controller.dart';
+import 'package:avantswift_portfolio/reposervice/analytic_repo_services.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
@@ -520,7 +521,7 @@ class _AwardCertSectionAdminState extends State<AwardCertSectionAdmin> {
                                         awardcert.imageURL = imageURL;
                                       }
                                     }
-                                    await AnalyticController.wasEdited();
+                                    await AnalyticController.wasEdited(AnalyticRepoService());
                                     bool isSuccess =
                                         await onAwardCertUpdated(awardcert);
                                     if (!mounted) return;
@@ -605,8 +606,7 @@ class _AwardCertSectionAdminState extends State<AwardCertSectionAdmin> {
                               onPressed: () async {
                                 final deleted = await x.delete() ?? false;
                                 if (deleted) {
-                                  await AnalyticController.wasEdited();
-                                  AnalyticController.wasEdited();
+                                  await AnalyticController.wasEdited(AnalyticRepoService());
                                   if (!mounted) return;
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(

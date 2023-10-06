@@ -5,8 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Analytic {
   final String? analyticId;
   Timestamp? month;
-  int messages;
-  int views;
+  int? messages;
+  int? views;
   Timestamp? lastEdit;
 
   Analytic({
@@ -36,6 +36,7 @@ class Analytic {
 
   Map<String, dynamic> toMap() {
     return {
+      'analyticId': analyticId,
       'month': month,
       'messages': messages,
       'views': views,

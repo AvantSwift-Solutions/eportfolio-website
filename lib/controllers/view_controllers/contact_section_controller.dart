@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:avantswift_portfolio/controllers/analytic_controller.dart';
+import 'package:avantswift_portfolio/reposervice/analytic_repo_services.dart';
 
 import '../../constants.dart';
 import '../../dto/contact_section_dto.dart';
@@ -71,7 +72,7 @@ class ContactSectionController {
     if (response.body != 'OK') {
       log('Error sending email: ${response.body}');
     }
-    AnalyticController.incrementMessages();
+    AnalyticController.incrementMessages(AnalyticRepoService());
     return response.body == 'OK';
   }
 }

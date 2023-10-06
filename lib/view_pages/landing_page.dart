@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:avantswift_portfolio/controllers/analytic_controller.dart';
 import 'package:avantswift_portfolio/dto/landing_page_dto.dart';
+import 'package:avantswift_portfolio/reposervice/analytic_repo_services.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import '../constants.dart';
@@ -28,7 +29,7 @@ class LandingPageState extends State<LandingPage> {
 
   @override
   void initState() {
-    AnalyticController.incrementViews();
+    AnalyticController.incrementViews(AnalyticRepoService());
     super.initState();
     // Fetch the landing page data in initState
     _loadData();

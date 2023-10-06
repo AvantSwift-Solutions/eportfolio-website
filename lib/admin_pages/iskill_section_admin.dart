@@ -2,6 +2,7 @@
 
 import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
 import 'package:avantswift_portfolio/controllers/analytic_controller.dart';
+import 'package:avantswift_portfolio/reposervice/analytic_repo_services.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -336,7 +337,7 @@ class _ISkillSectionAdminState extends State<ISkillSectionAdmin> {
                                     AdminViewDialogStyles.elevatedButtonStyle,
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
-                                    await AnalyticController.wasEdited();
+                                    await AnalyticController.wasEdited(AnalyticRepoService());
                                     setState(() {});
                                     formKey.currentState!.save();
                                     iskill.creationTimestamp = Timestamp.now();
@@ -424,7 +425,7 @@ class _ISkillSectionAdminState extends State<ISkillSectionAdmin> {
                               onPressed: () async {
                                 final deleted = await x.delete() ?? false;
                                 if (deleted) {
-                                  await AnalyticController.wasEdited();
+                                  await AnalyticController.wasEdited(AnalyticRepoService());
                                   iskills.remove(x);
                                   if (!mounted) return;
                                   ScaffoldMessenger.of(context).showSnackBar(
