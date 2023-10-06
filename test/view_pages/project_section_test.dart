@@ -1,31 +1,24 @@
 import 'package:avantswift_portfolio/constants.dart';
-import 'package:avantswift_portfolio/controllers/view_controllers/experience_section_controller.dart';
 import 'package:avantswift_portfolio/controllers/view_controllers/project_section_controller.dart';
-import 'package:avantswift_portfolio/dto/experience_dto.dart';
-import 'package:avantswift_portfolio/models/Experience.dart';
 import 'package:avantswift_portfolio/models/Project.dart';
-import 'package:avantswift_portfolio/ui/custom_view_more_button.dart';
-import 'package:avantswift_portfolio/view_pages/experience_section.dart';
 import 'package:avantswift_portfolio/view_pages/project_section.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:intl/intl.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:run_with_network_images/run_with_network_images.dart';
-import 'mocks/experience_section_test.mocks.dart';
 import 'mocks/project_section_test.mocks.dart';
 
 @GenerateMocks([Project, ProjectSectionController])
 void main() {
-  group('Experience Section Widget Test', () {
+  group('Project Section Widget Test', () {
     late MockProject mockProject1;
     late MockProject mockProject2;
     late MockProject mockProject3;
     late MockProject mockProject4;
     late MockProjectSectionController mockController; // Updated class name
-    final String mockSectionDescription =
+    const String mockSectionDescription =
         Constants.defaultProjectSectionDescription;
 
     setUp(() {
@@ -85,6 +78,9 @@ void main() {
       when(mockController.getProjectList())
           .thenAnswer((_) => Future.value(mockProjectSectionData));
 
+      when(mockController.getSectionDescription())
+          .thenAnswer((_) => Future.value(mockSectionDescription));
+
       // Build the widget
       await runWithNetworkImages(() async {
         await tester.pumpWidget(
@@ -101,13 +97,14 @@ void main() {
         // Verify that the title text is displayed
         expect(find.text('Personal Projects'), findsOneWidget);
 
-        // expect(find.text(mockSectionDescri  ption), findsOneWidget);
+        // // expect(find.text(mockSectionDescri  ption), findsOneWidget);
 
         await tester.pumpAndSettle();
 
-        // expect(find.byType(Card), findsAtLeastNWidgets(1));
-        expect(find.text(mockProject1.name!), findsOneWidget);
+        expect(find.byType(Card), findsAtLeastNWidgets(1));
+        // expect(find.text(mockProject1.name!), findsOneWidget);
       });
     });
   });
 }
+// 

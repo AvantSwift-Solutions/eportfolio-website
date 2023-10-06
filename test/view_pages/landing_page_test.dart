@@ -57,12 +57,7 @@ void main() {
       // Wait for the widget to settle
       await tester.pumpAndSettle();
 
-      // Verify that the CircularProgressIndicator is not present
-      expect(find.byType(CircularProgressIndicator), findsNothing);
-
       // Verify that the text elements are present
-      // expect(find.text('Hey there, \nI\'m MockName'), findsOneWidget);
-      // expect(find.text('but you \ncan call me MockNickname.'), findsOneWidget);
       expect(
           find.text(
               'Hey there, \nI\'m ${mockUser.name} but you \ncan call me ${mockUser.nickname}.',

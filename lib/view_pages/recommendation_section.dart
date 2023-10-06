@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:avantswift_portfolio/constants.dart';
 import 'package:avantswift_portfolio/models/Recommendation.dart';
 import 'package:avantswift_portfolio/reposervice/recommendation_repo_services.dart';
 import 'package:flutter/material.dart';
@@ -86,7 +87,7 @@ class RecommendationSectionState extends State<RecommendationSection> {
           ),
         ),
         SizedBox(
-          height: 700,
+          height: 900, // Changed it manually due to RenderFlex overflow
           child: PageView.builder(
             controller: _pageController,
             itemCount: totalPages,
@@ -181,7 +182,8 @@ class RecommendationSectionState extends State<RecommendationSection> {
             children: [
               CircleAvatar(
                 radius: imageRadius,
-                backgroundImage: NetworkImage(recommendation.imageURL ?? ''),
+                backgroundImage: NetworkImage(
+                    recommendation.imageURL ?? Constants.replaceImageURL),
               ),
               const SizedBox(width: 16.0),
               Expanded(
