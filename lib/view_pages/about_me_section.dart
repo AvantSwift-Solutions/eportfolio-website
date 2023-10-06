@@ -8,7 +8,6 @@ import '../ui/custom_texts/public_view_text_styles.dart';
 
 class AboutMeSection extends StatefulWidget {
   final AboutMeSectionController? controller;
-
   const AboutMeSection({Key? key, this.controller}) : super(key: key);
 
   @override

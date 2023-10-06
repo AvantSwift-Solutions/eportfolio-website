@@ -26,7 +26,6 @@ class _TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
     super.initState();
     _technicalSkillsController =
         widget.controller ?? TechnicalSkillsController(TSkillRepoService());
-
     _loadImages();
   }
 

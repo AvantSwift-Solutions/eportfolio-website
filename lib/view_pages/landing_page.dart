@@ -10,11 +10,10 @@ import '../ui/custom_view_button.dart';
 import '../ui/custom_texts/public_view_text_styles.dart';
 
 class LandingPage extends StatefulWidget {
+  final Function scrollToBottom;
   final LandingPageController? controller;
 
-  final Function scrollToBottom;
-
-  const LandingPage({super.key, this.controller, required this.scrollToBottom});
+  const LandingPage({super.key, required this.scrollToBottom, this.controller});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -22,12 +21,10 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-  // Load data in initState
   late LandingPageController _landingPageController;
+  String? imageURL;
   LandingPageDTO? landingPageData;
   int buttonRequirementWidth = 325;
-  String? imageURL;
-
   @override
   void initState() {
     super.initState();

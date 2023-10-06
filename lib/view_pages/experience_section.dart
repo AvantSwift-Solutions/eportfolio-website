@@ -30,7 +30,6 @@ class ExperienceSectionState extends State<ExperienceSection> {
   @override
   void initState() {
     super.initState();
-
     _experienceSectionController = widget.controller ??
         ExperienceSectionController(ExperienceRepoService());
     _loadExperienceData();
