@@ -67,7 +67,6 @@ class SinglePageView extends StatelessWidget {
           SliverToBoxAdapter(
             child: SizedBox(
               child: SingleChildScrollView(
-                controller: _scrollController,
                 child: Column(
                   children: [
                     LandingPage(
