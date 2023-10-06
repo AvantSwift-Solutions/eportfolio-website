@@ -1,6 +1,6 @@
-// ignore_for_file: use_build_context_synchronously
-
+import 'package:avantswift_portfolio/dto/contact_section_dto.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../constants.dart';
 import '../controllers/view_controllers/contact_section_controller.dart';
 import '../reposervice/user_repo_services.dart';
@@ -11,20 +11,39 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ContactSection extends StatefulWidget {
-  const ContactSection({Key? key}) : super(key: key);
+  final ContactSectionController? controller;
+  const ContactSection({Key? key, this.controller}) : super(key: key);
 
   @override
   ContactSectionState createState() => ContactSectionState();
 }
 
 class ContactSectionState extends State<ContactSection> {
-  final ContactSectionController _contactSectionController =
-      ContactSectionController(UserRepoService());
+  ContactSectionDTO contactSectionData = ContactSectionDTO(
+      name: Constants.defaultName,
+      contactEmail: Constants.defaultEmail,
+      linkedinURL: Constants.defaultLinkedinURL);
+
+  late ContactSectionController _contactSectionController;
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _subjectController = TextEditingController();
   final _messageController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _contactSectionController =
+        widget.controller ?? ContactSectionController(UserRepoService());
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    contactSectionData =
+        await _contactSectionController.getContactSectionData();
+    setState(() {});
+  }
 
   @override
   void dispose() {
@@ -51,397 +70,286 @@ class ContactSectionState extends State<ContactSection> {
     };
   }
 
+  static const InputDecoration formDecoration = InputDecoration(
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(
+        Radius.circular(8.0),
+      ),
+      borderSide: BorderSide(
+        color: Colors.black,
+        width: 1.0,
+      ),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(
+        Radius.circular(8.0),
+      ),
+      borderSide: BorderSide(
+        color: Colors.black,
+        width: 1.0,
+      ),
+    ),
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(
+        Radius.circular(8.0),
+      ),
+      borderSide: BorderSide(
+        color: Colors.red,
+        width: 1.0,
+      ),
+    ),
+    focusedErrorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(
+        Radius.circular(8.0),
+      ),
+      borderSide: BorderSide(
+        color: Colors.red,
+        width: 1.0,
+      ),
+    ),
+  );
+
+  static const singleColumnThreshold = 1000;
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _contactSectionController.getContactSectionData(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return const Center(child: Text('Error loading data'));
-        }
+    final screenWidth = MediaQuery.of(context).size.width;
 
-        final contactSectionData = snapshot.data;
-        final screenWidth = MediaQuery.of(context).size.width;
+    EdgeInsets sectionPadding = const EdgeInsets.symmetric(horizontal: 50);
 
-        double titleFontSize = screenWidth * 0.03;
+    SizedBox interHeaderTitleSpacing = const SizedBox(height: 60);
+    SizedBox formFieldSpacing = const SizedBox(height: 20);
+    SizedBox interFormSendSpacing = const SizedBox(height: 40);
+    SizedBox socialMediaSpacing = const SizedBox(height: 20);
 
-        return Center(
-          child: Padding(
-            padding: const EdgeInsets.all(50.0),
-            child: Column(
+    int maxMessageLines = 10;
+    int maxMessageLength = 250;
+    int characterLimit = 75;
+
+    double sectionHeaderFontSize = 50;
+    double titleFontSize = 40;
+    double textSize = 25;
+
+    double iconWidth = 90;
+    double interIconTextWidth = 12;
+
+    Widget sectionHeaderWidget = Text(
+      'Let\'s Get in Touch',
+      style: PublicViewTextStyles.generalHeading.copyWith(
+        fontSize: sectionHeaderFontSize,
+      ),
+    );
+
+    SizedBox interEmailConnectSpacing = const SizedBox(height: 60);
+
+    if (screenWidth < singleColumnThreshold) {
+      interFormSendSpacing = const SizedBox(height: 20);
+      sectionPadding = const EdgeInsets.symmetric(horizontal: 20);
+    }
+
+    Widget emailFormWidget = Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Send a Message',
+            style: PublicViewTextStyles.generalSubHeading.copyWith(
+              fontSize: titleFontSize,
+            ),
+          ),
+          const Divider(),
+          formFieldSpacing,
+          TextFormField(
+            controller: _nameController,
+            decoration: formDecoration.copyWith(hintText: 'Name'),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your name';
+              } else if (value.isNotEmpty && value.length > characterLimit) {
+                return 'Name must be less than $characterLimit characters';
+              }
+              return null;
+            },
+          ),
+          formFieldSpacing,
+          TextFormField(
+            controller: _emailController,
+            decoration: formDecoration.copyWith(hintText: 'Email'),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your email';
+              } else if (!EmailValidator.validate(value)) {
+                return 'Please enter a valid email';
+              } else if (value.isNotEmpty && value.length > characterLimit) {
+                return 'Email must be less than $characterLimit characters';
+              }
+              return null;
+            },
+          ),
+          formFieldSpacing,
+          TextFormField(
+            controller: _subjectController,
+            decoration: formDecoration.copyWith(hintText: 'Subject'),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a subject';
+              } else if (value.isNotEmpty && value.length > characterLimit) {
+                return 'Subject must be less than $characterLimit characters';
+              }
+              return null;
+            },
+          ),
+          formFieldSpacing,
+          TextFormField(
+            controller: _messageController,
+            maxLines: maxMessageLines,
+            maxLength: maxMessageLength,
+            maxLengthEnforcement: MaxLengthEnforcement.none,
+            decoration: formDecoration.copyWith(hintText: 'Message'),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a message';
+              } else if (value.isNotEmpty && value.length > maxMessageLength) {
+                return 'Message must be less than $maxMessageLength characters';
+              }
+              return null;
+            },
+          ),
+          interFormSendSpacing,
+          CustomViewButton(
+            text: 'Send',
+            onPressed: () async {
+              if (_formKey.currentState!.validate()) {
+                final fields = getFields();
+                clear();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Sending email...'),
+                  ),
+                );
+                final res = await _contactSectionController.sendEmail(
+                    contactSectionData, fields);
+                if (!mounted) return;
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                if (res) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Email sent successfully'),
+                    ),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Error sending email'),
+                    ),
+                  );
+                }
+              }
+            },
+          ),
+        ],
+      ),
+    );
+
+    Widget connectTitleWidget = Text(
+      'Connect Further',
+      style: PublicViewTextStyles.generalSubHeading.copyWith(
+        fontSize: titleFontSize,
+      ),
+    );
+
+    Widget linkedinHeadingWidget = Row(
+      children: [
+        SizedBox(width: iconWidth + interIconTextWidth),
+        Text(
+          'LinkedIn',
+          style: PublicViewTextStyles.generalBodyText.copyWith(
+            fontSize: textSize,
+          ),
+        ),
+      ],
+    );
+
+    Widget linkedinDisplayWidget = Row(
+      children: [
+        SvgPicture.network(
+          Constants.linkedinSVGURL,
+          width: iconWidth,
+        ),
+        SizedBox(width: interIconTextWidth),
+        GestureDetector(
+          onTap: () {
+            launchUrl(Uri.parse(
+                contactSectionData.linkedinURL ?? 'https://www.linkedin.com/'));
+          },
+          child: Text(
+            '@${contactSectionData.name}',
+            style: PublicViewTextStyles.generalSubHeading.copyWith(
+              fontSize: textSize,
+            ),
+          ),
+        ),
+      ],
+    );
+
+    if (screenWidth > singleColumnThreshold) {
+      return Padding(
+        padding: sectionPadding,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Divider(),
+            sectionHeaderWidget,
+            interHeaderTitleSpacing,
+            Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Divider(),
-                Text(
-                  'Let\'s Get in Touch',
-                  style: PublicViewTextStyles.generalHeading.copyWith(
-                    fontSize: titleFontSize * 1.2,
-                  ),
+                Expanded(
+                  flex: 2,
+                  child: emailFormWidget,
                 ),
-                const SizedBox(height: 60),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Padding(
-                        padding: const EdgeInsets.all(0),
-                        child: Form(
-                          key: _formKey,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Send a Message',
-                                style: PublicViewTextStyles.generalSubHeading
-                                    .copyWith(
-                                  fontSize: titleFontSize,
-                                ),
-                              ),
-                              const Divider(),
-                              const SizedBox(height: 20),
-                              TextFormField(
-                                controller: _nameController,
-                                decoration: const InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(8.0),
-                                    ),
-                                    borderSide: BorderSide(
-                                      color: Colors.black,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(8.0),
-                                    ),
-                                    borderSide: BorderSide(
-                                      color: Colors.black,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(8.0),
-                                    ),
-                                    borderSide: BorderSide(
-                                      color: Colors.red,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(8.0),
-                                    ),
-                                    borderSide: BorderSide(
-                                      color: Colors.red,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  hintText: 'Name',
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter your name';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              const SizedBox(height: 20),
-                              TextFormField(
-                                controller: _emailController,
-                                decoration: const InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(8.0),
-                                    ),
-                                    borderSide: BorderSide(
-                                      color: Colors.black,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(8.0),
-                                    ),
-                                    borderSide: BorderSide(
-                                      color: Colors.black,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(8.0),
-                                    ),
-                                    borderSide: BorderSide(
-                                      color: Colors.red,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(8.0),
-                                    ),
-                                    borderSide: BorderSide(
-                                      color: Colors.red,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  hintText: 'Email',
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter your email';
-                                  }
-                                  if (!EmailValidator.validate(value)) {
-                                    return 'Please enter a valid email';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              const SizedBox(height: 20),
-                              TextFormField(
-                                controller: _subjectController,
-                                decoration: const InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(8.0),
-                                    ),
-                                    borderSide: BorderSide(
-                                      color: Colors.black,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(8.0),
-                                    ),
-                                    borderSide: BorderSide(
-                                      color: Colors.black,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(8.0),
-                                    ),
-                                    borderSide: BorderSide(
-                                      color: Colors.red,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(8.0),
-                                    ),
-                                    borderSide: BorderSide(
-                                      color: Colors.red,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  hintText: 'Subject',
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter a subject';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              const SizedBox(height: 20),
-                              TextFormField(
-                                controller: _messageController,
-                                maxLines: 10,
-                                decoration: const InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(8.0),
-                                    ),
-                                    borderSide: BorderSide(
-                                      color: Colors.black,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(8.0),
-                                    ),
-                                    borderSide: BorderSide(
-                                      color: Colors.black,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(8.0),
-                                    ),
-                                    borderSide: BorderSide(
-                                      color: Colors.red,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(8.0),
-                                    ),
-                                    borderSide: BorderSide(
-                                      color: Colors.red,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  hintText: 'Message',
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter a message';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              const SizedBox(height: 20),
-                              const SizedBox(height: 20),
-                              CustomViewButton(
-                                text: 'Send',
-                                onPressed: () async {
-                                  if (_formKey.currentState!.validate()) {
-                                    final fields = getFields();
-                                    clear();
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text('Sending email...'),
-                                      ),
-                                    );
-                                    final res = await _contactSectionController
-                                        .sendEmail(contactSectionData, fields);
-                                    ScaffoldMessenger.of(context)
-                                        .hideCurrentSnackBar();
-                                    if (res) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          content:
-                                              Text('Email sent successfully'),
-                                        ),
-                                      );
-                                    } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          content: Text('Error sending email'),
-                                        ),
-                                      );
-                                    }
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    // Dummy coloumn for formatting
-                    const Expanded(
-                        flex: 1, child: Padding(padding: EdgeInsets.all(0))),
-                    Expanded(
-                      flex: 2,
-                      child: Padding(
-                        padding: const EdgeInsets.all(0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Connect Further',
-                              style: PublicViewTextStyles.generalSubHeading
-                                  .copyWith(
-                                fontSize: titleFontSize,
-                              ),
-                            ),
-                            const Divider(),
-                            const SizedBox(height: 20),
-                            Row(
-                              children: [
-                                const SizedBox(width: 96),
-                                Text(
-                                  'Email',
-                                  style: PublicViewTextStyles.generalBodyText
-                                      .copyWith(
-                                    fontSize: titleFontSize / 2,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                SvgPicture.network(
-                                  Constants.mailSVGURL,
-                                  width: 84,
-                                  height: 84,
-                                ),
-                                const SizedBox(width: 12),
-                                Text(
-                                  contactSectionData?.contactEmail ??
-                                      'No email avaliable',
-                                  style: PublicViewTextStyles.generalSubHeading
-                                      .copyWith(
-                                    fontSize: titleFontSize / 2,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const Divider(),
-                            const SizedBox(height: 20),
-                            Row(
-                              children: [
-                                const SizedBox(width: 96),
-                                Text(
-                                  'LinkedIn',
-                                  style: PublicViewTextStyles.generalBodyText
-                                      .copyWith(
-                                    fontSize: titleFontSize / 2,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                SvgPicture.network(
-                                  Constants.linkedinSVGURL,
-                                  width: 84,
-                                  height: 84,
-                                ),
-                                const SizedBox(width: 12),
-                                GestureDetector(
-                                  onTap: () {
-                                    launchUrl(Uri.parse(
-                                        contactSectionData?.linkedinURL ??
-                                            'https://www.linkedin.com/'));
-                                  },
-                                  child: Text(
-                                    '@${contactSectionData?.name}',
-                                    style: PublicViewTextStyles
-                                        .generalSubHeading
-                                        .copyWith(
-                                      fontSize: titleFontSize / 2,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const Divider(),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+                // Dummy coloumn for formatting
+                const Expanded(flex: 1, child: SizedBox()),
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      connectTitleWidget,
+                      const Divider(),
+                      socialMediaSpacing,
+                      linkedinHeadingWidget,
+                      linkedinDisplayWidget,
+                      const Divider(),
+                    ],
+                  ),
                 ),
               ],
             ),
-          ),
-        );
-      },
-    );
+          ],
+        ),
+      );
+    } else {
+      return Padding(
+        padding: sectionPadding,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Divider(),
+            sectionHeaderWidget,
+            interHeaderTitleSpacing,
+            emailFormWidget,
+            interEmailConnectSpacing,
+            connectTitleWidget,
+            const Divider(),
+            socialMediaSpacing,
+            linkedinHeadingWidget,
+            linkedinDisplayWidget,
+            const Divider(),
+          ],
+        ),
+      );
+    }
   }
 }

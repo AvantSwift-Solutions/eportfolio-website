@@ -7,15 +7,15 @@ import '../reposervice/user_repo_services.dart';
 import '../ui/custom_texts/public_view_text_styles.dart';
 
 class AboutMeSection extends StatefulWidget {
-  const AboutMeSection({Key? key}) : super(key: key);
+  final AboutMeSectionController? controller;
+  const AboutMeSection({Key? key, this.controller}) : super(key: key);
 
   @override
   AboutMeSectionState createState() => AboutMeSectionState();
 }
 
 class AboutMeSectionState extends State<AboutMeSection> {
-  final AboutMeSectionController _aboutMeSectionController =
-      AboutMeSectionController(UserRepoService());
+  late AboutMeSectionController _aboutMeSectionController;
 
   late AboutMeSectionDTO aboutMeData;
   late String _imageURL;
@@ -24,6 +24,8 @@ class AboutMeSectionState extends State<AboutMeSection> {
   @override
   void initState() {
     super.initState();
+    _aboutMeSectionController =
+        widget.controller ?? AboutMeSectionController(UserRepoService());
     _loadData();
   }
 
