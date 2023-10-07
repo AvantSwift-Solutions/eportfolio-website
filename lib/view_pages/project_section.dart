@@ -56,13 +56,13 @@ class ProjectSectionState extends State<ProjectSection> {
     }
   }
 
-  // Color getNextColor() {
-  //   Color nextColor = projectCardColor;
-  //   colorIndex = (colorIndex + 1) % alternatingColors.length;
-  //   projectCardColor = alternatingColors[
-  //       colorIndex]; // Update the project card color for the next iteration
-  //   return nextColor;
-  // }
+  Color getNextColor() {
+    Color nextColor = projectCardColor;
+    colorIndex = (colorIndex + 1) % alternatingColors.length;
+    projectCardColor = alternatingColors[
+        colorIndex]; // Update the project card color for the next iteration
+    return nextColor;
+  }
 
   void openLink(String link) async {
     if (await canLaunchUrlString(link)) {
@@ -73,8 +73,8 @@ class ProjectSectionState extends State<ProjectSection> {
   }
 
   void openSvgLink() {
-    const svgUrl =
-        'assets/external_link.svg'; // Replace with your desired URL for the SVG
+    const svgUrl = Constants
+        .externalLinkSVGURL; // Replace with your desired URL for the SVG
     openLink(svgUrl);
   }
 
@@ -258,7 +258,7 @@ class ProjectSectionState extends State<ProjectSection> {
                         height: cardSize,
                         child: Card(
                           elevation: 3,
-                          color: alternatingColors[index % alternatingColors.length],
+                          color: getNextColor(),
                           shape: RoundedRectangleBorder(
                             side:
                                 const BorderSide(color: Colors.black, width: 1),
@@ -305,11 +305,11 @@ class ProjectSectionState extends State<ProjectSection> {
                                             log('Link is null.');
                                           }
                                         },
-                                        // child: SvgPicture.asset(
-                                        //   'external_link.svg',
-                                        //   width: externalLinkSvgSize,
-                                        //   height: externalLinkSvgSize,
-                                        // ),
+                                        child: SvgPicture.network(
+                                          Constants.externalLinkSVGURL,
+                                          width: externalLinkSvgSize,
+                                          height: externalLinkSvgSize,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -446,7 +446,7 @@ class ProjectSectionState extends State<ProjectSection> {
                         height: cardSize,
                         child: Card(
                           elevation: 3,
-                          color: alternatingColors[index % alternatingColors.length],
+                          color: getNextColor(),
                           shape: RoundedRectangleBorder(
                             side:
                                 const BorderSide(color: Colors.black, width: 1),
@@ -493,11 +493,11 @@ class ProjectSectionState extends State<ProjectSection> {
                                             log('Link is null.');
                                           }
                                         },
-                                        // child: SvgPicture.asset(
-                                        //   'external_link.svg',
-                                        //   width: externalLinkSvgSize,
-                                        //   height: externalLinkSvgSize,
-                                        // ),
+                                        child: SvgPicture.network(
+                                          Constants.externalLinkSVGURL,
+                                          width: externalLinkSvgSize,
+                                          height: externalLinkSvgSize,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -555,11 +555,6 @@ class ProjectSectionState extends State<ProjectSection> {
                 onTap: openCustomLink,
                 child: Padding(
                   padding: EdgeInsets.only(bottom: generalPadding),
-                  // child: SvgPicture.asset(
-                  //   'github.svg',
-                  //   width: githubSvgSize,
-                  //   height: githubSvgSize,
-                  // ),
                   child: SvgPicture.network(
                     Constants.githubSVGURL,
                     width: githubSvgSize,
@@ -575,11 +570,6 @@ class ProjectSectionState extends State<ProjectSection> {
                 onTap: openCustomLink,
                 child: Padding(
                   padding: EdgeInsets.only(left: gap, bottom: generalPadding),
-                  // child: SvgPicture.asset(
-                  //   'github.svg',
-                  //   width: githubSvgSize,
-                  //   height: githubSvgSize,
-                  // ),
                   child: SvgPicture.network(
                     Constants.githubSVGURL,
                     width: githubSvgSize,

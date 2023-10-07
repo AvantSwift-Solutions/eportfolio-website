@@ -1,6 +1,7 @@
 import 'package:avantswift_portfolio/controllers/view_controllers/landing_page_controller.dart';
 import 'package:avantswift_portfolio/dto/landing_page_dto.dart';
 import 'package:avantswift_portfolio/models/User.dart';
+import 'package:avantswift_portfolio/ui/custom_view_button.dart';
 import 'package:avantswift_portfolio/view_pages/landing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -73,27 +74,45 @@ void main() {
               findRichText: true),
           findsOneWidget);
 
+      expect(find.byType(CustomViewButton), findsOneWidget);
       // Simulate a button press
       await tester.tap(find.text('Get in touch'));
       verify(mockScrollToBottom())
           .called(1); // Verify that scrollToBottom was called
 
+      expect(
+          find.textContaining("Scroll down to learn more about me",
+              findRichText: true),
+          findsOneWidget);
+
       // Find the Image.network widget using a Key or another appropriate method
-      final imageWidget = find.byType(Image);
+      final imageWidgetList = find.byType(Image);
 
       // Verify that the widget is present in the widget tree
       // Note there are 2 widgets
       // One for the actual image, and another image inside of the button widget
-      expect(imageWidget, findsAtLeastNWidgets(2));
+      expect(imageWidgetList, findsNWidgets(2));
 
-      // Unable to check if the image URL is correct
-      // Because of existance of 2 image widgets
+      // Find the Image.network widget using a Key or another appropriate method
+      final imageWidget = imageWidgetList.last;
+
+      // You can also check other properties of the Image widget if needed
+      final image = tester.widget<Image>(imageWidget);
+
+      // Trigger a frame rebuild to ensure that the image loads
+      await tester.pump();
+
+      // You can also check if the image URL is correct (assuming _imageURL is available)
+      // Replace 'your_image_url_here' with the expected image URL
+      final expectedImageUrl = mockLandingPageData.imageURL;
+      expect(image.image, isA<NetworkImage>());
+      expect((image.image as NetworkImage).url, expectedImageUrl);
     });
   });
   testWidgets('LandingPage Widget Test for Mobile',
       (WidgetTester tester) async {
-    tester.view.physicalSize = const Size(414, 2000);
-    tester.view.devicePixelRatio = 3.0;
+    tester.view.physicalSize = const Size(500, 1140);
+    tester.view.devicePixelRatio = 1.0;
     // Create a mock function for scrollToBottom
     final mockScrollToBottom = MockScrollToBottom();
 
@@ -134,21 +153,41 @@ void main() {
               findRichText: true),
           findsOneWidget);
 
+      expect(find.byType(CustomViewButton), findsOneWidget);
       // Simulate a button press
       await tester.tap(find.text('Get in touch'));
       verify(mockScrollToBottom())
           .called(1); // Verify that scrollToBottom was called
 
+      expect(
+          find.textContaining("Scroll down to learn more about me",
+              findRichText: true),
+          findsNothing);
+      // Verify that the widget is present in the widget tree
+      // Note there are 2 widgets
+      // One for the actual image, and another image inside of the button widget
       // Find the Image.network widget using a Key or another appropriate method
-      final imageWidget = find.byType(Image);
+      final imageWidgetList = find.byType(Image);
 
       // Verify that the widget is present in the widget tree
       // Note there are 2 widgets
       // One for the actual image, and another image inside of the button widget
-      expect(imageWidget, findsAtLeastNWidgets(2));
+      expect(imageWidgetList, findsNWidgets(2));
 
-      // Unable to check if the image URL is correct
-      // Because of existance of 2 image widgets
+      // Find the Image.network widget using a Key or another appropriate method
+      final imageWidget = imageWidgetList.last;
+
+      // You can also check other properties of the Image widget if needed
+      final image = tester.widget<Image>(imageWidget);
+
+      // Trigger a frame rebuild to ensure that the image loads
+      await tester.pump();
+
+      // You can also check if the image URL is correct (assuming _imageURL is available)
+      // Replace 'your_image_url_here' with the expected image URL
+      final expectedImageUrl = mockLandingPageData.imageURL;
+      expect(image.image, isA<NetworkImage>());
+      expect((image.image as NetworkImage).url, expectedImageUrl);
     });
   });
 }

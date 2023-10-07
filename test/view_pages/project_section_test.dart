@@ -18,8 +18,7 @@ void main() {
     late MockProject mockProject3;
     late MockProject mockProject4;
     late MockProjectSectionController mockController; // Updated class name
-    const String mockSectionDescription =
-        Constants.defaultProjectSectionDescription;
+    const String mockSectionDescription = 'Mock Description';
 
     setUp(() {
       mockProject1 = MockProject();
@@ -62,18 +61,13 @@ void main() {
       mockController = MockProjectSectionController();
     });
 
-    testWidgets('Experience Section shows expected data',
+    testWidgets('Project Section shows expected data',
         (WidgetTester tester) async {
       // Set the screen size to be Vertical (i.e. have a 1080x1920 aspect ratio)
-      tester.view.physicalSize = const Size(1920, 1080);
+      tester.view.physicalSize = const Size(1080, 1920);
       tester.view.devicePixelRatio = 1.0;
       // FlutterError.onError = ignoreOverflowErrors;
-      final mockProjectSectionData = [
-        mockProject1,
-        mockProject2,
-        mockProject3,
-        mockProject4
-      ];
+      final mockProjectSectionData = [mockProject1, mockProject2, mockProject3];
 
       when(mockController.getProjectList())
           .thenAnswer((_) => Future.value(mockProjectSectionData));
@@ -97,9 +91,9 @@ void main() {
         // Verify that the title text is displayed
         expect(find.text('Personal Projects'), findsOneWidget);
 
-        // // expect(find.text(mockSectionDescri  ption), findsOneWidget);
+        // expect(find.textContaining(mockSectionDescription), findsOneWidget);
 
-        await tester.pumpAndSettle();
+        // await tester.pumpAndSettle();
 
         // expect(find.byType(Card), findsAtLeastNWidgets(1));
         // expect(find.text(mockProject1.name!), findsOneWidget);

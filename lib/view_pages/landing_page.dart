@@ -169,7 +169,7 @@ class LandingPageState extends State<LandingPage> {
                       landingPageData?.imageURL ?? Constants.replaceImageURL,
                       width: 300,
                       height: 200,
-                      fit: BoxFit.fitWidth,
+                      fit: BoxFit.fitHeight,
                     ),
                   ),
                   const SizedBox(height: 20),
