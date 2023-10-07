@@ -162,7 +162,7 @@ class DefaultPageState extends State<DefaultPage> {
         welcomeMessage =
             'Welcome to your\nePortfolio Admin\nPanel, ${user.nickname}';
         analyticCardRowCount = 2;
-        analyticsHeightPerRow = bc.maxWidth * 1.1;
+        analyticsHeightPerRow = bc.maxWidth * 0.5;
       }
 
       Widget navbarWidget = Row(
@@ -363,8 +363,7 @@ class DefaultPageState extends State<DefaultPage> {
       ];
 
       Widget analyticsGridWidget = SizedBox(
-          height: analyticsWidgetList.length %
-              analyticCardRowCount *
+          height: analyticsWidgetList.length/analyticCardRowCount *
               analyticsHeightPerRow,
           child: CustomScrollView(
             primary: true,
