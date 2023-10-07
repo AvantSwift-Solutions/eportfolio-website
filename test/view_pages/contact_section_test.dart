@@ -11,6 +11,7 @@ import 'package:mockito/mockito.dart';
 import 'package:run_with_network_images/run_with_network_images.dart';
 
 import 'mocks/contact_section_test.mocks.dart';
+import 'view_pages_test_constants.dart';
 
 @GenerateMocks([User, ContactSectionController])
 void main() {
@@ -38,7 +39,7 @@ void main() {
     testWidgets('Contact Section Section displays expected data on Desktop',
         (WidgetTester tester) async {
       // Set the screen size to be Vertical (i.e. have a 1080x1920 aspect ratio)
-      tester.view.physicalSize = const Size(1920, 1080);
+      tester.view.physicalSize = ViewPagesTestConstants.contactDesktopSize;
       tester.view.devicePixelRatio = 1.0;
       // // Create a mock controller to provide data for the test
       when(mockController.getContactSectionData()).thenAnswer((_) async =>
@@ -101,10 +102,6 @@ void main() {
         find.byType(TextField).evaluate().toList().forEach((element) {
           formFields.add(element.widget as TextField);
         });
-
-        // find.byType(TextField).evaluate().toList().forEach((element) {
-        //   formFields.add(element.widget as TextField);
-        // });
 
         for (var element in formFields) {
           switch (element.decoration?.hintText) {
@@ -143,7 +140,7 @@ void main() {
     testWidgets('Contact Section Section displays expected data on Mobile',
         (WidgetTester tester) async {
       // Set the screen size to be Vertical (i.e. have a 1080x1920 aspect ratio)
-      tester.view.physicalSize = const Size(408, 1500);
+      tester.view.physicalSize = ViewPagesTestConstants.contactMobileSize;
       tester.view.devicePixelRatio = 1.0;
       // // Create a mock controller to provide data for the test
       when(mockController.getContactSectionData()).thenAnswer((_) async =>
@@ -206,10 +203,6 @@ void main() {
         find.byType(TextField).evaluate().toList().forEach((element) {
           formFields.add(element.widget as TextField);
         });
-
-        // find.byType(TextField).evaluate().toList().forEach((element) {
-        //   formFields.add(element.widget as TextField);
-        // });
 
         for (var element in formFields) {
           switch (element.decoration?.hintText) {

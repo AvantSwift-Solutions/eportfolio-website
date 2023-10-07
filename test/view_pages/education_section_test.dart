@@ -10,6 +10,7 @@ import 'package:mockito/mockito.dart';
 import 'package:avantswift_portfolio/models/Education.dart';
 import 'package:run_with_network_images/run_with_network_images.dart';
 import 'mocks/education_section_test.mocks.dart';
+import 'view_pages_test_constants.dart';
 
 // Function to format Timestamp to "Month Year" format
 String formatTimestamp(Timestamp? timestamp) {
@@ -95,7 +96,7 @@ void main() {
     testWidgets('Education Section shows expected data',
         (WidgetTester tester) async {
       // Set the screen size to be Vertical (i.e. have a 1080x1920 aspect ratio)
-      tester.view.physicalSize = const Size(1920, 1080);
+      tester.view.physicalSize = ViewPagesTestConstants.educationDesktopSize;
       tester.view.devicePixelRatio = 1.0;
 
       final mockEducationSectionData = [
@@ -182,8 +183,8 @@ void main() {
     group("Education Widget Tests", () {
       testWidgets('Education Widget shows expected data',
           (WidgetTester tester) async {
+        tester.view.physicalSize = ViewPagesTestConstants.educationDesktopSize;
         tester.view.devicePixelRatio = 1.0;
-        tester.view.physicalSize = const Size(1920, 1080);
         final mockEducationWidgetData = EducationDTO(
           schoolName: mockEducation1.schoolName,
           degree: mockEducation1.degree,
@@ -252,8 +253,8 @@ void main() {
 
     testWidgets('Experience Widget End Date is Present when Null',
         (WidgetTester tester) async {
+      tester.view.physicalSize = ViewPagesTestConstants.educationDesktopSize;
       tester.view.devicePixelRatio = 1.0;
-      tester.view.physicalSize = const Size(1920, 1080);
       final mockEducationWidgetData = EducationDTO(
         schoolName: mockEducation1.schoolName,
         degree: mockEducation1.degree,

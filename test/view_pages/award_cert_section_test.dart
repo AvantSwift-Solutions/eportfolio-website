@@ -9,6 +9,7 @@ import 'package:mockito/mockito.dart';
 import 'package:run_with_network_images/run_with_network_images.dart';
 
 import 'mocks/award_cert_section_test.mocks.dart';
+import 'view_pages_test_constants.dart';
 
 @GenerateMocks([AwardCert, AwardCertSectionController])
 void main() {
@@ -45,7 +46,7 @@ void main() {
     group('Awards & Certification Section Widget Test on Desktop', () {
       testWidgets('Award Cert Section displays expected data on Desktop',
           (WidgetTester tester) async {
-        tester.view.physicalSize = const Size(1920, 1080);
+        tester.view.physicalSize = ViewPagesTestConstants.awardCertDesktopSize;
         tester.view.devicePixelRatio = 1.0;
         // Create a mock controller to provide data for the test
         when(mockController.getAwardCertList()).thenAnswer((_) async => [
@@ -104,7 +105,7 @@ void main() {
           'Award Cert Circle inside of Award Cert Section works properly on Desktop',
           (WidgetTester tester) async {
         // Set the screen size to be Vertical (i.e. have a 1080x1920 aspect ratio)
-        tester.view.physicalSize = const Size(1920, 1080);
+        tester.view.physicalSize = ViewPagesTestConstants.awardCertDesktopSize;
         tester.view.devicePixelRatio = 1.0;
         // Create a mock controller to provide data for the test
         when(mockController.getAwardCertList()).thenAnswer((_) async => [

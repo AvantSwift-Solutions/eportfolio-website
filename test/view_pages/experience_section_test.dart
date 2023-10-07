@@ -11,6 +11,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:run_with_network_images/run_with_network_images.dart';
 import 'mocks/experience_section_test.mocks.dart';
+import 'view_pages_test_constants.dart';
 
 // Function to format Timestamp to "Month Year" format
 String formatTimestamp(Timestamp? timestamp) {
@@ -104,7 +105,7 @@ void main() {
     testWidgets('Experience Section shows expected data',
         (WidgetTester tester) async {
       // Set the screen size to be Vertical (i.e. have a 1080x1920 aspect ratio)
-      tester.view.physicalSize = const Size(1080, 1920);
+      tester.view.physicalSize = ViewPagesTestConstants.experienceDesktopSize1;
       tester.view.devicePixelRatio = 1.0;
       // FlutterError.onError = ignoreOverflowErrors;
       final mockExperienceSectionData = [
@@ -203,7 +204,8 @@ void main() {
     group("Experience Widget Tests", () {
       testWidgets('Experience Widget shows expected data',
           (WidgetTester tester) async {
-        tester.view.physicalSize = const Size(1080, 1080);
+        tester.view.physicalSize =
+            ViewPagesTestConstants.experienceDesktopSize2;
         final mockExperienceWidgetData = ExperienceDTO(
           jobTitle: mockExperience1.jobTitle,
           companyName: mockExperience1.companyName,
@@ -267,7 +269,7 @@ void main() {
 
     testWidgets('Experience Widget End Date is Present when Null',
         (WidgetTester tester) async {
-      tester.view.physicalSize = const Size(1080, 1080);
+      tester.view.physicalSize = ViewPagesTestConstants.experienceDesktopSize2;
       final mockExperienceWidgetData = ExperienceDTO(
         jobTitle: mockExperience1.jobTitle,
         companyName: mockExperience1.companyName,

@@ -8,6 +8,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:run_with_network_images/run_with_network_images.dart';
 import 'mocks/recommendation_section_test.mocks.dart';
+import 'view_pages_test_constants.dart';
 
 @GenerateMocks([Recommendation, RecommendationSectionController])
 void main() {
@@ -50,7 +51,8 @@ void main() {
     testWidgets('Recommendation Section shows expected data',
         (WidgetTester tester) async {
       // Set the screen size to be Vertical (i.e. have a 1080x1920 aspect ratio)
-      tester.view.physicalSize = const Size(1920, 1080);
+      tester.view.physicalSize =
+          ViewPagesTestConstants.recommendationDesktopSize;
       tester.view.devicePixelRatio = 1.0;
 
       final mockRecommendationSectionData = [
@@ -101,7 +103,8 @@ void main() {
         'Recommendation Section has Multiple Pages which shows expected data',
         (WidgetTester tester) async {
       // Set the screen size to be Vertical (i.e. have a 1080x1920 aspect ratio)
-      tester.view.physicalSize = const Size(1920, 1080);
+      tester.view.physicalSize =
+          ViewPagesTestConstants.recommendationDesktopSize;
       tester.view.devicePixelRatio = 1.0;
 
       final mockRecommendationSectionData = [

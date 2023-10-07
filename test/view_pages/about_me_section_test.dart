@@ -8,6 +8,7 @@ import 'package:mockito/mockito.dart';
 import 'package:avantswift_portfolio/models/User.dart';
 import 'package:run_with_network_images/run_with_network_images.dart';
 import 'mocks/about_me_section_test.mocks.dart';
+import 'view_pages_test_constants.dart';
 
 @GenerateMocks([User, AboutMeSectionController])
 void main() {
@@ -26,7 +27,7 @@ void main() {
 
     testWidgets('AboutMeSection shows expected data for Desktop',
         (WidgetTester tester) async {
-      tester.view.physicalSize = const Size(1920, 1080);
+      tester.view.physicalSize = ViewPagesTestConstants.aboutMeDesktopSize;
       tester.view.devicePixelRatio = 1.0;
 
       final mockAboutMeSectionData = AboutMeSectionDTO(
@@ -80,7 +81,7 @@ void main() {
     });
     testWidgets('AboutMeSection shows expected data for Mobile',
         (WidgetTester tester) async {
-      tester.view.physicalSize = const Size(414, 896);
+      tester.view.physicalSize = ViewPagesTestConstants.aboutMeMobileSize;
       tester.view.devicePixelRatio = 3.0;
 
       final mockAboutMeSectionData = AboutMeSectionDTO(

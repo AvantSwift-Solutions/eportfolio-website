@@ -9,6 +9,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:run_with_network_images/run_with_network_images.dart';
 import 'mocks/project_section_test.mocks.dart';
+import 'view_pages_test_constants.dart';
 
 @GenerateMocks([Project, ProjectSectionController])
 void main() {
@@ -64,7 +65,7 @@ void main() {
     testWidgets('Project Section shows expected data for Desktop',
         (WidgetTester tester) async {
       // Set the screen size to be Vertical (i.e. have a 1080x1920 aspect ratio)
-      tester.view.physicalSize = const Size(1920, 1920);
+      tester.view.physicalSize = ViewPagesTestConstants.projectDesktopSize;
       tester.view.devicePixelRatio = 1.0;
       // FlutterError.onError = ignoreOverflowErrors;
       final mockProjectSectionData = [
@@ -133,7 +134,7 @@ void main() {
     testWidgets('Project Section shows expected data for Mobile',
         (WidgetTester tester) async {
       // Set the screen size to be Vertical (i.e. have a 1080x1920 aspect ratio)
-      tester.view.physicalSize = const Size(599, 3000);
+      tester.view.physicalSize = ViewPagesTestConstants.projectMobileSize;
       tester.view.devicePixelRatio = 1.0;
       // FlutterError.onError = ignoreOverflowErrors;
       final mockProjectSectionData = [

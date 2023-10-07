@@ -8,6 +8,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:run_with_network_images/run_with_network_images.dart';
 import 'mocks/interpersonal_skills_section_test.mocks.dart';
+import 'view_pages_test_constants.dart';
 
 @GenerateMocks([ISkill, InterpersonalSkillsController])
 void main() {
@@ -49,7 +50,7 @@ void main() {
     testWidgets('Interpersonal Skill Widget shows expected data',
         (WidgetTester tester) async {
       // Set the screen size to be Vertical (i.e. have a 1080x1920 aspect ratio)
-      tester.view.physicalSize = const Size(1080, 1920);
+      tester.view.physicalSize = ViewPagesTestConstants.iSkillDesktopSize;
       tester.view.devicePixelRatio = 1.0;
       // FlutterError.onError = ignoreOverflowErrors;
       final mockISkillData = [
@@ -92,7 +93,7 @@ void main() {
         'Interpersonal Skill Widget shows expected data with multiple pages',
         (WidgetTester tester) async {
       // Set the screen size to be Vertical (i.e. have a 1080x1920 aspect ratio)
-      tester.view.physicalSize = const Size(1080, 1920);
+      tester.view.physicalSize = ViewPagesTestConstants.iSkillDesktopSize;
       tester.view.devicePixelRatio = 1.0;
       // FlutterError.onError = ignoreOverflowErrors;
       final mockISkillData = [

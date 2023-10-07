@@ -10,6 +10,7 @@ import 'package:mockito/mockito.dart';
 import 'package:run_with_network_images/run_with_network_images.dart';
 
 import 'mocks/landing_page_test.mocks.dart';
+import 'view_pages_test_constants.dart';
 
 // Create a mock for your scrollToBottom function
 class MockScrollToBottom extends Mock {
@@ -32,7 +33,7 @@ void main() {
 
   testWidgets('LandingPage Widget Test for Desktop',
       (WidgetTester tester) async {
-    tester.view.physicalSize = const Size(1920, 1080);
+    tester.view.physicalSize = ViewPagesTestConstants.landingPageDesktopSize;
     tester.view.devicePixelRatio = 1.0;
     // Create a mock function for scrollToBottom
     final mockScrollToBottom = MockScrollToBottom();
@@ -111,7 +112,7 @@ void main() {
   });
   testWidgets('LandingPage Widget Test for Mobile',
       (WidgetTester tester) async {
-    tester.view.physicalSize = const Size(500, 1140);
+    tester.view.physicalSize = ViewPagesTestConstants.landingPageMobileSize;
     tester.view.devicePixelRatio = 1.0;
     // Create a mock function for scrollToBottom
     final mockScrollToBottom = MockScrollToBottom();
