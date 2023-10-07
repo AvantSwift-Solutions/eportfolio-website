@@ -1,4 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
+import 'package:avantswift_portfolio/controllers/analytic_controller.dart';
+import 'package:avantswift_portfolio/reposervice/analytic_repo_services.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +20,7 @@ class ISkillSectionAdmin extends StatefulWidget {
 class _ISkillSectionAdminState extends State<ISkillSectionAdmin> {
   late ISkillSectionAdminController _adminController;
   late List<ISkill> iskills;
-  late final BuildContext parentContext;
+  late BuildContext parentContext;
 
   @override
   void initState() {
@@ -59,10 +63,14 @@ class _ISkillSectionAdminState extends State<ISkillSectionAdmin> {
                 color: AdminViewDialogStyles.bgColor,
                 child: Column(
                   children: [
-                    Row(
+                    FittedBox(
+                        child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Edit Interpersonal Skills'),
+                        MediaQuery.of(context).size.width >
+                                AdminViewDialogStyles.showDialogWidth
+                            ? const Text('Edit Interpersonal Skills        ')
+                            : const Text('Edit Interpersonal Skills'),
                         Align(
                           alignment: Alignment.topRight,
                           child: IconButton(
@@ -75,8 +83,8 @@ class _ISkillSectionAdminState extends State<ISkillSectionAdmin> {
                           ),
                         ),
                       ],
-                    ),
-                    const Divider(),
+                    )),
+                    const Divider()
                   ],
                 )),
             content: SizedBox(
@@ -143,29 +151,62 @@ class _ISkillSectionAdminState extends State<ISkillSectionAdmin> {
                     children: [
                       const Divider(),
                       const SizedBox(height: AdminViewDialogStyles.listSpacing),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ReorderDialog(
-                            controller: _adminController,
-                            onReorder: () {
-                              Navigator.of(dialogContext).pop();
-                              Navigator.of(parentContext).pop();
-                              _showList(parentContext);
-                            },
-                          ),
-                          ElevatedButton(
-                            style: AdminViewDialogStyles.elevatedButtonStyle,
-                            onPressed: () {
-                              _showAddNewDialog(context);
-                            },
-                            child: Text(
-                              'Add New',
-                              style: AdminViewDialogStyles.buttonTextStyle,
+                      if (MediaQuery.of(context).size.width >
+                          AdminViewDialogStyles.fitOptionsThreshold)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ReorderDialog(
+                              controller: _adminController,
+                              onReorder: () async {
+                                await _loadItems();
+                                Navigator.of(dialogContext).pop();
+                                Navigator.of(parentContext).pop();
+                                _showList(parentContext);
+                              },
                             ),
+                            ElevatedButton(
+                              style: AdminViewDialogStyles.elevatedButtonStyle,
+                              onPressed: () {
+                                _showAddNewDialog(context);
+                              },
+                              child: Text(
+                                'Add New',
+                                style: AdminViewDialogStyles.buttonTextStyle,
+                              ),
+                            ),
+                          ],
+                        ),
+                      if (MediaQuery.of(context).size.width <=
+                          AdminViewDialogStyles.fitOptionsThreshold)
+                        FittedBox(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ReorderDialog(
+                                controller: _adminController,
+                                onReorder: () async {
+                                  await _loadItems();
+                                  Navigator.of(dialogContext).pop();
+                                  Navigator.of(parentContext).pop();
+                                  _showList(parentContext);
+                                },
+                              ),
+                              AdminViewDialogStyles.reorderOKSpacing,
+                              ElevatedButton(
+                                style:
+                                    AdminViewDialogStyles.elevatedButtonStyle,
+                                onPressed: () {
+                                  _showAddNewDialog(context);
+                                },
+                                child: Text(
+                                  'Add New',
+                                  style: AdminViewDialogStyles.buttonTextStyle,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        )
                     ],
                   ))
             ],
@@ -208,7 +249,7 @@ class _ISkillSectionAdminState extends State<ISkillSectionAdmin> {
       successMessage = 'Interpersonal Skill info added successfully';
       errorMessage = 'Error adding new Interpersonal Skill info';
     } else {
-      title = 'Edit info for \'${iskill.name}\'';
+      title = 'Edit ${iskill.name}';
       successMessage = 'Interpersonal Skill info updated successfully';
       errorMessage = 'Error updating Interpersonal Skill info';
     }
@@ -228,25 +269,10 @@ class _ISkillSectionAdminState extends State<ISkillSectionAdmin> {
                       padding: AdminViewDialogStyles.titleContPadding,
                       color: AdminViewDialogStyles.bgColor,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(title),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: IconButton(
-                                  icon: const Icon(Icons.close),
-                                  iconSize: AdminViewDialogStyles.closeIconSize,
-                                  hoverColor: Colors.transparent,
-                                  onPressed: () {
-                                    Navigator.of(dialogContext).pop();
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Divider(),
+                          FittedBox(child: Text(title)),
+                          const Divider()
                         ],
                       )),
                   content: SizedBox(
@@ -311,6 +337,9 @@ class _ISkillSectionAdminState extends State<ISkillSectionAdmin> {
                                     AdminViewDialogStyles.elevatedButtonStyle,
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
+                                    await AnalyticController.wasEdited(
+                                        AnalyticRepoService());
+                                    setState(() {});
                                     formKey.currentState!.save();
                                     iskill.creationTimestamp = Timestamp.now();
                                     bool isSuccess =
@@ -371,21 +400,11 @@ class _ISkillSectionAdminState extends State<ISkillSectionAdmin> {
               child: Theme(
                 data: AdminViewDialogStyles.dialogThemeData,
                 child: AlertDialog(
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Delete \'$name\'?'),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                          icon: const Icon(Icons.close),
-                          iconSize: AdminViewDialogStyles.closeIconSize,
-                          hoverColor: Colors.transparent,
-                          onPressed: () {
-                            Navigator.of(dialogContext).pop();
-                          },
-                        ),
-                      ),
+                      FittedBox(child: Text('Delete $name?')),
+                      const Divider()
                     ],
                   ),
                   content: Column(
@@ -407,8 +426,9 @@ class _ISkillSectionAdminState extends State<ISkillSectionAdmin> {
                               onPressed: () async {
                                 final deleted = await x.delete() ?? false;
                                 if (deleted) {
+                                  await AnalyticController.wasEdited(
+                                      AnalyticRepoService());
                                   iskills.remove(x);
-                                  setState(() {});
                                   if (!mounted) return;
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(

@@ -1,4 +1,6 @@
+import 'package:avantswift_portfolio/controllers/analytic_controller.dart';
 import 'package:avantswift_portfolio/dto/contact_section_dto.dart';
+import 'package:avantswift_portfolio/reposervice/analytic_repo_services.dart';
 import 'package:avantswift_portfolio/reposervice/user_repo_services.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:email_validator/email_validator.dart';
@@ -53,9 +55,12 @@ class _ContactSectionAdminState extends State<ContactSectionAdmin> {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     String title, successMessage, errorMessage;
-    title = 'Edit About Me info';
-    successMessage = 'About Me info updated successfully';
-    errorMessage = 'Error updating About Me info';
+    title = MediaQuery.of(context).size.width >
+            AdminViewDialogStyles.showDialogWidth
+        ? 'Edit Contact Section Info                  '
+        : 'Edit Contact Section Info';
+    successMessage = 'Contact Section info updated successfully';
+    errorMessage = 'Error updating Contact Section info';
 
     showDialog(
       context: context,
@@ -73,7 +78,8 @@ class _ContactSectionAdminState extends State<ContactSectionAdmin> {
                       color: AdminViewDialogStyles.bgColor,
                       child: Column(
                         children: [
-                          Row(
+                          FittedBox(
+                              child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(title),
@@ -89,15 +95,8 @@ class _ContactSectionAdminState extends State<ContactSectionAdmin> {
                                 ),
                               ),
                             ],
-                          ),
-                          const Divider(),
-                          // Align(
-                          //   alignment: Alignment.centerLeft,
-                          //   child: Text(
-                          //     '* indicates required field',
-                          //     style: AdminViewDialogStyles.indicatesTextStyle,
-                          //   ),
-                          // ),
+                          )),
+                          const Divider()
                         ],
                       )),
                   content: SizedBox(
@@ -119,7 +118,8 @@ class _ContactSectionAdminState extends State<ContactSectionAdmin> {
                                           .indicatesTextStyle,
                                     ),
                                     AdminViewDialogStyles.spacer,
-                                    const Text('Contact Email*',
+                                    const Text(
+                                        'Contact Email* (Won\'t be public)',
                                         textAlign: TextAlign.left),
                                     AdminViewDialogStyles.interTitleField,
                                     TextFormField(
@@ -189,6 +189,8 @@ class _ContactSectionAdminState extends State<ContactSectionAdmin> {
                                     AdminViewDialogStyles.elevatedButtonStyle,
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
+                                    await AnalyticController.wasEdited(
+                                        AnalyticRepoService());
                                     formKey.currentState!.save();
                                     bool? isSuccess = await _adminController
                                         .updateContactSectionData(
