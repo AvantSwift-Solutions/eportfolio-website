@@ -67,7 +67,7 @@ class ExperienceSectionState extends State<ExperienceSection> {
 
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(50.0),
+        padding: EdgeInsets.all(screenWidth * 0.035),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -87,7 +87,7 @@ class ExperienceSectionState extends State<ExperienceSection> {
               ),
             ),
 
-            const SizedBox(height: 60.0),
+            SizedBox(height: screenWidth * 0.042),
 
             isLoading
                 ? const Center(child: CircularProgressIndicator())
@@ -143,14 +143,12 @@ class ExperienceWidget extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Container(
+                  SizedBox(
                     width: screenWidth * 0.048,
                     height: screenWidth * 0.048,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage(experienceDTO.logoURL as String),
-                        fit: BoxFit.cover,
-                      ),
+                    child: Image.network(
+                      experienceDTO.logoURL as String,
+                      fit: BoxFit.cover,
                     ),
                   ),
                   Container(
@@ -161,7 +159,8 @@ class ExperienceWidget extends StatelessWidget {
                       children: [
                         Text(
                           (experienceDTO.companyName as String) +
-                              (experienceDTO.location!.isNotEmpty
+                              ((experienceDTO.location ?? 'Default Location')
+                                      .isNotEmpty
                                   ? ', ${experienceDTO.location as String}'
                                   : ''),
                           style: PublicViewTextStyles
@@ -218,8 +217,8 @@ class ExperienceWidget extends StatelessWidget {
                     borderType: BorderType.Circle,
                     dashPattern: const [5, 10],
                     child: Container(
-                      height: 50,
-                      width: 50,
+                      height: screenWidth * 0.04,
+                      width: screenWidth * 0.04,
                       decoration: const BoxDecoration(
                           shape: BoxShape.circle, color: Colors.white),
                     ),

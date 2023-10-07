@@ -19,7 +19,6 @@ class EducationSectionState extends State<EducationSection> {
   late EducationSectionController _educationSectionController;
 
   List<EducationDTO> educationSectionData = [];
-  bool showAllEducation = false;
   int currentPage = 0;
   static const itemsPerPage = 2;
   late PageController _pageController;
@@ -50,7 +49,7 @@ class EducationSectionState extends State<EducationSection> {
   Widget build(BuildContext context) {
     final totalPages = (educationSectionData.length / itemsPerPage).ceil();
 
-    final int screenWidth = MediaQuery.of(context).size.width as int;
+    final int screenWidth = MediaQuery.of(context).size.width.toInt();
 
     return SizedBox(
       height: Constants
@@ -287,7 +286,7 @@ class EducationWidget extends StatelessWidget {
                           if (!educationDTO.grade!.isNegative)
                             Text(
                               (!educationDTO.grade!.isNegative
-                                      ? 'Grade: ${educationDTO.grade as int}'
+                                      ? 'Grade: ${educationDTO.grade as double}'
                                       : "") +
                                   (educationDTO.gradeDescription!.isNotEmpty
                                       ? ' - ${educationDTO.gradeDescription as String}'

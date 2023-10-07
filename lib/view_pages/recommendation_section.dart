@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:avantswift_portfolio/constants.dart';
 import 'package:avantswift_portfolio/controllers/view_controllers/recommendation_section_controller.dart';
 import 'package:avantswift_portfolio/models/Recommendation.dart';
 import 'package:avantswift_portfolio/reposervice/recommendation_repo_services.dart';
@@ -180,7 +181,8 @@ class RecommendationSectionState extends State<RecommendationSection> {
             children: [
               CircleAvatar(
                 radius: imageRadius,
-                backgroundImage: NetworkImage(recommendation.imageURL ?? ''),
+                backgroundImage: NetworkImage(
+                    recommendation.imageURL ?? Constants.replaceImageURL),
               ),
               const SizedBox(width: 16.0),
               Expanded(
