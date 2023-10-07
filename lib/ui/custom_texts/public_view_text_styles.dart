@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class PublicViewTextStyles {
   static Widget styledLogo({double size = 42}) {
     return RichText(
-      text:  TextSpan(
+      text: TextSpan(
         children: [
           TextSpan(
             text: 'Steven. ',
@@ -34,7 +34,6 @@ class PublicViewTextStyles {
     color: Color(0xFF1E1E1E),
     fontFamily: 'Montserrat',
   );
-
 
   static TextStyle generalSubHeading = const TextStyle(
     fontSize: 32,

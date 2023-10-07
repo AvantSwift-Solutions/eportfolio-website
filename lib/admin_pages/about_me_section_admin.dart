@@ -1,5 +1,8 @@
+import 'package:avantswift_portfolio/admin_pages/default.dart';
 import 'package:avantswift_portfolio/controllers/admin_controllers/upload_image_admin_controller.dart';
+import 'package:avantswift_portfolio/controllers/analytic_controller.dart';
 import 'package:avantswift_portfolio/dto/about_me_section_dto.dart';
+import 'package:avantswift_portfolio/reposervice/analytic_repo_services.dart';
 import 'package:avantswift_portfolio/reposervice/user_repo_services.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:file_picker/file_picker.dart';
@@ -65,7 +68,10 @@ class _AboutMeSectionAdminState extends State<AboutMeSectionAdmin> {
     bool noImage = false;
 
     String title, successMessage, errorMessage;
-    title = 'Edit About Me info';
+    title = MediaQuery.of(context).size.width >
+            AdminViewDialogStyles.showDialogWidth
+        ? 'Edit About Me Info                             '
+        : 'Edit About Me Info';
     successMessage = 'About Me info updated successfully';
     errorMessage = 'Error updating About Me info';
 
@@ -85,7 +91,8 @@ class _AboutMeSectionAdminState extends State<AboutMeSectionAdmin> {
                       color: AdminViewDialogStyles.bgColor,
                       child: Column(
                         children: [
-                          Row(
+                          FittedBox(
+                              child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(title),
@@ -101,8 +108,8 @@ class _AboutMeSectionAdminState extends State<AboutMeSectionAdmin> {
                                 ),
                               ),
                             ],
-                          ),
-                          const Divider(),
+                          )),
+                          const Divider()
                         ],
                       )),
                   content: SizedBox(
@@ -229,6 +236,9 @@ class _AboutMeSectionAdminState extends State<AboutMeSectionAdmin> {
                                   }
                                   if (formKey.currentState!.validate() &&
                                       !noImage) {
+                                    await AnalyticController.wasEdited(
+                                        AnalyticRepoService());
+                                    DefaultPageState.setEdit();
                                     formKey.currentState!.save();
                                     if (pickedImageBytes != null) {
                                       String? imageURL =

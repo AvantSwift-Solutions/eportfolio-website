@@ -1,4 +1,8 @@
+import 'dart:developer';
+
+import 'package:avantswift_portfolio/controllers/analytic_controller.dart';
 import 'package:avantswift_portfolio/dto/landing_page_dto.dart';
+import 'package:avantswift_portfolio/reposervice/analytic_repo_services.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import '../constants.dart';
@@ -14,17 +18,18 @@ class LandingPage extends StatefulWidget {
   const LandingPage({super.key, required this.scrollToBottom, this.controller});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _LandingPageState createState() => _LandingPageState();
+  LandingPageState createState() => LandingPageState();
 }
 
-class _LandingPageState extends State<LandingPage> {
+class LandingPageState extends State<LandingPage> {
   late LandingPageController _landingPageController;
   String? imageURL;
   LandingPageDTO? landingPageData;
   int buttonRequirementWidth = 325;
+
   @override
   void initState() {
+    AnalyticController.incrementViews(AnalyticRepoService());
     super.initState();
     _landingPageController =
         widget.controller ?? LandingPageController(UserRepoService());
@@ -52,7 +57,7 @@ class _LandingPageState extends State<LandingPage> {
         }
       }
     } catch (error) {
-      print('Error loading data: $error');
+      log('Error loading data: $error');
     }
   }
 
@@ -161,8 +166,7 @@ class _LandingPageState extends State<LandingPage> {
                   const SizedBox(height: 20),
                   Center(
                     child: Image.network(
-                      landingPageData?.imageURL ??
-                          'https://example.com/default_image.jpg',
+                      landingPageData?.imageURL ?? Constants.replaceImageURL,
                       width: 300,
                       height: 200,
                       fit: BoxFit.fitWidth,
@@ -256,8 +260,7 @@ class _LandingPageState extends State<LandingPage> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20.0),
                       child: Image.network(
-                        landingPageData?.imageURL ??
-                            'https://example.com/default_image.jpg',
+                        landingPageData?.imageURL ?? Constants.replaceImageURL,
                         width: 300,
                         height: 300,
                         fit: BoxFit.fitWidth,

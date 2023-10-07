@@ -1,6 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:typed_data';
 import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
 import 'package:avantswift_portfolio/controllers/admin_controllers/upload_image_admin_controller.dart';
+import 'package:avantswift_portfolio/controllers/analytic_controller.dart';
+import 'package:avantswift_portfolio/reposervice/analytic_repo_services.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
@@ -75,11 +79,13 @@ class _AwardCertSectionAdminState extends State<AwardCertSectionAdmin> {
                 padding: AdminViewDialogStyles.titleContPadding,
                 color: AdminViewDialogStyles.bgColor,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
+                    FittedBox(
+                        child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Edit Award & Certifications'),
+                        const Text('Edit Awards & Certifications'),
                         Align(
                           alignment: Alignment.topRight,
                           child: IconButton(
@@ -92,8 +98,8 @@ class _AwardCertSectionAdminState extends State<AwardCertSectionAdmin> {
                           ),
                         ),
                       ],
-                    ),
-                    const Divider(),
+                    )),
+                    const Divider()
                   ],
                 )),
             content: SizedBox(
@@ -162,29 +168,62 @@ class _AwardCertSectionAdminState extends State<AwardCertSectionAdmin> {
                     children: [
                       const Divider(),
                       const SizedBox(height: AdminViewDialogStyles.listSpacing),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ReorderDialog(
-                            controller: _adminController,
-                            onReorder: () {
-                              Navigator.of(dialogContext).pop();
-                              Navigator.of(parentContext).pop();
-                              _showList(parentContext);
-                            },
-                          ),
-                          ElevatedButton(
-                            style: AdminViewDialogStyles.elevatedButtonStyle,
-                            onPressed: () {
-                              _showAddNewDialog(context);
-                            },
-                            child: Text(
-                              'Add New',
-                              style: AdminViewDialogStyles.buttonTextStyle,
+                      if (MediaQuery.of(context).size.width >
+                          AdminViewDialogStyles.fitOptionsThreshold)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ReorderDialog(
+                              controller: _adminController,
+                              onReorder: () async {
+                                await _loadItems();
+                                Navigator.of(dialogContext).pop();
+                                Navigator.of(parentContext).pop();
+                                _showList(parentContext);
+                              },
                             ),
+                            ElevatedButton(
+                              style: AdminViewDialogStyles.elevatedButtonStyle,
+                              onPressed: () {
+                                _showAddNewDialog(context);
+                              },
+                              child: Text(
+                                'Add New',
+                                style: AdminViewDialogStyles.buttonTextStyle,
+                              ),
+                            ),
+                          ],
+                        ),
+                      if (MediaQuery.of(context).size.width <=
+                          AdminViewDialogStyles.fitOptionsThreshold)
+                        FittedBox(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ReorderDialog(
+                                controller: _adminController,
+                                onReorder: () async {
+                                  await _loadItems();
+                                  Navigator.of(dialogContext).pop();
+                                  Navigator.of(parentContext).pop();
+                                  _showList(parentContext);
+                                },
+                              ),
+                              AdminViewDialogStyles.reorderOKSpacing,
+                              ElevatedButton(
+                                style:
+                                    AdminViewDialogStyles.elevatedButtonStyle,
+                                onPressed: () {
+                                  _showAddNewDialog(context);
+                                },
+                                child: Text(
+                                  'Add New',
+                                  style: AdminViewDialogStyles.buttonTextStyle,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        )
                     ],
                   ))
             ],
@@ -243,7 +282,7 @@ class _AwardCertSectionAdminState extends State<AwardCertSectionAdmin> {
       successMessage = 'Award & Certification info added successfully';
       errorMessage = 'Error adding new Award & Certification info';
     } else {
-      title = 'Edit info for \'${awardcert.name} from ${awardcert.source}\'';
+      title = 'Edit ${awardcert.name} from ${awardcert.source}';
       successMessage = 'Award & Certification info updated successfully';
       errorMessage = 'Error updating Award & Certification info';
     }
@@ -263,25 +302,10 @@ class _AwardCertSectionAdminState extends State<AwardCertSectionAdmin> {
                       padding: AdminViewDialogStyles.titleContPadding,
                       color: AdminViewDialogStyles.bgColor,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(title),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: IconButton(
-                                  icon: const Icon(Icons.close),
-                                  iconSize: AdminViewDialogStyles.closeIconSize,
-                                  hoverColor: Colors.transparent,
-                                  onPressed: () {
-                                    Navigator.of(dialogContext).pop();
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Divider(),
+                          FittedBox(child: Text(title)),
+                          const Divider()
                         ],
                       )),
                   content: SizedBox(
@@ -497,6 +521,8 @@ class _AwardCertSectionAdminState extends State<AwardCertSectionAdmin> {
                                         awardcert.imageURL = imageURL;
                                       }
                                     }
+                                    await AnalyticController.wasEdited(
+                                        AnalyticRepoService());
                                     bool isSuccess =
                                         await onAwardCertUpdated(awardcert);
                                     if (!mounted) return;
@@ -555,21 +581,11 @@ class _AwardCertSectionAdminState extends State<AwardCertSectionAdmin> {
               child: Theme(
                 data: AdminViewDialogStyles.dialogThemeData,
                 child: AlertDialog(
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Delete \'$name\'?'),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                          icon: const Icon(Icons.close),
-                          iconSize: AdminViewDialogStyles.closeIconSize,
-                          hoverColor: Colors.transparent,
-                          onPressed: () {
-                            Navigator.of(dialogContext).pop();
-                          },
-                        ),
-                      ),
+                      FittedBox(child: Text('Delete $name?')),
+                      const Divider()
                     ],
                   ),
                   content: Column(
@@ -591,8 +607,8 @@ class _AwardCertSectionAdminState extends State<AwardCertSectionAdmin> {
                               onPressed: () async {
                                 final deleted = await x.delete() ?? false;
                                 if (deleted) {
-                                  awardcerts.remove(x);
-                                  setState(() {});
+                                  await AnalyticController.wasEdited(
+                                      AnalyticRepoService());
                                   if (!mounted) return;
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(

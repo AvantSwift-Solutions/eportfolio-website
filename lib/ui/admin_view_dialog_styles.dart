@@ -7,6 +7,8 @@ class AdminViewDialogStyles {
   static const double _titleSize = 28;
   static const double _bodySize = 20;
 
+  static const double fitOptionsThreshold = 1000;
+
   static const double listSpacing = 8;
   static const double closeIconSize = 35;
   static const double imageWidth = 170;
@@ -17,7 +19,7 @@ class AdminViewDialogStyles {
 
   static const double listDialogWidth = 400;
   static const double listDialogHeight = 300;
-  static const double showDialogWidth = 600;
+  static const double showDialogWidth = 500;
   static const double showDialogHeight = 600;
   static const double reorderDialogWidth = 500;
   static const double reorderDialogHeight = 300;
@@ -28,6 +30,8 @@ class AdminViewDialogStyles {
 
   static SizedBox interTitleField = const SizedBox(height: 4);
   static SizedBox spacer = const SizedBox(height: 24);
+  static SizedBox reorderOptionsSpacing = const SizedBox(height: 60);
+  static SizedBox reorderOKSpacing = const SizedBox(width: 10);
 
   static ThemeData dialogThemeData = ThemeData(
       inputDecorationTheme: InputDecorationTheme(

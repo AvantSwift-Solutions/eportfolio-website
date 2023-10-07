@@ -107,7 +107,7 @@ void main() {
     });
 
     test('getSectionName returns correct name', () {
-      expect(controller.getSectionName(), 'Educations');
+      expect(controller.getSectionName(), 'Education');
     });
 
     test('returns empty list when section data is null', () async {
