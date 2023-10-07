@@ -56,13 +56,13 @@ class ProjectSectionState extends State<ProjectSection> {
     }
   }
 
-  Color getNextColor() {
-    Color nextColor = projectCardColor;
-    colorIndex = (colorIndex + 1) % alternatingColors.length;
-    projectCardColor = alternatingColors[
-        colorIndex]; // Update the project card color for the next iteration
-    return nextColor;
-  }
+  // Color getNextColor() {
+  //   Color nextColor = projectCardColor;
+  //   colorIndex = (colorIndex + 1) % alternatingColors.length;
+  //   projectCardColor = alternatingColors[
+  //       colorIndex]; // Update the project card color for the next iteration
+  //   return nextColor;
+  // }
 
   void openLink(String link) async {
     if (await canLaunchUrlString(link)) {
@@ -258,7 +258,7 @@ class ProjectSectionState extends State<ProjectSection> {
                         height: cardSize,
                         child: Card(
                           elevation: 3,
-                          color: getNextColor(),
+                          color: alternatingColors[index % alternatingColors.length],
                           shape: RoundedRectangleBorder(
                             side:
                                 const BorderSide(color: Colors.black, width: 1),
@@ -446,7 +446,7 @@ class ProjectSectionState extends State<ProjectSection> {
                         height: cardSize,
                         child: Card(
                           elevation: 3,
-                          color: getNextColor(),
+                          color: alternatingColors[index % alternatingColors.length],
                           shape: RoundedRectangleBorder(
                             side:
                                 const BorderSide(color: Colors.black, width: 1),
