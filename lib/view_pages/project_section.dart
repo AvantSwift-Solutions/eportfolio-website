@@ -205,33 +205,38 @@ class ProjectSectionState extends State<ProjectSection> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(right: descriptionPadding),
-                  child: Container(
-                    width: screenWidth * 0.4,
-                    margin: EdgeInsets.only(
-                        top: isMobileView ? generalPadding : 0.0),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black, width: 1.0),
-                      borderRadius: BorderRadius.circular(5.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(generalPadding),
-                      child: Text(
-                        sectionDescription,
-                        textAlign: TextAlign.left,
-                        softWrap: true,
-                        style: PublicViewTextStyles.generalBodyText.copyWith(
-                          fontWeight: FontWeight.bold,
-                          fontSize: descriptionFontSize * 1.0,
+                SizedBox(
+                  width: descriptionPadding * 2,
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(right: descriptionPadding),
+                    child: Container(
+                      width: screenWidth * 0.4,
+                      margin: EdgeInsets.only(
+                          top: isMobileView ? generalPadding : 0.0),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black, width: 1.0),
+                        borderRadius: BorderRadius.circular(5.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(generalPadding),
+                        child: Text(
+                          sectionDescription,
+                          textAlign: TextAlign.left,
+                          softWrap: true,
+                          style: PublicViewTextStyles.generalBodyText.copyWith(
+                            fontWeight: FontWeight.bold,
+                            fontSize: descriptionFontSize * 1.0,
+                          ),
                         ),
                       ),
                     ),
@@ -258,7 +263,8 @@ class ProjectSectionState extends State<ProjectSection> {
                         height: cardSize,
                         child: Card(
                           elevation: 3,
-                          color: getNextColor(),
+                          color: alternatingColors[
+                              index % alternatingColors.length],
                           shape: RoundedRectangleBorder(
                             side:
                                 const BorderSide(color: Colors.black, width: 1),
@@ -446,7 +452,8 @@ class ProjectSectionState extends State<ProjectSection> {
                         height: cardSize,
                         child: Card(
                           elevation: 3,
-                          color: getNextColor(),
+                          color: alternatingColors[
+                              index % alternatingColors.length],
                           shape: RoundedRectangleBorder(
                             side:
                                 const BorderSide(color: Colors.black, width: 1),

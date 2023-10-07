@@ -1,9 +1,9 @@
-import 'package:avantswift_portfolio/constants.dart';
 import 'package:avantswift_portfolio/controllers/view_controllers/project_section_controller.dart';
 import 'package:avantswift_portfolio/models/Project.dart';
 import 'package:avantswift_portfolio/view_pages/project_section.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -61,13 +61,18 @@ void main() {
       mockController = MockProjectSectionController();
     });
 
-    testWidgets('Project Section shows expected data',
+    testWidgets('Project Section shows expected data for Desktop',
         (WidgetTester tester) async {
       // Set the screen size to be Vertical (i.e. have a 1080x1920 aspect ratio)
-      tester.view.physicalSize = const Size(1080, 1920);
+      tester.view.physicalSize = const Size(1920, 1920);
       tester.view.devicePixelRatio = 1.0;
       // FlutterError.onError = ignoreOverflowErrors;
-      final mockProjectSectionData = [mockProject1, mockProject2, mockProject3];
+      final mockProjectSectionData = [
+        mockProject1,
+        mockProject2,
+        mockProject3,
+        mockProject4
+      ];
 
       when(mockController.getProjectList())
           .thenAnswer((_) => Future.value(mockProjectSectionData));
@@ -91,12 +96,107 @@ void main() {
         // Verify that the title text is displayed
         expect(find.text('Personal Projects'), findsOneWidget);
 
-        // expect(find.textContaining(mockSectionDescription), findsOneWidget);
+        expect(find.textContaining(mockSectionDescription), findsOneWidget);
 
-        // await tester.pumpAndSettle();
+        await tester.pumpAndSettle();
 
-        // expect(find.byType(Card), findsAtLeastNWidgets(1));
-        // expect(find.text(mockProject1.name!), findsOneWidget);
+        expect(find.byType(Card), findsNWidgets(3));
+        expect(find.text(mockProject1.name!), findsOneWidget);
+        expect(find.text(mockProject2.name!), findsOneWidget);
+        expect(find.text(mockProject3.name!), findsOneWidget);
+
+        expect(find.text(mockProject1.description!), findsOneWidget);
+        expect(find.text(mockProject2.description!), findsOneWidget);
+        expect(find.text(mockProject3.description!), findsOneWidget);
+
+        expect(find.text(mockProject4.name!), findsNothing);
+        expect(find.text(mockProject4.description!), findsNothing);
+
+        expect(find.byType(SvgPicture), findsNWidgets(4));
+
+        // Test Load More and Load Less function
+        await tester.tap(find.text("Load More"));
+
+        await tester.pump();
+        expect(find.byType(Card), findsNWidgets(4));
+        expect(find.text(mockProject4.name!), findsOneWidget);
+        expect(find.text(mockProject4.description!), findsOneWidget);
+
+        await tester.tap(find.text("Load Less"));
+
+        await tester.pump();
+        expect(find.byType(Card), findsNWidgets(3));
+        expect(find.text(mockProject4.name!), findsNothing);
+        expect(find.text(mockProject4.description!), findsNothing);
+      });
+    });
+    testWidgets('Project Section shows expected data for Mobile',
+        (WidgetTester tester) async {
+      // Set the screen size to be Vertical (i.e. have a 1080x1920 aspect ratio)
+      tester.view.physicalSize = const Size(599, 3000);
+      tester.view.devicePixelRatio = 1.0;
+      // FlutterError.onError = ignoreOverflowErrors;
+      final mockProjectSectionData = [
+        mockProject1,
+        mockProject2,
+        mockProject3,
+        mockProject4
+      ];
+
+      when(mockController.getProjectList())
+          .thenAnswer((_) => Future.value(mockProjectSectionData));
+
+      when(mockController.getSectionDescription())
+          .thenAnswer((_) => Future.value(mockSectionDescription));
+
+      // Build the widget
+      await runWithNetworkImages(() async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: ProjectSection(
+              controller: mockController,
+            ),
+          ),
+        );
+
+        // Wait for the widget to load data
+        await tester.pump();
+
+        // Verify that the title text is displayed
+        expect(find.text('Personal Projects'), findsOneWidget);
+
+        expect(find.textContaining(mockSectionDescription), findsOneWidget);
+
+        await tester.pumpAndSettle();
+
+        expect(find.byType(Card), findsNWidgets(3));
+        expect(find.text(mockProject1.name!), findsOneWidget);
+        expect(find.text(mockProject2.name!), findsOneWidget);
+        expect(find.text(mockProject3.name!), findsOneWidget);
+
+        expect(find.text(mockProject1.description!), findsOneWidget);
+        expect(find.text(mockProject2.description!), findsOneWidget);
+        expect(find.text(mockProject3.description!), findsOneWidget);
+
+        expect(find.text(mockProject4.name!), findsNothing);
+        expect(find.text(mockProject4.description!), findsNothing);
+
+        expect(find.byType(SvgPicture), findsNWidgets(4));
+
+        // Test Load More and Load Less function
+        await tester.tap(find.text("Load More"));
+
+        await tester.pump();
+        expect(find.byType(Card), findsNWidgets(4));
+        expect(find.text(mockProject4.name!), findsOneWidget);
+        expect(find.text(mockProject4.description!), findsOneWidget);
+
+        await tester.tap(find.text("Load Less"));
+
+        await tester.pump();
+        expect(find.byType(Card), findsNWidgets(3));
+        expect(find.text(mockProject4.name!), findsNothing);
+        expect(find.text(mockProject4.description!), findsNothing);
       });
     });
   });
