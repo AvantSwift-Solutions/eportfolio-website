@@ -74,7 +74,7 @@ class ProjectSectionState extends State<ProjectSection> {
 
   void openSvgLink() {
     const svgUrl =
-        'assets/external_link.svg'; // Replace with your desired URL for the SVG
+        Constants.externalLinkSVGURL; // Replace with your desired URL for the SVG
     openLink(svgUrl);
   }
 
@@ -205,38 +205,41 @@ class ProjectSectionState extends State<ProjectSection> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(right: descriptionPadding),
-                  child: Container(
-                    width: screenWidth * 0.4,
-                    margin: EdgeInsets.only(
-                        top: isMobileView ? generalPadding : 0.0),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black, width: 1.0),
-                      borderRadius: BorderRadius.circular(5.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(generalPadding),
-                      child: Text(
-                        sectionDescription,
-                        textAlign: TextAlign.left,
-                        softWrap: true,
-                        style: PublicViewTextStyles.generalBodyText.copyWith(
-                          fontWeight: FontWeight.bold,
-                          fontSize: descriptionFontSize * 1.0,
+                SizedBox(width: descriptionPadding * 2),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(right: descriptionPadding),
+                    child: Container(
+                      width: screenWidth * 0.4,
+                      margin: EdgeInsets.only(
+                          top: isMobileView ? generalPadding : 0.0),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black, width: 1.0),
+                        borderRadius: BorderRadius.circular(5.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(generalPadding),
+                        child: Text(
+                          sectionDescription,
+                          textAlign: TextAlign.left,
+                          softWrap: true,
+                          style: PublicViewTextStyles.generalBodyText.copyWith(
+                            fontWeight: FontWeight.bold,
+                            fontSize: descriptionFontSize * 1.0,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                )
+                ),
               ],
             ),
           const SizedBox(height: 25),
@@ -305,8 +308,8 @@ class ProjectSectionState extends State<ProjectSection> {
                                             log('Link is null.');
                                           }
                                         },
-                                        child: SvgPicture.asset(
-                                          'external_link.svg',
+                                        child: SvgPicture.network(
+                                          Constants.externalLinkSVGURL,
                                           width: externalLinkSvgSize,
                                           height: externalLinkSvgSize,
                                         ),
@@ -415,7 +418,7 @@ class ProjectSectionState extends State<ProjectSection> {
                             Text(
                               'Load Less',
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: projectTitleFontSize,
                                 color: Colors.black,
                                 decoration: isHovered
                                     ? TextDecoration.underline
@@ -493,8 +496,8 @@ class ProjectSectionState extends State<ProjectSection> {
                                             log('Link is null.');
                                           }
                                         },
-                                        child: SvgPicture.asset(
-                                          'external_link.svg',
+                                        child: SvgPicture.network(
+                                          Constants.externalLinkSVGURL,
                                           width: externalLinkSvgSize,
                                           height: externalLinkSvgSize,
                                         ),
@@ -555,8 +558,8 @@ class ProjectSectionState extends State<ProjectSection> {
                 onTap: openCustomLink,
                 child: Padding(
                   padding: EdgeInsets.only(bottom: generalPadding),
-                  child: SvgPicture.asset(
-                    'github.svg',
+                  child: SvgPicture.network(
+                    Constants.githubSVGURL,
                     width: githubSvgSize,
                     height: githubSvgSize,
                   ),
@@ -570,8 +573,8 @@ class ProjectSectionState extends State<ProjectSection> {
                 onTap: openCustomLink,
                 child: Padding(
                   padding: EdgeInsets.only(left: gap, bottom: generalPadding),
-                  child: SvgPicture.asset(
-                    'github.svg',
+                  child: SvgPicture.network(
+                    Constants.githubSVGURL,
                     width: githubSvgSize,
                     height: githubSvgSize,
                   ),
