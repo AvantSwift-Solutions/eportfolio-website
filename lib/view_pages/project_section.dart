@@ -73,8 +73,8 @@ class ProjectSectionState extends State<ProjectSection> {
   }
 
   void openSvgLink() {
-    const svgUrl = Constants
-        .externalLinkSVGURL; // Replace with your desired URL for the SVG
+    const svgUrl =
+        Constants.externalLinkSVGURL; // Replace with your desired URL for the SVG
     openLink(svgUrl);
   }
 
@@ -205,9 +205,7 @@ class ProjectSectionState extends State<ProjectSection> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  width: descriptionPadding * 2,
-                ),
+                SizedBox(width: descriptionPadding * 2),
                 Expanded(
                   child: Padding(
                     padding: EdgeInsets.only(right: descriptionPadding),
@@ -241,7 +239,7 @@ class ProjectSectionState extends State<ProjectSection> {
                       ),
                     ),
                   ),
-                )
+                ),
               ],
             ),
           const SizedBox(height: 25),
@@ -421,7 +419,7 @@ class ProjectSectionState extends State<ProjectSection> {
                             Text(
                               'Load Less',
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: projectTitleFontSize,
                                 color: Colors.black,
                                 decoration: isHovered
                                     ? TextDecoration.underline
