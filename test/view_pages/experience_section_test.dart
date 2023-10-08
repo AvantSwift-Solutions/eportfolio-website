@@ -102,10 +102,10 @@ void main() {
       mockController = MockExperienceSectionController();
     });
 
-    testWidgets('Experience Section shows expected data',
+    testWidgets('Experience Section shows expected data for Desktop',
         (WidgetTester tester) async {
       // Set the screen size to be Vertical (i.e. have a 1080x1920 aspect ratio)
-      tester.view.physicalSize = ViewPagesTestConstants.experienceDesktopSize1;
+      tester.view.physicalSize = ViewPagesTestConstants.experienceDesktopSize;
       tester.view.devicePixelRatio = 1.0;
       // FlutterError.onError = ignoreOverflowErrors;
       final mockExperienceSectionData = [
@@ -201,12 +201,14 @@ void main() {
       });
     });
 
-    group("Experience Widget Tests", () {
-      testWidgets('Experience Widget shows expected data',
-          (WidgetTester tester) async {
-        tester.view.physicalSize =
-            ViewPagesTestConstants.experienceDesktopSize2;
-        final mockExperienceWidgetData = ExperienceDTO(
+    testWidgets('Experience Section shows expected data for Mobile',
+        (WidgetTester tester) async {
+      // Set the screen size to be Vertical (i.e. have a 1080x1920 aspect ratio)
+      tester.view.physicalSize = ViewPagesTestConstants.experienceMobileSize;
+      tester.view.devicePixelRatio = 1.0;
+      // FlutterError.onError = ignoreOverflowErrors;
+      final mockExperienceSectionData = [
+        ExperienceDTO(
           jobTitle: mockExperience1.jobTitle,
           companyName: mockExperience1.companyName,
           location: mockExperience1.location,
@@ -216,60 +218,90 @@ void main() {
           logoURL: mockExperience1.logoURL,
           index: mockExperience1.index,
           employmentType: mockExperience1.employmentType,
+        ),
+        ExperienceDTO(
+          jobTitle: mockExperience2.jobTitle,
+          companyName: mockExperience2.companyName,
+          location: mockExperience2.location,
+          startDate: formatTimestamp(mockExperience2.startDate),
+          endDate: formatEndDateTimestamp(mockExperience2.endDate),
+          description: mockExperience2.description,
+          logoURL: mockExperience2.logoURL,
+          index: mockExperience2.index,
+          employmentType: mockExperience2.employmentType,
+        ),
+        ExperienceDTO(
+          jobTitle: mockExperience3.jobTitle,
+          companyName: mockExperience3.companyName,
+          location: mockExperience3.location,
+          startDate: formatTimestamp(mockExperience3.startDate),
+          endDate: formatEndDateTimestamp(mockExperience3.endDate),
+          description: mockExperience3.description,
+          logoURL: mockExperience3.logoURL,
+          index: mockExperience3.index,
+          employmentType: mockExperience3.employmentType,
+        ),
+        ExperienceDTO(
+          jobTitle: mockExperience4.jobTitle,
+          companyName: mockExperience4.companyName,
+          location: mockExperience4.location,
+          startDate: formatTimestamp(mockExperience4.startDate),
+          endDate: formatEndDateTimestamp(mockExperience4.endDate),
+          description: mockExperience4.description,
+          logoURL: mockExperience4.logoURL,
+          index: mockExperience4.index,
+          employmentType: mockExperience4.employmentType,
+        )
+      ];
+
+      when(mockController.getExperienceSectionData())
+          .thenAnswer((_) => Future.value(mockExperienceSectionData));
+
+      // Build the widget
+      await runWithNetworkImages(() async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: ExperienceSection(
+              controller: mockController,
+            ),
+          ),
         );
 
-        // Build the ExperienceWidget with the mock data
-        await runWithNetworkImages(() async {
-          await tester.pumpWidget(
-            MaterialApp(
-              home: ExperienceWidget(experienceDTO: mockExperienceWidgetData),
-            ),
-          );
+        // Verify that the CircularProgressIndicator is displayed while loading
+        expect(find.byType(CircularProgressIndicator), findsOneWidget);
 
-          // Use the `expect` function to make assertions
-          // Example: Check if the job title is displayed correctly
-          expect(find.text(mockExperience1.jobTitle as String), findsOneWidget);
-          expect(
-              find.text(
-                  '${mockExperience1.companyName as String}, ${mockExperience1.location as String}'),
-              findsOneWidget);
+        // Wait for the widget to load data
+        await tester.pump();
 
-          expect(
-              find.text(
-                  '${formatTimestamp(mockExperience1.startDate)} - ${formatEndDateTimestamp(mockExperience1.endDate)}'),
-              findsOneWidget);
+        // Verify that the CircularProgressIndicator is no longer displayed
+        expect(find.byType(CircularProgressIndicator), findsNothing);
 
-          expect(find.text(mockExperience1.jobTitle as String), findsOneWidget);
-          expect(find.text(mockExperience1.employmentType as String),
-              findsOneWidget);
-          expect(
-              find.text(mockExperience1.description as String), findsOneWidget);
+        // Verify that the title text is displayed
+        expect(find.text('Professional\nExperience', findRichText: true),
+            findsOneWidget);
 
-          // Find the Image.network widget using a Key or another appropriate method
-          final imageWidget = find.byType(Image);
+        // Verify that ExperienceWidget widgets are displayed (check a few)
+        expect(
+            find.byType(ExperienceWidget),
+            findsNWidgets(
+                3)); // Assuming you want to display 3 experiences initially
 
-          // Verify that the widget is present in the widget tree
-          expect(imageWidget, findsOneWidget);
+        final Finder buttonToTap = find.byType(CustomViewMoreButton);
+        await tester.ensureVisible(buttonToTap);
+        await tester.pumpAndSettle();
 
-          // You can also check other properties of the Image widget if needed
-          final image = tester.widget<Image>(imageWidget);
-          expect(image.fit, BoxFit.cover);
+        // Tap the "View More" button to show all experiences
+        await tester.tap(buttonToTap);
+        await tester.pump();
 
-          // Trigger a frame rebuild to ensure that the image loads
-          await tester.pump();
-
-          // You can also check if the image URL is correct (assuming _imageURL is available)
-          // Replace 'your_image_url_here' with the expected image URL
-          final expectedImageUrl = mockExperienceWidgetData.logoURL;
-          expect(image.image, isA<NetworkImage>());
-          expect((image.image as NetworkImage).url, expectedImageUrl);
-        });
+        // Verify that all ExperienceWidget widgets are displayed
+        expect(find.byType(ExperienceWidget),
+            findsNWidgets(mockExperienceSectionData.length));
       });
     });
-
     testWidgets('Experience Widget End Date is Present when Null',
         (WidgetTester tester) async {
-      tester.view.physicalSize = ViewPagesTestConstants.experienceDesktopSize2;
+      tester.view.physicalSize = ViewPagesTestConstants.experienceWidgetSize;
       final mockExperienceWidgetData = ExperienceDTO(
         jobTitle: mockExperience1.jobTitle,
         companyName: mockExperience1.companyName,

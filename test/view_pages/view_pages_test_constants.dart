@@ -13,8 +13,9 @@ class ViewPagesTestConstants {
 
   static const educationDesktopSize = generalHorizontalDesktopSize;
 
-  static const experienceDesktopSize1 = generalVerticalDesktopSize;
-  static const experienceDesktopSize2 = Size(1080, 1080);
+  static const experienceDesktopSize = generalVerticalDesktopSize;
+  static const experienceWidgetSize = Size(1080, 1080);
+  static const experienceMobileSize = Size(579, 1500);
 
   static const iSkillDesktopSize = generalVerticalDesktopSize;
 
