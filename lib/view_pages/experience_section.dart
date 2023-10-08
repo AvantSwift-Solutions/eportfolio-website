@@ -161,150 +161,165 @@ class ExperienceWidget extends StatelessWidget {
     double descriptionFontSize = screenWidth * 0.01;
 
     return IntrinsicHeight(
-      child: Row(
+      child: Stack(
         children: [
-          SizedBox(
-            width: screenWidth * 0.05,
-          ),
-          Column(
+          Row(
             children: [
-              Row(
-                children: [
-                  SizedBox(
-                    width: screenWidth * 0.048,
-                    height: screenWidth * 0.048,
-                    child: Image.network(
-                      experienceDTO.logoURL as String,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(25),
-                    width: screenWidth * 0.3,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              SizedBox(
+                width: screenWidth * 0.05,
+              ),
+              Expanded(
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          (experienceDTO.companyName as String) +
-                              ((experienceDTO.location ?? 'Default Location')
-                                      .isNotEmpty
-                                  ? ', ${experienceDTO.location as String}'
-                                  : ''),
-                          style: PublicViewTextStyles
-                              .professionalExperienceHeading
-                              .copyWith(
-                            color: selectedColor,
-                            fontSize: titleFontSize,
+                        SizedBox(
+                          width: screenWidth * 0.048,
+                          height: screenWidth * 0.048,
+                          child: Image.network(
+                            experienceDTO.logoURL as String,
+                            fit: BoxFit.cover,
                           ),
                         ),
-                        Text(
-                          '${experienceDTO.startDate as String} - ${experienceDTO.endDate as String}',
+                        Container(
+                          padding: const EdgeInsets.all(25),
+                          width: screenWidth * 0.3,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                (experienceDTO.companyName as String) +
+                                    ((experienceDTO.location ??
+                                                'Default Location')
+                                            .isNotEmpty
+                                        ? ', ${experienceDTO.location as String}'
+                                        : ''),
+                                style: PublicViewTextStyles
+                                    .professionalExperienceHeading
+                                    .copyWith(
+                                  color: selectedColor,
+                                  fontSize: titleFontSize,
+                                ),
+                              ),
+                              Text(
+                                '${experienceDTO.startDate as String} - ${experienceDTO.endDate as String}',
+                                style: PublicViewTextStyles
+                                    .professionalExperienceSubHeading
+                                    .copyWith(
+                                        color: selectedColor,
+                                        fontSize: subHeadingFontSize),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                width: screenWidth * 0.1,
+              ),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  width: screenWidth * 0.3,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        experienceDTO.jobTitle as String,
+                        style: PublicViewTextStyles
+                            .professionalExperienceHeading
+                            .copyWith(
+                                color: selectedColor, fontSize: titleFontSize),
+                      ),
+                      Expanded(
+                        child: Text(
+                          experienceDTO.employmentType as String,
                           style: PublicViewTextStyles
                               .professionalExperienceSubHeading
                               .copyWith(
                                   color: selectedColor,
                                   fontSize: subHeadingFontSize),
                         ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          SizedBox(
-            width: screenWidth * 0.14,
-            child: Stack(
-              children: [
-                Center(
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: SizedBox(
-                          width: 1,
-                          child: CustomPaint(
-                            painter: DashedLineVerticalPainter(
-                              selectedColor:
-                                  isFirst ? Colors.transparent : Colors.black,
-                            ),
-                            size: const Size(1, double.infinity),
-                          ),
-                        ),
                       ),
-                      Expanded(
-                        child: CustomPaint(
-                          painter: DashedLineVerticalPainter(
-                              selectedColor: Colors.black),
-                          size: const Size(1, double.infinity),
-                        ),
+                      SizedBox(
+                        height: screenHeight * 0.003,
                       ),
+                      Text(experienceDTO.description as String,
+                          style: PublicViewTextStyles.generalBodyText
+                              .copyWith(fontSize: descriptionFontSize)),
+                      // Text(experienceDTO.index.toString(),
+                      //     style: PublicViewTextStyles.generalBodyText),
+                      Container(
+                        height: screenHeight * 0.05,
+                      )
                     ],
                   ),
                 ),
-                Center(
-                  child: DottedBorder(
-                    borderType: BorderType.Circle,
-                    dashPattern: const [5, 10],
-                    child: Container(
-                      height: screenWidth * 0.04,
-                      width: screenWidth * 0.04,
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.white),
-                    ),
-                  ),
-                ),
-                Center(
-                  child: SizedBox(
-                    width: screenWidth * 0.035,
-                    child: ColoredCircle(
-                      selectedColor: selectedColor,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+              SizedBox(
+                width: screenWidth * 0.05,
+              ),
+            ],
           ),
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              width: screenWidth * 0.3,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          Center(
+            child: SizedBox(
+              width: screenWidth * 0.14,
+              child: Stack(
                 children: [
-                  Text(
-                    experienceDTO.jobTitle as String,
-                    style: PublicViewTextStyles.professionalExperienceHeading
-                        .copyWith(
-                            color: selectedColor, fontSize: titleFontSize),
-                  ),
-                  Expanded(
-                    child: Text(
-                      experienceDTO.employmentType as String,
-                      style: PublicViewTextStyles
-                          .professionalExperienceSubHeading
-                          .copyWith(
-                              color: selectedColor,
-                              fontSize: subHeadingFontSize),
+                  Center(
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: SizedBox(
+                            width: 1,
+                            child: CustomPaint(
+                              painter: DashedLineVerticalPainter(
+                                selectedColor:
+                                    isFirst ? Colors.transparent : Colors.black,
+                              ),
+                              size: const Size(1, double.infinity),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: CustomPaint(
+                            painter: DashedLineVerticalPainter(
+                                selectedColor: Colors.black),
+                            size: const Size(1, double.infinity),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(
-                    height: screenHeight * 0.003,
+                  Center(
+                    child: DottedBorder(
+                      borderType: BorderType.Circle,
+                      dashPattern: const [5, 10],
+                      child: Container(
+                        height: screenWidth * 0.04,
+                        width: screenWidth * 0.04,
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle, color: Colors.white),
+                      ),
+                    ),
                   ),
-                  Text(experienceDTO.description as String,
-                      style: PublicViewTextStyles.generalBodyText
-                          .copyWith(fontSize: descriptionFontSize)),
-                  // Text(experienceDTO.index.toString(),
-                  //     style: PublicViewTextStyles.generalBodyText),
-                  Container(
-                    height: screenHeight * 0.05,
-                  )
+                  Center(
+                    child: SizedBox(
+                      width: screenWidth * 0.035,
+                      child: ColoredCircle(
+                        selectedColor: selectedColor,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
-          ),
-          Container(
-            width: screenWidth * 0.1,
-          ),
+          )
         ],
       ),
     );
