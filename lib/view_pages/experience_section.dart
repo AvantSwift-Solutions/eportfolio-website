@@ -156,13 +156,14 @@ class ExperienceWidget extends StatelessWidget {
     double imageHeight = screenWidth * ((!isMobileView) ? 0.048 : 0.08);
     double titleFontSize = screenWidth * 0.03 * ((!isMobileView) ? 0.97 : 1.3);
     double subHeadingFontSize =
-        (!isMobileView) ? screenWidth * 0.03 * 0.7 : titleFontSize * 0.6;
+        (!isMobileView) ? screenWidth * 0.03 * 0.5 : titleFontSize * 0.6;
     double descriptionFontSize =
         screenWidth * 0.01 * ((!isMobileView) ? 1 : 2.5);
     double textPadding = screenWidth * ((!isMobileView) ? 0.03 : 0.04);
     double sideMargins = (!isMobileView) ? screenWidth * 0.05 : 0;
     double dottedCircleSize = screenWidth * ((!isMobileView) ? 0.04 : 0.1);
     double colouredCircleSize = screenWidth * ((!isMobileView) ? 0.035 : 0.08);
+    double centerSpace = screenWidth * 0.1;
 
     return IntrinsicHeight(
       child: Stack(
@@ -224,7 +225,7 @@ class ExperienceWidget extends StatelessWidget {
                 ),
               ),
               Container(
-                width: screenWidth * 0.1,
+                width: centerSpace,
               ),
               Expanded(
                 child: Container(
