@@ -6,6 +6,8 @@ import 'package:avantswift_portfolio/models/User.dart' as model;
 import 'package:avantswift_portfolio/services/auth_state.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../ui/custom_texts/public_view_text_styles.dart';
+import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
+import 'package:avantswift_portfolio/admin_pages/reset_password.dart';
 
 class LoginPage extends StatefulWidget {
   static const double loginGraphicWidth = 450.0;
@@ -31,6 +33,7 @@ class LoginPage extends StatefulWidget {
   static const double headingResponsiveSizingFactor = 0.08;
   static const double subHeadingResponsiveSizingFactor = 0.05;
   static const double logoResponsiveSizingFactor = 0.2;
+  static const double largeSizedBoxHeight = 16;
 
   final Function(model.User) onLoginSuccess;
   final AuthState authState;
@@ -316,7 +319,12 @@ class LoginPageState extends State<LoginPage> {
                                         Alignment.centerLeft,
                                     child: GestureDetector(
                                       onTap: () {
-                                        Navigator.pushNamed(context, '/forgot-password');
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return ResetPasswordScreen(); // Use the reset password dialog widget
+                                          },
+                                        );
                                       },// Add padding around the text
                                       child: Text(
                                         'Forgot my password',
@@ -540,7 +548,12 @@ class LoginPageState extends State<LoginPage> {
                 alignment: Alignment.centerLeft,
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, '/forgot-password');
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return ResetPasswordScreen(); // Use the reset password dialog widget
+                      },
+                    );
                   },
                   child: Text(
                     'Forgot my password',
@@ -605,19 +618,55 @@ class LoginPageState extends State<LoginPage> {
         // ignore: use_build_context_synchronously
         showDialog(
           context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Login Error'),
-            content: const Text('Failed to log in. Please try again.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('OK'),
+          builder: (BuildContext dialogContext) {
+            return Theme(
+              data: AdminViewDialogStyles.dialogThemeData,
+              child: AlertDialog(
+                titlePadding: AdminViewDialogStyles.titleDialogPadding,
+                contentPadding: AdminViewDialogStyles.contentDialogPadding,
+                actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
+                title: Container(
+                  padding: AdminViewDialogStyles.titleContPadding,
+                  color: AdminViewDialogStyles.bgColor,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Incorrect Email or Password.'),
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: IconButton(
+                              icon: const Icon(Icons.close),
+                              iconSize: AdminViewDialogStyles.closeIconSize,
+                              hoverColor: Colors.transparent,
+                              onPressed: () {
+                                Navigator.of(dialogContext).pop();
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: LoginPage.largeSizedBoxHeight), // Add some spacing
+                      const Divider(),
+                      const SizedBox(height: LoginPage.largeSizedBoxHeight), // Add more spacing
+                      SizedBox(
+                        height: AdminViewDialogStyles.incorrectLoginDialogHeight,
+                        width: AdminViewDialogStyles.incorrectLoginDialogWidth, // Adjust the width as needed
+                        child: Text(
+                          "Please re-enter login credentials or click 'Forgot my password'.",
+                          style: AdminViewDialogStyles.buttonTextStyle,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                content: const SizedBox(),
               ),
-            ],
-          ),
+            );
+          },
         );
+
       }
     } catch (e) {
       showDialog(
@@ -635,6 +684,7 @@ class LoginPageState extends State<LoginPage> {
           ],
         ),
       );
+
     }
   }
 
