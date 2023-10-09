@@ -118,6 +118,10 @@ dart_style
 2.19
 file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/dart_style-2.3.2/
 file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/dart_style-2.3.2/lib/
+dio
+2.15
+file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/dio-5.3.3/
+file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/dio-5.3.3/lib/
 dotted_border
 2.12
 file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/dotted_border-2.0.0+3/
@@ -126,6 +130,10 @@ email_validator
 2.12
 file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/email_validator-2.1.17/
 file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/email_validator-2.1.17/lib/
+english_words
+2.12
+file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/english_words-4.0.0/
+file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/english_words-4.0.0/lib/
 equatable
 2.12
 file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/equatable-2.0.5/
@@ -250,6 +258,10 @@ http
 3.0
 file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/http-1.1.0/
 file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/http-1.1.0/lib/
+http_mock_adapter
+3.0
+file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/http_mock_adapter-0.6.0/
+file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/http_mock_adapter-0.6.0/lib/
 http_multi_server
 2.12
 file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/http_multi_server-3.2.1/
@@ -422,6 +434,10 @@ quiver
 2.17
 file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/quiver-3.2.1/
 file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/quiver-3.2.1/lib/
+run_with_network_images
+2.19
+file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/run_with_network_images-0.0.1/
+file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/run_with_network_images-0.0.1/lib/
 rx
 2.14
 file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/rx-0.1.3/

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:avantswift_portfolio/controllers/view_controllers/award_cert_section_controller.dart';
 import 'package:avantswift_portfolio/models/AwardCert.dart';
 import 'package:avantswift_portfolio/reposervice/award_cert_repo_services.dart';
 import 'package:avantswift_portfolio/view_pages/recommendation_section.dart';
@@ -8,14 +9,15 @@ import 'package:url_launcher/url_launcher_string.dart';
 import 'package:avantswift_portfolio/ui/custom_texts/public_view_text_styles.dart';
 
 class AwardCertSection extends StatefulWidget {
-  const AwardCertSection({Key? key}) : super(key: key);
+  final AwardCertSectionController? controller;
+  const AwardCertSection({Key? key, this.controller}) : super(key: key);
 
   @override
   AwardCertSectionState createState() => AwardCertSectionState();
 }
 
 class AwardCertSectionState extends State<AwardCertSection> {
-  final AwardCertRepoService _awardCertRepoService = AwardCertRepoService();
+  late AwardCertSectionController _awardCertSectionController;
   List<AwardCert>? awardCerts;
   final PageController _pageController =
       PageController(viewportFraction: 1.0, initialPage: 0);
@@ -25,6 +27,8 @@ class AwardCertSectionState extends State<AwardCertSection> {
   @override
   void initState() {
     super.initState();
+    _awardCertSectionController =
+        widget.controller ?? AwardCertSectionController(AwardCertRepoService());
     _pageController.addListener(() {
       setState(() {
         _currentPage = _pageController.page?.toInt() ?? 0;
@@ -37,7 +41,7 @@ class AwardCertSectionState extends State<AwardCertSection> {
   Future<void> fetchData() async {
     try {
       final List<AwardCert>? fetchedAwardCerts =
-          await _awardCertRepoService.getAllAwardCert();
+          await _awardCertSectionController.getAwardCertList();
       setState(() {
         awardCerts = fetchedAwardCerts;
       });

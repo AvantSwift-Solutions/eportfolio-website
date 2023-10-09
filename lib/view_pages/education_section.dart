@@ -8,18 +8,17 @@ import '../ui/dashed_vertical_line_painter.dart';
 import '../constants.dart';
 
 class EducationSection extends StatefulWidget {
-  const EducationSection({Key? key}) : super(key: key);
+  final EducationSectionController? controller;
+  const EducationSection({Key? key, this.controller}) : super(key: key);
 
   @override
   EducationSectionState createState() => EducationSectionState();
 }
 
 class EducationSectionState extends State<EducationSection> {
-  final EducationSectionController _educationSectionController =
-      EducationSectionController(EducationRepoService());
+  late EducationSectionController _educationSectionController;
 
   List<EducationDTO> educationSectionData = [];
-  bool showAllEducation = false;
   int currentPage = 0;
   static const itemsPerPage = 2;
   late PageController _pageController;
@@ -27,6 +26,8 @@ class EducationSectionState extends State<EducationSection> {
   @override
   void initState() {
     super.initState();
+    _educationSectionController =
+        widget.controller ?? EducationSectionController(EducationRepoService());
     _pageController = PageController();
     _loadEducationData();
   }
@@ -48,7 +49,7 @@ class EducationSectionState extends State<EducationSection> {
   Widget build(BuildContext context) {
     final totalPages = (educationSectionData.length / itemsPerPage).ceil();
 
-    final int screenWidth = MediaQuery.of(context).size.width as int;
+    final int screenWidth = MediaQuery.of(context).size.width.toInt();
 
     return SizedBox(
       height: Constants
@@ -285,7 +286,7 @@ class EducationWidget extends StatelessWidget {
                           if (!educationDTO.grade!.isNegative)
                             Text(
                               (!educationDTO.grade!.isNegative
-                                      ? 'Grade: ${educationDTO.grade as int}'
+                                      ? 'Grade: ${educationDTO.grade as double}'
                                       : "") +
                                   (educationDTO.gradeDescription!.isNotEmpty
                                       ? ' - ${educationDTO.gradeDescription as String}'

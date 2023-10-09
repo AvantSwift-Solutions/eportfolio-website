@@ -1,4 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
+import 'package:avantswift_portfolio/controllers/analytic_controller.dart';
+import 'package:avantswift_portfolio/reposervice/analytic_repo_services.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +21,7 @@ class ProjectSectionAdmin extends StatefulWidget {
 class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
   late ProjectSectionAdminController _adminController;
   late List<Project> projects;
-  late final BuildContext parentContext;
+  late BuildContext parentContext;
   late String sectionDesc;
 
   @override
@@ -64,26 +68,13 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
                   title: Container(
                       padding: AdminViewDialogStyles.titleContPadding,
                       color: AdminViewDialogStyles.bgColor,
-                      child: Column(
+                      child: const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text('Edit Section Description'),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: IconButton(
-                                  icon: const Icon(Icons.close),
-                                  iconSize: AdminViewDialogStyles.closeIconSize,
-                                  hoverColor: Colors.transparent,
-                                  onPressed: () {
-                                    Navigator.of(dialogContext).pop();
-                                  },
-                                ),
-                              ),
-                            ],
+                          FittedBox(
+                            child: Text('Edit Section Description'),
                           ),
-                          const Divider(),
+                          Divider()
                         ],
                       )),
                   content: SizedBox(
@@ -153,12 +144,15 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
                                     AdminViewDialogStyles.elevatedButtonStyle,
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
+                                    await AnalyticController.wasEdited(
+                                        AnalyticRepoService());
                                     formKey.currentState!.save();
+                                    if (!mounted) return;
                                     ScaffoldMessenger.of(parentContext)
                                         .showSnackBar(
                                       const SnackBar(
                                           content: Text(
-                                              "Section Description updated")),
+                                              'Section Description updated')),
                                     );
                                     Navigator.of(dialogContext).pop();
                                     Navigator.of(parentContext).pop();
@@ -206,10 +200,14 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
                 color: AdminViewDialogStyles.bgColor,
                 child: Column(
                   children: [
-                    Row(
+                    FittedBox(
+                        child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Edit Personal Projects'),
+                        MediaQuery.of(context).size.width >
+                                AdminViewDialogStyles.showDialogWidth
+                            ? const Text('Edit Personal Projects          ')
+                            : const Text('Edit Personal Projects'),
                         Align(
                           alignment: Alignment.topRight,
                           child: IconButton(
@@ -222,8 +220,8 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
                           ),
                         ),
                       ],
-                    ),
-                    const Divider(),
+                    )),
+                    const Divider()
                   ],
                 )),
             content: SizedBox(
@@ -235,22 +233,26 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                            style: AdminViewDialogStyles.centerImageButtonStyle,
-                            onPressed: () {
-                              _editSectionDescription(context);
-                            },
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text('Edit Section Description ',
-                                    style:
-                                        AdminViewDialogStyles.buttonTextStyle),
-                                const Icon(Icons.edit),
-                              ],
-                            )),
-                      ),
+                          width: double.infinity,
+                          child: FittedBox(
+                            child: ElevatedButton(
+                                style: AdminViewDialogStyles
+                                    .centerImageButtonStyle,
+                                onPressed: () {
+                                  _editSectionDescription(context);
+                                },
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const SizedBox(width: 30),
+                                    Text('Edit Section Description ',
+                                        style: AdminViewDialogStyles
+                                            .buttonTextStyle),
+                                    const Icon(Icons.edit),
+                                    const SizedBox(width: 30),
+                                  ],
+                                )),
+                          )),
                       projects.isEmpty
                           ? const Padding(
                               padding: EdgeInsets.symmetric(
@@ -307,29 +309,62 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
                     children: [
                       const Divider(),
                       const SizedBox(height: AdminViewDialogStyles.listSpacing),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ReorderDialog(
-                            controller: _adminController,
-                            onReorder: () {
-                              Navigator.of(dialogContext).pop();
-                              Navigator.of(parentContext).pop();
-                              _showList(parentContext);
-                            },
-                          ),
-                          ElevatedButton(
-                            style: AdminViewDialogStyles.elevatedButtonStyle,
-                            onPressed: () {
-                              _showAddNewDialog(context);
-                            },
-                            child: Text(
-                              'Add New',
-                              style: AdminViewDialogStyles.buttonTextStyle,
+                      if (MediaQuery.of(context).size.width >
+                          AdminViewDialogStyles.fitOptionsThreshold)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ReorderDialog(
+                              controller: _adminController,
+                              onReorder: () async {
+                                await _loadItems();
+                                Navigator.of(dialogContext).pop();
+                                Navigator.of(parentContext).pop();
+                                _showList(parentContext);
+                              },
                             ),
+                            ElevatedButton(
+                              style: AdminViewDialogStyles.elevatedButtonStyle,
+                              onPressed: () {
+                                _showAddNewDialog(context);
+                              },
+                              child: Text(
+                                'Add New',
+                                style: AdminViewDialogStyles.buttonTextStyle,
+                              ),
+                            ),
+                          ],
+                        ),
+                      if (MediaQuery.of(context).size.width <=
+                          AdminViewDialogStyles.fitOptionsThreshold)
+                        FittedBox(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ReorderDialog(
+                                controller: _adminController,
+                                onReorder: () async {
+                                  await _loadItems();
+                                  Navigator.of(dialogContext).pop();
+                                  Navigator.of(parentContext).pop();
+                                  _showList(parentContext);
+                                },
+                              ),
+                              AdminViewDialogStyles.reorderOKSpacing,
+                              ElevatedButton(
+                                style:
+                                    AdminViewDialogStyles.elevatedButtonStyle,
+                                onPressed: () {
+                                  _showAddNewDialog(context);
+                                },
+                                child: Text(
+                                  'Add New',
+                                  style: AdminViewDialogStyles.buttonTextStyle,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        )
                     ],
                   ))
             ],
@@ -374,7 +409,7 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
       successMessage = 'Personal Project info added successfully';
       errorMessage = 'Error adding new Personal Project info';
     } else {
-      title = 'Edit info for \'${project.name}\'';
+      title = 'Edit ${project.name}';
       successMessage = 'Personal Project info updated successfully';
       errorMessage = 'Error updating Personal Project info';
     }
@@ -394,25 +429,10 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
                       padding: AdminViewDialogStyles.titleContPadding,
                       color: AdminViewDialogStyles.bgColor,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(title),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: IconButton(
-                                  icon: const Icon(Icons.close),
-                                  iconSize: AdminViewDialogStyles.closeIconSize,
-                                  hoverColor: Colors.transparent,
-                                  onPressed: () {
-                                    Navigator.of(dialogContext).pop();
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Divider(),
+                          FittedBox(child: Text(title)),
+                          const Divider()
                         ],
                       )),
                   content: SizedBox(
@@ -521,6 +541,8 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
                                     AdminViewDialogStyles.elevatedButtonStyle,
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
+                                    await AnalyticController.wasEdited(
+                                        AnalyticRepoService());
                                     formKey.currentState!.save();
                                     project.creationTimestamp = Timestamp.now();
                                     bool isSuccess =
@@ -581,21 +603,13 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
               child: Theme(
                 data: AdminViewDialogStyles.dialogThemeData,
                 child: AlertDialog(
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Delete \'$name\'?'),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                          icon: const Icon(Icons.close),
-                          iconSize: AdminViewDialogStyles.closeIconSize,
-                          hoverColor: Colors.transparent,
-                          onPressed: () {
-                            Navigator.of(dialogContext).pop();
-                          },
-                        ),
+                      FittedBox(
+                        child: Text('Delete $name?'),
                       ),
+                      const Divider()
                     ],
                   ),
                   content: Column(
@@ -617,6 +631,8 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
                               onPressed: () async {
                                 final deleted = await x.delete() ?? false;
                                 if (deleted) {
+                                  await AnalyticController.wasEdited(
+                                      AnalyticRepoService());
                                   projects.remove(x);
                                   setState(() {});
                                   if (!mounted) return;

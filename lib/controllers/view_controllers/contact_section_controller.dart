@@ -1,5 +1,10 @@
 import 'dart:developer';
 
+import 'package:avantswift_portfolio/controllers/analytic_controller.dart';
+import 'package:avantswift_portfolio/models/Secret.dart';
+import 'package:avantswift_portfolio/reposervice/analytic_repo_services.dart';
+import 'package:avantswift_portfolio/reposervice/secret_repo_services.dart';
+
 import '../../constants.dart';
 import '../../dto/contact_section_dto.dart';
 import '../../models/User.dart';
@@ -12,7 +17,7 @@ class ContactSectionController {
 
   ContactSectionController(this.userRepoService); // Constructor
 
-  Future<ContactSectionDTO>? getContactSectionData() async {
+  Future<ContactSectionDTO> getContactSectionData() async {
     try {
       User? user = await userRepoService.getFirstUser();
       if (user != null) {
@@ -35,13 +40,23 @@ class ContactSectionController {
 
   Future<bool> sendEmail(
       ContactSectionDTO? contactSectionData, Map<String, String> fields) async {
+    SecretRepoService repoService = SecretRepoService();
+
+    Secret s = await repoService.getSecret() ??
+        Secret(
+          secretId: 'a',
+          serviceId: 'a',
+          templateId: 'a',
+          userId: 'a',
+          accessToken: 'a',
+        );
     final toName = contactSectionData?.name;
     final toEmail = contactSectionData?.contactEmail;
 
-    const serviceId = 'service_wp59pl6';
-    const templateId = 'template_6atjqpb';
-    const userId = 'ydMCRddLc0NvkjQM5';
-    const accessToken = '1Uf6JLM9il0xwhzJZfTxj';
+    String serviceId = s.serviceId ?? '';
+    String templateId = s.templateId ?? '';
+    String userId = s.userId ?? '';
+    String accessToken = s.accessToken ?? '';
 
     final url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
 
@@ -69,7 +84,7 @@ class ContactSectionController {
     if (response.body != 'OK') {
       log('Error sending email: ${response.body}');
     }
-
+    AnalyticController.incrementMessages(AnalyticRepoService());
     return response.body == 'OK';
   }
 }

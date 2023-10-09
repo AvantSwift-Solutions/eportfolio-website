@@ -1,6 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:typed_data';
 import 'package:avantswift_portfolio/admin_pages/reorder_dialog.dart';
 import 'package:avantswift_portfolio/controllers/admin_controllers/upload_image_admin_controller.dart';
+import 'package:avantswift_portfolio/controllers/analytic_controller.dart';
+import 'package:avantswift_portfolio/reposervice/analytic_repo_services.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
@@ -23,7 +27,7 @@ class _RecommendationSectionAdminState
     extends State<RecommendationSectionAdmin> {
   late RecommendationSectionAdminController _adminController;
   late List<Recommendation> recommendations;
-  late final BuildContext parentContext;
+  late BuildContext parentContext;
 
   @override
   void initState() {
@@ -67,10 +71,11 @@ class _RecommendationSectionAdminState
                 color: AdminViewDialogStyles.bgColor,
                 child: Column(
                   children: [
-                    Row(
+                    FittedBox(
+                        child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Edit Recommendations'),
+                        const Text('Edit Peer Recommendations'),
                         Align(
                           alignment: Alignment.topRight,
                           child: IconButton(
@@ -83,8 +88,8 @@ class _RecommendationSectionAdminState
                           ),
                         ),
                       ],
-                    ),
-                    const Divider(),
+                    )),
+                    const Divider()
                   ],
                 )),
             content: SizedBox(
@@ -153,29 +158,62 @@ class _RecommendationSectionAdminState
                     children: [
                       const Divider(),
                       const SizedBox(height: AdminViewDialogStyles.listSpacing),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ReorderDialog(
-                            controller: _adminController,
-                            onReorder: () {
-                              Navigator.of(dialogContext).pop();
-                              Navigator.of(parentContext).pop();
-                              _showList(parentContext);
-                            },
-                          ),
-                          ElevatedButton(
-                            style: AdminViewDialogStyles.elevatedButtonStyle,
-                            onPressed: () {
-                              _showAddNewDialog(context);
-                            },
-                            child: Text(
-                              'Add New',
-                              style: AdminViewDialogStyles.buttonTextStyle,
+                      if (MediaQuery.of(context).size.width >
+                          AdminViewDialogStyles.fitOptionsThreshold)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ReorderDialog(
+                              controller: _adminController,
+                              onReorder: () async {
+                                await _loadItems();
+                                Navigator.of(dialogContext).pop();
+                                Navigator.of(parentContext).pop();
+                                _showList(parentContext);
+                              },
                             ),
+                            ElevatedButton(
+                              style: AdminViewDialogStyles.elevatedButtonStyle,
+                              onPressed: () {
+                                _showAddNewDialog(context);
+                              },
+                              child: Text(
+                                'Add New',
+                                style: AdminViewDialogStyles.buttonTextStyle,
+                              ),
+                            ),
+                          ],
+                        ),
+                      if (MediaQuery.of(context).size.width <=
+                          AdminViewDialogStyles.fitOptionsThreshold)
+                        FittedBox(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ReorderDialog(
+                                controller: _adminController,
+                                onReorder: () async {
+                                  await _loadItems();
+                                  Navigator.of(dialogContext).pop();
+                                  Navigator.of(parentContext).pop();
+                                  _showList(parentContext);
+                                },
+                              ),
+                              AdminViewDialogStyles.reorderOKSpacing,
+                              ElevatedButton(
+                                style:
+                                    AdminViewDialogStyles.elevatedButtonStyle,
+                                onPressed: () {
+                                  _showAddNewDialog(context);
+                                },
+                                child: Text(
+                                  'Add New',
+                                  style: AdminViewDialogStyles.buttonTextStyle,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        )
                     ],
                   ))
             ],
@@ -236,8 +274,7 @@ class _RecommendationSectionAdminState
       successMessage = 'Recommendation info added successfully';
       errorMessage = 'Error adding new Recommendation info';
     } else {
-      title =
-          'Edit info for \'Recommendation from ${recommendation.colleagueName}\'';
+      title = 'Edit Recommendation from ${recommendation.colleagueName}';
       successMessage = 'Recommendation info updated successfully';
       errorMessage = 'Error updating Recommendation info';
     }
@@ -257,25 +294,10 @@ class _RecommendationSectionAdminState
                       padding: AdminViewDialogStyles.titleContPadding,
                       color: AdminViewDialogStyles.bgColor,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(title),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: IconButton(
-                                  icon: const Icon(Icons.close),
-                                  iconSize: AdminViewDialogStyles.closeIconSize,
-                                  hoverColor: Colors.transparent,
-                                  onPressed: () {
-                                    Navigator.of(dialogContext).pop();
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Divider(),
+                          FittedBox(child: Text(title)),
+                          const Divider()
                         ],
                       )),
                   content: SizedBox(
@@ -477,6 +499,8 @@ class _RecommendationSectionAdminState
                                     AdminViewDialogStyles.elevatedButtonStyle,
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
+                                    await AnalyticController.wasEdited(
+                                        AnalyticRepoService());
                                     formKey.currentState!.save();
                                     recommendation.creationTimestamp =
                                         Timestamp.now();
@@ -549,21 +573,13 @@ class _RecommendationSectionAdminState
               child: Theme(
                 data: AdminViewDialogStyles.dialogThemeData,
                 child: AlertDialog(
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Delete \'$name\'?'),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                          icon: const Icon(Icons.close),
-                          iconSize: AdminViewDialogStyles.closeIconSize,
-                          hoverColor: Colors.transparent,
-                          onPressed: () {
-                            Navigator.of(dialogContext).pop();
-                          },
-                        ),
+                      FittedBox(
+                        child: Text('Delete $name?'),
                       ),
+                      const Divider()
                     ],
                   ),
                   content: Column(
@@ -585,6 +601,8 @@ class _RecommendationSectionAdminState
                               onPressed: () async {
                                 final deleted = await x.delete() ?? false;
                                 if (deleted) {
+                                  await AnalyticController.wasEdited(
+                                      AnalyticRepoService());
                                   recommendations.remove(x);
                                   setState(() {});
                                   if (!mounted) return;

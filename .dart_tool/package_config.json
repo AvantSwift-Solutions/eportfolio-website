@@ -182,6 +182,12 @@
       "languageVersion": "2.19"
     },
     {
+      "name": "dio",
+      "rootUri": "file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/dio-5.3.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
+    },
+    {
       "name": "dotted_border",
       "rootUri": "file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/dotted_border-2.0.0+3",
       "packageUri": "lib/",
@@ -190,6 +196,12 @@
     {
       "name": "email_validator",
       "rootUri": "file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/email_validator-2.1.17",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "english_words",
+      "rootUri": "file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/english_words-4.0.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -394,6 +406,12 @@
     {
       "name": "http",
       "rootUri": "file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/http-1.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "http_mock_adapter",
+      "rootUri": "file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/http_mock_adapter-0.6.0",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -654,6 +672,12 @@
       "rootUri": "file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/quiver-3.2.1",
       "packageUri": "lib/",
       "languageVersion": "2.17"
+    },
+    {
+      "name": "run_with_network_images",
+      "rootUri": "file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/run_with_network_images-0.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
     },
     {
       "name": "rx",
@@ -944,7 +968,7 @@
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2023-10-09T09:35:03.282142Z",
+  "generated": "2023-10-09T10:28:14.104707Z",
   "generator": "pub",
   "generatorVersion": "3.0.6"
 }
