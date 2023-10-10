@@ -20,7 +20,6 @@ class RecommendationSectionState extends State<RecommendationSection> {
   List<Recommendation>? recommendations;
   final PageController _pageController =
       PageController(viewportFraction: 1.0, initialPage: 0);
-  static const int recommendationsPerPage = 3;
   int _currentPage = 0;
 
   @override
@@ -60,83 +59,55 @@ class RecommendationSectionState extends State<RecommendationSection> {
 
   @override
   Widget build(BuildContext context) {
-    int totalPages =
-        (recommendations?.length ?? 0) ~/ recommendationsPerPage + 1;
+    final screenWidth = MediaQuery.of(context).size.width;
+    bool isMobileView = screenWidth <= 600;
 
+    double recommendationTitleFontSize =
+        isMobileView ? screenWidth * 0.07 : screenWidth * 0.03;
+    double recommendationSectionWidth = 
+        isMobileView ? screenWidth * 0.9 : screenWidth * 0.5;
+    double recommendationSectionHeight = 
+        isMobileView ? screenWidth * 0.9 : screenWidth * 0.4;
+    
+    double generalPadding = 
+        isMobileView ? 20 : 15;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.only(left: 20.0),
+        Padding(
+          padding: EdgeInsets.only(left: generalPadding),
           child: Text(
             'Peer Recommendations',
             style: TextStyle(
-              fontSize: 48,
+              fontSize: recommendationTitleFontSize,
               fontWeight: FontWeight.bold,
               fontFamily: 'Montserrat',
             ),
           ),
         ),
         Container(
-          padding: const EdgeInsets.only(left: 20.0),
-          width: 625,
+          padding: EdgeInsets.only(left: generalPadding, right: generalPadding),
+          width: recommendationSectionWidth,
           child: const Divider(
             height: 1.0, // Height of the divider line
             color: Colors.black, // Color of the divider line
           ),
         ),
         SizedBox(
-          height: 900, // Changed it manually due to RenderFlex overflow
-          child: PageView.builder(
-            controller: _pageController,
-            itemCount: totalPages,
-            scrollDirection: Axis.horizontal,
-            physics: const BouncingScrollPhysics(),
-            itemBuilder: (context, pageIndex) {
-              int startIndex = pageIndex * recommendationsPerPage;
-              int endIndex = (pageIndex + 1) * recommendationsPerPage;
-              endIndex = endIndex < (recommendations?.length ?? 0)
-                  ? endIndex
-                  : (recommendations?.length ?? 0);
-
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 20),
-                  if (recommendations != null)
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: recommendations!
-                            .sublist(startIndex, endIndex)
-                            .map((recommendation) =>
-                                _buildRecommendationTile(recommendation))
-                            .toList(),
-                      ),
-                    ),
-                  if (recommendations == null)
-                    const Text(
-                      'Error loading recommendations.',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.red,
-                      ),
-                    ),
-                ],
-              );
-            },
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 0.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          height: recommendationSectionHeight,
+          child: ListView(
+            shrinkWrap: true,
+            physics: const AlwaysScrollableScrollPhysics(),
             children: [
-              for (int i = 0; i < totalPages; i++)
-                i == _currentPage
-                    ? _buildPageIndicator(true, i) // Current page
-                    : _buildPageIndicator(false, i),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: recommendations?.length ?? 0,
+                itemBuilder: (context, index) {
+                  Recommendation recommendation = recommendations![index];
+                  return _buildRecommendationTile(recommendation);
+                },
+              ),
             ],
           ),
         ),
@@ -144,89 +115,83 @@ class RecommendationSectionState extends State<RecommendationSection> {
     );
   }
 
-  Widget _buildPageIndicator(bool isActive, int pageIndex) {
-    double buttonWidth = 8;
-    double buttonRadius = buttonWidth / 2;
-
-    return GestureDetector(
-      onTap: () {
-        // Move the page view to the tapped page
-        _pageController.animateToPage(
-          pageIndex,
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.ease,
-        );
-      },
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 4.0),
-        height: buttonWidth,
-        width: isActive ? buttonWidth : buttonWidth,
-        decoration: BoxDecoration(
-          color: isActive ? Colors.blue : Colors.grey,
-          borderRadius: BorderRadius.circular(buttonRadius),
-        ),
-      ),
-    );
-  }
 
   Widget _buildRecommendationTile(Recommendation recommendation) {
-    double imageRadius = 20.0;
+    final screenWidth = MediaQuery.of(context).size.width;
+    bool isMobileView = screenWidth <= 600;
+    
+    double imageRadius = 
+        isMobileView ? screenWidth * 0.03 : screenWidth * 0.01;
+    double recommendationDescriptionFontSize =
+        isMobileView ? screenWidth * 0.03 : screenWidth * 0.01;
+    double recommendationNameFontSize =
+        isMobileView ? screenWidth * 0.025 : screenWidth * 0.01;
+    double recommendationJobTitleFontSize =
+        isMobileView ? screenWidth * 0.025 : screenWidth * 0.01;
+    double recommendationSectionWidth = 
+        isMobileView ? screenWidth * 0.9 : screenWidth * 0.5;
+    double generalPadding = 
+        isMobileView ? 20 : 15;
+    double offset =
+        isMobileView ? screenWidth * 0.1 : 0;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ListTile(
-          title: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CircleAvatar(
-                radius: imageRadius,
-                backgroundImage: NetworkImage(
-                    recommendation.imageURL ?? Constants.replaceImageURL),
-              ),
-              const SizedBox(width: 16.0),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      constraints: const BoxConstraints(
-                        maxWidth: 500,
-                      ),
-                      child: Text(
-                        '"${recommendation.description}"',
-                        style: const TextStyle(
-                          fontSize: 18,
+        SizedBox(
+          width: recommendationSectionWidth,
+          child:ListTile(
+            title: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CircleAvatar(
+                  radius: imageRadius,
+                  backgroundImage: NetworkImage(
+                      recommendation.imageURL ?? Constants.replaceImageURL),
+                ),
+                SizedBox(width: generalPadding),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                        Text(
+                          '"${recommendation.description}"',
+                          style: TextStyle(
+                            fontSize: recommendationDescriptionFontSize,
+                          ),
+                        ),
+                      // ),
+                      Text(
+                        recommendation.colleagueName ?? 'Colleague Name',
+                        style: TextStyle(
+                          fontSize: recommendationNameFontSize,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
-                    Text(
-                      recommendation.colleagueName ?? 'Colleague Name',
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                      Text(
+                        recommendation.colleagueJobTitle ?? 'Job Title',
+                        style: TextStyle(
+                          fontSize: recommendationJobTitleFontSize,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    Text(
-                      recommendation.colleagueJobTitle ?? 'Job Title',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        const SizedBox(
-          width: 600,
-          child: Divider(
-            height: 1.0, // Height of the divider line
-            color: Colors.black, // Color of the divider line
+        ),        
+        Padding(
+          padding: EdgeInsets.only(left: generalPadding , right: generalPadding + offset),
+          child: SizedBox(
+            width: recommendationSectionWidth,
+            child: const Divider(
+              height: 1.0, // Height of the divider line
+              color: Colors.black, // Color of the divider line
+            ),
           ),
-        ),
+        )
       ],
     );
   }
