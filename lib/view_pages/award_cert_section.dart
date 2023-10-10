@@ -21,7 +21,6 @@ class AwardCertSectionState extends State<AwardCertSection> {
   List<AwardCert>? awardCerts;
   final PageController _pageController =
       PageController(viewportFraction: 1.0, initialPage: 0);
-  // static const int awardsPerRow = 3;
   int _currentPage = 0;
 
   @override
@@ -62,21 +61,22 @@ class AwardCertSectionState extends State<AwardCertSection> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    // final screenHeight = MediaQuery.of(context).size.height;
     bool isMobileView = screenWidth <= 600;
+
     int awardsPerRow = 
         isMobileView ? 2 : 3;
     int totalPages = (awardCerts?.length ?? 0) ~/ (awardsPerRow * 2) + 1;
     double awardCertSectionHeight = 
         isMobileView ? screenWidth * 0.9 : screenWidth * 0.35;
     double titleFontSize = 
-        isMobileView ? screenWidth * 0.08 : screenWidth * 0.03;
+        isMobileView ? screenWidth * 0.07 : screenWidth * 0.03;
     double gapWidth = 
         isMobileView ? screenWidth * 0.05 : screenWidth * 0.1;
     double titlePadding = 
         isMobileView ? screenWidth * 0.06 : screenWidth * 0.05;
     double generalPadding = 
         isMobileView ? screenWidth * 0.05 : screenWidth * 0.1;
+    
     if (!isMobileView){
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,11 +95,6 @@ class AwardCertSectionState extends State<AwardCertSection> {
                       fontWeight: FontWeight.bold,
                       fontSize: titleFontSize,
                     ),
-                    // style: TextStyle(
-                    //   fontSize: 64,
-                    //   fontWeight: FontWeight.bold,
-                    //   fontFamily: 'Montserrat',
-                    // ),
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -142,10 +137,6 @@ class AwardCertSectionState extends State<AwardCertSection> {
                   Text(
                     'Error loading awards and certificates.',
                     style: PublicViewTextStyles.generalBodyText,
-                    // style: TextStyle(
-                    //   fontSize: 16,
-                    //   color: Colors.red,
-                    // ),
                   ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 0.0),
@@ -248,7 +239,7 @@ class AwardCertSectionState extends State<AwardCertSection> {
         isMobileView ? screenWidth * 0.03 : screenWidth * 0.01;
 
     double awardCertsNameFontSize = 
-        isMobileView ? screenWidth * 0.02 : screenWidth * 0.01;
+        isMobileView ? screenWidth * 0.03 : screenWidth * 0.01;
 
     return Column(
       children: [
@@ -281,7 +272,6 @@ class AwardCertSectionState extends State<AwardCertSection> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        // SizedBox(height: 10.0),
       ],
     );
   }
