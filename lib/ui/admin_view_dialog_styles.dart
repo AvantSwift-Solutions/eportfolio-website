@@ -23,6 +23,12 @@ class AdminViewDialogStyles {
   static const double showDialogHeight = 600;
   static const double reorderDialogWidth = 500;
   static const double reorderDialogHeight = 300;
+  static const double forgotPasswordDialogWidth = 500;
+  static const double forgotPasswordDialogHeight = 150;
+  static const double incorrectLoginDialogWidth = 400;
+  static const double incorrectLoginDialogHeight = 100;
+  static const double aboutAssDialogWidth = 500;
+  static const double aboutAssDialogHeight = 400;
   // Delete dialog width and height fits content
 
   static const Color bgColor = Color.fromARGB(255, 209, 240, 255);

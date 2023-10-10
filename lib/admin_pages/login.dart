@@ -6,6 +6,8 @@ import 'package:avantswift_portfolio/models/User.dart' as model;
 import 'package:avantswift_portfolio/services/auth_state.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../ui/custom_texts/public_view_text_styles.dart';
+import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
+import 'package:avantswift_portfolio/admin_pages/reset_password.dart';
 
 class LoginPage extends StatefulWidget {
   static const double loginGraphicWidth = 450.0;
@@ -16,6 +18,7 @@ class LoginPage extends StatefulWidget {
   static const double avantSwiftSolutionsLogoWidth = 90;
   static const double avantSwiftSolutionsLogoHeight = 90;
   static const double formWidth = 650.0;
+  static const double responsiveFormWidth = 0.9;
   static const double formHeight = 60.0;
   static const double formIconBoxWidth = 50.0;
   static const double formIconBoxHeight = 50.0;
@@ -28,6 +31,13 @@ class LoginPage extends StatefulWidget {
   static const double rightSectionBottomMargin = 30.0;
   static const double forgotPasswordPadding = 20.0;
   static const double formTextHorizontalPadding = 16.0;
+  static const double headingResponsiveSizingFactor = 0.08;
+  static const double subHeadingResponsiveSizingFactor = 0.05;
+  static const double logoResponsiveSizingFactor = 0.2;
+  static const double largeSizedBoxHeight = 16;
+  static const double responsiveWidthLimit = 700;
+  static const double responsiveHeightLimit = 600;
+
 
   final Function(model.User) onLoginSuccess;
   final AuthState authState;
@@ -54,12 +64,37 @@ class LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    double titleFontSize = screenWidth * 0.05;
+    // final screenWidth = MediaQuery.of(context).size.width;
+    // double titleFontSize = screenWidth * 0.05;
 
     return Scaffold(
       body: Center(
-        child: Row(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final screenWidth = constraints.maxWidth;
+            final screenHeight = constraints.maxHeight;
+
+            if ((screenWidth > LoginPage.responsiveWidthLimit) && (screenHeight > LoginPage.responsiveHeightLimit)) {
+              return Scaffold(
+                  body: buildLeftRightColumn(screenWidth, screenHeight),
+              );
+            }
+              else {
+              return Center(
+                child: SingleChildScrollView(
+                  child: buildOnlyRightColumn(screenWidth, screenHeight),
+                )
+              );
+            }
+          }
+        )
+      )
+    );
+  }
+
+  Widget buildLeftRightColumn(double screenWidth, double screenHeight) {
+    double titleFontSize = screenWidth * 0.05;
+    return Row(
           children: [
             // Left Column
             Expanded(
@@ -303,24 +338,22 @@ class LoginPageState extends State<LoginPage> {
                         const SizedBox(height: LoginPage.gapSize),
                         Align(
                           alignment:
-                              Alignment.centerRight, // Align to the right
+                              Alignment.centerLeft,
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(context, '/forgot-password');
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                  0,
-                                  0,
-                                  LoginPage.forgotPasswordPadding,
-                                  0), // Add padding around the text
-                              child: Text(
-                                'Forgot my password',
-                                style: PublicViewTextStyles.buttonText.copyWith(
-                                  fontSize: LoginPage.bodyTextSize,
-                                  color: const Color(0xFF0074D9),
-                                  fontWeight: FontWeight.w600,
-                                ),
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return ResetPasswordScreen(); // Use the reset password dialog widget
+                                },
+                              );
+                            },// Add padding around the text
+                            child: Text(
+                              'Forgot my password',
+                              style: PublicViewTextStyles.buttonText.copyWith(
+                                fontSize: LoginPage.bodyTextSize,
+                                color: const Color(0xFF0074D9),
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ),
@@ -348,6 +381,216 @@ class LoginPageState extends State<LoginPage> {
                       ],
                     ),
                   ),
+                ),
+              ),
+            ),
+          ],
+        );
+  }
+
+  Widget buildOnlyRightColumn(double screenWidth, double screenHeight) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0), // Add padding to the right column
+      child: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Sign in to start editing\nyour portfolio.',
+                style: PublicViewTextStyles.generalHeading.copyWith(
+                  fontSize: screenWidth * LoginPage.headingResponsiveSizingFactor,
+                ),
+              ),
+            ),
+            Row(
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Powered by',
+                    style: PublicViewTextStyles.generalHeading.copyWith(
+                      fontSize: screenWidth * LoginPage.subHeadingResponsiveSizingFactor,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: LoginPage.formGapSize,
+                ),
+                Image.asset(
+                  'assets/logo-no-background.png',
+                  width: screenWidth * LoginPage.logoResponsiveSizingFactor,
+                  height: screenWidth * LoginPage.logoResponsiveSizingFactor,
+                ),
+              ],
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: SizedBox(
+                width: screenWidth * LoginPage.responsiveFormWidth,
+                height: LoginPage.formHeight,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(LoginPage.radius),
+                    color: const Color(0xFFEDECEC),
+                  ),
+                  child: Row(
+                    children: [
+                      const SizedBox(width: LoginPage.formGapSize),
+                      Container(
+                        width: LoginPage.formIconBoxWidth,
+                        height: LoginPage.formIconBoxHeight,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(LoginPage.radius),
+                        ),
+                        child: SvgPicture.asset(
+                          'assets/email_icon.svg',
+                          width: LoginPage.formIconSize,
+                          height: LoginPage.formIconSize,
+                        ),
+                      ),
+                      Expanded(
+                        child: TextFormField(
+                          controller: _emailController,
+                          decoration: const InputDecoration(
+                            labelText: 'Enter your email here',
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: LoginPage.formTextHorizontalPadding,
+                            ),
+                          ),
+                          cursorColor: Colors.black,
+                          validator: (value) {
+                            if (value?.isEmpty ?? true) {
+                              return 'No email was entered';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: LoginPage.gapSize),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: SizedBox(
+                width: screenWidth * LoginPage.responsiveFormWidth,
+                height: LoginPage.formHeight,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(LoginPage.radius),
+                    color: const Color(0xFFEDECEC),
+                  ),
+                  child: Row(
+                    children: [
+                      const SizedBox(width: LoginPage.formGapSize),
+                      Container(
+                        width: LoginPage.formIconBoxWidth,
+                        height: LoginPage.formIconBoxHeight,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(LoginPage.radius),
+                        ),
+                        child: SvgPicture.asset(
+                          'assets/password_icon.svg',
+                          width: LoginPage.formIconSize,
+                          height: LoginPage.formIconSize,
+                        ),
+                      ),
+                      Expanded(
+                        child: TextFormField(
+                          controller: _passwordController,
+                          decoration: const InputDecoration(
+                            labelText: 'Enter your password here',
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: LoginPage.formTextHorizontalPadding,
+                            ),
+                          ),
+                          cursorColor: Colors.black,
+                          obscureText: _obscureText,
+                          validator: (value) {
+                            if (value?.isEmpty ?? true) {
+                              return 'No password was entered';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        width: LoginPage.formIconBoxWidth,
+                        height: LoginPage.formIconBoxHeight,
+                        child: TextButton(
+                          onPressed: () {
+                            setState(() {
+                              _obscureText = !_obscureText;
+                            });
+                          },
+                          style: ButtonStyle(
+                            overlayColor:
+                                MaterialStateProperty.all(Colors.transparent),
+                          ),
+                          child: Icon(
+                            _obscureText
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            size: LoginPage.obscureTextIconSize,
+                            color: _obscureText
+                                ? const Color(0xFF0074D9)
+                                : const Color(0xFF0074D9),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: LoginPage.gapSize),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return ResetPasswordScreen(); // Use the reset password dialog widget
+                    },
+                  );
+                },
+                child: Text(
+                  'Forgot my password',
+                  style: PublicViewTextStyles.buttonText.copyWith(
+                    fontSize: LoginPage.bodyTextSize,
+                    color: const Color(0xFF0074D9),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: LoginPage.gapSize),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: SizedBox(
+                width: screenWidth * LoginPage.responsiveFormWidth,
+                height: LoginPage.formHeight,
+                child: CustomButton(
+                  text: Text(
+                    'Login',
+                    style: PublicViewTextStyles.buttonText,
+                  ),
+                  onPressed: () {
+                    if (_formKey.currentState?.validate() ?? false) {
+                      _loginWithEmailAndPassword();
+                    }
+                  },
                 ),
               ),
             ),
@@ -384,19 +627,55 @@ class LoginPageState extends State<LoginPage> {
         // ignore: use_build_context_synchronously
         showDialog(
           context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Login Error'),
-            content: const Text('Failed to log in. Please try again.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('OK'),
+          builder: (BuildContext dialogContext) {
+            return Theme(
+              data: AdminViewDialogStyles.dialogThemeData,
+              child: AlertDialog(
+                titlePadding: AdminViewDialogStyles.titleDialogPadding,
+                contentPadding: AdminViewDialogStyles.contentDialogPadding,
+                actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
+                title: Container(
+                  padding: AdminViewDialogStyles.titleContPadding,
+                  color: AdminViewDialogStyles.bgColor,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Incorrect Email or Password.'),
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: IconButton(
+                              icon: const Icon(Icons.close),
+                              iconSize: AdminViewDialogStyles.closeIconSize,
+                              hoverColor: Colors.transparent,
+                              onPressed: () {
+                                Navigator.of(dialogContext).pop();
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: LoginPage.largeSizedBoxHeight), // Add some spacing
+                      const Divider(),
+                      const SizedBox(height: LoginPage.largeSizedBoxHeight), // Add more spacing
+                      SizedBox(
+                        height: AdminViewDialogStyles.incorrectLoginDialogHeight,
+                        width: AdminViewDialogStyles.incorrectLoginDialogWidth, // Adjust the width as needed
+                        child: Text(
+                          "Please re-enter login credentials or click 'Forgot my password'.",
+                          style: AdminViewDialogStyles.buttonTextStyle,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                content: const SizedBox(),
               ),
-            ],
-          ),
+            );
+          },
         );
+
       }
     } catch (e) {
       showDialog(
@@ -414,6 +693,8 @@ class LoginPageState extends State<LoginPage> {
           ],
         ),
       );
+
     }
   }
+
 }

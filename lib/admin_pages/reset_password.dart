@@ -1,9 +1,11 @@
 import 'dart:developer';
-
-import 'package:avantswift_portfolio/controllers/admin_controllers/reset_password_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
+import 'package:avantswift_portfolio/controllers/admin_controllers/reset_password_controller.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
+  static const double largeSizedBoxHeight = 30;
+  static const double smallSizedBoxHeight = 16;
   final ResetPasswordController controller = ResetPasswordController();
 
   ResetPasswordScreen({Key? key}) : super(key: key);
@@ -29,8 +31,7 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
     if (emailSent) {
       // ignore: use_build_context_synchronously
-      Navigator.pushReplacementNamed(context, '/login');
-      // Email sent successfully, you can show a success message or navigate to another screen
+      Navigator.of(context).pop(); // Close the dialog when email is sent
     } else {
       // Email sending failed, you can show an error message
       log('Password reset email sending failed');
@@ -39,28 +40,82 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Reset Password"),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Click the button to send a password reset email to the most recent user.',
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _isSending ? null : _sendEmail,
-              child: _isSending
-                  ? const CircularProgressIndicator()
-                  : const Text('Send Email'),
-            ),
-          ],
+    return Theme(
+      // Apply the theme to the entire AlertDialog and its contents
+      data: AdminViewDialogStyles.dialogThemeData,
+      child: AlertDialog(
+        titlePadding: AdminViewDialogStyles.titleDialogPadding,
+        contentPadding: AdminViewDialogStyles.contentDialogPadding,
+        actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
+        title: Container(
+          padding: AdminViewDialogStyles.titleContPadding,
+          color: AdminViewDialogStyles.bgColor,
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Forgot My Password.'),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                      icon: const Icon(Icons.close),
+                      iconSize: AdminViewDialogStyles.closeIconSize,
+                      hoverColor: Colors.transparent,
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: ResetPasswordScreen.smallSizedBoxHeight), // Add some spacing
+              const Divider(),
+              const SizedBox(height: ResetPasswordScreen.smallSizedBoxHeight), // Add more spacing
+            ],
+          ),
+        ),
+        content: SizedBox(
+          height: AdminViewDialogStyles.forgotPasswordDialogHeight,
+          width: AdminViewDialogStyles.forgotPasswordDialogWidth,
+          child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start, // Align text to the left
+                        children: [
+                          Flexible(
+                            child: Text(
+                              "Click 'Send Email' to reset password.\nInstructions will be sent via email.",
+                              style: AdminViewDialogStyles.buttonTextStyle,
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: ResetPasswordScreen.largeSizedBoxHeight),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end, // Align button to the right
+                        children: [
+                          TextButton(
+                            onPressed: _isSending ? null : _sendEmail,
+                            style: AdminViewDialogStyles.elevatedButtonStyle,
+                            child: _isSending
+                                ? const CircularProgressIndicator()
+                                : Text(
+                                    'Send Email',
+                                    style: AdminViewDialogStyles.buttonTextStyle,
+                                  ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
         ),
       ),
     );
   }
+
 }
