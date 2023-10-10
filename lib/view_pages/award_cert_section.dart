@@ -21,7 +21,7 @@ class AwardCertSectionState extends State<AwardCertSection> {
   List<AwardCert>? awardCerts;
   final PageController _pageController =
       PageController(viewportFraction: 1.0, initialPage: 0);
-  static const int awardsPerRow = 3;
+  // static const int awardsPerRow = 3;
   int _currentPage = 0;
 
   @override
@@ -61,112 +61,202 @@ class AwardCertSectionState extends State<AwardCertSection> {
 
   @override
   Widget build(BuildContext context) {
-    int totalPages = (awardCerts?.length ?? 0) ~/ (awardsPerRow * 2) + 1;
     final screenWidth = MediaQuery.of(context).size.width;
-    double titleFontSize = screenWidth * 0.03;
-
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Left Section (Awards and Certificates)
-        Expanded(
-          flex: 1,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 80.0),
-                child: Text(
-                  'Awards & Certifications',
-                  style: PublicViewTextStyles.generalHeading.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: titleFontSize,
-                  ),
-                  // style: TextStyle(
-                  //   fontSize: 64,
-                  //   fontWeight: FontWeight.bold,
-                  //   fontFamily: 'Montserrat',
-                  // ),
-                ),
-              ),
-              const SizedBox(height: 40),
-              if (awardCerts != null)
+    // final screenHeight = MediaQuery.of(context).size.height;
+    bool isMobileView = screenWidth <= 600;
+    int awardsPerRow = 
+        isMobileView ? 2 : 3;
+    int totalPages = (awardCerts?.length ?? 0) ~/ (awardsPerRow * 2) + 1;
+    double awardCertSectionHeight = 
+        isMobileView ? screenWidth * 0.9 : screenWidth * 0.35;
+    double titleFontSize = 
+        isMobileView ? screenWidth * 0.08 : screenWidth * 0.03;
+    double gapWidth = 
+        isMobileView ? screenWidth * 0.05 : screenWidth * 0.1;
+    double titlePadding = 
+        isMobileView ? screenWidth * 0.06 : screenWidth * 0.05;
+    double generalPadding = 
+        isMobileView ? screenWidth * 0.05 : screenWidth * 0.1;
+    if (!isMobileView){
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Left Section (Awards and Certificates)
+          Expanded(
+            flex: 1,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: SizedBox(
-                    height: 450,
-                    child: PageView.builder(
-                      controller: _pageController,
-                      physics: const BouncingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      itemCount: totalPages,
-                      itemBuilder: (context, pageIndex) {
-                        int startIndex = pageIndex * (awardsPerRow * 2);
-                        int endIndex = (pageIndex + 1) * (awardsPerRow * 2);
-                        endIndex = endIndex < awardCerts!.length
-                            ? endIndex
-                            : awardCerts!.length;
+                  padding: EdgeInsets.only(left: titlePadding),
+                  child: Text(
+                    'Awards & Certifications',
+                    style: PublicViewTextStyles.generalHeading.copyWith(
+                      fontWeight: FontWeight.bold,
+                      fontSize: titleFontSize,
+                    ),
+                    // style: TextStyle(
+                    //   fontSize: 64,
+                    //   fontWeight: FontWeight.bold,
+                    //   fontFamily: 'Montserrat',
+                    // ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                if (awardCerts != null)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 5.0),
+                    child: SizedBox(
+                      height: awardCertSectionHeight,
+                      child: PageView.builder(
+                        controller: _pageController,
+                        physics: const BouncingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: totalPages,
+                        itemBuilder: (context, pageIndex) {
+                          int startIndex = pageIndex * (awardsPerRow * 2);
+                          int endIndex = (pageIndex + 1) * (awardsPerRow * 2);
+                          endIndex = endIndex < awardCerts!.length
+                              ? endIndex
+                              : awardCerts!.length;
 
-                        return GridView.builder(
-                          padding: const EdgeInsets.all(20),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: awardsPerRow,
-                          ),
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: endIndex - startIndex,
-                          itemBuilder: (context, index) {
-                            return _buildAwardCertCircle(
-                                awardCerts![startIndex + index]);
-                          },
-                        );
-                      },
+                          return GridView.builder(
+                            padding: const EdgeInsets.all(10),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: awardsPerRow,
+                            ),
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: endIndex - startIndex,
+                            itemBuilder: (context, index) {
+                              return _buildAwardCertCircle(
+                                  awardCerts![startIndex + index]);
+                            },
+                          );
+                        },
+                      ),
                     ),
                   ),
+                if (awardCerts == null)
+                  Text(
+                    'Error loading awards and certificates.',
+                    style: PublicViewTextStyles.generalBodyText,
+                    // style: TextStyle(
+                    //   fontSize: 16,
+                    //   color: Colors.red,
+                    // ),
+                  ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 0.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      for (int i = 0; i < totalPages; i++)
+                        i == _currentPage
+                            ? _buildPageIndicator(true, i)
+                            : _buildPageIndicator(false, i),
+                    ],
+                  ),
                 ),
-              if (awardCerts == null)
-                Text(
-                  'Error loading awards and certificates.',
-                  style: PublicViewTextStyles.generalBodyText,
-                  // style: TextStyle(
-                  //   fontSize: 16,
-                  //   color: Colors.red,
-                  // ),
-                ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    for (int i = 0; i < totalPages; i++)
-                      i == _currentPage
-                          ? _buildPageIndicator(true, i)
-                          : _buildPageIndicator(false, i),
-                  ],
-                ),
-              ),
+              ],
+            ),
+          ),
+          SizedBox(width: gapWidth),
+          // Right Section (Peer Recommendations or other content)
+          const Expanded(
+            flex: 1,
+            child: RecommendationSection(),
+          ),
+        ],
+      );
+    }else{
+      return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: generalPadding),
+          child: Text(
+            'Awards & Certifications',
+            style: PublicViewTextStyles.generalHeading.copyWith(
+              fontWeight: FontWeight.bold,
+              fontSize: titleFontSize,
+            ),
+          ),
+        ),
+        const SizedBox(height: 20),
+        if (awardCerts != null)
+          SizedBox(
+            height: awardCertSectionHeight,
+            child: PageView.builder(
+              controller: _pageController,
+              physics: const BouncingScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              itemCount: totalPages,
+              itemBuilder: (context, pageIndex) {
+                int startIndex = pageIndex * (awardsPerRow * 2);
+                int endIndex = (pageIndex + 1) * (awardsPerRow * 2);
+                endIndex = endIndex < awardCerts!.length ? endIndex : awardCerts!.length;
+
+                return GridView.builder(
+                  padding: const EdgeInsets.all(20),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: awardsPerRow,
+                  ),
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: endIndex - startIndex,
+                  itemBuilder: (context, index) {
+                    return _buildAwardCertCircle(awardCerts![startIndex + index]);
+                  },
+                );
+              },
+            ),
+          ),
+        if (awardCerts == null)
+          Text(
+            'Error loading awards and certificates.',
+            style: PublicViewTextStyles.generalBodyText,
+          ),
+        Padding(
+          padding: EdgeInsets.only(bottom: generalPadding),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              for (int i = 0; i < totalPages; i++)
+                i == _currentPage
+                    ? _buildPageIndicator(true, i)
+                    : _buildPageIndicator(false, i),
             ],
           ),
         ),
-        const SizedBox(width: 200),
-        // Right Section (Peer Recommendations or other content)
-        const Expanded(
-          flex: 1,
-          child: RecommendationSection(),
-        ),
+        SizedBox(height: gapWidth),
+        const RecommendationSection(),
       ],
     );
-  }
+  }  
+  
+}
 
   Widget _buildAwardCertCircle(AwardCert awardCert) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    bool isMobileView = screenWidth <= 600;
+
+    double awardCertCircleSize = 
+        isMobileView ?  screenWidth * 0.15 : screenWidth * 0.05;
+    double awardCertsSourceFontSize = 
+        isMobileView ? screenWidth * 0.03 : screenWidth * 0.01;
+
+    double awardCertsNameFontSize = 
+        isMobileView ? screenWidth * 0.02 : screenWidth * 0.01;
+
     return Column(
       children: [
         InkWell(
           onTap: () => openLink(awardCert.link ?? ''),
           child: CircleAvatar(
             backgroundColor: const Color(0xffD9EACB),
-            radius: 80.0,
+            radius: awardCertCircleSize,
             backgroundImage: awardCert.imageURL != null
                 ? NetworkImage(awardCert.imageURL!)
                 : null,
@@ -174,8 +264,8 @@ class AwardCertSectionState extends State<AwardCertSection> {
                 ? Center(
                     child: Text(
                       awardCert.source ?? 'Source',
-                      style: const TextStyle(
-                        fontSize: 16,
+                      style: TextStyle(
+                        fontSize: awardCertsSourceFontSize,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -186,8 +276,8 @@ class AwardCertSectionState extends State<AwardCertSection> {
         const SizedBox(height: 10.0),
         Text(
           awardCert.name ?? 'Certificate Name',
-          style: const TextStyle(
-            fontSize: 16,
+          style: TextStyle(
+            fontSize: awardCertsNameFontSize,
             fontWeight: FontWeight.bold,
           ),
         ),
