@@ -18,6 +18,7 @@ class LoginPage extends StatefulWidget {
   static const double avantSwiftSolutionsLogoWidth = 90;
   static const double avantSwiftSolutionsLogoHeight = 90;
   static const double formWidth = 650.0;
+  static const double responsiveFormWidth = 0.9;
   static const double formHeight = 60.0;
   static const double formIconBoxWidth = 50.0;
   static const double formIconBoxHeight = 50.0;
@@ -34,6 +35,9 @@ class LoginPage extends StatefulWidget {
   static const double subHeadingResponsiveSizingFactor = 0.05;
   static const double logoResponsiveSizingFactor = 0.2;
   static const double largeSizedBoxHeight = 16;
+  static const double responsiveWidthLimit = 700;
+  static const double responsiveHeightLimit = 600;
+
 
   final Function(model.User) onLoginSuccess;
   final AuthState authState;
@@ -70,7 +74,7 @@ class LoginPageState extends State<LoginPage> {
             final screenWidth = constraints.maxWidth;
             final screenHeight = constraints.maxHeight;
 
-            if ((screenWidth > 700) && (screenHeight > 600)) {
+            if ((screenWidth > LoginPage.responsiveWidthLimit) && (screenHeight > LoginPage.responsiveHeightLimit)) {
               return Scaffold(
                   body: buildLeftRightColumn(screenWidth, screenHeight),
               );
@@ -89,7 +93,6 @@ class LoginPageState extends State<LoginPage> {
   }
 
   Widget buildLeftRightColumn(double screenWidth, double screenHeight) {
-    //final screenWidth = MediaQuery.of(context).size.width;
     double titleFontSize = screenWidth * 0.05;
     return Row(
           children: [
@@ -427,7 +430,7 @@ class LoginPageState extends State<LoginPage> {
             Align(
               alignment: Alignment.centerLeft,
               child: SizedBox(
-                width: screenWidth * 0.9, //LoginPage.formWidth,
+                width: screenWidth * LoginPage.responsiveFormWidth,
                 height: LoginPage.formHeight,
                 child: Container(
                   decoration: BoxDecoration(
@@ -478,7 +481,7 @@ class LoginPageState extends State<LoginPage> {
             Align(
               alignment: Alignment.centerLeft,
               child: SizedBox(
-                width: screenWidth * 0.9, //LoginPage.formWidth,
+                width: screenWidth * LoginPage.responsiveFormWidth,
                 height: LoginPage.formHeight,
                 child: Container(
                   decoration: BoxDecoration(
@@ -576,7 +579,7 @@ class LoginPageState extends State<LoginPage> {
             Align(
               alignment: Alignment.centerLeft,
               child: SizedBox(
-                width: screenWidth * 0.9, //LoginPage.formWidth,
+                width: screenWidth * LoginPage.responsiveFormWidth,
                 height: LoginPage.formHeight,
                 child: CustomButton(
                   text: Text(
