@@ -32,7 +32,7 @@ class MenuSectionState extends State<MenuSection> {
     return Column(
       children: [
         Divider(
-          color: Color(0xFFBABAB3),
+          color: Colors.black,
           thickness: MenuSection.dividerThickness,
           indent: MenuSection.dividerIndent,
           endIndent: MenuSection.dividerEndDent,
@@ -54,7 +54,7 @@ class MenuSectionState extends State<MenuSection> {
             ),
             Text(
               '/',
-              style: PublicViewTextStyles.navBarText,
+              style: PublicViewTextStyles.navBarText.copyWith(color: Colors.black),
             ),
             Padding(
               padding: EdgeInsets.only(
@@ -69,7 +69,7 @@ class MenuSectionState extends State<MenuSection> {
             ),
             Text(
               '/',
-              style: PublicViewTextStyles.navBarText,
+              style: PublicViewTextStyles.navBarText.copyWith(color: Colors.black),
             ),
             Padding(
               padding: EdgeInsets.only(
@@ -103,7 +103,7 @@ class MenuSectionState extends State<MenuSection> {
         ),
         SizedBox(height: MenuSection.sizedBoxSize),
         Divider(
-          color: Color(0xFFBABAB3),
+          color: Colors.black,
           thickness: MenuSection.dividerThickness,
           indent: MenuSection.dividerIndent,
           endIndent: MenuSection.dividerEndDent,

@@ -56,7 +56,7 @@ class PublicViewTextStyles {
     fontWeight: FontWeight.normal,
     letterSpacing: (-2.2) / 100,
     fontFamily: 'Montserrat',
-    color: Color(0xFFBABAB3),
+    color: Colors.black,
   );
 
   static TextStyle buttonText = const TextStyle(

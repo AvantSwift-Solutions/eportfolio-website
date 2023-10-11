@@ -39,9 +39,7 @@ class CustomMenuButtonState extends State<CustomMenuButton> {
         style: ButtonStyle(
           overlayColor: MaterialStateProperty.resolveWith<Color>(
               (Set<MaterialState> states) {
-            // if (states.contains(MaterialState.hovered)) {
             return Colors.transparent;
-            // }
           }),
         ),
         child: Text(
