@@ -11,6 +11,7 @@ class AboutAssDialog extends StatefulWidget {
   static const double generalPadding = 16.0;
   static const double imageWidth = 200;
   static const double imageHeight = 300;
+  static const double boxWidth = 16;
   const AboutAssDialog({super.key});
 
   @override
@@ -91,9 +92,7 @@ class AboutAssDialogState extends State<AboutAssDialog> {
                     ),
                   ],
                 ),
-                const SizedBox(height: AboutAssDialog.largeSizedBoxHeight),
-                const Divider(),
-                const SizedBox(height: AboutAssDialog.largeSizedBoxHeight),
+                const Divider(color: Colors.black),
               ],
             ))),
         content: SizedBox(
@@ -114,7 +113,8 @@ class AboutAssDialogState extends State<AboutAssDialog> {
                       });
                     },
                     itemBuilder: (context, index) {
-                      return Padding(
+                      return SingleChildScrollView(
+                        child: Padding(
                         padding:
                             const EdgeInsets.all(AboutAssDialog.generalPadding),
                         child: Row(
@@ -135,7 +135,7 @@ class AboutAssDialogState extends State<AboutAssDialog> {
                                   Text(
                                     '${_currentAboutAss.description}',
                                     style:
-                                        AdminViewDialogStyles.buttonTextStyle,
+                                        AdminViewDialogStyles.listTextStyle,
                                   ),
                                   const SizedBox(
                                       height:
@@ -143,6 +143,9 @@ class AboutAssDialogState extends State<AboutAssDialog> {
                                 ],
                               ),
                             ),
+                            const SizedBox(
+                                      width: 
+                                          AboutAssDialog.boxWidth),
                             Image.network(
                               _currentAboutAss.imageURL != null &&
                                       _currentAboutAss.imageURL!.isNotEmpty
@@ -153,6 +156,7 @@ class AboutAssDialogState extends State<AboutAssDialog> {
                               fit: BoxFit.cover,
                             ),
                           ],
+                        ),
                         ),
                       );
                     },
