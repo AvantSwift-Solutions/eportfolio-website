@@ -16,10 +16,12 @@ import 'package:avantswift_portfolio/models/User.dart';
 import 'package:avantswift_portfolio/reposervice/analytic_repo_services.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:avantswift_portfolio/ui/custom_texts/public_view_text_styles.dart';
+import 'package:avantswift_portfolio/admin_pages/about_ass.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+
 
 class DefaultPage extends StatefulWidget {
   final User user;
@@ -180,7 +182,14 @@ class DefaultPageState extends State<DefaultPage> {
           ),
           navbarInterItemSpacing,
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              showDialog(
+                context: context, 
+                builder: (BuildContext context) {
+                  return const AboutAssDialog();
+                } 
+              );
+            },
             child: Text('About ASS', style: navbarTextStyle),
           ),
         ],
