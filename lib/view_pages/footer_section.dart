@@ -6,10 +6,12 @@ import '../ui/custom_texts/public_view_text_styles.dart';
 class FooterSection extends StatelessWidget {
   static const double dividerThickness = 1.0;
   static const double verticalPadding = 20;
+  static const double leftRightPadding = 16;
   static const double formGapSize = 10.0;
   static const double bodyTextSize = 15.0;
   static const double avantSwiftSolutionsLogoWidth = 90;
   static const double avantSwiftSolutionsLogoHeight = 90;
+  static const double resizeFactor = 1.5;
   final Function(GlobalKey) scrollToSection;
   final SectionKeysDTO sectionKeys;
 
@@ -88,7 +90,7 @@ class FooterSection extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 16.0),
+                          padding: const EdgeInsets.only(left: leftRightPadding),
                           child: PublicViewTextStyles.styledLogo(),
                         ),
                       ),
@@ -97,21 +99,21 @@ class FooterSection extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.centerRight,
                         child: Padding(
-                          padding: const EdgeInsets.only(right: 16.0),
+                          padding: const EdgeInsets.only(right: leftRightPadding),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Text(
                                 'Powered by',
                                 style: PublicViewTextStyles.generalHeading.copyWith(
-                                  fontSize: bodyTextSize * 1.5,
+                                  fontSize: bodyTextSize * resizeFactor,
                                 ),
                               ),
                               const SizedBox(width: formGapSize),
                               GestureDetector(
                                 child: Image.asset(
                                   'assets/logo-no-background.png',
-                                  width: avantSwiftSolutionsLogoWidth * 1.5,
+                                  width: avantSwiftSolutionsLogoWidth * resizeFactor,
                                   height: avantSwiftSolutionsLogoHeight,
                                 ),
                                 onTap: () {
