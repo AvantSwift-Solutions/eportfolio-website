@@ -7,7 +7,8 @@ class AdminViewDialogStyles {
   static const double _titleSize = 28;
   static const double _bodySize = 20;
 
-  static const double fitOptionsThreshold = 1000;
+  static const double fitOptionsThreshold = 400;
+  static const double stackOptionsThreshold = 400;
 
   static const double listSpacing = 8;
   static const double closeIconSize = 35;
@@ -45,10 +46,12 @@ class AdminViewDialogStyles {
       ),
       dialogTheme: const DialogTheme(
           titleTextStyle: TextStyle(
+            color: Colors.black,
             fontSize: _titleSize,
             fontWeight: FontWeight.bold,
           ),
           contentTextStyle: TextStyle(
+            color: Colors.black,
             fontSize: _bodySize,
             fontWeight: FontWeight.normal,
           ),

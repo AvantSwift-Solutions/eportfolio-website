@@ -60,7 +60,7 @@ class SkillsAndEducation extends StatelessWidget {
                               SizedBox(
                                 width: screenWidth * 0.05,
                               ),
-                              Expanded(
+                              const Expanded(
                                 child: InterpersonalSkillsWidget(),
                               ),
                             ],

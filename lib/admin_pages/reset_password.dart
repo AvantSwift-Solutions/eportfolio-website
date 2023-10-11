@@ -44,78 +44,72 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
       // Apply the theme to the entire AlertDialog and its contents
       data: AdminViewDialogStyles.dialogThemeData,
       child: AlertDialog(
-        titlePadding: AdminViewDialogStyles.titleDialogPadding,
-        contentPadding: AdminViewDialogStyles.contentDialogPadding,
-        actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
-        title: Container(
-          padding: AdminViewDialogStyles.titleContPadding,
-          color: AdminViewDialogStyles.bgColor,
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('Forgot My Password.'),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                      icon: const Icon(Icons.close),
-                      iconSize: AdminViewDialogStyles.closeIconSize,
-                      hoverColor: Colors.transparent,
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: ResetPasswordScreen.smallSizedBoxHeight), // Add some spacing
-              const Divider(),
-              const SizedBox(height: ResetPasswordScreen.smallSizedBoxHeight), // Add more spacing
-            ],
-          ),
+        title: const Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [FittedBox(child: Text('Forgot my password')), Divider()],
         ),
-        content: SizedBox(
-          height: AdminViewDialogStyles.forgotPasswordDialogHeight,
-          width: AdminViewDialogStyles.forgotPasswordDialogWidth,
-          child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start, // Align text to the left
-                        children: [
-                          Flexible(
-                            child: Text(
-                              "Click 'Send Email' to reset password.\nInstructions will be sent via email.",
-                              style: AdminViewDialogStyles.buttonTextStyle,
-                              textAlign: TextAlign.left,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: ResetPasswordScreen.largeSizedBoxHeight),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end, // Align button to the right
-                        children: [
-                          TextButton(
-                            onPressed: _isSending ? null : _sendEmail,
-                            style: AdminViewDialogStyles.elevatedButtonStyle,
-                            child: _isSending
-                                ? const CircularProgressIndicator()
-                                : Text(
-                                    'Send Email',
-                                    style: AdminViewDialogStyles.buttonTextStyle,
-                                  ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                )
+        content: const Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+                'Click \'Send Email\' to reset password.\nInstructions will be sent via email.'),
+          ],
         ),
+        actions: <Widget>[
+          if (MediaQuery.of(context).size.width >=
+              AdminViewDialogStyles.stackOptionsThreshold)
+            Padding(
+              padding: AdminViewDialogStyles.deleteActionsDialogPadding,
+              child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                TextButton(
+                  onPressed: _isSending ? null : _sendEmail,
+                  style: AdminViewDialogStyles.elevatedButtonStyle,
+                  child: _isSending
+                      ? const CircularProgressIndicator()
+                      : Text(
+                          'Send Email',
+                          style: AdminViewDialogStyles.buttonTextStyle,
+                        ),
+                ),
+                TextButton(
+                  style: AdminViewDialogStyles.textButtonStyle,
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Cancel',
+                      style: AdminViewDialogStyles.buttonTextStyle),
+                ),
+              ]),
+            ),
+          if (MediaQuery.of(context).size.width <
+              AdminViewDialogStyles.stackOptionsThreshold)
+            Padding(
+              padding: AdminViewDialogStyles.deleteActionsDialogPadding,
+              child:
+                  Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+                TextButton(
+                  onPressed: _isSending ? null : _sendEmail,
+                  style: AdminViewDialogStyles.elevatedButtonStyle,
+                  child: _isSending
+                      ? const CircularProgressIndicator()
+                      : Text(
+                          'Send Email',
+                          style: AdminViewDialogStyles.buttonTextStyle,
+                        ),
+                ),
+                TextButton(
+                  style: AdminViewDialogStyles.textButtonStyle,
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Cancel',
+                      style: AdminViewDialogStyles.buttonTextStyle),
+                ),
+              ]),
+            )
+        ],
       ),
     );
   }
-
 }

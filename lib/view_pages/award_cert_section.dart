@@ -63,21 +63,19 @@ class AwardCertSectionState extends State<AwardCertSection> {
     final screenWidth = MediaQuery.of(context).size.width;
     bool isMobileView = screenWidth <= 600;
 
-    int awardsPerRow = 
-        isMobileView ? 2 : 3;
+    int awardsPerRow = isMobileView ? 2 : 3;
     int totalPages = (awardCerts?.length ?? 0) ~/ (awardsPerRow * 2) + 1;
-    double awardCertSectionHeight = 
+    double awardCertSectionHeight =
         isMobileView ? screenWidth * 0.9 : screenWidth * 0.35;
-    double titleFontSize = 
+    double titleFontSize =
         isMobileView ? screenWidth * 0.07 : screenWidth * 0.03;
-    double gapWidth = 
-        isMobileView ? screenWidth * 0.05 : screenWidth * 0.1;
-    double titlePadding = 
+    double gapWidth = isMobileView ? screenWidth * 0.05 : screenWidth * 0.1;
+    double titlePadding =
         isMobileView ? screenWidth * 0.06 : screenWidth * 0.05;
-    double generalPadding = 
+    double generalPadding =
         isMobileView ? screenWidth * 0.05 : screenWidth * 0.1;
-    
-    if (!isMobileView){
+
+    if (!isMobileView) {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -161,84 +159,86 @@ class AwardCertSectionState extends State<AwardCertSection> {
           ),
         ],
       );
-    }else{
+    } else {
       return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: generalPadding),
-          child: Text(
-            'Awards & Certifications',
-            style: PublicViewTextStyles.generalHeading.copyWith(
-              fontWeight: FontWeight.bold,
-              fontSize: titleFontSize,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(left: generalPadding),
+            child: Text(
+              'Awards & Certifications',
+              style: PublicViewTextStyles.generalHeading.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: titleFontSize,
+              ),
             ),
           ),
-        ),
-        const SizedBox(height: 20),
-        if (awardCerts != null)
-          SizedBox(
-            height: awardCertSectionHeight,
-            child: PageView.builder(
-              controller: _pageController,
-              physics: const BouncingScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              itemCount: totalPages,
-              itemBuilder: (context, pageIndex) {
-                int startIndex = pageIndex * (awardsPerRow * 2);
-                int endIndex = (pageIndex + 1) * (awardsPerRow * 2);
-                endIndex = endIndex < awardCerts!.length ? endIndex : awardCerts!.length;
+          const SizedBox(height: 20),
+          if (awardCerts != null)
+            SizedBox(
+              height: awardCertSectionHeight,
+              child: PageView.builder(
+                controller: _pageController,
+                physics: const BouncingScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                itemCount: totalPages,
+                itemBuilder: (context, pageIndex) {
+                  int startIndex = pageIndex * (awardsPerRow * 2);
+                  int endIndex = (pageIndex + 1) * (awardsPerRow * 2);
+                  endIndex = endIndex < awardCerts!.length
+                      ? endIndex
+                      : awardCerts!.length;
 
-                return GridView.builder(
-                  padding: const EdgeInsets.all(20),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: awardsPerRow,
-                  ),
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: endIndex - startIndex,
-                  itemBuilder: (context, index) {
-                    return _buildAwardCertCircle(awardCerts![startIndex + index]);
-                  },
-                );
-              },
+                  return GridView.builder(
+                    padding: const EdgeInsets.all(20),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: awardsPerRow,
+                    ),
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: endIndex - startIndex,
+                    itemBuilder: (context, index) {
+                      return _buildAwardCertCircle(
+                          awardCerts![startIndex + index]);
+                    },
+                  );
+                },
+              ),
+            ),
+          if (awardCerts == null)
+            Text(
+              'Error loading awards and certificates.',
+              style: PublicViewTextStyles.generalBodyText,
+            ),
+          Padding(
+            padding: EdgeInsets.only(bottom: generalPadding),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                for (int i = 0; i < totalPages; i++)
+                  i == _currentPage
+                      ? _buildPageIndicator(true, i)
+                      : _buildPageIndicator(false, i),
+              ],
             ),
           ),
-        if (awardCerts == null)
-          Text(
-            'Error loading awards and certificates.',
-            style: PublicViewTextStyles.generalBodyText,
-          ),
-        Padding(
-          padding: EdgeInsets.only(bottom: generalPadding),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              for (int i = 0; i < totalPages; i++)
-                i == _currentPage
-                    ? _buildPageIndicator(true, i)
-                    : _buildPageIndicator(false, i),
-            ],
-          ),
-        ),
-        SizedBox(height: gapWidth),
-        const RecommendationSection(),
-      ],
-    );
-  }  
-  
-}
+          SizedBox(height: gapWidth),
+          const RecommendationSection(),
+        ],
+      );
+    }
+  }
 
   Widget _buildAwardCertCircle(AwardCert awardCert) {
     final screenWidth = MediaQuery.of(context).size.width;
     bool isMobileView = screenWidth <= 600;
 
-    double awardCertCircleSize = 
-        isMobileView ?  screenWidth * 0.15 : screenWidth * 0.05;
-    double awardCertsSourceFontSize = 
+    double awardCertCircleSize =
+        isMobileView ? screenWidth * 0.15 : screenWidth * 0.05;
+    double awardCertsSourceFontSize =
         isMobileView ? screenWidth * 0.03 : screenWidth * 0.01;
 
-    double awardCertsNameFontSize = 
+    double awardCertsNameFontSize =
         isMobileView ? screenWidth * 0.03 : screenWidth * 0.01;
 
     return Column(

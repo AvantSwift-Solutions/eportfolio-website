@@ -118,8 +118,8 @@ class _TSkillSectionAdminState extends State<TSkillSectionAdmin> {
                                         const Icon(Icons.add),
                                         Text(
                                           centerImageURL == ''
-                                              ? 'Add Image'
-                                              : 'Change Image',
+                                              ? 'Add'
+                                              : 'Change',
                                           style: AdminViewDialogStyles
                                               .buttonTextStyle,
                                         )
@@ -135,61 +135,117 @@ class _TSkillSectionAdminState extends State<TSkillSectionAdmin> {
                       padding: AdminViewDialogStyles.actionsContPadding,
                       color: AdminViewDialogStyles.bgColor,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           const Divider(),
                           const SizedBox(
                               height: AdminViewDialogStyles.listSpacing),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              ElevatedButton(
-                                style:
-                                    AdminViewDialogStyles.elevatedButtonStyle,
-                                onPressed: () async {
-                                  if (pickedImageBytes != null) {
-                                    await AnalyticController.wasEdited(
-                                        AnalyticRepoService());
-                                    String? imageURL =
-                                        await UploadImageAdminController()
-                                            .uploadImageAndGetURL(
-                                                pickedImageBytes!,
-                                                'technical_skills_image');
-                                    if (!mounted) return;
-                                    if (imageURL != null) {
-                                      ScaffoldMessenger.of(parentContext)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                            content: Text(
-                                                'Center Image updated successfully')),
-                                      );
-                                    } else {
-                                      ScaffoldMessenger.of(parentContext)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                            content: Text(
-                                                'Error updating Center Image')),
-                                      );
+                          if (MediaQuery.of(context).size.width >=
+                              AdminViewDialogStyles.fitOptionsThreshold)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                ElevatedButton(
+                                  style:
+                                      AdminViewDialogStyles.elevatedButtonStyle,
+                                  onPressed: () async {
+                                    if (pickedImageBytes != null) {
+                                      await AnalyticController.wasEdited(
+                                          AnalyticRepoService());
+                                      String? imageURL =
+                                          await UploadImageAdminController()
+                                              .uploadImageAndGetURL(
+                                                  pickedImageBytes!,
+                                                  'technical_skills_image');
+                                      if (!mounted) return;
+                                      if (imageURL != null) {
+                                        ScaffoldMessenger.of(parentContext)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                              content: Text(
+                                                  'Center Image updated successfully')),
+                                        );
+                                      } else {
+                                        ScaffoldMessenger.of(parentContext)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                              content: Text(
+                                                  'Error updating Center Image')),
+                                        );
+                                      }
+                                      Navigator.of(dialogContext).pop();
+                                      Navigator.of(parentContext).pop();
+                                      _showList(parentContext); // Show new list
                                     }
+                                  },
+                                  child: Text('Save',
+                                      style: AdminViewDialogStyles
+                                          .buttonTextStyle),
+                                ),
+                                TextButton(
+                                  style: AdminViewDialogStyles.textButtonStyle,
+                                  onPressed: () {
                                     Navigator.of(dialogContext).pop();
-                                    Navigator.of(parentContext).pop();
-                                    _showList(parentContext); // Show new list
-                                  }
-                                },
-                                child: Text('Save',
-                                    style:
-                                        AdminViewDialogStyles.buttonTextStyle),
-                              ),
-                              TextButton(
-                                style: AdminViewDialogStyles.textButtonStyle,
-                                onPressed: () {
-                                  Navigator.of(dialogContext).pop();
-                                },
-                                child: Text('Cancel',
-                                    style:
-                                        AdminViewDialogStyles.buttonTextStyle),
-                              ),
-                            ],
-                          ),
+                                  },
+                                  child: Text('Cancel',
+                                      style: AdminViewDialogStyles
+                                          .buttonTextStyle),
+                                ),
+                              ],
+                            ),
+                          if (MediaQuery.of(context).size.width <
+                              AdminViewDialogStyles.fitOptionsThreshold)
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                ElevatedButton(
+                                  style:
+                                      AdminViewDialogStyles.elevatedButtonStyle,
+                                  onPressed: () async {
+                                    if (pickedImageBytes != null) {
+                                      await AnalyticController.wasEdited(
+                                          AnalyticRepoService());
+                                      String? imageURL =
+                                          await UploadImageAdminController()
+                                              .uploadImageAndGetURL(
+                                                  pickedImageBytes!,
+                                                  'technical_skills_image');
+                                      if (!mounted) return;
+                                      if (imageURL != null) {
+                                        ScaffoldMessenger.of(parentContext)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                              content: Text(
+                                                  'Center Image updated successfully')),
+                                        );
+                                      } else {
+                                        ScaffoldMessenger.of(parentContext)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                              content: Text(
+                                                  'Error updating Center Image')),
+                                        );
+                                      }
+                                      Navigator.of(dialogContext).pop();
+                                      Navigator.of(parentContext).pop();
+                                      _showList(parentContext); // Show new list
+                                    }
+                                  },
+                                  child: Text('Save',
+                                      style: AdminViewDialogStyles
+                                          .buttonTextStyle),
+                                ),
+                                TextButton(
+                                  style: AdminViewDialogStyles.textButtonStyle,
+                                  onPressed: () {
+                                    Navigator.of(dialogContext).pop();
+                                  },
+                                  child: Text('Cancel',
+                                      style: AdminViewDialogStyles
+                                          .buttonTextStyle),
+                                ),
+                              ],
+                            ),
                         ],
                       ),
                     ),
@@ -522,8 +578,8 @@ class _TSkillSectionAdminState extends State<TSkillSectionAdmin> {
                                             const Icon(Icons.add),
                                             Text(
                                               tskill.imageURL == ''
-                                                  ? 'Add Image'
-                                                  : 'Change Image',
+                                                  ? 'Add'
+                                                  : 'Change',
                                               style: AdminViewDialogStyles
                                                   .buttonTextStyle,
                                             )
@@ -539,66 +595,131 @@ class _TSkillSectionAdminState extends State<TSkillSectionAdmin> {
                       padding: AdminViewDialogStyles.actionsContPadding,
                       color: AdminViewDialogStyles.bgColor,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           const Divider(),
                           const SizedBox(
                               height: AdminViewDialogStyles.listSpacing),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              ElevatedButton(
-                                style:
-                                    AdminViewDialogStyles.elevatedButtonStyle,
-                                onPressed: () async {
-                                  if (formKey.currentState!.validate()) {
-                                    await AnalyticController.wasEdited(
-                                        AnalyticRepoService());
-                                    formKey.currentState!.save();
-                                    tskill.creationTimestamp = Timestamp.now();
-                                    if (pickedImageBytes != null) {
-                                      String? imageURL =
-                                          await UploadImageAdminController()
-                                              .uploadImageAndGetURL(
-                                                  pickedImageBytes!,
-                                                  '${tskill.tsid}_image.jpg');
-                                      if (imageURL != null) {
-                                        tskill.imageURL = imageURL;
+                          if (MediaQuery.of(context).size.width >=
+                              AdminViewDialogStyles.fitOptionsThreshold)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                ElevatedButton(
+                                  style:
+                                      AdminViewDialogStyles.elevatedButtonStyle,
+                                  onPressed: () async {
+                                    if (formKey.currentState!.validate()) {
+                                      await AnalyticController.wasEdited(
+                                          AnalyticRepoService());
+                                      formKey.currentState!.save();
+                                      tskill.creationTimestamp =
+                                          Timestamp.now();
+                                      if (pickedImageBytes != null) {
+                                        String? imageURL =
+                                            await UploadImageAdminController()
+                                                .uploadImageAndGetURL(
+                                                    pickedImageBytes!,
+                                                    '${tskill.tsid}_image.jpg');
+                                        if (imageURL != null) {
+                                          tskill.imageURL = imageURL;
+                                        }
                                       }
+                                      bool isSuccess =
+                                          await onTSkillUpdated(tskill);
+                                      if (!mounted) return;
+                                      if (isSuccess) {
+                                        ScaffoldMessenger.of(parentContext)
+                                            .showSnackBar(
+                                          SnackBar(
+                                              content: Text(successMessage)),
+                                        );
+                                      } else {
+                                        ScaffoldMessenger.of(parentContext)
+                                            .showSnackBar(
+                                          SnackBar(content: Text(errorMessage)),
+                                        );
+                                      }
+                                      Navigator.of(dialogContext).pop();
+                                      Navigator.of(parentContext).pop();
+                                      _showList(parentContext); // Show new list
                                     }
-                                    bool isSuccess =
-                                        await onTSkillUpdated(tskill);
-                                    if (!mounted) return;
-                                    if (isSuccess) {
-                                      ScaffoldMessenger.of(parentContext)
-                                          .showSnackBar(
-                                        SnackBar(content: Text(successMessage)),
-                                      );
-                                    } else {
-                                      ScaffoldMessenger.of(parentContext)
-                                          .showSnackBar(
-                                        SnackBar(content: Text(errorMessage)),
-                                      );
-                                    }
+                                  },
+                                  child: Text('Save',
+                                      style: AdminViewDialogStyles
+                                          .buttonTextStyle),
+                                ),
+                                TextButton(
+                                  style: AdminViewDialogStyles.textButtonStyle,
+                                  onPressed: () {
                                     Navigator.of(dialogContext).pop();
-                                    Navigator.of(parentContext).pop();
-                                    _showList(parentContext); // Show new list
-                                  }
-                                },
-                                child: Text('Save',
-                                    style:
-                                        AdminViewDialogStyles.buttonTextStyle),
-                              ),
-                              TextButton(
-                                style: AdminViewDialogStyles.textButtonStyle,
-                                onPressed: () {
-                                  Navigator.of(dialogContext).pop();
-                                },
-                                child: Text('Cancel',
-                                    style:
-                                        AdminViewDialogStyles.buttonTextStyle),
-                              ),
-                            ],
-                          ),
+                                  },
+                                  child: Text('Cancel',
+                                      style: AdminViewDialogStyles
+                                          .buttonTextStyle),
+                                ),
+                              ],
+                            ),
+                          if (MediaQuery.of(context).size.width <
+                              AdminViewDialogStyles.fitOptionsThreshold)
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                ElevatedButton(
+                                  style:
+                                      AdminViewDialogStyles.elevatedButtonStyle,
+                                  onPressed: () async {
+                                    if (formKey.currentState!.validate()) {
+                                      await AnalyticController.wasEdited(
+                                          AnalyticRepoService());
+                                      formKey.currentState!.save();
+                                      tskill.creationTimestamp =
+                                          Timestamp.now();
+                                      if (pickedImageBytes != null) {
+                                        String? imageURL =
+                                            await UploadImageAdminController()
+                                                .uploadImageAndGetURL(
+                                                    pickedImageBytes!,
+                                                    '${tskill.tsid}_image.jpg');
+                                        if (imageURL != null) {
+                                          tskill.imageURL = imageURL;
+                                        }
+                                      }
+                                      bool isSuccess =
+                                          await onTSkillUpdated(tskill);
+                                      if (!mounted) return;
+                                      if (isSuccess) {
+                                        ScaffoldMessenger.of(parentContext)
+                                            .showSnackBar(
+                                          SnackBar(
+                                              content: Text(successMessage)),
+                                        );
+                                      } else {
+                                        ScaffoldMessenger.of(parentContext)
+                                            .showSnackBar(
+                                          SnackBar(content: Text(errorMessage)),
+                                        );
+                                      }
+                                      Navigator.of(dialogContext).pop();
+                                      Navigator.of(parentContext).pop();
+                                      _showList(parentContext); // Show new list
+                                    }
+                                  },
+                                  child: Text('Save',
+                                      style: AdminViewDialogStyles
+                                          .buttonTextStyle),
+                                ),
+                                TextButton(
+                                  style: AdminViewDialogStyles.textButtonStyle,
+                                  onPressed: () {
+                                    Navigator.of(dialogContext).pop();
+                                  },
+                                  child: Text('Cancel',
+                                      style: AdminViewDialogStyles
+                                          .buttonTextStyle),
+                                ),
+                              ],
+                            ),
                         ],
                       ),
                     ),
@@ -639,52 +760,106 @@ class _TSkillSectionAdminState extends State<TSkillSectionAdmin> {
                     ],
                   ),
                   actions: <Widget>[
-                    Padding(
-                      padding: AdminViewDialogStyles.deleteActionsDialogPadding,
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            ElevatedButton(
-                              style: AdminViewDialogStyles.elevatedButtonStyle,
-                              onPressed: () async {
-                                final deleted = await x.delete() ?? false;
-                                if (deleted) {
-                                  await AnalyticController.wasEdited(
-                                      AnalyticRepoService());
-                                  tskills.remove(x);
-                                  setState(() {});
+                    if (MediaQuery.of(context).size.width >=
+                        AdminViewDialogStyles.stackOptionsThreshold)
+                      Padding(
+                        padding:
+                            AdminViewDialogStyles.deleteActionsDialogPadding,
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              ElevatedButton(
+                                style:
+                                    AdminViewDialogStyles.elevatedButtonStyle,
+                                onPressed: () async {
+                                  final deleted = await x.delete() ?? false;
+                                  if (deleted) {
+                                    await AnalyticController.wasEdited(
+                                        AnalyticRepoService());
+                                    if (!mounted) return;
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: Text(
+                                              '$name deleted successfully')),
+                                    );
+                                  } else {
+                                    if (!mounted) return;
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content:
+                                              Text('Failed to delete $name')),
+                                    );
+                                  }
                                   if (!mounted) return;
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content:
-                                            Text('$name deleted successfully')),
-                                  );
-                                } else {
+                                  Navigator.of(dialogContext).pop();
+                                  Navigator.of(parentContext).pop();
+                                  _showList(parentContext);
+                                },
+                                child: Text('Delete',
+                                    style:
+                                        AdminViewDialogStyles.buttonTextStyle),
+                              ),
+                              TextButton(
+                                style: AdminViewDialogStyles.textButtonStyle,
+                                onPressed: () {
+                                  Navigator.of(dialogContext).pop();
+                                },
+                                child: Text('Cancel',
+                                    style:
+                                        AdminViewDialogStyles.buttonTextStyle),
+                              ),
+                            ]),
+                      ),
+                    if (MediaQuery.of(context).size.width <
+                        AdminViewDialogStyles.stackOptionsThreshold)
+                      Padding(
+                        padding:
+                            AdminViewDialogStyles.deleteActionsDialogPadding,
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              ElevatedButton(
+                                style:
+                                    AdminViewDialogStyles.elevatedButtonStyle,
+                                onPressed: () async {
+                                  final deleted = await x.delete() ?? false;
+                                  if (deleted) {
+                                    await AnalyticController.wasEdited(
+                                        AnalyticRepoService());
+                                    if (!mounted) return;
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: Text(
+                                              '$name deleted successfully')),
+                                    );
+                                  } else {
+                                    if (!mounted) return;
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content:
+                                              Text('Failed to delete $name')),
+                                    );
+                                  }
                                   if (!mounted) return;
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content:
-                                            Text('Failed to delete $name')),
-                                  );
-                                }
-                                if (!mounted) return;
-                                Navigator.of(dialogContext).pop();
-                                Navigator.of(parentContext).pop();
-                                _showList(parentContext);
-                              },
-                              child: Text('Delete',
-                                  style: AdminViewDialogStyles.buttonTextStyle),
-                            ),
-                            TextButton(
-                              style: AdminViewDialogStyles.textButtonStyle,
-                              onPressed: () {
-                                Navigator.of(dialogContext).pop();
-                              },
-                              child: Text('Cancel',
-                                  style: AdminViewDialogStyles.buttonTextStyle),
-                            ),
-                          ]),
-                    )
+                                  Navigator.of(dialogContext).pop();
+                                  Navigator.of(parentContext).pop();
+                                  _showList(parentContext);
+                                },
+                                child: Text('Delete',
+                                    style:
+                                        AdminViewDialogStyles.buttonTextStyle),
+                              ),
+                              TextButton(
+                                style: AdminViewDialogStyles.textButtonStyle,
+                                onPressed: () {
+                                  Navigator.of(dialogContext).pop();
+                                },
+                                child: Text('Cancel',
+                                    style:
+                                        AdminViewDialogStyles.buttonTextStyle),
+                              ),
+                            ]),
+                      ),
                   ],
                 ),
               ),

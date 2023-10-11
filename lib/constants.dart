@@ -19,7 +19,7 @@ class Constants {
       'https://firebasestorage.googleapis.com/v0/b/avantswiftsolutions.appspot.com/o/images%2Fgithub.svg?alt=media&token=151a3408-e53e-4b7b-a230-6b37faaa309c&_gl=1*11wooi8*_ga*MTE2MzU0MzI1Ny4xNjkxMDQxOTY0*_ga_CW55HF8NVT*MTY5NjY1OTE0OC42My4xLjE2OTY2NTkyNDMuNTIuMC4w';
   static const externalLinkSVGURL =
       'https://firebasestorage.googleapis.com/v0/b/avantswiftsolutions.appspot.com/o/images%2Fexternal_link.svg?alt=media&token=5f35738c-101e-47d6-9080-fe537bb0919e&_gl=1*1jizeh7*_ga*MTE2MzU0MzI1Ny4xNjkxMDQxOTY0*_ga_CW55HF8NVT*MTY5NjY1OTE0OC42My4xLjE2OTY2NTk0NzcuMzAuMC4w';
-  
+
   static const double kScreenWidthDivider = 0.055;
   static const double kScreenDividerThickness = 2.0;
   static const double kLogoSize = 0.048;

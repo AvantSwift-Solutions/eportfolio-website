@@ -22,10 +22,7 @@ class AboutAss {
     final index = data['index'];
 
     return AboutAss(
-        name: name,
-        index: index,
-        description: description,
-        imageURL: imageURL);
+        name: name, index: index, description: description, imageURL: imageURL);
   }
 
   Map<String, dynamic> toMap() {
