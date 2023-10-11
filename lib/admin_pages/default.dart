@@ -84,7 +84,8 @@ class DefaultPageState extends State<DefaultPage> {
   );
 
   static const double mobileWidthThreshold = 1200;
-
+  static const double mobileHeightThreshold = 600;
+  
   static const double maxAnalyticSize = 100;
   static const double valueAnalyticRatio = 3;
   static const double iconAnalyticRatio = 3;
@@ -148,10 +149,9 @@ class DefaultPageState extends State<DefaultPage> {
               navbarFontSize +
               titleFontSize);
 
-      if (bc.maxWidth > mobileWidthThreshold) {
+      if (bc.maxWidth > mobileWidthThreshold && bc.maxHeight > mobileHeightThreshold) {
         AdminViewDialogStyles.increaseEditSectionButtonPadding();
-      }
-      if (bc.maxWidth < mobileWidthThreshold) {
+      } else {
         editorButtonsWidth = min(800, bc.maxWidth);
         interEditorButtonsSpacing = SizedBox(height: bc.maxHeight * 0.03);
         interAnalysticCardsSpacing = interEditorButtonsSpacing;
@@ -267,7 +267,7 @@ class DefaultPageState extends State<DefaultPage> {
                               fontSize: valueAnalyticRatio * maxAnalyticSize,
                               fontWeight: FontWeight.bold)),
                       Text(
-                          (bc.maxWidth > mobileWidthThreshold)
+                          (bc.maxWidth > mobileWidthThreshold && bc.maxHeight > mobileHeightThreshold)
                               ? 'ePortfolio views last week'
                               : 'Views last week',
                           style: const TextStyle(
@@ -304,7 +304,7 @@ class DefaultPageState extends State<DefaultPage> {
                               fontSize: valueAnalyticRatio * maxAnalyticSize,
                               fontWeight: FontWeight.bold)),
                       Text(
-                          (bc.maxWidth > mobileWidthThreshold)
+                          (bc.maxWidth > mobileWidthThreshold && bc.maxHeight > mobileHeightThreshold)
                               ? 'Messages in the last month'
                               : 'Messages last month',
                           style: const TextStyle(
@@ -341,7 +341,7 @@ class DefaultPageState extends State<DefaultPage> {
                               fontSize: valueAnalyticRatio * maxAnalyticSize,
                               fontWeight: FontWeight.bold)),
                       Text(
-                          (bc.maxWidth > mobileWidthThreshold)
+                          (bc.maxWidth > mobileWidthThreshold && bc.maxHeight > mobileHeightThreshold)
                               ? 'Days since last ePortfolio edit'
                               : 'Days since last edit',
                           style: const TextStyle(
@@ -454,7 +454,7 @@ class DefaultPageState extends State<DefaultPage> {
         ),
       );
 
-      if (bc.maxWidth > mobileWidthThreshold) {
+      if (bc.maxWidth > mobileWidthThreshold && bc.maxHeight > mobileHeightThreshold) {
         return Scaffold(
           body: SizedBox(
               height: bc.maxHeight,
