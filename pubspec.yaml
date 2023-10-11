@@ -98,6 +98,7 @@ flutter:
     - assets/logo-no-background.png
     - assets/email_icon.svg
     - assets/password_icon.svg
+    - assets/menu-navigation.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
