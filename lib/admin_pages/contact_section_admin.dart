@@ -55,10 +55,7 @@ class _ContactSectionAdminState extends State<ContactSectionAdmin> {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     String title, successMessage, errorMessage;
-    title = MediaQuery.of(context).size.width >
-            AdminViewDialogStyles.showDialogWidth
-        ? 'Edit Contact Section Info                  '
-        : 'Edit Contact Section Info';
+    title = 'Edit Contact Section Info';
     successMessage = 'Contact Section info updated successfully';
     errorMessage = 'Error updating Contact Section info';
 
@@ -77,25 +74,9 @@ class _ContactSectionAdminState extends State<ContactSectionAdmin> {
                       padding: AdminViewDialogStyles.titleContPadding,
                       color: AdminViewDialogStyles.bgColor,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          FittedBox(
-                              child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(title),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: IconButton(
-                                  icon: const Icon(Icons.close),
-                                  iconSize: AdminViewDialogStyles.closeIconSize,
-                                  hoverColor: Colors.transparent,
-                                  onPressed: () {
-                                    Navigator.of(dialogContext).pop();
-                                  },
-                                ),
-                              ),
-                            ],
-                          )),
+                          FittedBox(child: Text(title)),
                           const Divider()
                         ],
                       )),
@@ -177,54 +158,105 @@ class _ContactSectionAdminState extends State<ContactSectionAdmin> {
                       padding: AdminViewDialogStyles.actionsContPadding,
                       color: AdminViewDialogStyles.bgColor,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           const Divider(),
                           const SizedBox(
                               height: AdminViewDialogStyles.listSpacing),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              ElevatedButton(
-                                style:
-                                    AdminViewDialogStyles.elevatedButtonStyle,
-                                onPressed: () async {
-                                  if (formKey.currentState!.validate()) {
-                                    await AnalyticController.wasEdited(
-                                        AnalyticRepoService());
-                                    formKey.currentState!.save();
-                                    bool? isSuccess = await _adminController
-                                        .updateContactSectionData(
-                                            contactSectionData);
-                                    if (!mounted) return;
-                                    if (isSuccess != null && isSuccess) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(content: Text(successMessage)),
-                                      );
-                                    } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(content: Text(errorMessage)),
-                                      );
+                          if (MediaQuery.of(context).size.width >=
+                              AdminViewDialogStyles.fitOptionsThreshold)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                ElevatedButton(
+                                  style:
+                                      AdminViewDialogStyles.elevatedButtonStyle,
+                                  onPressed: () async {
+                                    if (formKey.currentState!.validate()) {
+                                      await AnalyticController.wasEdited(
+                                          AnalyticRepoService());
+                                      formKey.currentState!.save();
+                                      bool? isSuccess = await _adminController
+                                          .updateContactSectionData(
+                                              contactSectionData);
+                                      if (!mounted) return;
+                                      if (isSuccess != null && isSuccess) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                              content: Text(successMessage)),
+                                        );
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(content: Text(errorMessage)),
+                                        );
+                                      }
+                                      Navigator.of(dialogContext).pop();
                                     }
+                                  },
+                                  child: Text('Save',
+                                      style: AdminViewDialogStyles
+                                          .buttonTextStyle),
+                                ),
+                                TextButton(
+                                  style: AdminViewDialogStyles.textButtonStyle,
+                                  onPressed: () {
                                     Navigator.of(dialogContext).pop();
-                                  }
-                                },
-                                child: Text('Save',
-                                    style:
-                                        AdminViewDialogStyles.buttonTextStyle),
-                              ),
-                              TextButton(
-                                style: AdminViewDialogStyles.textButtonStyle,
-                                onPressed: () {
-                                  Navigator.of(dialogContext).pop();
-                                },
-                                child: Text('Cancel',
-                                    style:
-                                        AdminViewDialogStyles.buttonTextStyle),
-                              ),
-                            ],
-                          ),
+                                  },
+                                  child: Text('Cancel',
+                                      style: AdminViewDialogStyles
+                                          .buttonTextStyle),
+                                ),
+                              ],
+                            ),
+                          if (MediaQuery.of(context).size.width <
+                              AdminViewDialogStyles.fitOptionsThreshold)
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                ElevatedButton(
+                                  style:
+                                      AdminViewDialogStyles.elevatedButtonStyle,
+                                  onPressed: () async {
+                                    if (formKey.currentState!.validate()) {
+                                      await AnalyticController.wasEdited(
+                                          AnalyticRepoService());
+                                      formKey.currentState!.save();
+                                      bool? isSuccess = await _adminController
+                                          .updateContactSectionData(
+                                              contactSectionData);
+                                      if (!mounted) return;
+                                      if (isSuccess != null && isSuccess) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                              content: Text(successMessage)),
+                                        );
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(content: Text(errorMessage)),
+                                        );
+                                      }
+                                      Navigator.of(dialogContext).pop();
+                                    }
+                                  },
+                                  child: Text('Save',
+                                      style: AdminViewDialogStyles
+                                          .buttonTextStyle),
+                                ),
+                                TextButton(
+                                  style: AdminViewDialogStyles.textButtonStyle,
+                                  onPressed: () {
+                                    Navigator.of(dialogContext).pop();
+                                  },
+                                  child: Text('Cancel',
+                                      style: AdminViewDialogStyles
+                                          .buttonTextStyle),
+                                ),
+                              ],
+                            ),
                         ],
                       ),
                     ),

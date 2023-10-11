@@ -65,10 +65,7 @@ class _LandingPageAdminState extends State<LandingPageAdmin> {
     bool noImage = false;
 
     String title, successMessage, errorMessage;
-    title = MediaQuery.of(context).size.width >
-            AdminViewDialogStyles.showDialogWidth
-        ? 'Edit Landing Page Info                       '
-        : 'Edit Landing Page Info';
+    title = 'Edit Landing Page Info';
     successMessage = 'Landing Page info updated successfully';
     errorMessage = 'Error updating Landing Page info';
 
@@ -87,25 +84,9 @@ class _LandingPageAdminState extends State<LandingPageAdmin> {
                       padding: AdminViewDialogStyles.titleContPadding,
                       color: AdminViewDialogStyles.bgColor,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          FittedBox(
-                              child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(title),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: IconButton(
-                                  icon: const Icon(Icons.close),
-                                  iconSize: AdminViewDialogStyles.closeIconSize,
-                                  hoverColor: Colors.transparent,
-                                  onPressed: () {
-                                    Navigator.of(dialogContext).pop();
-                                  },
-                                ),
-                              ),
-                            ],
-                          )),
+                          FittedBox(child: Text(title)),
                           const Divider()
                         ],
                       )),
@@ -239,8 +220,8 @@ class _LandingPageAdminState extends State<LandingPageAdmin> {
                                             const Icon(Icons.add),
                                             Text(
                                               landingPageData.imageURL == ''
-                                                  ? 'Add Image'
-                                                  : 'Change Image',
+                                                  ? 'Add'
+                                                  : 'Change',
                                               style: AdminViewDialogStyles
                                                   .buttonTextStyle,
                                             )
@@ -264,69 +245,137 @@ class _LandingPageAdminState extends State<LandingPageAdmin> {
                       padding: AdminViewDialogStyles.actionsContPadding,
                       color: AdminViewDialogStyles.bgColor,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           const Divider(),
                           const SizedBox(
                               height: AdminViewDialogStyles.listSpacing),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              ElevatedButton(
-                                style:
-                                    AdminViewDialogStyles.elevatedButtonStyle,
-                                onPressed: () async {
-                                  if (landingPageData.imageURL == '' &&
-                                      pickedImageBytes == null) {
-                                    noImage = true;
-                                    setState(() {});
-                                  }
-                                  if (formKey.currentState!.validate() &&
-                                      !noImage) {
-                                    await AnalyticController.wasEdited(
-                                        AnalyticRepoService());
-                                    formKey.currentState!.save();
-                                    if (pickedImageBytes != null) {
-                                      String? imageURL =
-                                          await UploadImageAdminController()
-                                              .uploadImageAndGetURL(
-                                                  pickedImageBytes!,
-                                                  'landing_page_image.jpg');
-                                      if (imageURL != null) {
-                                        landingPageData.imageURL = imageURL;
+                          if (MediaQuery.of(context).size.width >=
+                              AdminViewDialogStyles.fitOptionsThreshold)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                ElevatedButton(
+                                  style:
+                                      AdminViewDialogStyles.elevatedButtonStyle,
+                                  onPressed: () async {
+                                    if (landingPageData.imageURL == '' &&
+                                        pickedImageBytes == null) {
+                                      noImage = true;
+                                      setState(() {});
+                                    }
+                                    if (formKey.currentState!.validate() &&
+                                        !noImage) {
+                                      await AnalyticController.wasEdited(
+                                          AnalyticRepoService());
+                                      formKey.currentState!.save();
+                                      if (pickedImageBytes != null) {
+                                        String? imageURL =
+                                            await UploadImageAdminController()
+                                                .uploadImageAndGetURL(
+                                                    pickedImageBytes!,
+                                                    'landing_page_image.jpg');
+                                        if (imageURL != null) {
+                                          landingPageData.imageURL = imageURL;
+                                        }
                                       }
+                                      bool? isSuccess = await _adminController
+                                          .updateLandingPageData(
+                                              landingPageData);
+                                      if (!mounted) return;
+                                      if (isSuccess != null && isSuccess) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                              content: Text(successMessage)),
+                                        );
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(content: Text(errorMessage)),
+                                        );
+                                      }
+                                      Navigator.of(dialogContext).pop();
                                     }
-                                    bool? isSuccess = await _adminController
-                                        .updateLandingPageData(landingPageData);
-                                    if (!mounted) return;
-                                    if (isSuccess != null && isSuccess) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(content: Text(successMessage)),
-                                      );
-                                    } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(content: Text(errorMessage)),
-                                      );
-                                    }
+                                  },
+                                  child: Text('Save',
+                                      style: AdminViewDialogStyles
+                                          .buttonTextStyle),
+                                ),
+                                TextButton(
+                                  style: AdminViewDialogStyles.textButtonStyle,
+                                  onPressed: () {
                                     Navigator.of(dialogContext).pop();
-                                  }
-                                },
-                                child: Text('Save',
-                                    style:
-                                        AdminViewDialogStyles.buttonTextStyle),
-                              ),
-                              TextButton(
-                                style: AdminViewDialogStyles.textButtonStyle,
-                                onPressed: () {
-                                  Navigator.of(dialogContext).pop();
-                                },
-                                child: Text('Cancel',
-                                    style:
-                                        AdminViewDialogStyles.buttonTextStyle),
-                              ),
-                            ],
-                          ),
+                                  },
+                                  child: Text('Cancel',
+                                      style: AdminViewDialogStyles
+                                          .buttonTextStyle),
+                                ),
+                              ],
+                            ),
+                          if (MediaQuery.of(context).size.width <
+                              AdminViewDialogStyles.fitOptionsThreshold)
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                ElevatedButton(
+                                  style:
+                                      AdminViewDialogStyles.elevatedButtonStyle,
+                                  onPressed: () async {
+                                    if (landingPageData.imageURL == '' &&
+                                        pickedImageBytes == null) {
+                                      noImage = true;
+                                      setState(() {});
+                                    }
+                                    if (formKey.currentState!.validate() &&
+                                        !noImage) {
+                                      await AnalyticController.wasEdited(
+                                          AnalyticRepoService());
+                                      formKey.currentState!.save();
+                                      if (pickedImageBytes != null) {
+                                        String? imageURL =
+                                            await UploadImageAdminController()
+                                                .uploadImageAndGetURL(
+                                                    pickedImageBytes!,
+                                                    'landing_page_image.jpg');
+                                        if (imageURL != null) {
+                                          landingPageData.imageURL = imageURL;
+                                        }
+                                      }
+                                      bool? isSuccess = await _adminController
+                                          .updateLandingPageData(
+                                              landingPageData);
+                                      if (!mounted) return;
+                                      if (isSuccess != null && isSuccess) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                              content: Text(successMessage)),
+                                        );
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(content: Text(errorMessage)),
+                                        );
+                                      }
+                                      Navigator.of(dialogContext).pop();
+                                    }
+                                  },
+                                  child: Text('Save',
+                                      style: AdminViewDialogStyles
+                                          .buttonTextStyle),
+                                ),
+                                TextButton(
+                                  style: AdminViewDialogStyles.textButtonStyle,
+                                  onPressed: () {
+                                    Navigator.of(dialogContext).pop();
+                                  },
+                                  child: Text('Cancel',
+                                      style: AdminViewDialogStyles
+                                          .buttonTextStyle),
+                                ),
+                              ],
+                            ),
                         ],
                       ),
                     ),

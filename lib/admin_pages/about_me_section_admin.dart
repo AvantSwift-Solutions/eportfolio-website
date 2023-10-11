@@ -68,10 +68,7 @@ class _AboutMeSectionAdminState extends State<AboutMeSectionAdmin> {
     bool noImage = false;
 
     String title, successMessage, errorMessage;
-    title = MediaQuery.of(context).size.width >
-            AdminViewDialogStyles.showDialogWidth
-        ? 'Edit About Me Info                             '
-        : 'Edit About Me Info';
+    title = 'Edit About Me Info';
     successMessage = 'About Me info updated successfully';
     errorMessage = 'Error updating About Me info';
 
@@ -90,25 +87,9 @@ class _AboutMeSectionAdminState extends State<AboutMeSectionAdmin> {
                       padding: AdminViewDialogStyles.titleContPadding,
                       color: AdminViewDialogStyles.bgColor,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          FittedBox(
-                              child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(title),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: IconButton(
-                                  icon: const Icon(Icons.close),
-                                  iconSize: AdminViewDialogStyles.closeIconSize,
-                                  hoverColor: Colors.transparent,
-                                  onPressed: () {
-                                    Navigator.of(dialogContext).pop();
-                                  },
-                                ),
-                              ),
-                            ],
-                          )),
+                          FittedBox(child: Text(title)),
                           const Divider()
                         ],
                       )),
@@ -193,8 +174,8 @@ class _AboutMeSectionAdminState extends State<AboutMeSectionAdmin> {
                                             const Icon(Icons.add),
                                             Text(
                                               aboutMeData.imageURL == ''
-                                                  ? 'Add Image'
-                                                  : 'Change Image',
+                                                  ? 'Add'
+                                                  : 'Change',
                                               style: AdminViewDialogStyles
                                                   .buttonTextStyle,
                                             )
@@ -218,70 +199,139 @@ class _AboutMeSectionAdminState extends State<AboutMeSectionAdmin> {
                       padding: AdminViewDialogStyles.actionsContPadding,
                       color: AdminViewDialogStyles.bgColor,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           const Divider(),
                           const SizedBox(
                               height: AdminViewDialogStyles.listSpacing),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              ElevatedButton(
-                                style:
-                                    AdminViewDialogStyles.elevatedButtonStyle,
-                                onPressed: () async {
-                                  if (aboutMeData.imageURL == '' &&
-                                      pickedImageBytes == null) {
-                                    noImage = true;
-                                    setState(() {});
-                                  }
-                                  if (formKey.currentState!.validate() &&
-                                      !noImage) {
-                                    await AnalyticController.wasEdited(
-                                        AnalyticRepoService());
-                                    DefaultPageState.setEdit();
-                                    formKey.currentState!.save();
-                                    if (pickedImageBytes != null) {
-                                      String? imageURL =
-                                          await UploadImageAdminController()
-                                              .uploadImageAndGetURL(
-                                                  pickedImageBytes!,
-                                                  'about_me_image.jpg');
-                                      if (imageURL != null) {
-                                        aboutMeData.imageURL = imageURL;
+                          if (MediaQuery.of(context).size.width >=
+                              AdminViewDialogStyles.fitOptionsThreshold)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                ElevatedButton(
+                                  style:
+                                      AdminViewDialogStyles.elevatedButtonStyle,
+                                  onPressed: () async {
+                                    if (aboutMeData.imageURL == '' &&
+                                        pickedImageBytes == null) {
+                                      noImage = true;
+                                      setState(() {});
+                                    }
+                                    if (formKey.currentState!.validate() &&
+                                        !noImage) {
+                                      await AnalyticController.wasEdited(
+                                          AnalyticRepoService());
+                                      DefaultPageState.setEdit();
+                                      formKey.currentState!.save();
+                                      if (pickedImageBytes != null) {
+                                        String? imageURL =
+                                            await UploadImageAdminController()
+                                                .uploadImageAndGetURL(
+                                                    pickedImageBytes!,
+                                                    'about_me_image.jpg');
+                                        if (imageURL != null) {
+                                          aboutMeData.imageURL = imageURL;
+                                        }
                                       }
+                                      bool? isSuccess = await _adminController
+                                          .updateAboutMeSectionData(
+                                              aboutMeData);
+                                      if (!mounted) return;
+                                      if (isSuccess != null && isSuccess) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                              content: Text(successMessage)),
+                                        );
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(content: Text(errorMessage)),
+                                        );
+                                      }
+                                      Navigator.of(dialogContext).pop();
                                     }
-                                    bool? isSuccess = await _adminController
-                                        .updateAboutMeSectionData(aboutMeData);
-                                    if (!mounted) return;
-                                    if (isSuccess != null && isSuccess) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(content: Text(successMessage)),
-                                      );
-                                    } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(content: Text(errorMessage)),
-                                      );
-                                    }
+                                  },
+                                  child: Text('Save',
+                                      style: AdminViewDialogStyles
+                                          .buttonTextStyle),
+                                ),
+                                TextButton(
+                                  style: AdminViewDialogStyles.textButtonStyle,
+                                  onPressed: () {
                                     Navigator.of(dialogContext).pop();
-                                  }
-                                },
-                                child: Text('Save',
-                                    style:
-                                        AdminViewDialogStyles.buttonTextStyle),
-                              ),
-                              TextButton(
-                                style: AdminViewDialogStyles.textButtonStyle,
-                                onPressed: () {
-                                  Navigator.of(dialogContext).pop();
-                                },
-                                child: Text('Cancel',
-                                    style:
-                                        AdminViewDialogStyles.buttonTextStyle),
-                              ),
-                            ],
-                          ),
+                                  },
+                                  child: Text('Cancel',
+                                      style: AdminViewDialogStyles
+                                          .buttonTextStyle),
+                                ),
+                              ],
+                            ),
+                          if (MediaQuery.of(context).size.width <
+                              AdminViewDialogStyles.fitOptionsThreshold)
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                ElevatedButton(
+                                  style:
+                                      AdminViewDialogStyles.elevatedButtonStyle,
+                                  onPressed: () async {
+                                    if (aboutMeData.imageURL == '' &&
+                                        pickedImageBytes == null) {
+                                      noImage = true;
+                                      setState(() {});
+                                    }
+                                    if (formKey.currentState!.validate() &&
+                                        !noImage) {
+                                      await AnalyticController.wasEdited(
+                                          AnalyticRepoService());
+                                      DefaultPageState.setEdit();
+                                      formKey.currentState!.save();
+                                      if (pickedImageBytes != null) {
+                                        String? imageURL =
+                                            await UploadImageAdminController()
+                                                .uploadImageAndGetURL(
+                                                    pickedImageBytes!,
+                                                    'about_me_image.jpg');
+                                        if (imageURL != null) {
+                                          aboutMeData.imageURL = imageURL;
+                                        }
+                                      }
+                                      bool? isSuccess = await _adminController
+                                          .updateAboutMeSectionData(
+                                              aboutMeData);
+                                      if (!mounted) return;
+                                      if (isSuccess != null && isSuccess) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                              content: Text(successMessage)),
+                                        );
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(content: Text(errorMessage)),
+                                        );
+                                      }
+                                      Navigator.of(dialogContext).pop();
+                                    }
+                                  },
+                                  child: Text('Save',
+                                      style: AdminViewDialogStyles
+                                          .buttonTextStyle),
+                                ),
+                                TextButton(
+                                  style: AdminViewDialogStyles.textButtonStyle,
+                                  onPressed: () {
+                                    Navigator.of(dialogContext).pop();
+                                  },
+                                  child: Text('Cancel',
+                                      style: AdminViewDialogStyles
+                                          .buttonTextStyle),
+                                ),
+                              ],
+                            ),
                         ],
                       ),
                     ),

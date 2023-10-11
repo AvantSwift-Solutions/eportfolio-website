@@ -325,57 +325,113 @@ class _ISkillSectionAdminState extends State<ISkillSectionAdmin> {
                       padding: AdminViewDialogStyles.actionsContPadding,
                       color: AdminViewDialogStyles.bgColor,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           const Divider(),
                           const SizedBox(
                               height: AdminViewDialogStyles.listSpacing),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              ElevatedButton(
-                                style:
-                                    AdminViewDialogStyles.elevatedButtonStyle,
-                                onPressed: () async {
-                                  if (formKey.currentState!.validate()) {
-                                    await AnalyticController.wasEdited(
-                                        AnalyticRepoService());
-                                    setState(() {});
-                                    formKey.currentState!.save();
-                                    iskill.creationTimestamp = Timestamp.now();
-                                    bool isSuccess =
-                                        await onISkillUpdated(iskill);
-                                    if (!mounted) return;
-                                    if (isSuccess) {
-                                      ScaffoldMessenger.of(parentContext)
-                                          .showSnackBar(
-                                        SnackBar(content: Text(successMessage)),
-                                      );
-                                    } else {
-                                      ScaffoldMessenger.of(parentContext)
-                                          .showSnackBar(
-                                        SnackBar(content: Text(errorMessage)),
-                                      );
+                          if (MediaQuery.of(context).size.width >=
+                              AdminViewDialogStyles.fitOptionsThreshold)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                ElevatedButton(
+                                  style:
+                                      AdminViewDialogStyles.elevatedButtonStyle,
+                                  onPressed: () async {
+                                    if (formKey.currentState!.validate()) {
+                                      await AnalyticController.wasEdited(
+                                          AnalyticRepoService());
+                                      setState(() {});
+                                      formKey.currentState!.save();
+                                      iskill.creationTimestamp =
+                                          Timestamp.now();
+                                      bool isSuccess =
+                                          await onISkillUpdated(iskill);
+                                      if (!mounted) return;
+                                      if (isSuccess) {
+                                        ScaffoldMessenger.of(parentContext)
+                                            .showSnackBar(
+                                          SnackBar(
+                                              content: Text(successMessage)),
+                                        );
+                                      } else {
+                                        ScaffoldMessenger.of(parentContext)
+                                            .showSnackBar(
+                                          SnackBar(content: Text(errorMessage)),
+                                        );
+                                      }
+                                      Navigator.of(dialogContext).pop();
+                                      Navigator.of(parentContext).pop();
+                                      _showList(parentContext); // Show new list
                                     }
+                                  },
+                                  child: Text('Save',
+                                      style: AdminViewDialogStyles
+                                          .buttonTextStyle),
+                                ),
+                                TextButton(
+                                  style: AdminViewDialogStyles.textButtonStyle,
+                                  onPressed: () {
                                     Navigator.of(dialogContext).pop();
-                                    Navigator.of(parentContext).pop();
-                                    _showList(parentContext); // Show new list
-                                  }
-                                },
-                                child: Text('Save',
-                                    style:
-                                        AdminViewDialogStyles.buttonTextStyle),
-                              ),
-                              TextButton(
-                                style: AdminViewDialogStyles.textButtonStyle,
-                                onPressed: () {
-                                  Navigator.of(dialogContext).pop();
-                                },
-                                child: Text('Cancel',
-                                    style:
-                                        AdminViewDialogStyles.buttonTextStyle),
-                              ),
-                            ],
-                          ),
+                                  },
+                                  child: Text('Cancel',
+                                      style: AdminViewDialogStyles
+                                          .buttonTextStyle),
+                                ),
+                              ],
+                            ),
+                          if (MediaQuery.of(context).size.width <
+                              AdminViewDialogStyles.fitOptionsThreshold)
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                ElevatedButton(
+                                  style:
+                                      AdminViewDialogStyles.elevatedButtonStyle,
+                                  onPressed: () async {
+                                    if (formKey.currentState!.validate()) {
+                                      await AnalyticController.wasEdited(
+                                          AnalyticRepoService());
+                                      setState(() {});
+                                      formKey.currentState!.save();
+                                      iskill.creationTimestamp =
+                                          Timestamp.now();
+                                      bool isSuccess =
+                                          await onISkillUpdated(iskill);
+                                      if (!mounted) return;
+                                      if (isSuccess) {
+                                        ScaffoldMessenger.of(parentContext)
+                                            .showSnackBar(
+                                          SnackBar(
+                                              content: Text(successMessage)),
+                                        );
+                                      } else {
+                                        ScaffoldMessenger.of(parentContext)
+                                            .showSnackBar(
+                                          SnackBar(content: Text(errorMessage)),
+                                        );
+                                      }
+                                      Navigator.of(dialogContext).pop();
+                                      Navigator.of(parentContext).pop();
+                                      _showList(parentContext); // Show new list
+                                    }
+                                  },
+                                  child: Text('Save',
+                                      style: AdminViewDialogStyles
+                                          .buttonTextStyle),
+                                ),
+                                TextButton(
+                                  style: AdminViewDialogStyles.textButtonStyle,
+                                  onPressed: () {
+                                    Navigator.of(dialogContext).pop();
+                                  },
+                                  child: Text('Cancel',
+                                      style: AdminViewDialogStyles
+                                          .buttonTextStyle),
+                                ),
+                              ],
+                            ),
                         ],
                       ),
                     ),
@@ -416,51 +472,106 @@ class _ISkillSectionAdminState extends State<ISkillSectionAdmin> {
                     ],
                   ),
                   actions: <Widget>[
-                    Padding(
-                      padding: AdminViewDialogStyles.deleteActionsDialogPadding,
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            ElevatedButton(
-                              style: AdminViewDialogStyles.elevatedButtonStyle,
-                              onPressed: () async {
-                                final deleted = await x.delete() ?? false;
-                                if (deleted) {
-                                  await AnalyticController.wasEdited(
-                                      AnalyticRepoService());
-                                  iskills.remove(x);
+                    if (MediaQuery.of(context).size.width >=
+                        AdminViewDialogStyles.stackOptionsThreshold)
+                      Padding(
+                        padding:
+                            AdminViewDialogStyles.deleteActionsDialogPadding,
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              ElevatedButton(
+                                style:
+                                    AdminViewDialogStyles.elevatedButtonStyle,
+                                onPressed: () async {
+                                  final deleted = await x.delete() ?? false;
+                                  if (deleted) {
+                                    await AnalyticController.wasEdited(
+                                        AnalyticRepoService());
+                                    if (!mounted) return;
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: Text(
+                                              '$name deleted successfully')),
+                                    );
+                                  } else {
+                                    if (!mounted) return;
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content:
+                                              Text('Failed to delete $name')),
+                                    );
+                                  }
                                   if (!mounted) return;
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content:
-                                            Text('$name deleted successfully')),
-                                  );
-                                } else {
+                                  Navigator.of(dialogContext).pop();
+                                  Navigator.of(parentContext).pop();
+                                  _showList(parentContext);
+                                },
+                                child: Text('Delete',
+                                    style:
+                                        AdminViewDialogStyles.buttonTextStyle),
+                              ),
+                              TextButton(
+                                style: AdminViewDialogStyles.textButtonStyle,
+                                onPressed: () {
+                                  Navigator.of(dialogContext).pop();
+                                },
+                                child: Text('Cancel',
+                                    style:
+                                        AdminViewDialogStyles.buttonTextStyle),
+                              ),
+                            ]),
+                      ),
+                    if (MediaQuery.of(context).size.width <
+                        AdminViewDialogStyles.stackOptionsThreshold)
+                      Padding(
+                        padding:
+                            AdminViewDialogStyles.deleteActionsDialogPadding,
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              ElevatedButton(
+                                style:
+                                    AdminViewDialogStyles.elevatedButtonStyle,
+                                onPressed: () async {
+                                  final deleted = await x.delete() ?? false;
+                                  if (deleted) {
+                                    await AnalyticController.wasEdited(
+                                        AnalyticRepoService());
+                                    if (!mounted) return;
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: Text(
+                                              '$name deleted successfully')),
+                                    );
+                                  } else {
+                                    if (!mounted) return;
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content:
+                                              Text('Failed to delete $name')),
+                                    );
+                                  }
                                   if (!mounted) return;
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content:
-                                            Text('Failed to delete $name')),
-                                  );
-                                }
-                                if (!mounted) return;
-                                Navigator.of(dialogContext).pop();
-                                Navigator.of(parentContext).pop();
-                                _showList(parentContext);
-                              },
-                              child: Text('Delete',
-                                  style: AdminViewDialogStyles.buttonTextStyle),
-                            ),
-                            TextButton(
-                              style: AdminViewDialogStyles.textButtonStyle,
-                              onPressed: () {
-                                Navigator.of(dialogContext).pop();
-                              },
-                              child: Text('Cancel',
-                                  style: AdminViewDialogStyles.buttonTextStyle),
-                            ),
-                          ]),
-                    )
+                                  Navigator.of(dialogContext).pop();
+                                  Navigator.of(parentContext).pop();
+                                  _showList(parentContext);
+                                },
+                                child: Text('Delete',
+                                    style:
+                                        AdminViewDialogStyles.buttonTextStyle),
+                              ),
+                              TextButton(
+                                style: AdminViewDialogStyles.textButtonStyle,
+                                onPressed: () {
+                                  Navigator.of(dialogContext).pop();
+                                },
+                                child: Text('Cancel',
+                                    style:
+                                        AdminViewDialogStyles.buttonTextStyle),
+                              ),
+                            ]),
+                      ),
                   ],
                 ),
               ),
