@@ -622,53 +622,48 @@ class LoginPageState extends State<LoginPage> {
             return Theme(
               data: AdminViewDialogStyles.dialogThemeData,
               child: AlertDialog(
-                titlePadding: AdminViewDialogStyles.titleDialogPadding,
-                contentPadding: AdminViewDialogStyles.contentDialogPadding,
-                actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
-                title: Container(
-                  padding: AdminViewDialogStyles.titleContPadding,
-                  color: AdminViewDialogStyles.bgColor,
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  titlePadding: AdminViewDialogStyles.titleDialogPadding,
+                  contentPadding: AdminViewDialogStyles.contentDialogPadding,
+                  actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
+                  title: Container(
+                      padding: AdminViewDialogStyles.titleContPadding,
+                      color: AdminViewDialogStyles.bgColor,
+                      child: Column(
                         children: [
-                          const Text('Incorrect Email or Password.'),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: IconButton(
-                              icon: const Icon(Icons.close),
-                              iconSize: AdminViewDialogStyles.closeIconSize,
-                              hoverColor: Colors.transparent,
-                              onPressed: () {
-                                Navigator.of(dialogContext).pop();
-                              },
-                            ),
-                          ),
+                          FittedBox(
+                              child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('Incorrect Email or Password'),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: IconButton(
+                                  icon: const Icon(Icons.close),
+                                  iconSize: AdminViewDialogStyles.closeIconSize,
+                                  hoverColor: Colors.transparent,
+                                  onPressed: () {
+                                    Navigator.of(dialogContext).pop();
+                                  },
+                                ),
+                              ),
+                            ],
+                          )),
+                          const Divider()
                         ],
-                      ),
-                      const SizedBox(
-                          height: LoginPage
-                              .largeSizedBoxHeight), // Add some spacing
-                      const Divider(),
-                      const SizedBox(
-                          height: LoginPage
-                              .largeSizedBoxHeight), // Add more spacing
-                      SizedBox(
-                        height:
-                            AdminViewDialogStyles.incorrectLoginDialogHeight,
-                        width: AdminViewDialogStyles
-                            .incorrectLoginDialogWidth, // Adjust the width as needed
-                        child: Text(
-                          "Please re-enter login credentials or click 'Forgot my password'.",
-                          style: AdminViewDialogStyles.buttonTextStyle,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                content: const SizedBox(),
-              ),
+                      )),
+                  content: const SizedBox(
+                    width:
+                        1, // Width is set to 1 to make it fit the title not the content
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                            'Please re-enter login credentials or click \'Forgot my password\'.'),
+                        SizedBox(height: LoginPage.forgotPasswordPadding),
+                      ],
+                    ),
+                  )),
             );
           },
         );

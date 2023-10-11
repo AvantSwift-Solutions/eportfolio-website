@@ -14,11 +14,10 @@ class AboutAssDialog extends StatefulWidget {
   const AboutAssDialog({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _AboutAssDialogState createState() => _AboutAssDialogState();
+  AboutAssDialogState createState() => AboutAssDialogState();
 }
 
-class _AboutAssDialogState extends State<AboutAssDialog> {
+class AboutAssDialogState extends State<AboutAssDialog> {
   final AboutAssSectionAdminController _controller =
       AboutAssSectionAdminController(AboutAssRepoService());
 
@@ -70,33 +69,33 @@ class _AboutAssDialogState extends State<AboutAssDialog> {
         contentPadding: AdminViewDialogStyles.contentDialogPadding,
         actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
         title: Container(
-          padding: AdminViewDialogStyles.titleContPadding,
-          color: AdminViewDialogStyles.bgColor,
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('About AvantSwift Solutions'),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                      icon: const Icon(Icons.close),
-                      iconSize: AdminViewDialogStyles.closeIconSize,
-                      hoverColor: Colors.transparent,
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
+            padding: AdminViewDialogStyles.titleContPadding,
+            color: AdminViewDialogStyles.bgColor,
+            child: FittedBox(
+                child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('About AvantSwift Solutions'),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: IconButton(
+                        icon: const Icon(Icons.close),
+                        iconSize: AdminViewDialogStyles.closeIconSize,
+                        hoverColor: Colors.transparent,
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: AboutAssDialog.largeSizedBoxHeight),
-              const Divider(),
-              const SizedBox(height: AboutAssDialog.largeSizedBoxHeight),
-            ],
-          ),
-        ),
+                  ],
+                ),
+                const SizedBox(height: AboutAssDialog.largeSizedBoxHeight),
+                const Divider(),
+                const SizedBox(height: AboutAssDialog.largeSizedBoxHeight),
+              ],
+            ))),
         content: SizedBox(
           height: AdminViewDialogStyles.aboutAssDialogHeight,
           width: AdminViewDialogStyles.aboutAssDialogWidth,

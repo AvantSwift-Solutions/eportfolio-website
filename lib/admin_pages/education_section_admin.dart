@@ -78,7 +78,8 @@ class _EducationSectionAdminState extends State<EducationSectionAdmin> {
                       children: [
                         MediaQuery.of(context).size.width >
                                 AdminViewDialogStyles.showDialogWidth
-                            ? const Text('Edit Education                  ')
+                            ? const Text(
+                                'Edit Education                       ')
                             : const Text('Edit Education'),
                         Align(
                           alignment: Alignment.topRight,
