@@ -69,53 +69,58 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: ResetPasswordScreen.smallSizedBoxHeight), // Add some spacing
+              const SizedBox(
+                  height: ResetPasswordScreen
+                      .smallSizedBoxHeight), // Add some spacing
               const Divider(),
-              const SizedBox(height: ResetPasswordScreen.smallSizedBoxHeight), // Add more spacing
+              const SizedBox(
+                  height: ResetPasswordScreen
+                      .smallSizedBoxHeight), // Add more spacing
             ],
           ),
         ),
         content: SizedBox(
-          height: AdminViewDialogStyles.forgotPasswordDialogHeight,
-          width: AdminViewDialogStyles.forgotPasswordDialogWidth,
-          child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
+            height: AdminViewDialogStyles.forgotPasswordDialogHeight,
+            width: AdminViewDialogStyles.forgotPasswordDialogWidth,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisAlignment:
+                        MainAxisAlignment.start, // Align text to the left
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start, // Align text to the left
-                        children: [
-                          Flexible(
-                            child: Text(
-                              "Click 'Send Email' to reset password.\nInstructions will be sent via email.",
-                              style: AdminViewDialogStyles.buttonTextStyle,
-                              textAlign: TextAlign.left,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: ResetPasswordScreen.largeSizedBoxHeight),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end, // Align button to the right
-                        children: [
-                          TextButton(
-                            onPressed: _isSending ? null : _sendEmail,
-                            style: AdminViewDialogStyles.elevatedButtonStyle,
-                            child: _isSending
-                                ? const CircularProgressIndicator()
-                                : Text(
-                                    'Send Email',
-                                    style: AdminViewDialogStyles.buttonTextStyle,
-                                  ),
-                          ),
-                        ],
+                      Flexible(
+                        child: Text(
+                          "Click 'Send Email' to reset password.\nInstructions will be sent via email.",
+                          style: AdminViewDialogStyles.buttonTextStyle,
+                          textAlign: TextAlign.left,
+                        ),
                       ),
                     ],
                   ),
-                )
-        ),
+                  const SizedBox(
+                      height: ResetPasswordScreen.largeSizedBoxHeight),
+                  Row(
+                    mainAxisAlignment:
+                        MainAxisAlignment.end, // Align button to the right
+                    children: [
+                      TextButton(
+                        onPressed: _isSending ? null : _sendEmail,
+                        style: AdminViewDialogStyles.elevatedButtonStyle,
+                        child: _isSending
+                            ? const CircularProgressIndicator()
+                            : Text(
+                                'Send Email',
+                                style: AdminViewDialogStyles.buttonTextStyle,
+                              ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            )),
       ),
     );
   }
-
 }

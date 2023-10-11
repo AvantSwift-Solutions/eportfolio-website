@@ -60,116 +60,122 @@ class _AboutAssDialogState extends State<AboutAssDialog> {
     });
   }
 
-@override
-Widget build(BuildContext context) {
-  return Theme(
-    // Apply the theme to the entire AlertDialog and its contents
-    data: AdminViewDialogStyles.dialogThemeData,
-    child: AlertDialog(
-      titlePadding: AdminViewDialogStyles.titleDialogPadding,
-      contentPadding: AdminViewDialogStyles.contentDialogPadding,
-      actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
-      title: Container(
-        padding: AdminViewDialogStyles.titleContPadding,
-        color: AdminViewDialogStyles.bgColor,
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text('About AvantSwift Solutions'),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: IconButton(
-                    icon: const Icon(Icons.close),
-                    iconSize: AdminViewDialogStyles.closeIconSize,
-                    hoverColor: Colors.transparent,
-                    onPressed: () {
-                      Navigator.of(context).pop();
+  @override
+  Widget build(BuildContext context) {
+    return Theme(
+      // Apply the theme to the entire AlertDialog and its contents
+      data: AdminViewDialogStyles.dialogThemeData,
+      child: AlertDialog(
+        titlePadding: AdminViewDialogStyles.titleDialogPadding,
+        contentPadding: AdminViewDialogStyles.contentDialogPadding,
+        actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
+        title: Container(
+          padding: AdminViewDialogStyles.titleContPadding,
+          color: AdminViewDialogStyles.bgColor,
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('About AvantSwift Solutions'),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                      icon: const Icon(Icons.close),
+                      iconSize: AdminViewDialogStyles.closeIconSize,
+                      hoverColor: Colors.transparent,
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: AboutAssDialog.largeSizedBoxHeight),
+              const Divider(),
+              const SizedBox(height: AboutAssDialog.largeSizedBoxHeight),
+            ],
+          ),
+        ),
+        content: SizedBox(
+          height: AdminViewDialogStyles.aboutAssDialogHeight,
+          width: AdminViewDialogStyles.aboutAssDialogWidth,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (_aboutAssList.isNotEmpty)
+                Expanded(
+                  child: PageView.builder(
+                    itemCount: _aboutAssList.length,
+                    controller: PageController(initialPage: _currentIndex),
+                    onPageChanged: (index) {
+                      setState(() {
+                        _currentIndex = index;
+                        _currentAboutAss = _aboutAssList[_currentIndex];
+                      });
+                    },
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding:
+                            const EdgeInsets.all(AboutAssDialog.generalPadding),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${_currentAboutAss.name}',
+                                    style:
+                                        AdminViewDialogStyles.buttonTextStyle,
+                                  ),
+                                  const SizedBox(
+                                      height:
+                                          AboutAssDialog.smallSizedBoxHeight),
+                                  Text(
+                                    '${_currentAboutAss.description}',
+                                    style:
+                                        AdminViewDialogStyles.buttonTextStyle,
+                                  ),
+                                  const SizedBox(
+                                      height:
+                                          AboutAssDialog.smallSizedBoxHeight),
+                                ],
+                              ),
+                            ),
+                            Image.network(
+                              _currentAboutAss.imageURL != null &&
+                                      _currentAboutAss.imageURL!.isNotEmpty
+                                  ? _currentAboutAss.imageURL!
+                                  : Constants.replaceImageURL,
+                              width: AboutAssDialog.imageWidth,
+                              height: AboutAssDialog.imageHeight,
+                              fit: BoxFit.cover,
+                            ),
+                          ],
+                        ),
+                      );
                     },
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(height: AboutAssDialog.largeSizedBoxHeight), 
-            const Divider(),
-            const SizedBox(height: AboutAssDialog.largeSizedBoxHeight), 
-          ],
-        ),
-      ),
-      content: SizedBox(
-        height: AdminViewDialogStyles.aboutAssDialogHeight,
-        width: AdminViewDialogStyles.aboutAssDialogWidth,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (_aboutAssList.isNotEmpty)
-              Expanded(
-                child: PageView.builder(
-                  itemCount: _aboutAssList.length,
-                  controller: PageController(initialPage: _currentIndex),
-                  onPageChanged: (index) {
-                    setState(() {
-                      _currentIndex = index;
-                      _currentAboutAss = _aboutAssList[_currentIndex];
-                    });
-                  },
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(AboutAssDialog.generalPadding),
-                      child: Row( 
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '${_currentAboutAss.name}',
-                                  style: AdminViewDialogStyles.buttonTextStyle,
-                                ),
-                                const SizedBox(height: AboutAssDialog.smallSizedBoxHeight),
-                                Text(
-                                  '${_currentAboutAss.description}',
-                                  style: AdminViewDialogStyles.buttonTextStyle,
-                                ),
-                                const SizedBox(height: AboutAssDialog.smallSizedBoxHeight),
-                              ],
-                            ),
-                          ),
-                          Image.network(
-                            _currentAboutAss.imageURL != null && 
-                            _currentAboutAss.imageURL!.isNotEmpty
-                                ? _currentAboutAss.imageURL!
-                                : Constants.replaceImageURL,
-                            width: AboutAssDialog.imageWidth,
-                            height: AboutAssDialog.imageHeight,
-                            fit: BoxFit.cover,
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
+              ButtonBar(
+                alignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: _previousPage,
+                    child: const Icon(Icons.arrow_back),
+                  ),
+                  ElevatedButton(
+                    onPressed: _nextPage,
+                    child: const Icon(Icons.arrow_forward),
+                  ),
+                ],
               ),
-            ButtonBar(
-              alignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: _previousPage,
-                  child: const Icon(Icons.arrow_back),
-                ),
-                ElevatedButton(
-                  onPressed: _nextPage,
-                  child: const Icon(Icons.arrow_forward),
-                ),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),
-  );
-}
-
+    );
+  }
 }

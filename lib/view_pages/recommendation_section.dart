@@ -20,7 +20,7 @@ class RecommendationSectionState extends State<RecommendationSection> {
   List<Recommendation>? recommendations;
   final PageController _pageController =
       PageController(viewportFraction: 1.0, initialPage: 0);
-  int _currentPage = 0;
+  // int _currentPage = 0;
 
   @override
   void initState() {
@@ -29,7 +29,7 @@ class RecommendationSectionState extends State<RecommendationSection> {
         RecommendationSectionController(RecommendationRepoService());
     _pageController.addListener(() {
       setState(() {
-        _currentPage = _pageController.page?.toInt() ?? 0;
+        // _currentPage = _pageController.page?.toInt() ?? 0;
       });
     });
 
@@ -64,13 +64,12 @@ class RecommendationSectionState extends State<RecommendationSection> {
 
     double recommendationTitleFontSize =
         isMobileView ? screenWidth * 0.07 : screenWidth * 0.03;
-    double recommendationSectionWidth = 
+    double recommendationSectionWidth =
         isMobileView ? screenWidth * 0.9 : screenWidth * 0.5;
-    double recommendationSectionHeight = 
+    double recommendationSectionHeight =
         isMobileView ? screenWidth * 0.9 : screenWidth * 0.4;
-    
-    double generalPadding = 
-        isMobileView ? 20 : 15;
+
+    double generalPadding = isMobileView ? 20 : 15;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -115,32 +114,28 @@ class RecommendationSectionState extends State<RecommendationSection> {
     );
   }
 
-
   Widget _buildRecommendationTile(Recommendation recommendation) {
     final screenWidth = MediaQuery.of(context).size.width;
     bool isMobileView = screenWidth <= 600;
-    
-    double imageRadius = 
-        isMobileView ? screenWidth * 0.03 : screenWidth * 0.01;
+
+    double imageRadius = isMobileView ? screenWidth * 0.03 : screenWidth * 0.01;
     double recommendationDescriptionFontSize =
         isMobileView ? screenWidth * 0.03 : screenWidth * 0.01;
     double recommendationNameFontSize =
         isMobileView ? screenWidth * 0.025 : screenWidth * 0.01;
     double recommendationJobTitleFontSize =
         isMobileView ? screenWidth * 0.025 : screenWidth * 0.01;
-    double recommendationSectionWidth = 
+    double recommendationSectionWidth =
         isMobileView ? screenWidth * 0.9 : screenWidth * 0.5;
-    double generalPadding = 
-        isMobileView ? 20 : 15;
-    double offset =
-        isMobileView ? screenWidth * 0.1 : 0;
+    double generalPadding = isMobileView ? 20 : 15;
+    double offset = isMobileView ? screenWidth * 0.1 : 0;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
           width: recommendationSectionWidth,
-          child:ListTile(
+          child: ListTile(
             title: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -154,12 +149,12 @@ class RecommendationSectionState extends State<RecommendationSection> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                        Text(
-                          '"${recommendation.description}"',
-                          style: TextStyle(
-                            fontSize: recommendationDescriptionFontSize,
-                          ),
+                      Text(
+                        '"${recommendation.description}"',
+                        style: TextStyle(
+                          fontSize: recommendationDescriptionFontSize,
                         ),
+                      ),
                       // ),
                       Text(
                         recommendation.colleagueName ?? 'Colleague Name',
@@ -181,9 +176,10 @@ class RecommendationSectionState extends State<RecommendationSection> {
               ],
             ),
           ),
-        ),        
+        ),
         Padding(
-          padding: EdgeInsets.only(left: generalPadding , right: generalPadding + offset),
+          padding: EdgeInsets.only(
+              left: generalPadding, right: generalPadding + offset),
           child: SizedBox(
             width: recommendationSectionWidth,
             child: const Divider(

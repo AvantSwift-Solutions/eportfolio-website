@@ -73,8 +73,8 @@ class ProjectSectionState extends State<ProjectSection> {
   }
 
   void openSvgLink() {
-    const svgUrl =
-        Constants.externalLinkSVGURL; // Replace with your desired URL for the SVG
+    const svgUrl = Constants
+        .externalLinkSVGURL; // Replace with your desired URL for the SVG
     openLink(svgUrl);
   }
 

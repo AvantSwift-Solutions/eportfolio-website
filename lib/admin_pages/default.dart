@@ -363,7 +363,8 @@ class DefaultPageState extends State<DefaultPage> {
       ];
 
       Widget analyticsGridWidget = SizedBox(
-          height: analyticsWidgetList.length/analyticCardRowCount *
+          height: analyticsWidgetList.length /
+              analyticCardRowCount *
               analyticsHeightPerRow,
           child: CustomScrollView(
             primary: true,

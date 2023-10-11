@@ -9,8 +9,7 @@ class AboutAssSectionAdminController {
 
   Future<List<AboutAss>?>? getAboutAssSectionData() async {
     try {
-      List<AboutAss>? allAboutAss =
-          await aboutAssRepoService.getAllAboutAss();
+      List<AboutAss>? allAboutAss = await aboutAssRepoService.getAllAboutAss();
       return allAboutAss;
     } catch (e) {
       log('Error getting About Ass list: $e');
