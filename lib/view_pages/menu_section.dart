@@ -29,6 +29,9 @@ class MenuSection extends StatefulWidget {
 class MenuSectionState extends State<MenuSection> {
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    double calculatedFontSize = screenWidth < 750 ? screenWidth * 0.03 : screenWidth * 0.035;
+
     return Column(
       children: [
         Divider(
@@ -45,41 +48,65 @@ class MenuSectionState extends State<MenuSection> {
               padding: EdgeInsets.only(
                   left: MenuSection.firstItemLeftPadding,
                   right: MenuSection.rightPadding),
-              child: CustomMenuButton(
+              child: TextButton(
                 onPressed: () {
                   widget.scrollToSection(widget.sectionKeys.experience);
                 },
-                text: "Experience",
-              ),
+                style: ButtonStyle(
+                        overlayColor: MaterialStateProperty.resolveWith<Color>(
+                    (Set<MaterialState> states) {
+                  return Colors.transparent;
+                }),
+                ),
+                child: Text(
+                  "Experience",
+                  style: PublicViewTextStyles.navBarText.copyWith(fontWeight: FontWeight.normal, fontSize: calculatedFontSize))
+              )
             ),
             Text(
               '/',
-              style: PublicViewTextStyles.navBarText.copyWith(color: Colors.black),
+              style: PublicViewTextStyles.navBarText.copyWith(fontWeight: FontWeight.normal, fontSize: calculatedFontSize),
             ),
             Padding(
               padding: EdgeInsets.only(
                   left: MenuSection.leftPadding,
                   right: MenuSection.rightPadding),
-              child: CustomMenuButton(
+              child: TextButton(
                 onPressed: () {
                   widget.scrollToSection(widget.sectionKeys.skillsEdu);
                 },
-                text: "Skills & Education",
+                style: ButtonStyle(
+                        overlayColor: MaterialStateProperty.resolveWith<Color>(
+                    (Set<MaterialState> states) {
+                  return Colors.transparent;
+                }),
+                ),
+                child: Text(
+                  "Skills & Education",
+                  style: PublicViewTextStyles.navBarText.copyWith(fontWeight: FontWeight.normal, fontSize: calculatedFontSize))
               ),
             ),
             Text(
               '/',
-              style: PublicViewTextStyles.navBarText.copyWith(color: Colors.black),
+              style: PublicViewTextStyles.navBarText.copyWith(fontWeight: FontWeight.normal, fontSize: calculatedFontSize),
             ),
             Padding(
               padding: EdgeInsets.only(
                   left: MenuSection.leftPadding,
                   right: MenuSection.rightPadding),
-              child: CustomMenuButton(
+              child: TextButton(
                 onPressed: () {
                   widget.scrollToSection(widget.sectionKeys.projects);
                 },
-                text: "Projects",
+                style: ButtonStyle(
+                        overlayColor: MaterialStateProperty.resolveWith<Color>(
+                    (Set<MaterialState> states) {
+                  return Colors.transparent;
+                }),
+                ),
+                child: Text(
+                  "Projects",
+                  style: PublicViewTextStyles.navBarText.copyWith(fontWeight: FontWeight.normal, fontSize: calculatedFontSize))
               ),
             ),
           ],
@@ -92,11 +119,19 @@ class MenuSectionState extends State<MenuSection> {
               padding: EdgeInsets.only(
                   left: MenuSection.firstItemLeftPadding,
                   right: MenuSection.rightPadding),
-              child: CustomMenuButton(
+              child: TextButton(
                 onPressed: () {
                   widget.scrollToSection(widget.sectionKeys.awardsCerts);
                 },
-                text: "Awards, Certifications & Peer Recommendations",
+                style: ButtonStyle(
+                        overlayColor: MaterialStateProperty.resolveWith<Color>(
+                    (Set<MaterialState> states) {
+                  return Colors.transparent;
+                }),
+                ),
+                child: Text(
+                  "Awards, Certifications & Peer Recommendations",
+                  style: PublicViewTextStyles.navBarText.copyWith(fontWeight: FontWeight.normal, fontSize: calculatedFontSize))
               ),
             ),
           ],
