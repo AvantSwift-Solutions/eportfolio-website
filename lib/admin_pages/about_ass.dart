@@ -232,14 +232,16 @@ Widget build(BuildContext context) {
                   ButtonBar(
                     alignment: MainAxisAlignment.center,
                     children: [
-                      ElevatedButton(
-                        onPressed: _previousPage,
-                        child: const Icon(Icons.arrow_back),
-                      ),
-                      ElevatedButton(
-                        onPressed: _nextPage,
-                        child: const Icon(Icons.arrow_forward),
-                      ),
+                      if (_currentIndex > 0) // Conditionally render the button
+                        ElevatedButton(
+                          onPressed: _previousPage,
+                          child: const Icon(Icons.arrow_back),
+                        ),
+                      if (_currentIndex < _aboutAssList.length - 1) // Conditionally render the "next" button
+                        ElevatedButton(
+                          onPressed: _nextPage,
+                          child: const Icon(Icons.arrow_forward),
+                        ),
                     ],
                   ),
                 ],
@@ -252,126 +254,4 @@ Widget build(BuildContext context) {
   );
 }
 
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Theme(
-  //     // Apply the theme to the entire AlertDialog and its contents
-  //     data: AdminViewDialogStyles.dialogThemeData,
-  //     child: AlertDialog(
-  //       titlePadding: AdminViewDialogStyles.titleDialogPadding,
-  //       contentPadding: AdminViewDialogStyles.contentDialogPadding,
-  //       actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
-  //       title: Container(
-  //           padding: AdminViewDialogStyles.titleContPadding,
-  //           color: AdminViewDialogStyles.bgColor,
-  //           child: FittedBox(
-  //               child: Column(
-  //             children: [
-  //               Row(
-  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                 children: [
-  //                   const Text('About AvantSwift Solutions'),
-  //                   Align(
-  //                     alignment: Alignment.topRight,
-  //                     child: IconButton(
-  //                       icon: const Icon(Icons.close),
-  //                       iconSize: AdminViewDialogStyles.closeIconSize,
-  //                       hoverColor: Colors.transparent,
-  //                       onPressed: () {
-  //                         Navigator.of(context).pop();
-  //                       },
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),
-  //               const Divider(color: Colors.black),
-  //             ],
-  //           ))),
-  //       content: SizedBox(
-  //         height: AdminViewDialogStyles.aboutAssDialogHeight,
-  //         width: AdminViewDialogStyles.aboutAssDialogWidth,
-  //         child: Column(
-  //           mainAxisSize: MainAxisSize.min,
-  //           children: [
-  //             if (_aboutAssList.isNotEmpty)
-  //               Expanded(
-  //                 child: PageView.builder(
-  //                   itemCount: _aboutAssList.length,
-  //                   controller: PageController(initialPage: _currentIndex),
-  //                   onPageChanged: (index) {
-  //                     setState(() {
-  //                       _currentIndex = index;
-  //                       _currentAboutAss = _aboutAssList[_currentIndex];
-  //                     });
-  //                   },
-  //                   itemBuilder: (context, index) {
-  //                     return SingleChildScrollView(
-  //                       child: Padding(
-  //                       padding:
-  //                           const EdgeInsets.all(AboutAssDialog.generalPadding),
-  //                       child: Row(
-  //                         crossAxisAlignment: CrossAxisAlignment.start,
-  //                         children: [
-  //                           Expanded(
-  //                             child: Column(
-  //                               crossAxisAlignment: CrossAxisAlignment.start,
-  //                               children: [
-  //                                 Text(
-  //                                   '${_currentAboutAss.name}',
-  //                                   style:
-  //                                       AdminViewDialogStyles.buttonTextStyle,
-  //                                 ),
-  //                                 const SizedBox(
-  //                                     height:
-  //                                         AboutAssDialog.smallSizedBoxHeight),
-  //                                 Text(
-  //                                   '${_currentAboutAss.description}',
-  //                                   style:
-  //                                       AdminViewDialogStyles.listTextStyle,
-  //                                 ),
-  //                                 const SizedBox(
-  //                                     height:
-  //                                         AboutAssDialog.smallSizedBoxHeight),
-  //                               ],
-  //                             ),
-  //                           ),
-  //                           const SizedBox(
-  //                                     width: 
-  //                                         AboutAssDialog.boxWidth),
-  //                           Image.network(
-  //                             _currentAboutAss.imageURL != null &&
-  //                                     _currentAboutAss.imageURL!.isNotEmpty
-  //                                 ? _currentAboutAss.imageURL!
-  //                                 : Constants.replaceImageURL,
-  //                             width: AboutAssDialog.imageWidth,
-  //                             height: AboutAssDialog.imageHeight,
-  //                             fit: BoxFit.cover,
-  //                           ),
-  //                         ],
-  //                       ),
-  //                       ),
-  //                     );
-  //                   },
-  //                 ),
-  //               ),
-  //             ButtonBar(
-  //               alignment: MainAxisAlignment.center,
-  //               children: [
-  //                 ElevatedButton(
-  //                   onPressed: _previousPage,
-  //                   child: const Icon(Icons.arrow_back),
-  //                 ),
-  //                 ElevatedButton(
-  //                   onPressed: _nextPage,
-  //                   child: const Icon(Icons.arrow_forward),
-  //                 ),
-  //               ],
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 }

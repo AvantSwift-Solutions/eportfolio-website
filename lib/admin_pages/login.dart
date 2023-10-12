@@ -422,10 +422,22 @@ class LoginPageState extends State<LoginPage> {
                 const SizedBox(
                   width: LoginPage.formGapSize,
                 ),
-                Image.asset(
-                  'assets/logo-no-background.png',
-                  width: screenWidth * LoginPage.logoResponsiveSizingFactor,
-                  height: screenWidth * LoginPage.logoResponsiveSizingFactor,
+                GestureDetector(
+                  child: Image.asset(
+                    'assets/logo-no-background.png',
+                    width: LoginPage
+                        .avantSwiftSolutionsLogoWidth, // Adjust the width as needed
+                    height: LoginPage
+                        .avantSwiftSolutionsLogoWidth, // Adjust the height as needed
+                  ),
+                  onTap: () {
+                    showDialog(
+                      context: context, 
+                      builder: (BuildContext context) {
+                        return const AboutAssDialog();
+                      } 
+                    );
+                  },
                 ),
               ],
             ),
