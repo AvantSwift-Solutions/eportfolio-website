@@ -1,3 +1,4 @@
+import 'package:avantswift_portfolio/admin_pages/about_ass.dart';
 import 'package:avantswift_portfolio/ui/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -169,12 +170,22 @@ class LoginPageState extends State<LoginPage> {
                         const SizedBox(
                             width: LoginPage
                                 .formGapSize), // Add some spacing between text and image
-                        Image.asset(
-                          'assets/logo-no-background.png',
-                          width: LoginPage
-                              .avantSwiftSolutionsLogoWidth, // Adjust the width as needed
-                          height: LoginPage
-                              .avantSwiftSolutionsLogoWidth, // Adjust the height as needed
+                        GestureDetector(
+                          child: Image.asset(
+                            'assets/logo-no-background.png',
+                            width: LoginPage
+                                .avantSwiftSolutionsLogoWidth, // Adjust the width as needed
+                            height: LoginPage
+                                .avantSwiftSolutionsLogoWidth, // Adjust the height as needed
+                          ),
+                          onTap: () {
+                            showDialog(
+                              context: context, 
+                              builder: (BuildContext context) {
+                                return const AboutAssDialog();
+                              } 
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -411,10 +422,22 @@ class LoginPageState extends State<LoginPage> {
                 const SizedBox(
                   width: LoginPage.formGapSize,
                 ),
-                Image.asset(
-                  'assets/logo-no-background.png',
-                  width: screenWidth * LoginPage.logoResponsiveSizingFactor,
-                  height: screenWidth * LoginPage.logoResponsiveSizingFactor,
+                GestureDetector(
+                  child: Image.asset(
+                    'assets/logo-no-background.png',
+                    width: LoginPage
+                        .avantSwiftSolutionsLogoWidth, // Adjust the width as needed
+                    height: LoginPage
+                        .avantSwiftSolutionsLogoWidth, // Adjust the height as needed
+                  ),
+                  onTap: () {
+                    showDialog(
+                      context: context, 
+                      builder: (BuildContext context) {
+                        return const AboutAssDialog();
+                      } 
+                    );
+                  },
                 ),
               ],
             ),

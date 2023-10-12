@@ -16,10 +16,12 @@ import 'package:avantswift_portfolio/models/User.dart';
 import 'package:avantswift_portfolio/reposervice/analytic_repo_services.dart';
 import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:avantswift_portfolio/ui/custom_texts/public_view_text_styles.dart';
+import 'package:avantswift_portfolio/admin_pages/about_ass.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+
 
 class DefaultPage extends StatefulWidget {
   final User user;
@@ -92,6 +94,10 @@ class DefaultPageState extends State<DefaultPage> {
 
   static const double analyticsGridSpacing = 15;
   static const double editorGridSpacing = 10;
+
+  static const double avantSwiftSolutionsLogoWidth = 90;
+  static const double avantSwiftSolutionsLogoHeight = 90;
+  static const double forgotPasswordPadding = 20.0;
 
   @override
   Widget build(BuildContext context) {
@@ -175,13 +181,60 @@ class DefaultPageState extends State<DefaultPage> {
           ),
           navbarInterItemSpacing,
           TextButton(
-            onPressed: () {},
-            child: Text('Help', style: navbarTextStyle),
-          ),
-          navbarInterItemSpacing,
-          TextButton(
-            onPressed: () {},
-            child: Text('About ASS', style: navbarTextStyle),
+            onPressed: () {
+              showDialog(
+          context: context,
+          builder: (BuildContext dialogContext) {
+            return Theme(
+              data: AdminViewDialogStyles.dialogThemeData,
+              child: AlertDialog(
+                  titlePadding: AdminViewDialogStyles.titleDialogPadding,
+                  contentPadding: AdminViewDialogStyles.contentDialogPadding,
+                  actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
+                  title: Container(
+                      padding: AdminViewDialogStyles.titleContPadding,
+                      color: AdminViewDialogStyles.bgColor,
+                      child: Column(
+                        children: [
+                          FittedBox(
+                              child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('Contact Us                        '),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: IconButton(
+                                  icon: const Icon(Icons.close),
+                                  iconSize: AdminViewDialogStyles.closeIconSize,
+                                  hoverColor: Colors.transparent,
+                                  onPressed: () {
+                                    Navigator.of(dialogContext).pop();
+                                  },
+                                ),
+                              ),
+                            ],
+                          )),
+                          const Divider()
+                        ],
+                      )),
+                  content: const SizedBox(
+                    width:
+                        1, // Width is set to 1 to make it fit the title not the content
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                            'Please direct any queries or concerns to avantswiftsolutions@gmail.com'),
+                        SizedBox(height: forgotPasswordPadding),
+                      ],
+                    ),
+                  )),
+            );
+          },
+        );
+            },
+            child: Text('Contact Us', style: navbarTextStyle),
           ),
         ],
       );
@@ -206,9 +259,20 @@ class DefaultPageState extends State<DefaultPage> {
               ),
             ),
           ),
-          Image.asset(
-            'assets/logo-no-background.png',
-            scale: logoScale,
+          GestureDetector(
+            child: Image.asset(
+              'assets/logo-no-background.png',
+              width: avantSwiftSolutionsLogoWidth, // Adjust the width as needed
+              height: avantSwiftSolutionsLogoWidth, // Adjust the height as needed
+            ),
+            onTap: () {
+              showDialog(
+                context: context, 
+                builder: (BuildContext context) {
+                  return const AboutAssDialog();
+                } 
+              );
+            },
           ),
         ],
       );
