@@ -47,6 +47,9 @@ class SinglePageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isSmallForMenu = screenWidth < 570;
+
     final sectionKeys = SectionKeysDTO(
       experience: _experienceKey,
       skillsEdu: _skillsEduKey,
@@ -58,6 +61,7 @@ class SinglePageView extends StatelessWidget {
       landingPage: _landingPageKey,
     );
     return Scaffold(
+      
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
@@ -74,11 +78,12 @@ class SinglePageView extends StatelessWidget {
                       scrollToBottom: _scrollToContact,
                     ),
                     const SizedBox(height: 100),
-                    MenuSection(
-                      key: _menuKey,
-                      scrollToSection: _scrollToSection,
-                      sectionKeys: sectionKeys,
-                    ),
+                    if (!isSmallForMenu)
+                      MenuSection(
+                        key: _menuKey,
+                        scrollToSection: _scrollToSection,
+                        sectionKeys: sectionKeys,
+                      ),
                     AboutMeSection(
                       key: _aboutMeKey,
                     ),

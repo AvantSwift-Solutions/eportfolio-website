@@ -3,9 +3,12 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:avantswift_portfolio/dto/section_keys_dto.dart';
 import 'package:avantswift_portfolio/ui/custom_texts/public_view_text_styles.dart';
+import 'package:flutter_svg/svg.dart';
 import 'search_section.dart'; // Import your SearchSection widget here
 
 class HeaderSection extends StatelessWidget {
+  static const double menuIconWidth = 30.0;
+  static const double menuIconHeight = 30.0;
   final Function(GlobalKey) scrollToSection;
   final SectionKeysDTO sectionKeys;
 
@@ -41,13 +44,12 @@ class HeaderSection extends StatelessWidget {
       style: ButtonStyle(
         overlayColor: MaterialStateProperty.all(Colors.transparent),
       ),
-      child: Text(
-        'Menu',
-        style: PublicViewTextStyles.buttonText
-            .copyWith(color: const Color(0xff1E1E1E)),
+      child: SvgPicture.asset(
+        'assets/menu-navigation.svg', // Provide the path to your SVG image file
+        width: menuIconWidth, // Set the width and height as per your requirements
+        height: menuIconHeight,
       ),
     );
-
     if (isSmallForMenu) {
       menuButton = const SizedBox(
         width: 0,
