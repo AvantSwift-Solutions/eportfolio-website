@@ -22,19 +22,20 @@ class CustomMenuButtonState extends State<CustomMenuButton> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    double calculatedFontSize = screenWidth < 750 ? screenWidth * 0.03 : screenWidth * 0.035;
+    double calculatedFontSize =
+        screenWidth < 750 ? screenWidth * 0.03 : screenWidth * 0.035;
 
     return MouseRegion(
       onEnter: (PointerEvent event) {
         setState(() {
-          textStyle = PublicViewTextStyles.navBarText
-              .copyWith(fontWeight: FontWeight.bold, fontSize: calculatedFontSize);
+          textStyle = PublicViewTextStyles.navBarText.copyWith(
+              fontWeight: FontWeight.bold, fontSize: calculatedFontSize);
         });
       },
       onExit: (PointerEvent event) {
         setState(() {
-          textStyle = PublicViewTextStyles.navBarText
-              .copyWith(fontWeight: FontWeight.normal, fontSize: calculatedFontSize);
+          textStyle = PublicViewTextStyles.navBarText.copyWith(
+              fontWeight: FontWeight.normal, fontSize: calculatedFontSize);
         });
       },
       child: TextButton(

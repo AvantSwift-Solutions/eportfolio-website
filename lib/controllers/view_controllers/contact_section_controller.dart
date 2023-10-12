@@ -46,7 +46,8 @@ class ContactSectionController {
         Secret(
           secretId: 'a',
           serviceId: 'a',
-          templateId: 'a',
+          formTemplateId: 'a',
+          loginTemplateId: 'a',
           userId: 'a',
           accessToken: 'a',
         );
@@ -54,7 +55,7 @@ class ContactSectionController {
     final toEmail = contactSectionData?.contactEmail;
 
     String serviceId = s.serviceId ?? '';
-    String templateId = s.templateId ?? '';
+    String formTemplateId = s.formTemplateId ?? '';
     String userId = s.userId ?? '';
     String accessToken = s.accessToken ?? '';
 
@@ -67,7 +68,7 @@ class ContactSectionController {
       },
       body: json.encode({
         'service_id': serviceId,
-        'template_id': templateId,
+        'template_id': formTemplateId,
         'user_id': userId,
         'accessToken': accessToken,
         'template_params': {

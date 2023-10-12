@@ -122,7 +122,7 @@ class DefaultPageState extends State<DefaultPage> {
           SizedBox(height: bc.maxHeight * navbarBottomSpacingMultiplier);
       SizedBox interWelcomePoweredSpacing =
           SizedBox(height: bc.maxHeight * 0.01);
-      double logoScale = 8; // Larger number -> smaller logo
+      // double logoScale = 8; // Larger number -> smaller logo
       SizedBox interPowerViewSpacing = SizedBox(height: bc.maxHeight * 0.06);
       double viewbuttonHeight = bc.maxHeight * 0.08;
       SizedBox interViewAnalyticsSpacing =

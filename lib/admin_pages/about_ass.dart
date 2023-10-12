@@ -155,14 +155,16 @@ Widget build(BuildContext context) {
                   ButtonBar(
                     alignment: MainAxisAlignment.center,
                     children: [
-                      ElevatedButton(
-                        onPressed: _previousPage,
-                        child: const Icon(Icons.arrow_back),
-                      ),
-                      ElevatedButton(
-                        onPressed: _nextPage,
-                        child: const Icon(Icons.arrow_forward),
-                      ),
+                      if (_currentIndex > 0) // Conditionally render the button
+                        ElevatedButton(
+                          onPressed: _previousPage,
+                          child: const Icon(Icons.arrow_back),
+                        ),
+                      if (_currentIndex < _aboutAssList.length - 1) // Conditionally render the "next" button
+                        ElevatedButton(
+                          onPressed: _nextPage,
+                          child: const Icon(Icons.arrow_forward),
+                        ),
                     ],
                   ),
                 ],

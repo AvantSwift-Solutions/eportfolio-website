@@ -48,7 +48,6 @@ class MyAppState extends State<MyApp> {
           .doc(firebaseUser.uid)
           .get();
       final currentUser = User.fromDocumentSnapshot(userDocument);
-      loginController.onLoginSuccess(currentUser);
       return currentUser;
     }
     return null;

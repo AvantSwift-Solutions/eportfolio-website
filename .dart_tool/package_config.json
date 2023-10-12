@@ -386,6 +386,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "get_ip_address",
+      "rootUri": "file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/get_ip_address-0.0.6",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "glob",
       "rootUri": "file:///Users/ashleyzhang/.pub-cache/hosted/pub.dev/glob-2.1.2",
       "packageUri": "lib/",
@@ -968,7 +974,7 @@
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2023-10-11T04:17:17.210400Z",
+  "generated": "2023-10-12T08:19:37.331685Z",
   "generator": "pub",
   "generatorVersion": "3.0.6"
 }
