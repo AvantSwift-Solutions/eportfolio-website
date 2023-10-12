@@ -30,7 +30,8 @@ class MenuSectionState extends State<MenuSection> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    double calculatedFontSize = screenWidth < 750 ? screenWidth * 0.03 : screenWidth * 0.035;
+    double calculatedFontSize =
+        screenWidth < 750 ? screenWidth * 0.03 : screenWidth * 0.035;
     return Column(
       children: [
         Divider(
@@ -56,7 +57,8 @@ class MenuSectionState extends State<MenuSection> {
             ),
             Text(
               '/',
-              style: PublicViewTextStyles.navBarText.copyWith(fontSize: calculatedFontSize),
+              style: PublicViewTextStyles.navBarText
+                  .copyWith(fontSize: calculatedFontSize),
             ),
             Padding(
               padding: EdgeInsets.only(
@@ -71,7 +73,8 @@ class MenuSectionState extends State<MenuSection> {
             ),
             Text(
               '/',
-              style: PublicViewTextStyles.navBarText.copyWith(fontSize: calculatedFontSize),
+              style: PublicViewTextStyles.navBarText
+                  .copyWith(fontSize: calculatedFontSize),
             ),
             Padding(
               padding: EdgeInsets.only(

@@ -26,7 +26,6 @@ class Secret {
     final loginTemplateId = data['loginTemplateId'];
     final userId = data['userId'];
     final accessToken = data['accessToken'];
-
     return Secret(
       secretId: secretId,
       serviceId: serviceId,

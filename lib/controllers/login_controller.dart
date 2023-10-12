@@ -1,9 +1,16 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:avantswift_portfolio/models/Secret.dart';
 import 'package:avantswift_portfolio/models/User.dart';
 import 'package:avantswift_portfolio/reposervice/secret_repo_services.dart';
+import 'package:avantswift_portfolio/reposervice/user_repo_services.dart';
+import 'dart:html';
+import 'package:http/http.dart' as http;
+import 'view_controllers/contact_section_controller.dart';
 
 class LoginController {
-  void onLoginSuccess(User user) {
+  Future<void> onLoginSuccess(User user) async {
     SecretRepoService repoService = SecretRepoService();
 
     Secret s = await repoService.getSecret() ??
@@ -15,15 +22,19 @@ class LoginController {
           userId: 'a',
           accessToken: 'a',
         );
-    final toName = contactSectionData?.name;
-    final toEmail = contactSectionData?.contactEmail;
+    var contactSectionData = await ContactSectionController(UserRepoService())
+        .getContactSectionData();
+    final toName = contactSectionData.name;
+    final toEmail = contactSectionData.contactEmail;
 
     String serviceId = s.serviceId ?? '';
-    String formTemplateId = s.formTemplateId ?? '';
+    String loginTemplateId = s.loginTemplateId ?? '';
     String userId = s.userId ?? '';
     String accessToken = s.accessToken ?? '';
 
     final url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
+
+    final address = window.location.hostname;
 
     final response = await http.post(
       url,
@@ -32,16 +43,14 @@ class LoginController {
       },
       body: json.encode({
         'service_id': serviceId,
-        'template_id': formTemplateId,
+        'template_id': loginTemplateId,
         'user_id': userId,
         'accessToken': accessToken,
         'template_params': {
           'to_name': toName,
           'to_email': toEmail,
-          'from_name': fields['from_name'],
-          'from_email': fields['from_email'],
-          'subject': fields['subject'],
-          'message': fields['message'],
+          'ip_address': address,
+          'time': DateTime.now().toString(),
         },
       }),
     );
@@ -49,10 +58,5 @@ class LoginController {
     if (response.body != 'OK') {
       log('Error sending email: ${response.body}');
     }
-    AnalyticController.incrementMessages(AnalyticRepoService());
-    return response.body == 'OK';
   }
-
 }
-
-

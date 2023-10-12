@@ -61,7 +61,6 @@ class SinglePageView extends StatelessWidget {
       landingPage: _landingPageKey,
     );
     return Scaffold(
-      
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [

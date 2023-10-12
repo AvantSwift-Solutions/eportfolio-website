@@ -46,7 +46,8 @@ class HeaderSection extends StatelessWidget {
       ),
       child: SvgPicture.asset(
         'assets/menu-navigation.svg', // Provide the path to your SVG image file
-        width: menuIconWidth, // Set the width and height as per your requirements
+        width:
+            menuIconWidth, // Set the width and height as per your requirements
         height: menuIconHeight,
       ),
     );
