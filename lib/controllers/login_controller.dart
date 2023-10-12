@@ -5,7 +5,7 @@ import 'package:avantswift_portfolio/models/Secret.dart';
 import 'package:avantswift_portfolio/models/User.dart';
 import 'package:avantswift_portfolio/reposervice/secret_repo_services.dart';
 import 'package:avantswift_portfolio/reposervice/user_repo_services.dart';
-import 'dart:html';
+import 'package:get_ip_address/get_ip_address.dart';
 import 'package:http/http.dart' as http;
 import 'view_controllers/contact_section_controller.dart';
 
@@ -34,7 +34,7 @@ class LoginController {
 
     final url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
 
-    final address = window.location.hostname;
+    final address = await IpAddress().getIpAddress();
 
     final response = await http.post(
       url,

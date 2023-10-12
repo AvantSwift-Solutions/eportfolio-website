@@ -504,6 +504,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.0"
+  get_ip_address:
+    dependency: "direct main"
+    description:
+      name: get_ip_address
+      sha256: "0e973f1ad61bc4b0b1d99abc2c023d91d1ddb09709f5546f6972ace067c8576d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.6"
   glob:
     dependency: transitive
     description:
