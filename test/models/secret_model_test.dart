@@ -17,7 +17,8 @@ void main() {
       final data = {
         'secretId': 'secretId123',
         'serviceId': 'serviceId123',
-        'templateId': 'templateId123',
+        'formTemplateId': 'formTemplateId123',
+        'loginTemplateId': 'loginTemplateId123',
         'userId': 'userId123',
         'accessToken': 'accessToken123',
       };
@@ -27,7 +28,8 @@ void main() {
 
       expect(result.secretId, data['secretId']);
       expect(result.serviceId, data['serviceId']);
-      expect(result.templateId, data['templateId']);
+      expect(result.formTemplateId, data['formTemplateId']);
+      expect(result.loginTemplateId, data['loginTemplateId']);
       expect(result.userId, data['userId']);
       expect(result.accessToken, data['accessToken']);
     });
@@ -36,7 +38,8 @@ void main() {
       final secret = Secret(
         secretId: 'secretId123',
         serviceId: 'serviceId123',
-        templateId: 'templateId123',
+        formTemplateId: 'formTemplateId123',
+        loginTemplateId: 'loginTemplateId123',
         userId: 'userId123',
         accessToken: 'accessToken123',
       );
@@ -44,7 +47,8 @@ void main() {
 
       expect(secretMap['secretId'], secret.secretId);
       expect(secretMap['serviceId'], secret.serviceId);
-      expect(secretMap['templateId'], secret.templateId);
+      expect(secretMap['formTemplateId'], secret.formTemplateId);
+      expect(secretMap['loginTemplateId'], secret.loginTemplateId);
       expect(secretMap['userId'], secret.userId);
       expect(secretMap['accessToken'], secret.accessToken);
     });

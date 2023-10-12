@@ -4,14 +4,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Secret {
   final String? secretId;
   final String? serviceId;
-  final String? templateId;
+  final String? formTemplateId;
+  final String? loginTemplateId;
   final String? userId;
   final String? accessToken;
 
   Secret({
     required this.secretId,
     required this.serviceId,
-    required this.templateId,
+    required this.formTemplateId,
+    required this.loginTemplateId,
     required this.userId,
     required this.accessToken,
   });
@@ -20,14 +22,16 @@ class Secret {
     final data = snapshot.data() as Map<String, dynamic>;
     final secretId = data['secretId'] as String;
     final serviceId = data['serviceId'];
-    final templateId = data['templateId'];
+    final formTemplateId = data['formTemplateId'];
+    final loginTemplateId = data['loginTemplateId'];
     final userId = data['userId'];
     final accessToken = data['accessToken'];
 
     return Secret(
       secretId: secretId,
       serviceId: serviceId,
-      templateId: templateId,
+      formTemplateId: formTemplateId,
+      loginTemplateId: loginTemplateId,
       userId: userId,
       accessToken: accessToken,
     );
@@ -37,7 +41,8 @@ class Secret {
     return {
       'secretId': secretId,
       'serviceId': serviceId,
-      'templateId': templateId,
+      'formTemplateId': formTemplateId,
+      'loginTemplateId': loginTemplateId,
       'userId': userId,
       'accessToken': accessToken,
     };
