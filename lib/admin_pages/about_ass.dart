@@ -72,29 +72,33 @@ Widget build(BuildContext context) {
       title: Container(
         padding: AdminViewDialogStyles.titleContPadding,
         color: AdminViewDialogStyles.bgColor,
-        child: FittedBox(
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('About AvantSwift Solutions'),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                      icon: const Icon(Icons.close),
-                      iconSize: AdminViewDialogStyles.closeIconSize,
-                      hoverColor: Colors.transparent,
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
+        child: Column(
+          children: [
+            FittedBox(
+              child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                MediaQuery.of(context).size.width >
+                                AdminViewDialogStyles.showDialogWidth
+                            ? const Text(
+                                'About AvantSwift Solutions                       ')
+                            : const Text('About AvantSwift Solutions'),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    icon: const Icon(Icons.close),
+                    iconSize: AdminViewDialogStyles.closeIconSize,
+                    hoverColor: Colors.transparent,
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
                   ),
-                ],
-              ),
-              const Divider(color: Colors.black),
-            ],
-          ),
+                ),
+              ],
+            ),
+            ),
+            const Divider(color: Colors.black),
+          ],
         ),
       ),
       content: SizedBox(
