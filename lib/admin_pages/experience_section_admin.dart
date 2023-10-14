@@ -839,6 +839,7 @@ class ExperienceSectionAdminState extends State<ExperienceSectionAdmin> {
                                     );
                                   }
                                   if (!mounted) return;
+                                  await _loadItems();
                                   Navigator.of(dialogContext).pop();
                                   Navigator.of(parentContext).pop();
                                   _showList(parentContext);
@@ -889,6 +890,7 @@ class ExperienceSectionAdminState extends State<ExperienceSectionAdmin> {
                                     );
                                   }
                                   if (!mounted) return;
+                                  await _loadItems();
                                   Navigator.of(dialogContext).pop();
                                   Navigator.of(parentContext).pop();
                                   _showList(parentContext);

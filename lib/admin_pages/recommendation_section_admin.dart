@@ -687,6 +687,7 @@ class _RecommendationSectionAdminState
                                     );
                                   }
                                   if (!mounted) return;
+                                  await _loadItems();
                                   Navigator.of(dialogContext).pop();
                                   Navigator.of(parentContext).pop();
                                   _showList(parentContext);
@@ -730,6 +731,7 @@ class _RecommendationSectionAdminState
                                     );
                                   } else {
                                     if (!mounted) return;
+                                    await _loadItems();
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                           content:
