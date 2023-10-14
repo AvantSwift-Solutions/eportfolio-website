@@ -47,37 +47,52 @@ class EducationSectionState extends State<EducationSection> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     final totalPages = (educationSectionData.length / itemsPerPage).ceil();
+    bool isMobileView = screenWidth <= 600;
+    
+    double educationHeight = 
+        isMobileView ? screenWidth * 1.0 : screenWidth * 0.4;
+    double educationHeight2 = screenWidth * 0.55;
+    double titleFontSize =
+        isMobileView ? screenWidth * 0.05 : screenWidth * 0.02;
 
-    final int screenWidth = MediaQuery.of(context).size.width.toInt();
+    // final int screenWidth = MediaQuery.of(context).size.width.toInt();
 
     return SizedBox(
-      height: Constants
-          .educationWidgetHeight, // Specify a fixed height here or calculate it based on your layout,
+      // height: Constants.educationWidgetHeight, // Specify a fixed height here or calculate it based on your layout,
+      height: (screenWidth <= 1000 && screenWidth > 600) ? educationHeight2 : educationHeight,
       child: Column(
         children: [
           Row(
             children: [
               SizedBox(
                 width: screenWidth * Constants.kScreenWidthDivider,
+                // width: 0,
               ),
-              Column(
+              Expanded(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     "Education History",
-                    style: PublicViewTextStyles.generalSubHeading,
+                    style: PublicViewTextStyles.generalSubHeading.copyWith(
+                      fontSize: titleFontSize,
+                    ),
                     textAlign: TextAlign.left,
+                    
                   ),
                   SizedBox(
-                    width: screenWidth * Constants.kTitleDividerLength,
+                    // width: screenWidth * Constants.kTitleDividerLength,
+                    width: titleFontSize * 20,
                     child: const Divider(
                       color: Colors.black,
                       thickness: Constants.kScreenDividerThickness,
                     ),
                   ),
                 ],
-              ),
+              ),),
             ],
           ),
           Expanded(
@@ -124,8 +139,8 @@ class EducationSectionState extends State<EducationSection> {
           Row(
             children: [
               SizedBox(
-                width: MediaQuery.of(context).size.width *
-                    Constants.kScreenWidthDivider,
+                width: screenWidth * Constants.kScreenWidthDivider,
+                // width: 0,
               ),
               Expanded(
                 child: Column(
@@ -190,8 +205,24 @@ class EducationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-
+    bool isMobileView = screenWidth <= 600;
     final bool isFirst = (educationDTO.index as int) % itemsPerPage == 0;
+    double schoolNameFontSize =
+        isMobileView ? screenWidth * 0.03 : screenWidth * 0.012;
+    double dateFontSize =
+        isMobileView ? screenWidth * 0.03 : screenWidth * 0.012;
+    double degreeFontSize=
+        isMobileView ? screenWidth * 0.03 : screenWidth * 0.012;
+    double majorFontSize =
+        isMobileView ? screenWidth * 0.03 : screenWidth * 0.012;
+    double gradeFontSize =
+        isMobileView ? screenWidth * 0.03 : screenWidth * 0.012;
+    double descriptionFontSize=
+        isMobileView ? screenWidth * 0.025 : screenWidth * 0.01;
+    double imageSize = 
+        isMobileView ? screenWidth * 0.2: screenWidth * 0.08;
+    double gap = 
+        isMobileView ? screenWidth * 0.08: screenWidth * 0.055;
 
     return IntrinsicHeight(
       child: Row(
@@ -199,6 +230,7 @@ class EducationWidget extends StatelessWidget {
         children: [
           SizedBox(
             width: screenWidth * Constants.kScreenWidthDivider,
+            // width: 0,
             child: Stack(
               children: [
                 Center(
@@ -216,8 +248,10 @@ class EducationWidget extends StatelessWidget {
                 ClipOval(
                   child: Container(
                     alignment: Alignment.center,
-                    width: screenWidth * Constants.kLogoSize,
-                    height: screenWidth * Constants.kLogoSize,
+                    // width: screenWidth * Constants.kLogoSize,
+                    // height: screenWidth * Constants.kLogoSize,
+                    width: imageSize,
+                    height: imageSize,
                     decoration: const BoxDecoration(
                       color: Colors
                           .white, // You can set a background color if needed
@@ -231,6 +265,7 @@ class EducationWidget extends StatelessWidget {
               ],
             ),
           ),
+          // image and left column gap
           SizedBox(
             width: screenWidth * Constants.kVerticalSpacing,
           ),
@@ -249,31 +284,48 @@ class EducationWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
+                    // SizedBox(
+                      // width: leftColumnWidth,
+                      Expanded(
+                      child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           educationDTO.schoolName as String,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: schoolNameFontSize,
+                            ),
                         ),
                         Text(
                           '${educationDTO.startDate as String} - ${educationDTO.endDate as String}',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: dateFontSize,
+                            ),
                         ),
                       ],
                     ),
-                    SizedBox(
-                      width: screenWidth * Constants.kScreenWidthDivider,
                     ),
-                    Expanded(
+                    // ),
+                    // left and right column gap
+                    SizedBox(
+                      // width: screenWidth * Constants.kScreenWidthDivider,
+                      width: gap,
+                    ),
+                    // SizedBox(
+                      // width: rightColumnWidth,
+                      Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             educationDTO.degree as String,
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontStyle: FontStyle.italic),
+                                fontStyle: FontStyle.italic,
+                                fontSize: degreeFontSize,
+                                ),
                           ),
                           if (educationDTO.major!.isNotEmpty)
                             Text(
@@ -281,7 +333,10 @@ class EducationWidget extends StatelessWidget {
                                   ? educationDTO.major as String
                                   : "",
                               style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
+                                  TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: majorFontSize,
+                                    ),
                             ),
                           if (!educationDTO.grade!.isNegative)
                             Text(
@@ -292,11 +347,15 @@ class EducationWidget extends StatelessWidget {
                                       ? ' - ${educationDTO.gradeDescription as String}'
                                       : ''),
                               style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
+                                  TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: gradeFontSize,
+                                    ),
                             ),
                         ],
                       ),
                     ),
+                    // ),
                   ],
                 ),
                 SizedBox(
@@ -305,11 +364,15 @@ class EducationWidget extends StatelessWidget {
                 Expanded(
                   child: Text(
                     educationDTO.description as String,
+                    style: TextStyle(
+                      fontSize: descriptionFontSize,
+                      )
                     // Additional text styling if needed
                   ),
                 ),
                 SizedBox(
-                  height: screenHeight * Constants.kVerticalSpacing,
+                  // height: screenHeight * Constants.kVerticalSpacing,
+                  height: 0,
                 ),
               ],
             ),
