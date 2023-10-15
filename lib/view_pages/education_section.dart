@@ -48,7 +48,6 @@ class EducationSectionState extends State<EducationSection> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
     final totalPages = (educationSectionData.length / itemsPerPage).ceil();
     bool isMobileView = screenWidth <= 600;
     
@@ -58,10 +57,8 @@ class EducationSectionState extends State<EducationSection> {
     double titleFontSize =
         isMobileView ? screenWidth * 0.05 : screenWidth * 0.02;
 
-    // final int screenWidth = MediaQuery.of(context).size.width.toInt();
 
     return SizedBox(
-      // height: Constants.educationWidgetHeight, // Specify a fixed height here or calculate it based on your layout,
       height: (screenWidth <= 1000 && screenWidth > 600) ? educationHeight2 : educationHeight,
       child: Column(
         children: [
@@ -69,7 +66,6 @@ class EducationSectionState extends State<EducationSection> {
             children: [
               SizedBox(
                 width: screenWidth * Constants.kScreenWidthDivider,
-                // width: 0,
               ),
               Expanded(
               child: Column(
@@ -84,7 +80,6 @@ class EducationSectionState extends State<EducationSection> {
                     
                   ),
                   SizedBox(
-                    // width: screenWidth * Constants.kTitleDividerLength,
                     width: titleFontSize * 20,
                     child: const Divider(
                       color: Colors.black,
@@ -140,7 +135,6 @@ class EducationSectionState extends State<EducationSection> {
             children: [
               SizedBox(
                 width: screenWidth * Constants.kScreenWidthDivider,
-                // width: 0,
               ),
               Expanded(
                 child: Column(
@@ -230,7 +224,6 @@ class EducationWidget extends StatelessWidget {
         children: [
           SizedBox(
             width: screenWidth * Constants.kScreenWidthDivider,
-            // width: 0,
             child: Stack(
               children: [
                 Center(
@@ -284,8 +277,6 @@ class EducationWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // SizedBox(
-                      // width: leftColumnWidth,
                       Expanded(
                       child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -307,14 +298,11 @@ class EducationWidget extends StatelessWidget {
                       ],
                     ),
                     ),
-                    // ),
                     // left and right column gap
                     SizedBox(
                       // width: screenWidth * Constants.kScreenWidthDivider,
                       width: gap,
                     ),
-                    // SizedBox(
-                      // width: rightColumnWidth,
                       Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -355,7 +343,6 @@ class EducationWidget extends StatelessWidget {
                         ],
                       ),
                     ),
-                    // ),
                   ],
                 ),
                 SizedBox(

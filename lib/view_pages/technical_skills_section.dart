@@ -46,7 +46,6 @@ class _TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
     bool isMobileView = screenWidth <= 600;
     double technicalSkillsWidth = 
         isMobileView ? screenWidth * 0.75 : screenWidth * 0.4;
@@ -56,8 +55,6 @@ class _TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
         isMobileView ? screenWidth * 0.05 : screenWidth * 0.02;
     double generalPadding = 
         isMobileView ? screenWidth * 0.01 : screenWidth * 0.006;
-    double gap = 
-        isMobileView ? screenWidth * 0.3 : screenWidth * 0.1;
     
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
