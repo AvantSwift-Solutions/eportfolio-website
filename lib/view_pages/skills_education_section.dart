@@ -13,9 +13,21 @@ class SkillsAndEducation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    bool isMobileView = screenWidth <= 600;
+    double titleFontSize = 
+        isMobileView ? screenWidth * 0.06 : screenWidth * 0.035;
+    double gap = 
+        isMobileView ? screenWidth * 0.1 : screenWidth * 0.07;
+    double generalPadding = 
+        isMobileView ? screenWidth * 0.05 : screenWidth * 0.02;
+    double leftPadding = 
+        isMobileView ? screenWidth * 0.05 : screenWidth * 0.02;
+    double spacing =
+        isMobileView ? screenWidth * 0.05 : screenWidth * 0.02;
+    if (!isMobileView){
     return Padding(
       padding:
-          const EdgeInsets.all(50.0), // Add padding of 50 around the widget
+          EdgeInsets.all(generalPadding), // Add padding around the widget
       child: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -24,57 +36,105 @@ class SkillsAndEducation extends StatelessWidget {
             Text(
               'Skills & Education',
               style: PublicViewTextStyles.generalHeading
-                  .copyWith(fontWeight: FontWeight.bold),
+                  .copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: titleFontSize),
             ),
 
-            const SizedBox(height: 20),
+            SizedBox(height: spacing),
 
             // Content (Two Columns)
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // Left Column - TechnicalSkillsWidget
-                Container(
-                  padding: const EdgeInsets.only(left: 120),
-                  child: const TechnicalSkillsWidget(),
-                ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Left Column - TechnicalSkillsWidget
+                  Container(
+                    padding: EdgeInsets.only(left: leftPadding),
+                    child: const TechnicalSkillsWidget(),
+                  ),
 
-                const SizedBox(width: 200),
-                // Right Column
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 80),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: const EducationSection(),
-                        ),
-                        const SizedBox(height: 20), // Adjust vertical spacing
-                        // InterpersonalSkillsWidget
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: screenWidth * 0.05,
-                              ),
-                              const Expanded(
-                                child: InterpersonalSkillsWidget(),
-                              ),
-                            ],
+                  SizedBox(width: gap),
+                  // Right Column
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 80),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: const EducationSection(),
                           ),
-                        ),
-                      ],
+                          SizedBox(height: spacing), // Adjust vertical spacing
+                          // InterpersonalSkillsWidget
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: screenWidth * 0.05,
+                                ),
+                                const Expanded(
+                                  child: InterpersonalSkillsWidget(),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
           ],
         ),
       ),
     );
+    }else {
+      return Padding(
+        padding: EdgeInsets.all(generalPadding), // Add padding around the widget
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Title
+              Padding(
+                padding: EdgeInsets.only(bottom: spacing),
+                child: Text(
+                  'Skills & Education',
+                  style: PublicViewTextStyles.generalHeading.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: titleFontSize,
+                  ),
+                ),
+              ),
+
+              // Technical Skills
+              Padding(
+                padding: EdgeInsets.only(left: leftPadding, right: gap),
+                child: const TechnicalSkillsWidget(),
+              ),
+
+              SizedBox(height: spacing),
+              
+              // Interpersonal Skills
+              Padding(
+                padding: EdgeInsets.only(left: leftPadding, right: gap),
+                child: const InterpersonalSkillsWidget(),
+              ),
+              
+              SizedBox(height: spacing),
+
+              // Education Section
+              Padding(
+                padding: EdgeInsets.only(left: leftPadding, right: gap),
+                child: const EducationSection(),
+              ),
+
+            ],
+          ),
+        ),
+      );
+    }
   }
 }

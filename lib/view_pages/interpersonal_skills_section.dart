@@ -45,6 +45,17 @@ class _InterpersonalSkillsWidgetState extends State<InterpersonalSkillsWidget> {
   @override
   Widget build(BuildContext context) {
     double maxWidgetWidth = 400;
+    double screenWidth = MediaQuery.of(context).size.width;
+    bool isMobileView = screenWidth <= 600;
+    double titleFontSize = 
+        isMobileView ? screenWidth * 0.06 : screenWidth * 0.02;
+    double skillsFontSize = 
+        isMobileView ? screenWidth * 0.04 : screenWidth * 0.012;
+    double circleSize = 
+        isMobileView ? screenWidth * 0.03 : screenWidth * 0.01;
+    double iskillsSectionHeight =
+        isMobileView ? screenWidth * 0.4 : screenWidth * 0.2;
+    double iskillsSectionHeight2 = screenWidth * 0.3;
 
     return SizedBox(
       width: maxWidgetWidth,
@@ -58,7 +69,9 @@ class _InterpersonalSkillsWidgetState extends State<InterpersonalSkillsWidget> {
               children: [
                 Text(
                   'Interpersonal Skills',
-                  style: PublicViewTextStyles.generalSubHeading,
+                  style: PublicViewTextStyles.generalSubHeading.copyWith(
+                    fontSize: titleFontSize
+                  ),
                   textAlign: TextAlign.left,
                 ),
                 const Divider(
@@ -70,7 +83,7 @@ class _InterpersonalSkillsWidgetState extends State<InterpersonalSkillsWidget> {
           ),
           SizedBox(
             width: double.infinity, // Expand to the maximum available width
-            height: 180,
+            height: (screenWidth < 1000 && screenWidth > 600) ? iskillsSectionHeight2 : iskillsSectionHeight,
             child: SizedBox(
               height: 10, // Adjust the height as needed
               child: PageView.builder(
@@ -106,11 +119,14 @@ class _InterpersonalSkillsWidgetState extends State<InterpersonalSkillsWidget> {
                                   child: ListTile(
                                     contentPadding: EdgeInsets
                                         .zero, // Remove ListTile's default content padding
-                                    leading: const Icon(Icons.circle_outlined,
-                                        size: 13),
+                                    leading: Icon(Icons.circle_outlined,
+                                        size: circleSize),
                                     title: Text(
                                       pageSkills[index * numColumns + i],
                                       textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                        fontSize: skillsFontSize,
+                                      ),
                                     ),
                                   ),
                                 ),
