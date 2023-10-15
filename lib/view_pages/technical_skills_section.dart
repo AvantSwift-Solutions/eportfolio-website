@@ -136,6 +136,7 @@ class _TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
         //   child: Center(
         //     child:
         // Page Indicator
+        
         Visibility(
           visible: (allSurroundingImages.length / 8).ceil() > 1,
           child: SizedBox(

@@ -136,9 +136,10 @@ class AwardCertSectionState extends State<AwardCertSection> {
                     'Error loading awards and certificates.',
                     style: PublicViewTextStyles.generalBodyText,
                   ),
+                
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 0.0),
-                  child: Row(
+                  child: totalPages > 1 ? Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       for (int i = 0; i < totalPages; i++)
@@ -146,7 +147,7 @@ class AwardCertSectionState extends State<AwardCertSection> {
                             ? _buildPageIndicator(true, i)
                             : _buildPageIndicator(false, i),
                     ],
-                  ),
+                  ) : SizedBox(),
                 ),
               ],
             ),
@@ -212,7 +213,7 @@ class AwardCertSectionState extends State<AwardCertSection> {
             ),
           Padding(
             padding: EdgeInsets.only(bottom: generalPadding),
-            child: Row(
+            child: totalPages > 1 ? Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 for (int i = 0; i < totalPages; i++)
@@ -220,7 +221,7 @@ class AwardCertSectionState extends State<AwardCertSection> {
                       ? _buildPageIndicator(true, i)
                       : _buildPageIndicator(false, i),
               ],
-            ),
+            ) : SizedBox(),
           ),
           SizedBox(height: gapWidth),
           const RecommendationSection(),
@@ -293,7 +294,7 @@ class AwardCertSectionState extends State<AwardCertSection> {
         height: buttonWidth,
         width: isActive ? buttonWidth : buttonWidth,
         decoration: BoxDecoration(
-          color: isActive ? Colors.blue : Colors.grey,
+          color: isActive ? Colors.black : Colors.grey,
           borderRadius: BorderRadius.circular(buttonRadius),
         ),
       ),

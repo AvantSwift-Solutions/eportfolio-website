@@ -1,3 +1,4 @@
+import 'package:avantswift_portfolio/ui/colored_circle.dart';
 import 'package:flutter/material.dart';
 import '../controllers/view_controllers/education_section_controller.dart';
 import '../dto/education_section_dto.dart';
@@ -143,7 +144,8 @@ class EducationSectionState extends State<EducationSection> {
                       color: Colors.black,
                       thickness: Constants.kScreenDividerThickness,
                     ),
-                    Row(
+                    // hide page indicator
+                    totalPages > 1 ? Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         for (int page = 0; page < totalPages; page++)
@@ -172,7 +174,7 @@ class EducationSectionState extends State<EducationSection> {
                             ),
                           ),
                       ],
-                    ),
+                    ) : SizedBox(),
                   ],
                 ),
               ),
@@ -213,8 +215,8 @@ class EducationWidget extends StatelessWidget {
         isMobileView ? screenWidth * 0.03 : screenWidth * 0.012;
     double descriptionFontSize=
         isMobileView ? screenWidth * 0.025 : screenWidth * 0.01;
-    double imageSize = 
-        isMobileView ? screenWidth * 0.2: screenWidth * 0.08;
+    double imageRadius = 
+        isMobileView ? screenWidth * 0.08: screenWidth * 0.05;
     double gap = 
         isMobileView ? screenWidth * 0.08: screenWidth * 0.055;
 
@@ -238,13 +240,14 @@ class EducationWidget extends StatelessWidget {
                     size: const Size(1, double.infinity),
                   ),
                 ),
-                ClipOval(
+                CircleAvatar(
+                  radius: imageRadius,
                   child: Container(
                     alignment: Alignment.center,
                     // width: screenWidth * Constants.kLogoSize,
                     // height: screenWidth * Constants.kLogoSize,
-                    width: imageSize,
-                    height: imageSize,
+                    // width: imageSize,
+                    // height: imageSize,
                     decoration: const BoxDecoration(
                       color: Colors
                           .white, // You can set a background color if needed
