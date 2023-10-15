@@ -216,7 +216,7 @@ class EducationWidget extends StatelessWidget {
     double descriptionFontSize=
         isMobileView ? screenWidth * 0.025 : screenWidth * 0.01;
     double imageRadius = 
-        isMobileView ? screenWidth * 0.08: screenWidth * 0.05;
+        isMobileView ? screenWidth * 0.2: screenWidth * 0.05;
     double gap = 
         isMobileView ? screenWidth * 0.08: screenWidth * 0.055;
 

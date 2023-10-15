@@ -144,15 +144,24 @@ class _TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: List<Widget>.generate(
                 (allSurroundingImages.length / 8).ceil(),
-                (index) => Container(
-                  width: 10,
-                  height: 10,
-                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: _currentPage == index
-                        ? Colors.black
-                        : Colors.grey.withOpacity(0.5),
+                (index) => GestureDetector(
+                  onTap: () {
+                    _pageController.animateToPage(
+                      index,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.ease,
+                    );
+                  },
+                  child: Container(
+                    width: 10,
+                    height: 10,
+                    margin: const EdgeInsets.symmetric(horizontal: 5),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: _currentPage == index
+                          ? Colors.black
+                          : Colors.grey.withOpacity(0.5),
+                    ),
                   ),
                 ),
               ),
