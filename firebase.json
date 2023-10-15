@@ -1,16 +1,34 @@
 {
-  "hosting": {
-    "public": "build/web",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
-  }
+  "hosting": [
+    {
+      "site": "avantswiftsolutions",
+      "redirects": [
+        {
+          "source": "/",
+          "destination": "https://stevenzhou.web.app/#/login",
+          "type": 301
+        },
+        {
+          "source": "/**",
+          "destination": "https://stevenzhou.web.app/#/login",
+          "type": 301
+        }
+      ]
+    },
+    {
+      "site": "stevenzhou",
+      "public": "build/web",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    }
+  ]
 }
