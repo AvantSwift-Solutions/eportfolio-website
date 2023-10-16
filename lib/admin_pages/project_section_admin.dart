@@ -750,6 +750,7 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
                                     );
                                   }
                                   if (!mounted) return;
+                                  await _loadItems();
                                   Navigator.of(dialogContext).pop();
                                   Navigator.of(parentContext).pop();
                                   _showList(parentContext);
@@ -800,6 +801,7 @@ class _ProjectSectionAdminState extends State<ProjectSectionAdmin> {
                                     );
                                   }
                                   if (!mounted) return;
+                                  await _loadItems();
                                   Navigator.of(dialogContext).pop();
                                   Navigator.of(parentContext).pop();
                                   _showList(parentContext);
