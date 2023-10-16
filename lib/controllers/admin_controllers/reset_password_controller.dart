@@ -8,19 +8,19 @@ class ResetPasswordController {
       FirebaseFirestore.instance.collection('User');
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<bool> sendPasswordResetToMostRecentEmail() async {
+  Future<bool> sendPasswordResetToMostRecentEmail(String givenEmail) async {
     try {
       QuerySnapshot querySnapshot = await usersCollection
           .orderBy('creationTimestamp', descending: true)
           .limit(1)
           .get();
-      if (querySnapshot.docs.isNotEmpty) {
+      if (querySnapshot.docs.isNotEmpty ) {
         String userEmail = querySnapshot.docs[0]['email'];
-
-        // Send password reset email using Firebase Auth
-        await _auth.sendPasswordResetEmail(email: userEmail);
-
-        return true; // Email sent successfully
+         if (userEmail == givenEmail) {
+          // Send password reset email using Firebase Auth
+          await _auth.sendPasswordResetEmail(email: userEmail);
+         }
+         return true;
       }
       return false; // No user found in the collection
     } catch (e) {
