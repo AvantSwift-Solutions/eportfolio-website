@@ -1,4 +1,3 @@
-import 'package:avantswift_portfolio/ui/colored_circle.dart';
 import 'package:flutter/material.dart';
 import '../controllers/view_controllers/education_section_controller.dart';
 import '../dto/education_section_dto.dart';
