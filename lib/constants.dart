@@ -30,4 +30,5 @@ class Constants {
   static const double greyOpacity = 0.5;
   static const int pageAnimationDuration = 300;
   static const double kTitleDividerLength = 0.319;
+  static const String uid = 'klmLJjnhTKYsIT8CPO4BEZ37tDU2';
 }

@@ -1,3 +1,4 @@
+import 'package:avantswift_portfolio/constants.dart';
 import 'package:avantswift_portfolio/controllers/login_controller.dart';
 import 'package:avantswift_portfolio/models/User.dart';
 import 'package:avantswift_portfolio/admin_pages/default.dart';
@@ -45,7 +46,7 @@ class MyAppState extends State<MyApp> {
     if (firebaseUser != null) {
       final userDocument = await FirebaseFirestore.instance
           .collection('User')
-          .doc(firebaseUser.uid)
+          .doc(Constants.uid)
           .get();
       final currentUser = User.fromDocumentSnapshot(userDocument);
       return currentUser;
@@ -75,8 +76,8 @@ class MyAppState extends State<MyApp> {
               // If the user is not authenticated, display the LoginPage
               return LoginPage(
                 authState: widget.authState,
-                onLoginSuccess: (user) {
-                  loginController.onLoginSuccess(user);
+                onLoginSuccess: (user, email) {
+                  loginController.onLoginSuccess(user, email);
                   Navigator.pushReplacementNamed(context, '/home');
                 },
               );
@@ -84,8 +85,8 @@ class MyAppState extends State<MyApp> {
           });
           return LoginPage(
             authState: widget.authState,
-            onLoginSuccess: (user) {
-              loginController.onLoginSuccess(user);
+            onLoginSuccess: (user, email) {
+              loginController.onLoginSuccess(user, email);
               Navigator.pushReplacementNamed(context, '/home');
             },
           );

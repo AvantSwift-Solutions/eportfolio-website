@@ -1,4 +1,5 @@
 import 'package:avantswift_portfolio/admin_pages/about_ass.dart';
+import 'package:avantswift_portfolio/constants.dart';
 import 'package:avantswift_portfolio/ui/custom_button.dart';
 import 'package:circular_timer/circular_timer.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +41,8 @@ class LoginPage extends StatefulWidget {
   static const double responsiveWidthLimit = 700;
   static const double responsiveHeightLimit = 600;
 
-  final Function(model.User) onLoginSuccess;
+  final Function(model.User, String) onLoginSuccess;
+
   final AuthState authState;
 
   const LoginPage(
@@ -639,7 +641,7 @@ class LoginPageState extends State<LoginPage> {
         final User? firebaseUser = userCredential.user;
 
         if (firebaseUser != null) {
-          final uid = firebaseUser.uid;
+          const uid = Constants.uid;
 
           final DocumentSnapshot userDocument = await FirebaseFirestore.instance
               .collection('User')
@@ -648,7 +650,7 @@ class LoginPageState extends State<LoginPage> {
 
           final currentUser = model.User.fromDocumentSnapshot(userDocument);
 
-          widget.onLoginSuccess(currentUser);
+          widget.onLoginSuccess(currentUser, email); // Pass email to notify
         }
       } else {
         if (loginTries == 3) {
