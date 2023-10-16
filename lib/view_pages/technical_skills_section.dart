@@ -45,22 +45,37 @@ class _TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    bool isMobileView = screenWidth <= 600;
+    double technicalSkillsWidth = 
+        isMobileView ? screenWidth * 0.75 : screenWidth * 0.4;
+    double technicalSkillsHeight = 
+        isMobileView ? screenWidth * 0.78 : screenWidth * 0.4;
+    double titleFontSize = 
+        isMobileView ? screenWidth * 0.05 : screenWidth * 0.02;
+    double generalPadding = 
+        isMobileView ? screenWidth * 0.01 : screenWidth * 0.006;
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const SizedBox(
-          height: 120,
+        // above title space
+        SizedBox(
+          height: generalPadding,
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Technical Skills',
-              style: PublicViewTextStyles.generalSubHeading,
+              style: PublicViewTextStyles.generalSubHeading.copyWith(
+                fontSize: titleFontSize,
+              ),
               textAlign: TextAlign.start,
             ),
-            const SizedBox(
-              width: 420,
+            // title underline width
+            SizedBox(
+              width: titleFontSize * 7,
               child: Divider(
                 color: Colors.black,
                 thickness: 2.0,
@@ -68,13 +83,14 @@ class _TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
             ),
           ],
         ),
-
+        // gap between title and images
         const SizedBox(
-          height: 20,
+          height: 0,
         ),
+        // main content 
         SizedBox(
-          width: 420,
-          height: 450, // Adjust the height as needed
+          width: technicalSkillsWidth,
+          height: technicalSkillsHeight, // Adjust the height as needed
           child: SizedBox(
             child: PageView.builder(
               controller: _pageController,
@@ -120,6 +136,7 @@ class _TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
         //   child: Center(
         //     child:
         // Page Indicator
+        
         Visibility(
           visible: (allSurroundingImages.length / 8).ceil() > 1,
           child: SizedBox(
@@ -127,15 +144,24 @@ class _TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: List<Widget>.generate(
                 (allSurroundingImages.length / 8).ceil(),
-                (index) => Container(
-                  width: 10,
-                  height: 10,
-                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: _currentPage == index
-                        ? Colors.black
-                        : Colors.grey.withOpacity(0.5),
+                (index) => GestureDetector(
+                  onTap: () {
+                    _pageController.animateToPage(
+                      index,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.ease,
+                    );
+                  },
+                  child: Container(
+                    width: 10,
+                    height: 10,
+                    margin: const EdgeInsets.symmetric(horizontal: 5),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: _currentPage == index
+                          ? Colors.black
+                          : Colors.grey.withOpacity(0.5),
+                    ),
                   ),
                 ),
               ),
