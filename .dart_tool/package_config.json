@@ -110,6 +110,12 @@
       "languageVersion": "2.19"
     },
     {
+      "name": "circular_timer",
+      "rootUri": "file:///C:/Users/Amritesh%20Dasgupta/AppData/Local/Pub/Cache/hosted/pub.dev/circular_timer-1.0.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
       "name": "clock",
       "rootUri": "file:///C:/Users/Amritesh%20Dasgupta/AppData/Local/Pub/Cache/hosted/pub.dev/clock-1.1.1",
       "packageUri": "lib/",
@@ -974,7 +980,7 @@
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2023-10-15T12:43:54.561305Z",
+  "generated": "2023-10-16T12:20:23.851771Z",
   "generator": "pub",
   "generatorVersion": "3.0.5"
 }

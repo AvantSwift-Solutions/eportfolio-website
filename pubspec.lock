@@ -145,6 +145,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.3"
+  circular_timer:
+    dependency: "direct main"
+    description:
+      name: circular_timer
+      sha256: "5e0faf148012bbe4ffcaf6ede77c9cbdf2c99911a76536324b3ceca25bbd7492"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.4"
   clock:
     dependency: transitive
     description:

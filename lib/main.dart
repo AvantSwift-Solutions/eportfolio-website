@@ -67,13 +67,29 @@ class MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       routes: {
         '': (context) => SinglePageView(),
-        '/login': (context) => LoginPage(
-              authState: widget.authState,
-              onLoginSuccess: (user) {
-                loginController.onLoginSuccess(user);
-                Navigator.pushNamed(context, '/home');
-              },
-            ),
+        '/login': (context) {
+          mapAuthentication().then((currentUser) {
+            if (currentUser != null) {
+              return Navigator.pushReplacementNamed(context, '/home');
+            } else {
+              // If the user is not authenticated, display the LoginPage
+              return LoginPage(
+                authState: widget.authState,
+                onLoginSuccess: (user) {
+                  loginController.onLoginSuccess(user);
+                  Navigator.pushReplacementNamed(context, '/home');
+                },
+              );
+            }
+          });
+          return LoginPage(
+            authState: widget.authState,
+            onLoginSuccess: (user) {
+              loginController.onLoginSuccess(user);
+              Navigator.pushReplacementNamed(context, '/home');
+            },
+          );
+        },
         '/home': (context) {
           return FutureBuilder<User?>(
             future: mapAuthentication(),
