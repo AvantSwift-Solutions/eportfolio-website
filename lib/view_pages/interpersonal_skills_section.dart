@@ -47,12 +47,11 @@ class _InterpersonalSkillsWidgetState extends State<InterpersonalSkillsWidget> {
     double maxWidgetWidth = 400;
     double screenWidth = MediaQuery.of(context).size.width;
     bool isMobileView = screenWidth <= 600;
-    double titleFontSize = 
+    double titleFontSize =
         isMobileView ? screenWidth * 0.06 : screenWidth * 0.02;
-    double skillsFontSize = 
+    double skillsFontSize =
         isMobileView ? screenWidth * 0.04 : screenWidth * 0.012;
-    double circleSize = 
-        isMobileView ? screenWidth * 0.03 : screenWidth * 0.01;
+    double circleSize = isMobileView ? screenWidth * 0.03 : screenWidth * 0.01;
     double iskillsSectionHeight =
         isMobileView ? screenWidth * 0.4 : screenWidth * 0.2;
     double iskillsSectionHeight2 = screenWidth * 0.3;
@@ -69,9 +68,8 @@ class _InterpersonalSkillsWidgetState extends State<InterpersonalSkillsWidget> {
               children: [
                 Text(
                   'Interpersonal Skills',
-                  style: PublicViewTextStyles.generalSubHeading.copyWith(
-                    fontSize: titleFontSize
-                  ),
+                  style: PublicViewTextStyles.generalSubHeading
+                      .copyWith(fontSize: titleFontSize),
                   textAlign: TextAlign.left,
                 ),
                 const Divider(
@@ -83,7 +81,9 @@ class _InterpersonalSkillsWidgetState extends State<InterpersonalSkillsWidget> {
           ),
           SizedBox(
             width: double.infinity, // Expand to the maximum available width
-            height: (screenWidth < 1000 && screenWidth > 600) ? iskillsSectionHeight2 : iskillsSectionHeight,
+            height: (screenWidth < 1000 && screenWidth > 600)
+                ? iskillsSectionHeight2
+                : iskillsSectionHeight,
             child: SizedBox(
               height: 10, // Adjust the height as needed
               child: PageView.builder(

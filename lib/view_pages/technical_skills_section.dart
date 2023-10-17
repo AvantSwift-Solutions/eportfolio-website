@@ -47,15 +47,15 @@ class _TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     bool isMobileView = screenWidth <= 600;
-    double technicalSkillsWidth = 
+    double technicalSkillsWidth =
         isMobileView ? screenWidth * 0.75 : screenWidth * 0.4;
-    double technicalSkillsHeight = 
+    double technicalSkillsHeight =
         isMobileView ? screenWidth * 0.78 : screenWidth * 0.4;
-    double titleFontSize = 
+    double titleFontSize =
         isMobileView ? screenWidth * 0.05 : screenWidth * 0.02;
-    double generalPadding = 
+    double generalPadding =
         isMobileView ? screenWidth * 0.01 : screenWidth * 0.006;
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -87,7 +87,7 @@ class _TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
         const SizedBox(
           height: 0,
         ),
-        // main content 
+        // main content
         SizedBox(
           width: technicalSkillsWidth,
           height: technicalSkillsHeight, // Adjust the height as needed
@@ -136,7 +136,7 @@ class _TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
         //   child: Center(
         //     child:
         // Page Indicator
-        
+
         Visibility(
           visible: (allSurroundingImages.length / 8).ceil() > 1,
           child: SizedBox(

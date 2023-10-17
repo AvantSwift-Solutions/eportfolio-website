@@ -90,7 +90,8 @@ class FooterSection extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
-                          padding: const EdgeInsets.only(left: leftRightPadding),
+                          padding:
+                              const EdgeInsets.only(left: leftRightPadding),
                           child: PublicViewTextStyles.styledLogo(),
                         ),
                       ),
@@ -99,13 +100,15 @@ class FooterSection extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.centerRight,
                         child: Padding(
-                          padding: const EdgeInsets.only(right: leftRightPadding),
+                          padding:
+                              const EdgeInsets.only(right: leftRightPadding),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Text(
                                 'Powered by',
-                                style: PublicViewTextStyles.generalHeading.copyWith(
+                                style: PublicViewTextStyles.generalHeading
+                                    .copyWith(
                                   fontSize: bodyTextSize * resizeFactor,
                                 ),
                               ),
@@ -113,7 +116,8 @@ class FooterSection extends StatelessWidget {
                               GestureDetector(
                                 child: Image.asset(
                                   'assets/logo-no-background.png',
-                                  width: avantSwiftSolutionsLogoWidth * resizeFactor,
+                                  width: avantSwiftSolutionsLogoWidth *
+                                      resizeFactor,
                                   height: avantSwiftSolutionsLogoHeight,
                                 ),
                                 onTap: () {
