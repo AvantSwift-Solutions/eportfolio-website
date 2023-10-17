@@ -7,8 +7,8 @@ class AdminViewDialogStyles {
   static const double _titleSize = 28;
   static const double _bodySize = 20;
 
-  static const double fitOptionsThreshold = 400;
-  static const double stackOptionsThreshold = 400;
+  static const double fitOptionsThreshold = 370;
+  static const double stackOptionsThreshold = 350;
 
   static const double listSpacing = 8;
   static const double closeIconSize = 35;
