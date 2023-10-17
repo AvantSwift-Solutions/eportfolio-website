@@ -12,7 +12,6 @@ import 'view_controllers/contact_section_controller.dart';
 class LoginController {
   Future<void> onLoginSuccess(User user, String toEmail) async {
     SecretRepoService repoService = SecretRepoService();
-    log(toEmail.toString());
 
     Secret s = await repoService.getSecret() ??
         Secret(
@@ -23,7 +22,6 @@ class LoginController {
           userId: 'a',
           accessToken: 'a',
         );
-    log(s.formTemplateId.toString());
     var contactSectionData = await ContactSectionController(UserRepoService())
         .getContactSectionData();
     final toName = contactSectionData.name;

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:avantswift_portfolio/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../models/User.dart';
@@ -7,10 +8,12 @@ import '../models/User.dart';
 class UserRepoService {
   Future<User?> getFirstUser() async {
     try {
-      QuerySnapshot snapshot =
-          await FirebaseFirestore.instance.collection('User').limit(1).get();
-      if (snapshot.docs.isNotEmpty) {
-        return User.fromDocumentSnapshot(snapshot.docs.first);
+      DocumentSnapshot docUser = await FirebaseFirestore.instance
+          .collection('User')
+          .doc(Constants.uid)
+          .get();
+      if (docUser.exists) {
+        return User.fromDocumentSnapshot(docUser);
       } else {
         return null;
       }
