@@ -503,6 +503,7 @@ class _ISkillSectionAdminState extends State<ISkillSectionAdmin> {
                                     );
                                   }
                                   if (!mounted) return;
+                                  await _loadItems();
                                   Navigator.of(dialogContext).pop();
                                   Navigator.of(parentContext).pop();
                                   _showList(parentContext);
@@ -553,6 +554,7 @@ class _ISkillSectionAdminState extends State<ISkillSectionAdmin> {
                                     );
                                   }
                                   if (!mounted) return;
+                                  await _loadItems();
                                   Navigator.of(dialogContext).pop();
                                   Navigator.of(parentContext).pop();
                                   _showList(parentContext);
