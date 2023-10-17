@@ -147,7 +147,7 @@ class AwardCertSectionState extends State<AwardCertSection> {
                             ? _buildPageIndicator(true, i)
                             : _buildPageIndicator(false, i),
                     ],
-                  ) : SizedBox(),
+                  ) : const SizedBox(),
                 ),
               ],
             ),
@@ -221,7 +221,7 @@ class AwardCertSectionState extends State<AwardCertSection> {
                       ? _buildPageIndicator(true, i)
                       : _buildPageIndicator(false, i),
               ],
-            ) : SizedBox(),
+            ) : const SizedBox(),
           ),
           SizedBox(height: gapWidth),
           const RecommendationSection(),

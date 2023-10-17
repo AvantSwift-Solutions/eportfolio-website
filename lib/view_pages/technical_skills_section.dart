@@ -76,7 +76,7 @@ class _TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
             // title underline width
             SizedBox(
               width: titleFontSize * 7,
-              child: Divider(
+              child: const Divider(
                 color: Colors.black,
                 thickness: 2.0,
               ),

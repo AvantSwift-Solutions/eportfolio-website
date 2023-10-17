@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'view_controllers/contact_section_controller.dart';
 
 class LoginController {
-  Future<void> onLoginSuccess(User user) async {
+  Future<void> onLoginSuccess(User user, String toEmail) async {
     SecretRepoService repoService = SecretRepoService();
 
     Secret s = await repoService.getSecret() ??
@@ -25,7 +25,6 @@ class LoginController {
     var contactSectionData = await ContactSectionController(UserRepoService())
         .getContactSectionData();
     final toName = contactSectionData.name;
-    final toEmail = contactSectionData.contactEmail;
 
     String serviceId = s.serviceId ?? '';
     String loginTemplateId = s.loginTemplateId ?? '';
