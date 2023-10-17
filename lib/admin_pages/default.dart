@@ -1,5 +1,5 @@
 import 'dart:math';
-
+import 'dart:developer' as logger;
 import 'package:avantswift_portfolio/admin_pages/award_cert_section_admin.dart';
 import 'package:avantswift_portfolio/admin_pages/education_section_admin.dart';
 import 'package:avantswift_portfolio/admin_pages/landing_page_admin.dart';
@@ -18,10 +18,10 @@ import 'package:avantswift_portfolio/ui/admin_view_dialog_styles.dart';
 import 'package:avantswift_portfolio/ui/custom_texts/public_view_text_styles.dart';
 import 'package:avantswift_portfolio/admin_pages/about_ass.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase;
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-
 
 class DefaultPage extends StatefulWidget {
   final User user;
@@ -176,63 +176,80 @@ class DefaultPageState extends State<DefaultPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           TextButton(
-            onPressed: () {},
+            onPressed: () async {
+              try {
+                await Future.delayed(const Duration(seconds: 1)); // Feels nicer
+                await firebase.FirebaseAuth.instance.signOut();
+                // ignore: use_build_context_synchronously
+                Navigator.pushReplacementNamed(context, '/login');
+
+                // You can add code here to navigate to the login or home screen
+                // or perform any other necessary actions after logout.
+              } catch (e) {
+                logger.log("Error logging out: $e");
+              }
+            },
             child: Text('Logout', style: navbarTextStyle),
           ),
           navbarInterItemSpacing,
           TextButton(
             onPressed: () {
               showDialog(
-          context: context,
-          builder: (BuildContext dialogContext) {
-            return Theme(
-              data: AdminViewDialogStyles.dialogThemeData,
-              child: AlertDialog(
-                  titlePadding: AdminViewDialogStyles.titleDialogPadding,
-                  contentPadding: AdminViewDialogStyles.contentDialogPadding,
-                  actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
-                  title: Container(
-                      padding: AdminViewDialogStyles.titleContPadding,
-                      color: AdminViewDialogStyles.bgColor,
-                      child: Column(
-                        children: [
-                          FittedBox(
-                              child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                context: context,
+                builder: (BuildContext dialogContext) {
+                  return Theme(
+                    data: AdminViewDialogStyles.dialogThemeData,
+                    child: AlertDialog(
+                        titlePadding: AdminViewDialogStyles.titleDialogPadding,
+                        contentPadding:
+                            AdminViewDialogStyles.contentDialogPadding,
+                        actionsPadding:
+                            AdminViewDialogStyles.actionsDialogPadding,
+                        title: Container(
+                            padding: AdminViewDialogStyles.titleContPadding,
+                            color: AdminViewDialogStyles.bgColor,
+                            child: Column(
+                              children: [
+                                FittedBox(
+                                    child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text(
+                                        'Contact Us                        '),
+                                    Align(
+                                      alignment: Alignment.topRight,
+                                      child: IconButton(
+                                        icon: const Icon(Icons.close),
+                                        iconSize:
+                                            AdminViewDialogStyles.closeIconSize,
+                                        hoverColor: Colors.transparent,
+                                        onPressed: () {
+                                          Navigator.of(dialogContext).pop();
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                                const Divider()
+                              ],
+                            )),
+                        content: const SizedBox(
+                          width:
+                              1, // Width is set to 1 to make it fit the title not the content
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Text('Contact Us                        '),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: IconButton(
-                                  icon: const Icon(Icons.close),
-                                  iconSize: AdminViewDialogStyles.closeIconSize,
-                                  hoverColor: Colors.transparent,
-                                  onPressed: () {
-                                    Navigator.of(dialogContext).pop();
-                                  },
-                                ),
-                              ),
+                              Text(
+                                  'Please direct any queries or concerns to avantswiftsolutions@gmail.com'),
+                              SizedBox(height: forgotPasswordPadding),
                             ],
-                          )),
-                          const Divider()
-                        ],
-                      )),
-                  content: const SizedBox(
-                    width:
-                        1, // Width is set to 1 to make it fit the title not the content
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                            'Please direct any queries or concerns to avantswiftsolutions@gmail.com'),
-                        SizedBox(height: forgotPasswordPadding),
-                      ],
-                    ),
-                  )),
-            );
-          },
-        );
+                          ),
+                        )),
+                  );
+                },
+              );
             },
             child: Text('Contact Us', style: navbarTextStyle),
           ),
@@ -263,15 +280,15 @@ class DefaultPageState extends State<DefaultPage> {
             child: Image.asset(
               'assets/logo-no-background.png',
               width: avantSwiftSolutionsLogoWidth, // Adjust the width as needed
-              height: avantSwiftSolutionsLogoWidth, // Adjust the height as needed
+              height:
+                  avantSwiftSolutionsLogoWidth, // Adjust the height as needed
             ),
             onTap: () {
               showDialog(
-                context: context, 
-                builder: (BuildContext context) {
-                  return const AboutAssDialog();
-                } 
-              );
+                  context: context,
+                  builder: (BuildContext context) {
+                    return const AboutAssDialog();
+                  });
             },
           ),
         ],

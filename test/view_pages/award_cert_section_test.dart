@@ -156,8 +156,6 @@ void main() {
           expect(inkWellCert, findsOneWidget);
 
           await tester.tap(inkWellCert);
-
-          // TODO: Figure out how to test opening links
         });
       });
     });

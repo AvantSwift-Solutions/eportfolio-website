@@ -1,5 +1,7 @@
 import 'package:avantswift_portfolio/admin_pages/about_ass.dart';
+import 'package:avantswift_portfolio/constants.dart';
 import 'package:avantswift_portfolio/ui/custom_button.dart';
+import 'package:circular_timer/circular_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -39,7 +41,8 @@ class LoginPage extends StatefulWidget {
   static const double responsiveWidthLimit = 700;
   static const double responsiveHeightLimit = 600;
 
-  final Function(model.User) onLoginSuccess;
+  final Function(model.User, String) onLoginSuccess;
+
   final AuthState authState;
 
   const LoginPage(
@@ -54,6 +57,21 @@ class LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscureText = true;
+  int loginTries = 0;
+
+  void checkUserAndNavigate() {
+    if (FirebaseAuth.instance.currentUser != null) {
+      Navigator.pushReplacementNamed(context, '/home');
+    }
+  }
+
+  void showDialogTimer(int seconds) {
+    Future.delayed(Duration(seconds: seconds), () {
+      if (Navigator.of(context, rootNavigator: true).canPop()) {
+        Navigator.of(context, rootNavigator: true).pop();
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -64,7 +82,6 @@ class LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         body: Center(child: LayoutBuilder(builder: (context, constraints) {
       final screenWidth = constraints.maxWidth;
@@ -178,11 +195,10 @@ class LoginPageState extends State<LoginPage> {
                           ),
                           onTap: () {
                             showDialog(
-                              context: context, 
-                              builder: (BuildContext context) {
-                                return const AboutAssDialog();
-                              } 
-                            );
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return const AboutAssDialog();
+                                });
                           },
                         ),
                       ],
@@ -430,11 +446,10 @@ class LoginPageState extends State<LoginPage> {
                   ),
                   onTap: () {
                     showDialog(
-                      context: context, 
-                      builder: (BuildContext context) {
-                        return const AboutAssDialog();
-                      } 
-                    );
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const AboutAssDialog();
+                        });
                   },
                 ),
               ],
@@ -624,7 +639,7 @@ class LoginPageState extends State<LoginPage> {
         final User? firebaseUser = userCredential.user;
 
         if (firebaseUser != null) {
-          final uid = firebaseUser.uid;
+          const uid = Constants.uid;
 
           final DocumentSnapshot userDocument = await FirebaseFirestore.instance
               .collection('User')
@@ -633,61 +648,124 @@ class LoginPageState extends State<LoginPage> {
 
           final currentUser = model.User.fromDocumentSnapshot(userDocument);
 
-          widget.onLoginSuccess(currentUser);
+          widget.onLoginSuccess(currentUser, email); // Pass email to notify
         }
       } else {
-        // ignore: use_build_context_synchronously
-        showDialog(
-          context: context,
-          builder: (BuildContext dialogContext) {
-            return Theme(
-              data: AdminViewDialogStyles.dialogThemeData,
-              child: AlertDialog(
-                  titlePadding: AdminViewDialogStyles.titleDialogPadding,
-                  contentPadding: AdminViewDialogStyles.contentDialogPadding,
-                  actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
-                  title: Container(
-                      padding: AdminViewDialogStyles.titleContPadding,
-                      color: AdminViewDialogStyles.bgColor,
+        if (loginTries == 3) {
+          setState(() {
+            loginTries = 0;
+          });
+          // ignore: use_build_context_synchronously
+          showDialog(
+            context: context,
+            barrierDismissible:
+                false, // Dialog cannot be dismissed by clicking outside
+            builder: (BuildContext dialogContext) {
+              showDialogTimer(5);
+              return Theme(
+                data: AdminViewDialogStyles.dialogThemeData,
+                child: AlertDialog(
+                    titlePadding: AdminViewDialogStyles.titleDialogPadding,
+                    contentPadding: AdminViewDialogStyles.contentDialogPadding,
+                    actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
+                    title: Container(
+                        padding: AdminViewDialogStyles.titleContPadding,
+                        color: AdminViewDialogStyles.bgColor,
+                        child: const Column(
+                          children: [
+                            FittedBox(
+                                child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                    'Too many attempts to login. Please wait 5 seconds'),
+                              ],
+                            )),
+                          ],
+                        )),
+                    content: const SizedBox(
+                      width:
+                          1, // Width is set to 1 to make it fit the title not the content
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          FittedBox(
-                              child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text('Incorrect Email or Password'),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: IconButton(
-                                  icon: const Icon(Icons.close),
-                                  iconSize: AdminViewDialogStyles.closeIconSize,
-                                  hoverColor: Colors.transparent,
-                                  onPressed: () {
-                                    Navigator.of(dialogContext).pop();
-                                  },
-                                ),
-                              ),
-                            ],
-                          )),
-                          const Divider()
+                          Text(
+                              'Please re-enter login credentials or click \'Forgot my password\'.'),
+                          SizedBox(height: 20),
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: CircularTimer(
+                              duration: Duration(seconds: 5),
+                              radius: 10,
+                              color: Color.fromARGB(255, 4, 26, 44),
+                            ),
+                          ),
+                          SizedBox(height: LoginPage.forgotPasswordPadding),
                         ],
-                      )),
-                  content: const SizedBox(
-                    width:
-                        1, // Width is set to 1 to make it fit the title not the content
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                            'Please re-enter login credentials or click \'Forgot my password\'.'),
-                        SizedBox(height: LoginPage.forgotPasswordPadding),
-                      ],
-                    ),
-                  )),
-            );
-          },
-        );
+                      ),
+                    )),
+              );
+            },
+          );
+        } else {
+          setState(
+            () => loginTries++,
+          );
+          // ignore: use_build_context_synchronously
+          showDialog(
+            context: context,
+            builder: (BuildContext dialogContext) {
+              return Theme(
+                data: AdminViewDialogStyles.dialogThemeData,
+                child: AlertDialog(
+                    titlePadding: AdminViewDialogStyles.titleDialogPadding,
+                    contentPadding: AdminViewDialogStyles.contentDialogPadding,
+                    actionsPadding: AdminViewDialogStyles.actionsDialogPadding,
+                    title: Container(
+                        padding: AdminViewDialogStyles.titleContPadding,
+                        color: AdminViewDialogStyles.bgColor,
+                        child: Column(
+                          children: [
+                            FittedBox(
+                                child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text('Incorrect Email or Password'),
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: IconButton(
+                                    icon: const Icon(Icons.close),
+                                    iconSize:
+                                        AdminViewDialogStyles.closeIconSize,
+                                    hoverColor: Colors.transparent,
+                                    onPressed: () {
+                                      Navigator.of(dialogContext).pop();
+                                    },
+                                  ),
+                                ),
+                              ],
+                            )),
+                            const Divider()
+                          ],
+                        )),
+                    content: const SizedBox(
+                      width:
+                          1, // Width is set to 1 to make it fit the title not the content
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                              'Please re-enter login credentials or click \'Forgot my password\'.'),
+                          SizedBox(height: LoginPage.forgotPasswordPadding),
+                        ],
+                      ),
+                    )),
+              );
+            },
+          );
+        }
       }
     } catch (e) {
       showDialog(
