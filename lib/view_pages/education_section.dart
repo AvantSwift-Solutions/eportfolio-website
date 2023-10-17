@@ -173,7 +173,7 @@ class EducationSectionState extends State<EducationSection> {
                             ),
                           ),
                       ],
-                    ) : SizedBox(),
+                    ) : const SizedBox(),
                   ],
                 ),
               ),
@@ -359,7 +359,7 @@ class EducationWidget extends StatelessWidget {
                     // Additional text styling if needed
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   // height: screenHeight * Constants.kVerticalSpacing,
                   height: 0,
                 ),
