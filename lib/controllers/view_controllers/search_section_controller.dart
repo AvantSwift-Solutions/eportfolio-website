@@ -1,11 +1,26 @@
 import 'dart:async';
+import 'package:avantswift_portfolio/constants.dart';
 import 'package:avantswift_portfolio/dto/search_results_dto.dart';
 import 'package:avantswift_portfolio/dto/section_results_dto.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:english_words/english_words.dart' as english_words;
 
 class SearchSectionController {
+  bool containsNumbers(String input) {
+    final RegExp regex =
+        RegExp(r'\d'); // This regular expression matches any digit (0-9)
+    return regex.hasMatch(input);
+  }
+
   Future<List<SectionResultDTO>> searchDatabase(String query) async {
+    // Blacklisted words check
+    if (Constants.blacklistedSearchTokens.contains(query.toLowerCase()) ||
+        containsNumbers(query)) {
+      return [
+        SectionResultDTO(
+            sectionName: 'No Results', section: Sections.Experience)
+      ];
+    }
     // Use searchAllCollections to get search results
     final searchResults = await searchAllCollections(query);
     List<SectionResultDTO> resultsWithSection = [

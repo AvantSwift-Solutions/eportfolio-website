@@ -82,8 +82,6 @@ class LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    // final screenWidth = MediaQuery.of(context).size.width;
-    // double titleFontSize = screenWidth * 0.05;
     return Scaffold(
         body: Center(child: LayoutBuilder(builder: (context, constraints) {
       final screenWidth = constraints.maxWidth;

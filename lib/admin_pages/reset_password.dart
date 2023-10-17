@@ -6,6 +6,7 @@ import 'package:avantswift_portfolio/controllers/admin_controllers/reset_passwor
 class ResetPasswordScreen extends StatefulWidget {
   static const double largeSizedBoxHeight = 30;
   static const double smallSizedBoxHeight = 16;
+  static const double formTextHorizontalPadding = 10.0;
   final ResetPasswordController controller = ResetPasswordController();
 
   ResetPasswordScreen({Key? key}) : super(key: key);
@@ -16,6 +17,7 @@ class ResetPasswordScreen extends StatefulWidget {
 
 class ResetPasswordScreenState extends State<ResetPasswordScreen> {
   bool _isSending = false;
+  final _emailController = TextEditingController();
 
   Future<void> _sendEmail() async {
     setState(() {
@@ -23,7 +25,7 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
     });
 
     bool emailSent =
-        await widget.controller.sendPasswordResetToMostRecentEmail();
+        await widget.controller.sendPasswordResetToMostRecentEmail(_emailController.text.trim());
 
     setState(() {
       _isSending = false;
@@ -39,6 +41,12 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
   }
 
   @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Theme(
       // Apply the theme to the entire AlertDialog and its contents
@@ -48,12 +56,38 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [FittedBox(child: Text('Forgot my password')), Divider()],
         ),
-        content: const Column(
+        content: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-                'Click \'Send Email\' to reset password.\nInstructions will be sent via email.'),
+            const Padding(
+              padding: EdgeInsets.only(bottom: 10.0), // Add padding to the bottom
+              child: Text(
+                'Enter your email and click \'Send Email\' to reset password.\nIf the provdied email is valid, instructions will be sent to your inbox.',
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                color: const Color(0xFFEDECEC), // Set the background color here
+                borderRadius: BorderRadius.circular(8), // Optionally, you can add rounded corners
+              ),
+              child: TextFormField(
+                controller: _emailController,
+                decoration: const InputDecoration(
+                  labelText: 'Enter your email here',
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(
+                                    horizontal: ResetPasswordScreen.formTextHorizontalPadding), // Remove the default border
+                ),
+                cursorColor: Colors.black,
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return 'No email was entered';
+                  }
+                  return null;
+                },
+              ),
+            )
           ],
         ),
         actions: <Widget>[

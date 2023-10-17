@@ -137,14 +137,25 @@ Widget build(BuildContext context) {
                                 ),
                                 const SizedBox(
                                     height: AboutAssDialog.smallSizedBoxHeight),
-                                Image.network(
-                                  _currentAboutAss.imageURL != null &&
-                                          _currentAboutAss.imageURL!.isNotEmpty
-                                      ? _currentAboutAss.imageURL!
-                                      : Constants.replaceImageURL,
+                                // Image.network(
+                                //   _currentAboutAss.imageURL != null &&
+                                //           _currentAboutAss.imageURL!.isNotEmpty
+                                //       ? _currentAboutAss.imageURL!
+                                //       : Constants.replaceImageURL,
+                                //   width: AboutAssDialog.imageWidth,
+                                //   height: AboutAssDialog.imageHeight,
+                                //   fit: BoxFit.cover,
+                                // ),
+                                SizedBox(
                                   width: AboutAssDialog.imageWidth,
                                   height: AboutAssDialog.imageHeight,
-                                  fit: BoxFit.cover,
+                                  child: Image.network(
+                                    _currentAboutAss.imageURL != null &&
+                                    _currentAboutAss.imageURL!.isNotEmpty
+                                        ? _currentAboutAss.imageURL!
+                                        : Constants.replaceImageURL,
+                                    fit: BoxFit.contain, // You can choose the appropriate fit mode (cover, contain, etc.)
+                                  ),
                                 ),
                               ],
                             ),
@@ -215,14 +226,16 @@ Widget build(BuildContext context) {
                                   ),
                                   const SizedBox(
                                       width: AboutAssDialog.boxWidth),
-                                  Image.network(
-                                    _currentAboutAss.imageURL != null &&
-                                            _currentAboutAss.imageURL!.isNotEmpty
-                                        ? _currentAboutAss.imageURL!
-                                        : Constants.replaceImageURL,
+                                  SizedBox(
                                     width: AboutAssDialog.imageWidth,
                                     height: AboutAssDialog.imageHeight,
-                                    fit: BoxFit.cover,
+                                    child: Image.network(
+                                      _currentAboutAss.imageURL != null &&
+                                      _currentAboutAss.imageURL!.isNotEmpty
+                                          ? _currentAboutAss.imageURL!
+                                          : Constants.replaceImageURL,
+                                      fit: BoxFit.contain, // You can choose the appropriate fit mode (cover, contain, etc.)
+                                    ),
                                   ),
                                 ],
                               ),
