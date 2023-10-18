@@ -73,9 +73,13 @@ class LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    bool isSmallScreen = screenWidth < 1140;
-    double titleFontSize = 80;
-    double descriptionFontSize = isSmallScreen ? 20 : 30;
+    bool isSmallScreen = screenWidth <= 1000;
+    double titleFontSize =
+           isSmallScreen ? screenWidth * 0.05 : screenWidth * 0.05;
+    double descriptionFontSize = 
+            isSmallScreen ? screenWidth * 0.03 : screenWidth * 0.02;
+    double imageSize = 
+            isSmallScreen ? screenWidth * 0.8 : screenWidth * 0.4;
 
     return Center(
         child: Padding(
@@ -94,7 +98,7 @@ class LandingPageState extends State<LandingPage> {
                                 text: TextSpan(
                                   style: PublicViewTextStyles.generalHeading
                                       .copyWith(
-                                          // fontSize: titleFontSize,//
+                                          fontSize: titleFontSize,//
                                           ),
                                   children: [
                                     const TextSpan(
@@ -167,8 +171,8 @@ class LandingPageState extends State<LandingPage> {
                                 child: Image.network(
                                   landingPageData?.imageURL ??
                                       Constants.replaceImageURL,
-                                  width: 300,
-                                  height: 200,
+                                  width: imageSize,
+                                  height: imageSize,
                                   fit: BoxFit.fitHeight,
                                 ),
                               ),
@@ -267,8 +271,8 @@ class LandingPageState extends State<LandingPage> {
                                   child: Image.network(
                                     landingPageData?.imageURL ??
                                         Constants.replaceImageURL,
-                                    width: 300,
-                                    height: 300,
+                                    width: imageSize,
+                                    height: imageSize,
                                     fit: BoxFit.fitHeight,
                                   ),
                                 ),
