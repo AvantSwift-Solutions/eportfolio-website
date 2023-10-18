@@ -66,7 +66,7 @@ class AwardCertSectionState extends State<AwardCertSection> {
     int awardsPerRow = isMobileView ? 2 : 3;
     int totalPages = (awardCerts?.length ?? 0) ~/ (awardsPerRow * 2) + 1;
     double awardCertSectionHeight =
-        isMobileView ? screenWidth * 0.9 : screenWidth * 0.35;
+        isMobileView ? screenWidth * 0.9 : screenWidth * 0.4;
     double titleFontSize =
         isMobileView ? screenWidth * 0.07 : screenWidth * 0.03;
     double gapWidth = isMobileView ? screenWidth * 0.05 : screenWidth * 0.1;
@@ -114,7 +114,7 @@ class AwardCertSectionState extends State<AwardCertSection> {
                               : awardCerts!.length;
 
                           return GridView.builder(
-                            padding: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(0),
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: awardsPerRow,
@@ -136,18 +136,19 @@ class AwardCertSectionState extends State<AwardCertSection> {
                     'Error loading awards and certificates.',
                     style: PublicViewTextStyles.generalBodyText,
                   ),
-                
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 0.0),
-                  child: totalPages > 1 ? Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      for (int i = 0; i < totalPages; i++)
-                        i == _currentPage
-                            ? _buildPageIndicator(true, i)
-                            : _buildPageIndicator(false, i),
-                    ],
-                  ) : const SizedBox(),
+                  child: totalPages > 1
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            for (int i = 0; i < totalPages; i++)
+                              i == _currentPage
+                                  ? _buildPageIndicator(true, i)
+                                  : _buildPageIndicator(false, i),
+                          ],
+                        )
+                      : const SizedBox(),
                 ),
               ],
             ),
@@ -213,15 +214,17 @@ class AwardCertSectionState extends State<AwardCertSection> {
             ),
           Padding(
             padding: EdgeInsets.only(bottom: generalPadding),
-            child: totalPages > 1 ? Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                for (int i = 0; i < totalPages; i++)
-                  i == _currentPage
-                      ? _buildPageIndicator(true, i)
-                      : _buildPageIndicator(false, i),
-              ],
-            ) : const SizedBox(),
+            child: totalPages > 1
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      for (int i = 0; i < totalPages; i++)
+                        i == _currentPage
+                            ? _buildPageIndicator(true, i)
+                            : _buildPageIndicator(false, i),
+                    ],
+                  )
+                : const SizedBox(),
           ),
           SizedBox(height: gapWidth),
           const RecommendationSection(),
@@ -268,6 +271,7 @@ class AwardCertSectionState extends State<AwardCertSection> {
         const SizedBox(height: 10.0),
         Text(
           awardCert.name ?? 'Certificate Name',
+          textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: awardCertsNameFontSize,
             fontWeight: FontWeight.bold,

@@ -46,11 +46,11 @@ class _InterpersonalSkillsWidgetState extends State<InterpersonalSkillsWidget> {
   Widget build(BuildContext context) {
     double maxWidgetWidth = 400;
     double screenWidth = MediaQuery.of(context).size.width;
-    bool isMobileView = screenWidth <= 600;
-    double titleFontSize = 
-        isMobileView ? screenWidth * 0.06 : screenWidth * 0.02;
-    double skillsFontSize = 
-        isMobileView ? screenWidth * 0.04 : screenWidth * 0.012;
+    bool isMobileView = screenWidth <= 800;
+    double titleFontSize =
+        isMobileView ? screenWidth * 0.05 : screenWidth * 0.02;
+    double skillsFontSize =
+        isMobileView ? screenWidth * 0.03 : screenWidth * 0.012;
     double circleSize = 
         isMobileView ? screenWidth * 0.03 : screenWidth * 0.01;
     double iskillsSectionHeight =
@@ -58,7 +58,7 @@ class _InterpersonalSkillsWidgetState extends State<InterpersonalSkillsWidget> {
     double iskillsSectionHeight2 = screenWidth * 0.3;
 
     return SizedBox(
-      width: maxWidgetWidth,
+      width: !isMobileView ? maxWidgetWidth : screenWidth,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -70,8 +70,7 @@ class _InterpersonalSkillsWidgetState extends State<InterpersonalSkillsWidget> {
                 Text(
                   'Interpersonal Skills',
                   style: PublicViewTextStyles.generalSubHeading.copyWith(
-                    fontSize: titleFontSize
-                  ),
+                    fontSize: titleFontSize),
                   textAlign: TextAlign.left,
                 ),
                 const Divider(
@@ -83,7 +82,9 @@ class _InterpersonalSkillsWidgetState extends State<InterpersonalSkillsWidget> {
           ),
           SizedBox(
             width: double.infinity, // Expand to the maximum available width
-            height: (screenWidth < 1000 && screenWidth > 600) ? iskillsSectionHeight2 : iskillsSectionHeight,
+            height: (screenWidth < 1000 && screenWidth > 600)
+                ? iskillsSectionHeight2
+                : iskillsSectionHeight,
             child: SizedBox(
               height: 10, // Adjust the height as needed
               child: PageView.builder(

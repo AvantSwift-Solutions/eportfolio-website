@@ -49,17 +49,19 @@ class EducationSectionState extends State<EducationSection> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final totalPages = (educationSectionData.length / itemsPerPage).ceil();
-    bool isMobileView = screenWidth <= 600;
-    
-    double educationHeight = 
+    bool isMobileView = screenWidth <= 800;
+
+    double educationHeight =
         isMobileView ? screenWidth * 1.0 : screenWidth * 0.4;
-    double educationHeight2 = screenWidth * 0.55;
+    double educationHeightMini = screenWidth * 1.2;
     double titleFontSize =
         isMobileView ? screenWidth * 0.05 : screenWidth * 0.02;
 
-
     return SizedBox(
-      height: (screenWidth <= 1000 && screenWidth > 600) ? educationHeight2 : educationHeight,
+      height: (screenWidth <= 550)
+          ? educationHeightMini
+          : educationHeight,
+      // height: educationHeight,
       child: Column(
         children: [
           Row(
@@ -68,26 +70,27 @@ class EducationSectionState extends State<EducationSection> {
                 width: screenWidth * Constants.kScreenWidthDivider,
               ),
               Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Education History",
-                    style: PublicViewTextStyles.generalSubHeading.copyWith(
-                      fontSize: titleFontSize,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Education History",
+                      style: PublicViewTextStyles.generalSubHeading.copyWith(
+                        fontSize: titleFontSize,
+                      ),
+                      textAlign: TextAlign.left,
                     ),
-                    textAlign: TextAlign.left,
-                    
-                  ),
-                  SizedBox(
-                    width: titleFontSize * 20,
-                    child: const Divider(
-                      color: Colors.black,
-                      thickness: Constants.kScreenDividerThickness,
+                    SizedBox(
+                      // width: screenWidth * Constants.kScreenWidthDivider,
+                      width: titleFontSize * 40,
+                      child: const Divider(
+                        color: Colors.black,
+                        thickness: Constants.kScreenDividerThickness,
+                      ),
                     ),
-                  ),
-                ],
-              ),),
+                  ],
+                ),
+              ),
             ],
           ),
           Expanded(
@@ -144,36 +147,39 @@ class EducationSectionState extends State<EducationSection> {
                       thickness: Constants.kScreenDividerThickness,
                     ),
                     // hide page indicator
-                    totalPages > 1 ? Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        for (int page = 0; page < totalPages; page++)
-                          GestureDetector(
-                            onTap: () {
-                              _pageController.animateToPage(
-                                page,
-                                duration: const Duration(
-                                    milliseconds:
-                                        Constants.pageAnimationDuration),
-                                curve: Curves.easeInOut,
-                              );
-                            },
-                            child: Container(
-                              width: Constants.navigationCircleSize,
-                              height: Constants.navigationCircleSize,
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: Constants.kHorizontalSpacing),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: currentPage == page
-                                    ? Colors.black
-                                    : Colors.grey
-                                        .withOpacity(Constants.greyOpacity),
-                              ),
-                            ),
-                          ),
-                      ],
-                    ) : const SizedBox(),
+                    totalPages > 1
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              for (int page = 0; page < totalPages; page++)
+                                GestureDetector(
+                                  onTap: () {
+                                    _pageController.animateToPage(
+                                      page,
+                                      duration: const Duration(
+                                          milliseconds:
+                                              Constants.pageAnimationDuration),
+                                      curve: Curves.easeInOut,
+                                    );
+                                  },
+                                  child: Container(
+                                    width: Constants.navigationCircleSize,
+                                    height: Constants.navigationCircleSize,
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal:
+                                            Constants.kHorizontalSpacing),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: currentPage == page
+                                          ? Colors.black
+                                          : Colors.grey.withOpacity(
+                                              Constants.greyOpacity),
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          )
+                        : const SizedBox(),
                   ],
                 ),
               ),
@@ -200,24 +206,24 @@ class EducationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    bool isMobileView = screenWidth <= 600;
+    bool isMobileView = screenWidth <= 800;
     final bool isFirst = (educationDTO.index as int) % itemsPerPage == 0;
     double schoolNameFontSize =
         isMobileView ? screenWidth * 0.03 : screenWidth * 0.012;
     double dateFontSize =
         isMobileView ? screenWidth * 0.03 : screenWidth * 0.012;
-    double degreeFontSize=
+    double degreeFontSize =
         isMobileView ? screenWidth * 0.03 : screenWidth * 0.012;
     double majorFontSize =
         isMobileView ? screenWidth * 0.03 : screenWidth * 0.012;
     double gradeFontSize =
         isMobileView ? screenWidth * 0.03 : screenWidth * 0.012;
-    double descriptionFontSize=
+    double descriptionFontSize =
         isMobileView ? screenWidth * 0.025 : screenWidth * 0.01;
     double imageRadius = 
-        isMobileView ? screenWidth * 0.2: screenWidth * 0.05;
+        isMobileView ? screenWidth * 0.2 : screenWidth * 0.05;
     double gap = 
-        isMobileView ? screenWidth * 0.08: screenWidth * 0.055;
+        isMobileView ? screenWidth * 0.08 : screenWidth * 0.055;
 
     return IntrinsicHeight(
       child: Row(
@@ -279,54 +285,53 @@ class EducationWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                      Expanded(
+                    Expanded(
                       child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          educationDTO.schoolName as String,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: schoolNameFontSize,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            educationDTO.schoolName as String,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: schoolNameFontSize,
                             ),
-                        ),
-                        Text(
-                          '${educationDTO.startDate as String} - ${educationDTO.endDate as String}',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: dateFontSize,
+                          ),
+                          Text(
+                            '${educationDTO.startDate as String} - ${educationDTO.endDate as String}',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: dateFontSize,
                             ),
-                        ),
-                      ],
-                    ),
+                          ),
+                        ],
+                      ),
                     ),
                     // left and right column gap
                     SizedBox(
                       // width: screenWidth * Constants.kScreenWidthDivider,
                       width: gap,
                     ),
-                      Expanded(
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             educationDTO.degree as String,
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontStyle: FontStyle.italic,
-                                fontSize: degreeFontSize,
-                                ),
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                              fontSize: degreeFontSize,
+                            ),
                           ),
                           if (educationDTO.major!.isNotEmpty)
                             Text(
                               educationDTO.major!.isNotEmpty
                                   ? educationDTO.major as String
                                   : "",
-                              style:
-                                  TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: majorFontSize,
-                                    ),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: majorFontSize,
+                              ),
                             ),
                           if (!educationDTO.grade!.isNegative)
                             Text(
@@ -336,11 +341,10 @@ class EducationWidget extends StatelessWidget {
                                   (educationDTO.gradeDescription!.isNotEmpty
                                       ? ' - ${educationDTO.gradeDescription as String}'
                                       : ''),
-                              style:
-                                  TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: gradeFontSize,
-                                    ),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: gradeFontSize,
+                              ),
                             ),
                         ],
                       ),
@@ -351,13 +355,12 @@ class EducationWidget extends StatelessWidget {
                   height: screenHeight * Constants.kVerticalSpacing,
                 ),
                 Expanded(
-                  child: Text(
-                    educationDTO.description as String,
-                    style: TextStyle(
-                      fontSize: descriptionFontSize,
+                  child: Text(educationDTO.description as String,
+                      style: TextStyle(
+                        fontSize: descriptionFontSize,
                       )
-                    // Additional text styling if needed
-                  ),
+                      // Additional text styling if needed
+                      ),
                 ),
                 const SizedBox(
                   // height: screenHeight * Constants.kVerticalSpacing,

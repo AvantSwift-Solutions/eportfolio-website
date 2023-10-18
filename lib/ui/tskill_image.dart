@@ -44,10 +44,10 @@ class _TSkillsImageState extends State<TSkillsImage> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    bool isMobileView = screenWidth <= 600;
-    final double imageSize = 
-        isMobileView ? screenWidth * 0.15 : screenWidth * 0.05;
-    final double centerImageSize = 
+    bool isMobileView = screenWidth <= 800;
+    final double imageSize =
+        isMobileView ? screenWidth * 0.12 : screenWidth * 0.05;
+    final double centerImageSize =
         isMobileView ? screenWidth * 0.3 : screenWidth * 0.15;
 
     // Calculate the angle between each surrounding image

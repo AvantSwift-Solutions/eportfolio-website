@@ -351,8 +351,8 @@ class DefaultPageState extends State<DefaultPage> {
                       Text(
                           (bc.maxWidth > mobileWidthThreshold &&
                                   bc.maxHeight > mobileHeightThreshold)
-                              ? 'ePortfolio views last week'
-                              : 'Views last week',
+                              ? 'ePortfolio views last month'
+                              : 'Views last month',
                           style: const TextStyle(
                               fontSize: maxAnalyticSize,
                               fontWeight: FontWeight.bold)),

@@ -24,8 +24,8 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
       _isSending = true;
     });
 
-    bool emailSent =
-        await widget.controller.sendPasswordResetToMostRecentEmail(_emailController.text.trim());
+    bool emailSent = await widget.controller
+        .sendPasswordResetToMostRecentEmail(_emailController.text.trim());
 
     setState(() {
       _isSending = false;
@@ -61,15 +61,17 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Padding(
-              padding: EdgeInsets.only(bottom: 10.0), // Add padding to the bottom
+              padding:
+                  EdgeInsets.only(bottom: 10.0), // Add padding to the bottom
               child: Text(
-                'Enter your email and click \'Send Email\' to reset password.\nIf the provdied email is valid, instructions will be sent to your inbox.',
+                'Enter your email and click \'Send Email\' to reset password.\nIf the provided email is valid, instructions will be sent to your inbox.',
               ),
             ),
             Container(
               decoration: BoxDecoration(
                 color: const Color(0xFFEDECEC), // Set the background color here
-                borderRadius: BorderRadius.circular(8), // Optionally, you can add rounded corners
+                borderRadius: BorderRadius.circular(
+                    8), // Optionally, you can add rounded corners
               ),
               child: TextFormField(
                 controller: _emailController,
@@ -77,7 +79,8 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   labelText: 'Enter your email here',
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.symmetric(
-                                    horizontal: ResetPasswordScreen.formTextHorizontalPadding), // Remove the default border
+                      horizontal: ResetPasswordScreen
+                          .formTextHorizontalPadding), // Remove the default border
                 ),
                 cursorColor: Colors.black,
                 validator: (value) {

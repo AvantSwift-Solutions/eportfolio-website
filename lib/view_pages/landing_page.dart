@@ -75,11 +75,11 @@ class LandingPageState extends State<LandingPage> {
     final screenWidth = MediaQuery.of(context).size.width;
     bool isSmallScreen = screenWidth < 1140;
     double titleFontSize = 80;
-    double descriptionFontSize = 30;
+    double descriptionFontSize = isSmallScreen ? 20 : 30;
 
     return Center(
         child: Padding(
-            padding: const EdgeInsets.all(50.0),
+            padding: EdgeInsets.all(screenWidth * 0.035),
             child: FutureBuilder<void>(
               future: _loadDataFuture, // _loadData() returns a Future
               builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
@@ -130,7 +130,7 @@ class LandingPageState extends State<LandingPage> {
                                 text: TextSpan(
                                   style: PublicViewTextStyles.generalBodyText
                                       .copyWith(
-                                          // fontSize: descriptionFontSize,
+                                          fontSize: descriptionFontSize,
                                           ),
                                   children: [
                                     const WidgetSpan(

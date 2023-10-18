@@ -19,8 +19,8 @@ class ViewPagesTestConstants {
 
   static const iSkillDesktopSize = generalVerticalDesktopSize;
 
-  static const landingPageDesktopSize = generalHorizontalDesktopSize;
-  static const landingPageMobileSize = Size(500, 1140);
+  static const landingPageDesktopSize = Size(1920, 1100);
+  static const landingPageMobileSize = Size(500, 2000);
 
   static const projectDesktopSize = Size(1920, 1920);
   static const projectMobileSize = Size(599, 3000);

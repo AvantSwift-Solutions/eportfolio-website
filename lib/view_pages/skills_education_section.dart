@@ -13,37 +13,38 @@ class SkillsAndEducation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    bool isMobileView = screenWidth <= 600;
-    double titleFontSize = 
-        isMobileView ? screenWidth * 0.06 : screenWidth * 0.035;
+    bool isMobileView = screenWidth <= 800;
+    double titleFontSize =
+        isMobileView ? screenWidth * 0.07 : screenWidth * 0.035;
     double gap = 
         isMobileView ? screenWidth * 0.1 : screenWidth * 0.07;
-    double generalPadding = 
+    double generalPadding =
         isMobileView ? screenWidth * 0.05 : screenWidth * 0.02;
     double leftPadding = 
         isMobileView ? screenWidth * 0.05 : screenWidth * 0.02;
-    double spacing =
+    double spacing = 
         isMobileView ? screenWidth * 0.05 : screenWidth * 0.02;
-    if (!isMobileView){
-    return Padding(
-      padding:
-          EdgeInsets.all(generalPadding), // Add padding around the widget
-      child: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Title
-            Text(
-              'Skills & Education',
-              style: PublicViewTextStyles.generalHeading
-                  .copyWith(
-                    fontWeight: FontWeight.bold,
+    double offset = screenWidth * 0.05;
+    
+    if (!isMobileView) {
+      return Padding(
+        padding:
+            EdgeInsets.all(generalPadding), // Add padding around the widget
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Title
+              Text(
+                'Skills & Education',
+                style: PublicViewTextStyles.generalHeading.copyWith(
+                    fontWeight: FontWeight.bold, 
                     fontSize: titleFontSize),
-            ),
+              ),
 
-            SizedBox(height: spacing),
+              SizedBox(height: spacing),
 
-            // Content (Two Columns)
+              // Content (Two Columns)
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -86,13 +87,14 @@ class SkillsAndEducation extends StatelessWidget {
                   ),
                 ],
               ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
-    }else {
+      );
+    } else {
       return Padding(
-        padding: EdgeInsets.all(generalPadding), // Add padding around the widget
+        padding:
+            EdgeInsets.all(generalPadding), // Add padding around the widget
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,13 +118,13 @@ class SkillsAndEducation extends StatelessWidget {
               ),
 
               SizedBox(height: spacing),
-              
+
               // Interpersonal Skills
               Padding(
-                padding: EdgeInsets.only(left: leftPadding, right: gap),
+                padding: EdgeInsets.only(left: leftPadding + offset, right: gap),
                 child: const InterpersonalSkillsWidget(),
               ),
-              
+
               SizedBox(height: spacing),
 
               // Education Section
@@ -130,7 +132,6 @@ class SkillsAndEducation extends StatelessWidget {
                 padding: EdgeInsets.only(left: leftPadding, right: gap),
                 child: const EducationSection(),
               ),
-
             ],
           ),
         ),
