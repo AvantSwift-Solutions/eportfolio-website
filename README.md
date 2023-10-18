@@ -1,17 +1,90 @@
-# AvantSwift-Solutions
+# AvantSwift Solutions ePortfolio
 
-IT Project for COMP30022
+This ePortfolio is the subject work for *IT Project COMP30022_2023_SM2*. The product is a website that includes a publicly viewable portfolio and an admin page that allows the client to edit the information in the portfolio. The product also includes a phone application that provides the functionality of the admin page.
 
-Amritesh Dasgupta, adasgupta@student.unimelb.edu.au, 1226974 \
-Mohamad Danielsyah Mahmud, mohamaddanie@student.unimelb.edu.au, 1190847 \
-Ashley Zhang, aszhang@student.unimelb.edu.au, 1170203 \
-Khai Syuen Tan, khaisyuent@student.unimelb.edu.au, 1190030 \
-Vincent Luu, luuvl@student.unimelb.edu.au, 1269979
+## Table of Contents
 
----------------------------------
-High-level architecture overview
+1. [Team Overview](#1-team-overview)
+2. [Product Deployment](#2-product-deployment)\
+    2.1. [Release History](#21-release-history) \
+    2.2. [Showcase](#22-showcase)
+3. [Installation Guide](#3-installation-guide)
+4. [Architecture Overview](#4-architecture-overview) \
+    4.1. [System Diagram](#41-system-diagram) \
+    4.2. [API References](#42-api-references) \
+    4.2. [Component Relationships](#43-component-relationships)
+5. [Documentation Overview](#5-documentation-overview)
+6. [FAQ](#6-faq)
 
-![image](https://github.com/AvantSwift-Solutions/AvantSwift-Solutions/assets/82506964/74a83e09-1a2b-44bd-992f-ba4aa2a99c04)
+## 1. Team Overview
+
+**Team Contact email**: <avantswiftsolutions@gmail.com> \
+*Expect a response within 1-2 business days*
+
+Amritesh Dasgupta, <adasgupta@student.unimelb.edu.au>, 1226974 \
+Mohamad Danielsyah Mahmud, <mohamaddanie@student.unimelb.edu.au>, 1190847 \
+Ashley Zhang, <aszhang@student.unimelb.edu.au>, 1170203 \
+Khai Syuen Tan, <khaisyuent@student.unimelb.edu.au>, 1190030 \
+Vincent Luu, <luuvl@student.unimelb.edu.au>, 1269979
+
+## 2. Product Deployment
+
+### 2.1 Release History
+
+*Please refer to: [Release History](<https://avantswiftsolutions.atlassian.net/wiki/spaces/SD/pages/13795340/Release+History>)*
+
+### 2.2 Showcase
+
+*For a showcase, please refer to: [Product Page](<https://avantswiftsolutions.atlassian.net/wiki/spaces/SD/pages/7733320/Product+Page>)*
+
+**Public ePortfolio**: <https://stevenzhou.web.app>\
+**Admin Page**: <https://stevenzhou.web.app/#/login>
+
+## 3. Installation Guide
+
+These steps allow you to run the website locally on your machine.
+
+1. Clone the repository to your local machine:
+
+```bash
+git clone https://github.com/AvantSwift-Solutions/AvantSwift-Solutions.git
+```
+
+2. Follow the steps to install and setup Flutter: <https://docs.flutter.dev/get-started/install>
+
+3. Install the dependencies:
+
+```bash
+flutter pub get
+```
+
+4. Run the application locally (choose `2` to run on Chrome):
+
+```bash
+flutter run
+```
+
+## 4. Architecture Overview
+
+*For more information on architecture, please refer to: [4+1 Architecture View Model](<https://avantswiftsolutions.atlassian.net/wiki/spaces/SD/pages/8093853>)*
+
+### 4.1. System Diagram
+
+![image](https://github.com/AvantSwift-Solutions/eportfolio-website/assets/118659767/f8c04efe-3abd-431c-89e4-dc32d0be6c28)
+
+### 4.2. API References
+
+- Firebase Firestore Database: <https://firebase.google.com/docs/firestore>
+- Firebase Storage: <https://firebase.google.com/docs/storage>
+- Firebase Authentication: <https://firebase.google.com/docs/auth>
+- Firebase Hosting: <https://firebase.google.com/docs/hosting>
+- EmailJS (REST API): <https://www.emailjs.com/docs/rest-api/send/>
+
+Note: Firestore is the database while Firebase Storage is used to store files such as images and assets.
+
+### 4.3. Component Relationships
+
+![image](https://github.com/AvantSwift-Solutions/eportfolio-website/assets/118659767/db887e2d-851f-4446-ab82-e9eb7bde764c)
 
 **Pages**: These pages are accessible by administrators for making changes and edits to the application. Broken into 2 folders, one for admin and one for view
 
@@ -27,17 +100,41 @@ High-level architecture overview
 
 **Assets**: All images and static assets are stored in this folder for easy management.
 
----------------------------------
-Further information:
+## 5. Documentation Overview
 
-**4+1 architectural model**: https://avantswiftsolutions.atlassian.net/wiki/spaces/SD/pages/3309604/Architectural+Design+Documentation
+Include:
 
-**Subject documentation**: https://avantswiftsolutions.atlassian.net/wiki/spaces/SD/pages/3112975/Progress+Checklists
+- Code coverage report
+- User stories
+- Requirement docs
+- 4+1 architecture
+- Unit testing
+- E2E and UAT
 
-**Deployed viewer site**: https://avantswiftsolutions.web.app
+## 6. FAQ
 
-**Deployed admin site**: https://avantswiftsolutions.web.app/#/login
+Q: How do I access the admin page? \
+A: Please navigate to <https://stevenzhou.web.app/#/login>.
+Note: The team decided to not include a login button on the public ePortfolio to prevent viewers from trying to login.
 
-**Contact email for team**: avantswiftsolutions@gmail.com - Expect a response within 1-2 business days
+Q: How do I change my login email? \
+A: Please contact the team at <avantswiftsolutions@gmail.com>.
 
+Q: How do I change my password? \
+A: Please use the "Forgot My Password" feature on the login page.
 
+Q: How do I make changes  to my ePortfolio? \
+A: Please refer to the [User Guide](<https://avantswiftsolutions.atlassian.net/wiki/spaces/SD/pages/13795368/Admin+View+Showcase>).
+
+Q: How do I undo an edit/deletion to my ePortfolio? \
+A: Unfortunately, there is currently no way to undo a change.
+
+Q: Are the analytic statistics legitmate? \
+A: Yes, they are completely legitimate. The team has carefully tested them and do not tamper with the statistics in any way.
+
+Q: Can you build me a website or an app? \
+A: Possibly. Please contact the team at <avantswiftsolutions@gmail.com>.
+
+---
+
+[Back to Top](#avantswift-solutions-eportfolio)
