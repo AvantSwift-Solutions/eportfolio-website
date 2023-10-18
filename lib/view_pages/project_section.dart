@@ -522,37 +522,109 @@ class ProjectSectionState extends State<ProjectSection> {
                 }),
               ),
             ),
-          if (isMobileView && allProjects != null && allProjects!.length > initiallyDisplayedProjects)
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: generalPadding),
-              child: Align(
-                alignment: Alignment.center,
-                child: TextButton(
-                  onPressed: toggleShowAllProjects,
-                  style: ButtonStyle(
-                    overlayColor: MaterialStateProperty.all(Colors.transparent),
-                    padding: MaterialStateProperty.all(EdgeInsets.zero),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        showAllProjects
-                            ? Icons.keyboard_double_arrow_up_outlined
-                            : Icons.keyboard_double_arrow_down_outlined,
-                        size: arrowIconSize,
-                        color: Colors.black,
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
-                        showAllProjects ? 'Load Less' : 'Load More',
-                        style: TextStyle(
-                          fontSize: projectTitleFontSize,
-                          color: Colors.black,
+          // if (isMobileView && allProjects != null && allProjects!.length > initiallyDisplayedProjects)
+          if (allProjects != null &&
+              isMobileView &&
+              allProjects!.length > initiallyDisplayedProjects)
+            Align(
+              // alignment: Alignment.bottomRight,
+              child:Padding(
+                padding: EdgeInsets.only(
+                    right: loadMorePadding, bottom: generalPadding),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    MouseRegion(
+                      onEnter: (_) {
+                        setState(() {
+                          isHovered = true;
+                        });
+                      },
+                      onExit: (_) {
+                        setState(() {
+                          isHovered = false;
+                        });
+                      },
+                      child: TextButton(
+                        onPressed: toggleShowAllProjects,
+                        style: ButtonStyle(
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                          padding: MaterialStateProperty.all(EdgeInsets.zero),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(Icons.keyboard_double_arrow_down_outlined,
+                                size: arrowIconSize, color: Colors.black),
+                            const SizedBox(width: 5),
+                            Text(
+                              'Load More',
+                              style: TextStyle(
+                                fontSize: projectTitleFontSize,
+                                color: isHovered ? Colors.black : Colors.black,
+                                decoration: isHovered
+                                    ? TextDecoration.underline
+                                    : TextDecoration.none,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                      // ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          const SizedBox(height: 30),
+          if (showAllProjects && isMobileView)
+            Align(
+              // alignment: Alignment.bottomRight,
+              child:Padding(
+                padding: EdgeInsets.only(
+                    right: loadMorePadding, bottom: generalPadding),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    MouseRegion(
+                      onEnter: (_) {
+                        setState(() {
+                          isHovered = true;
+                        });
+                      },
+                      onExit: (_) {
+                        setState(() {
+                          isHovered = false;
+                        });
+                      },
+                      child: TextButton(
+                        onPressed: toggleShowAllProjects,
+                        style: ButtonStyle(
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                          padding: MaterialStateProperty.all(EdgeInsets.zero),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(Icons.keyboard_double_arrow_up_outlined,
+                                size: arrowIconSize, color: Colors.black),
+                            const SizedBox(width: 5),
+                            Text(
+                              'Load Less',
+                              style: TextStyle(
+                                fontSize: projectTitleFontSize,
+                                color: Colors.black,
+                                decoration: isHovered
+                                    ? TextDecoration.underline
+                                    : TextDecoration.none,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      // ),
+                    ),
+                  ],
                 ),
               ),
             ),
