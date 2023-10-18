@@ -119,12 +119,11 @@ class ProjectSectionState extends State<ProjectSection> {
     final screenWidth = MediaQuery.of(context).size.width;
     bool isMobileView = screenWidth <= 600;
 
-    double cardSize = 
-        isMobileView ? screenWidth * 0.8 : screenWidth * 0.2;
-    double githubSvgSize = 
-        isMobileView ? screenWidth * 0.6 : screenWidth * 0.15;
+    double cardSize = isMobileView ? screenWidth * 0.8 : screenWidth * 0.2;
+    double githubSvgSize = isMobileView ? screenWidth * 0.6 : screenWidth * 0.2;
     double externalLinkSvgSize =
         isMobileView ? screenWidth * 0.09 : screenWidth * 0.03;
+
     double titleFontSize =
         isMobileView ? screenWidth * 0.08 : screenWidth * 0.05;
     double descriptionFontSize =
@@ -135,8 +134,6 @@ class ProjectSectionState extends State<ProjectSection> {
         isMobileView ? screenWidth * 0.01 : screenWidth * 0.009;
     double arrowIconSize =
         isMobileView ? screenWidth * 0.1 : screenWidth * 0.02;
-    double spaceBetweenTitleAndProject =
-        isMobileView ? screenWidth * 0.05 : screenWidth * 0.09;
     double gap = screenWidth * 0.11;
     double titlePadding = screenWidth * 0.05;
     double descriptionPadding = screenWidth * 0.05;
@@ -245,7 +242,7 @@ class ProjectSectionState extends State<ProjectSection> {
                 ),
               ],
             ),
-          SizedBox(height: spaceBetweenTitleAndProject),
+          const SizedBox(height: 25),
           if (allProjects != null && !isMobileView)
             Center(
               child: Wrap(
@@ -522,109 +519,37 @@ class ProjectSectionState extends State<ProjectSection> {
                 }),
               ),
             ),
-          // if (isMobileView && allProjects != null && allProjects!.length > initiallyDisplayedProjects)
-          if (allProjects != null &&
-              isMobileView &&
-              allProjects!.length > initiallyDisplayedProjects)
-            Align(
-              // alignment: Alignment.bottomRight,
-              child:Padding(
-                padding: EdgeInsets.only(
-                    right: loadMorePadding, bottom: generalPadding),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    MouseRegion(
-                      onEnter: (_) {
-                        setState(() {
-                          isHovered = true;
-                        });
-                      },
-                      onExit: (_) {
-                        setState(() {
-                          isHovered = false;
-                        });
-                      },
-                      child: TextButton(
-                        onPressed: toggleShowAllProjects,
-                        style: ButtonStyle(
-                          overlayColor:
-                              MaterialStateProperty.all(Colors.transparent),
-                          padding: MaterialStateProperty.all(EdgeInsets.zero),
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(Icons.keyboard_double_arrow_down_outlined,
-                                size: arrowIconSize, color: Colors.black),
-                            const SizedBox(width: 5),
-                            Text(
-                              'Load More',
-                              style: TextStyle(
-                                fontSize: projectTitleFontSize,
-                                color: isHovered ? Colors.black : Colors.black,
-                                decoration: isHovered
-                                    ? TextDecoration.underline
-                                    : TextDecoration.none,
-                              ),
-                            ),
-                          ],
+          if (isMobileView)
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: generalPadding),
+              child: Align(
+                alignment: Alignment.center,
+                child: TextButton(
+                  onPressed: toggleShowAllProjects,
+                  style: ButtonStyle(
+                    overlayColor: MaterialStateProperty.all(Colors.transparent),
+                    padding: MaterialStateProperty.all(EdgeInsets.zero),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        showAllProjects
+                            ? Icons.keyboard_double_arrow_up_outlined
+                            : Icons.keyboard_double_arrow_down_outlined,
+                        size: arrowIconSize,
+                        color: Colors.black,
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        showAllProjects ? 'Load Less' : 'Load More',
+                        style: TextStyle(
+                          fontSize: projectTitleFontSize,
+                          color: Colors.black,
                         ),
                       ),
-                      // ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          const SizedBox(height: 30),
-          if (showAllProjects && isMobileView)
-            Align(
-              // alignment: Alignment.bottomRight,
-              child:Padding(
-                padding: EdgeInsets.only(
-                    right: loadMorePadding, bottom: generalPadding),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    MouseRegion(
-                      onEnter: (_) {
-                        setState(() {
-                          isHovered = true;
-                        });
-                      },
-                      onExit: (_) {
-                        setState(() {
-                          isHovered = false;
-                        });
-                      },
-                      child: TextButton(
-                        onPressed: toggleShowAllProjects,
-                        style: ButtonStyle(
-                          overlayColor:
-                              MaterialStateProperty.all(Colors.transparent),
-                          padding: MaterialStateProperty.all(EdgeInsets.zero),
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(Icons.keyboard_double_arrow_up_outlined,
-                                size: arrowIconSize, color: Colors.black),
-                            const SizedBox(width: 5),
-                            Text(
-                              'Load Less',
-                              style: TextStyle(
-                                fontSize: projectTitleFontSize,
-                                color: Colors.black,
-                                decoration: isHovered
-                                    ? TextDecoration.underline
-                                    : TextDecoration.none,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      // ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
