@@ -269,7 +269,7 @@ class LandingPageState extends State<LandingPage> {
                                         Constants.replaceImageURL,
                                     width: 300,
                                     height: 300,
-                                    fit: BoxFit.fitWidth,
+                                    fit: BoxFit.fitHeight,
                                   ),
                                 ),
                               ),
@@ -311,7 +311,17 @@ class LandingPageState extends State<LandingPage> {
                   return Container();
                 } else if (snapshot.connectionState ==
                     ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const CircularProgressIndicator(
+                        color: Color.fromARGB(255, 254, 168, 39),
+                      ),
+                      Container(
+                        height: 500,
+                      )
+                    ],
+                  );
                 } else {
                   return Container();
                 }
