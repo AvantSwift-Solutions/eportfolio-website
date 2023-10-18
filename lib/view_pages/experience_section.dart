@@ -60,8 +60,9 @@ class ExperienceSectionState extends State<ExperienceSection> {
 
     // Determine the number of experiences to display based on showAllExperiences
     int numExperiences;
-    int initialNumExperiencesToShow =
-        experienceSectionData!.length < 3 ? experienceSectionData!.length : 3;
+    int initialNumExperiencesToShow = ((experienceSectionData?.length) ?? 0) < 3
+        ? (experienceSectionData?.length) ?? 0
+        : 3;
 
     if (showAllExperiences) {
       numExperiences = experienceSectionData?.length ?? 0;
