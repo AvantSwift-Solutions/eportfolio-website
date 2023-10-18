@@ -57,9 +57,12 @@ class AboutMeSectionState extends State<AboutMeSection> {
       builder: (BuildContext context, BoxConstraints constraints) {
         final screenWidth = constraints.maxWidth;
         bool isMobileView = screenWidth <= 600;
-        double titleFontSize = screenWidth * 0.05;
-        double descriptionFontSize = screenWidth * 0.01;
-        double imageSize = isMobileView ? screenWidth * 0.8 : screenWidth * 0.4;
+        double titleFontSize = 
+            isMobileView ? screenWidth * 0.07 : screenWidth * 0.04;
+        double descriptionFontSize = 
+            isMobileView ? screenWidth * 0.015 : screenWidth * 0.01;
+        double imageSize = 
+            isMobileView ? screenWidth * 0.8 : screenWidth * 0.4;
 
         // Check if it's a wide screen (desktop/tablet) or not (mobile)
         if (!isMobileView) {
@@ -78,7 +81,7 @@ class AboutMeSectionState extends State<AboutMeSection> {
                         Text(
                           'A Bit About Myself...',
                           style: PublicViewTextStyles.generalHeading.copyWith(
-                            fontSize: titleFontSize * 0.8,
+                            fontSize: titleFontSize,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -118,14 +121,14 @@ class AboutMeSectionState extends State<AboutMeSection> {
         } else {
           return Center(
             child: Padding(
-              padding: EdgeInsets.all(screenWidth * 0.2),
+              padding: EdgeInsets.all(screenWidth * 0.035),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'A Bit About Myself...',
                     style: PublicViewTextStyles.generalHeading.copyWith(
-                      fontSize: titleFontSize * 1.5,
+                      fontSize: titleFontSize,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

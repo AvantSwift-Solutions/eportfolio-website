@@ -49,18 +49,19 @@ class EducationSectionState extends State<EducationSection> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final totalPages = (educationSectionData.length / itemsPerPage).ceil();
-    bool isMobileView = screenWidth <= 600;
+    bool isMobileView = screenWidth <= 800;
 
     double educationHeight =
         isMobileView ? screenWidth * 1.0 : screenWidth * 0.4;
-    double educationHeight2 = screenWidth * 0.55;
+    double educationHeightMini = screenWidth * 1.2;
     double titleFontSize =
         isMobileView ? screenWidth * 0.05 : screenWidth * 0.02;
 
     return SizedBox(
-      height: (screenWidth <= 1000 && screenWidth > 600)
-          ? educationHeight2
+      height: (screenWidth <= 550)
+          ? educationHeightMini
           : educationHeight,
+      // height: educationHeight,
       child: Column(
         children: [
           Row(
@@ -80,7 +81,8 @@ class EducationSectionState extends State<EducationSection> {
                       textAlign: TextAlign.left,
                     ),
                     SizedBox(
-                      width: titleFontSize * 20,
+                      // width: screenWidth * Constants.kScreenWidthDivider,
+                      width: titleFontSize * 40,
                       child: const Divider(
                         color: Colors.black,
                         thickness: Constants.kScreenDividerThickness,
@@ -204,7 +206,7 @@ class EducationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    bool isMobileView = screenWidth <= 600;
+    bool isMobileView = screenWidth <= 800;
     final bool isFirst = (educationDTO.index as int) % itemsPerPage == 0;
     double schoolNameFontSize =
         isMobileView ? screenWidth * 0.03 : screenWidth * 0.012;
@@ -218,8 +220,10 @@ class EducationWidget extends StatelessWidget {
         isMobileView ? screenWidth * 0.03 : screenWidth * 0.012;
     double descriptionFontSize =
         isMobileView ? screenWidth * 0.025 : screenWidth * 0.01;
-    double imageRadius = isMobileView ? screenWidth * 0.2 : screenWidth * 0.05;
-    double gap = isMobileView ? screenWidth * 0.08 : screenWidth * 0.055;
+    double imageRadius = 
+        isMobileView ? screenWidth * 0.2 : screenWidth * 0.05;
+    double gap = 
+        isMobileView ? screenWidth * 0.08 : screenWidth * 0.055;
 
     return IntrinsicHeight(
       child: Row(

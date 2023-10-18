@@ -46,18 +46,19 @@ class _InterpersonalSkillsWidgetState extends State<InterpersonalSkillsWidget> {
   Widget build(BuildContext context) {
     double maxWidgetWidth = 400;
     double screenWidth = MediaQuery.of(context).size.width;
-    bool isMobileView = screenWidth <= 600;
+    bool isMobileView = screenWidth <= 800;
     double titleFontSize =
-        isMobileView ? screenWidth * 0.06 : screenWidth * 0.02;
+        isMobileView ? screenWidth * 0.05 : screenWidth * 0.02;
     double skillsFontSize =
-        isMobileView ? screenWidth * 0.04 : screenWidth * 0.012;
-    double circleSize = isMobileView ? screenWidth * 0.03 : screenWidth * 0.01;
+        isMobileView ? screenWidth * 0.03 : screenWidth * 0.012;
+    double circleSize = 
+        isMobileView ? screenWidth * 0.03 : screenWidth * 0.01;
     double iskillsSectionHeight =
         isMobileView ? screenWidth * 0.4 : screenWidth * 0.2;
     double iskillsSectionHeight2 = screenWidth * 0.3;
 
     return SizedBox(
-      width: maxWidgetWidth,
+      width: !isMobileView ? maxWidgetWidth : screenWidth,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -68,8 +69,8 @@ class _InterpersonalSkillsWidgetState extends State<InterpersonalSkillsWidget> {
               children: [
                 Text(
                   'Interpersonal Skills',
-                  style: PublicViewTextStyles.generalSubHeading
-                      .copyWith(fontSize: titleFontSize),
+                  style: PublicViewTextStyles.generalSubHeading.copyWith(
+                    fontSize: titleFontSize),
                   textAlign: TextAlign.left,
                 ),
                 const Divider(

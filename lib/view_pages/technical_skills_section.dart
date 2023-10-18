@@ -46,7 +46,7 @@ class _TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    bool isMobileView = screenWidth <= 600;
+    bool isMobileView = screenWidth <= 800;
     double technicalSkillsWidth =
         isMobileView ? screenWidth * 0.75 : screenWidth * 0.4;
     double technicalSkillsHeight =
@@ -55,9 +55,10 @@ class _TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
         isMobileView ? screenWidth * 0.05 : screenWidth * 0.02;
     double generalPadding =
         isMobileView ? screenWidth * 0.01 : screenWidth * 0.006;
-
+    double leftPadding = 
+        isMobileView ? screenWidth * 0.07 : screenWidth * 0.04;
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         // above title space
         SizedBox(
@@ -66,6 +67,8 @@ class _TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Padding(
+              // padding: EdgeInsets.only(left: 0),
             Text(
               'Technical Skills',
               style: PublicViewTextStyles.generalSubHeading.copyWith(
@@ -73,14 +76,18 @@ class _TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
               ),
               textAlign: TextAlign.start,
             ),
+            // ),
             // title underline width
+            // Padding(
+              // padding: EdgeInsets.only(left: leftPadding),
             SizedBox(
-              width: titleFontSize * 7,
+              width: titleFontSize * 12,
               child: const Divider(
                 color: Colors.black,
                 thickness: 2.0,
               ),
             ),
+            // ),
           ],
         ),
         // gap between title and images

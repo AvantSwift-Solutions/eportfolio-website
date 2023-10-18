@@ -85,11 +85,11 @@ class LandingPageState extends State<LandingPage> {
     // Determine if the screen width is smaller than a certain threshold (e.g., 600).
     bool isSmallScreen = screenWidth < 1140;
     double titleFontSize = 80;
-    double descriptionFontSize = 30;
+    double descriptionFontSize = isSmallScreen ? 20 : 30;
 
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(50.0),
+        padding: EdgeInsets.all(screenWidth * 0.035),
         child: isSmallScreen
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,7 +132,7 @@ class LandingPageState extends State<LandingPage> {
                   RichText(
                     text: TextSpan(
                       style: PublicViewTextStyles.generalBodyText.copyWith(
-                          // fontSize: descriptionFontSize,
+                          fontSize: descriptionFontSize,
                           ),
                       children: [
                         const WidgetSpan(
