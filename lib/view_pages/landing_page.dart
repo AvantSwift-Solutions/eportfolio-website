@@ -318,7 +318,7 @@ class LandingPageState extends State<LandingPage> {
                         color: Color.fromARGB(255, 254, 168, 39),
                       ),
                       Container(
-                        height: 500,
+                        height: 2000,
                       )
                     ],
                   );
