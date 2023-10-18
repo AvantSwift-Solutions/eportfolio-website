@@ -64,7 +64,7 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
               padding:
                   EdgeInsets.only(bottom: 10.0), // Add padding to the bottom
               child: Text(
-                'Enter your email and click \'Send Email\' to reset password.\nIf the provdied email is valid, instructions will be sent to your inbox.',
+                'Enter your email and click \'Send Email\' to reset password.\nIf the provided email is valid, instructions will be sent to your inbox.',
               ),
             ),
             Container(

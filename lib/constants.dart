@@ -16,7 +16,7 @@ class Constants {
   static const linkedinSVGURL =
       'https://firebasestorage.googleapis.com/v0/b/avantswiftsolutions.appspot.com/o/images%2Flinkedin.svg?alt=media&token=97129468-ac7c-445a-a0cd-42c6f1031fca';
   static const githubSVGURL =
-      'https://firebasestorage.googleapis.com/v0/b/avantswiftsolutions.appspot.com/o/images%2Fgithub.svg?alt=media&token=151a3408-e53e-4b7b-a230-6b37faaa309c&_gl=1*11wooi8*_ga*MTE2MzU0MzI1Ny4xNjkxMDQxOTY0*_ga_CW55HF8NVT*MTY5NjY1OTE0OC42My4xLjE2OTY2NTkyNDMuNTIuMC4w';
+      'https://firebasestorage.googleapis.com/v0/b/avantswiftsolutions.appspot.com/o/images%2Fgithub_new.svg?alt=media&token=53abdea1-cd20-43c0-a7a2-dc2ba8408016&_gl=1*y16zf1*_ga*MjA4MDcxMzUzMS4xNjkxNDc5MjU4*_ga_CW55HF8NVT*MTY5NzQ1MzU0My4yOC4xLjE2OTc0NTM5MTMuMjguMC4w';  
   static const externalLinkSVGURL =
       'https://firebasestorage.googleapis.com/v0/b/avantswiftsolutions.appspot.com/o/images%2Fexternal_link.svg?alt=media&token=5f35738c-101e-47d6-9080-fe537bb0919e&_gl=1*1jizeh7*_ga*MTE2MzU0MzI1Ny4xNjkxMDQxOTY0*_ga_CW55HF8NVT*MTY5NjY1OTE0OC42My4xLjE2OTY2NTk0NzcuMzAuMC4w';
 

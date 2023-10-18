@@ -119,11 +119,12 @@ class ProjectSectionState extends State<ProjectSection> {
     final screenWidth = MediaQuery.of(context).size.width;
     bool isMobileView = screenWidth <= 600;
 
-    double cardSize = isMobileView ? screenWidth * 0.8 : screenWidth * 0.2;
-    double githubSvgSize = isMobileView ? screenWidth * 0.6 : screenWidth * 0.2;
+    double cardSize = 
+        isMobileView ? screenWidth * 0.8 : screenWidth * 0.2;
+    double githubSvgSize = 
+        isMobileView ? screenWidth * 0.6 : screenWidth * 0.15;
     double externalLinkSvgSize =
         isMobileView ? screenWidth * 0.09 : screenWidth * 0.03;
-
     double titleFontSize =
         isMobileView ? screenWidth * 0.08 : screenWidth * 0.05;
     double descriptionFontSize =
@@ -134,6 +135,8 @@ class ProjectSectionState extends State<ProjectSection> {
         isMobileView ? screenWidth * 0.01 : screenWidth * 0.009;
     double arrowIconSize =
         isMobileView ? screenWidth * 0.1 : screenWidth * 0.02;
+    double spaceBetweenTitleAndProject =
+        isMobileView ? screenWidth * 0.05 : screenWidth * 0.09;
     double gap = screenWidth * 0.11;
     double titlePadding = screenWidth * 0.05;
     double descriptionPadding = screenWidth * 0.05;
@@ -242,7 +245,7 @@ class ProjectSectionState extends State<ProjectSection> {
                 ),
               ],
             ),
-          const SizedBox(height: 25),
+          SizedBox(height: spaceBetweenTitleAndProject),
           if (allProjects != null && !isMobileView)
             Center(
               child: Wrap(
@@ -519,7 +522,7 @@ class ProjectSectionState extends State<ProjectSection> {
                 }),
               ),
             ),
-          if (isMobileView)
+          if (isMobileView && allProjects != null && allProjects!.length > initiallyDisplayedProjects)
             Padding(
               padding: EdgeInsets.symmetric(horizontal: generalPadding),
               child: Align(

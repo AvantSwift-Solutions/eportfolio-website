@@ -13,14 +13,19 @@ class SkillsAndEducation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    bool isMobileView = screenWidth <= 600;
+    bool isMobileView = screenWidth <= 800;
     double titleFontSize =
-        isMobileView ? screenWidth * 0.06 : screenWidth * 0.035;
-    double gap = isMobileView ? screenWidth * 0.1 : screenWidth * 0.07;
+        isMobileView ? screenWidth * 0.07 : screenWidth * 0.035;
+    double gap = 
+        isMobileView ? screenWidth * 0.1 : screenWidth * 0.07;
     double generalPadding =
         isMobileView ? screenWidth * 0.05 : screenWidth * 0.02;
-    double leftPadding = isMobileView ? screenWidth * 0.05 : screenWidth * 0.02;
-    double spacing = isMobileView ? screenWidth * 0.05 : screenWidth * 0.02;
+    double leftPadding = 
+        isMobileView ? screenWidth * 0.05 : screenWidth * 0.02;
+    double spacing = 
+        isMobileView ? screenWidth * 0.05 : screenWidth * 0.02;
+    double offset = screenWidth * 0.05;
+    
     if (!isMobileView) {
       return Padding(
         padding:
@@ -33,7 +38,8 @@ class SkillsAndEducation extends StatelessWidget {
               Text(
                 'Skills & Education',
                 style: PublicViewTextStyles.generalHeading.copyWith(
-                    fontWeight: FontWeight.bold, fontSize: titleFontSize),
+                    fontWeight: FontWeight.bold, 
+                    fontSize: titleFontSize),
               ),
 
               SizedBox(height: spacing),
@@ -115,7 +121,7 @@ class SkillsAndEducation extends StatelessWidget {
 
               // Interpersonal Skills
               Padding(
-                padding: EdgeInsets.only(left: leftPadding, right: gap),
+                padding: EdgeInsets.only(left: leftPadding + offset, right: gap),
                 child: const InterpersonalSkillsWidget(),
               ),
 
