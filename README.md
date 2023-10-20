@@ -87,11 +87,13 @@ Note: Firestore is the database while Firebase Storage is used to store files su
 
 A key takeaway is that the main branch will be automatically deployed to the production website. As such, beware of pushing to the main branch.
 
-![Deployment Pipeline]()
+![Deployment Pipeline](https://github.com/AvantSwift-Solutions/eportfolio-website/assets/118659767/96e47723-8d8e-491b-b00c-83eee15e7b2c)
+
 
 ### 4.4. Database Schema
 
-![Database Schema]()
+![Database Schema](https://github.com/AvantSwift-Solutions/eportfolio-website/assets/118659767/e97369e8-3477-4330-9174-7d290e2daf9b)
+
 
 ### 4.5. Component Relationships
 
