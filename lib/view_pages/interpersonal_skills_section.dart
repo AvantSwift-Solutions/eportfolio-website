@@ -51,8 +51,7 @@ class _InterpersonalSkillsWidgetState extends State<InterpersonalSkillsWidget> {
         isMobileView ? screenWidth * 0.05 : screenWidth * 0.02;
     double skillsFontSize =
         isMobileView ? screenWidth * 0.03 : screenWidth * 0.012;
-    double circleSize = 
-        isMobileView ? screenWidth * 0.03 : screenWidth * 0.01;
+    double circleSize = isMobileView ? screenWidth * 0.03 : screenWidth * 0.01;
     double iskillsSectionHeight =
         isMobileView ? screenWidth * 0.4 : screenWidth * 0.2;
     double iskillsSectionHeight2 = screenWidth * 0.3;
@@ -69,8 +68,8 @@ class _InterpersonalSkillsWidgetState extends State<InterpersonalSkillsWidget> {
               children: [
                 Text(
                   'Interpersonal Skills',
-                  style: PublicViewTextStyles.generalSubHeading.copyWith(
-                    fontSize: titleFontSize),
+                  style: PublicViewTextStyles.generalSubHeading
+                      .copyWith(fontSize: titleFontSize),
                   textAlign: TextAlign.left,
                 ),
                 const Divider(

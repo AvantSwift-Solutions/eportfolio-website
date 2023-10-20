@@ -56,7 +56,7 @@ class ExperienceSectionState extends State<ExperienceSection> {
     final screenWidth = MediaQuery.of(context).size.width;
     bool isMobileView = screenWidth <= 768;
 
-    double titleFontSize = 
+    double titleFontSize =
         isMobileView ? screenWidth * 0.07 : screenWidth * 0.04;
 
     // Determine the number of experiences to display based on showAllExperiences
@@ -83,8 +83,7 @@ class ExperienceSectionState extends State<ExperienceSection> {
                 ? RichText(
                     text: TextSpan(
                       style: PublicViewTextStyles.generalHeading.copyWith(
-                          fontSize: titleFontSize,
-                          fontWeight: FontWeight.bold),
+                          fontSize: titleFontSize, fontWeight: FontWeight.bold),
                       children: const [
                         TextSpan(
                           text: 'Professional\n',
@@ -98,8 +97,7 @@ class ExperienceSectionState extends State<ExperienceSection> {
                 : RichText(
                     text: TextSpan(
                       style: PublicViewTextStyles.generalHeading.copyWith(
-                          fontSize: titleFontSize,
-                          fontWeight: FontWeight.bold),
+                          fontSize: titleFontSize, fontWeight: FontWeight.bold),
                       children: const [
                         TextSpan(
                           text: 'Professional\n',

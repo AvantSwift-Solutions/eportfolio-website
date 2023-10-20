@@ -58,9 +58,7 @@ class EducationSectionState extends State<EducationSection> {
         isMobileView ? screenWidth * 0.05 : screenWidth * 0.02;
 
     return SizedBox(
-      height: (screenWidth <= 550)
-          ? educationHeightMini
-          : educationHeight,
+      height: (screenWidth <= 550) ? educationHeightMini : educationHeight,
       // height: educationHeight,
       child: Column(
         children: [
@@ -220,10 +218,8 @@ class EducationWidget extends StatelessWidget {
         isMobileView ? screenWidth * 0.03 : screenWidth * 0.012;
     double descriptionFontSize =
         isMobileView ? screenWidth * 0.025 : screenWidth * 0.01;
-    double imageRadius = 
-        isMobileView ? screenWidth * 0.2 : screenWidth * 0.05;
-    double gap = 
-        isMobileView ? screenWidth * 0.08 : screenWidth * 0.055;
+    double imageRadius = isMobileView ? screenWidth * 0.2 : screenWidth * 0.05;
+    double gap = isMobileView ? screenWidth * 0.08 : screenWidth * 0.055;
 
     return IntrinsicHeight(
       child: Row(

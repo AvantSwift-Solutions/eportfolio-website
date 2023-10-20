@@ -1,6 +1,6 @@
 # AvantSwift Solutions ePortfolio
 
-This ePortfolio is the subject work for *IT Project COMP30022_2023_SM2*. The product is a website that includes a publicly viewable portfolio and an admin page that allows the client to edit the information in the portfolio. The product also includes a phone application that provides the functionality of the admin page.
+This ePortfolio is the subject work for *IT Project COMP30022_2023_SM2*. The product is a website that includes a publicly viewable portfolio and an admin page that allows the client to edit the information in the portfolio. The product also includes a phone application that provides the functionality of the admin page which can be found [here](<https://github.com/AvantSwift-Solutions/eportfolio-phone-app>).
 
 ## Table of Contents
 
@@ -12,14 +12,15 @@ This ePortfolio is the subject work for *IT Project COMP30022_2023_SM2*. The pro
 4. [Architecture Overview](#4-architecture-overview) \
     4.1. [System Diagram](#41-system-diagram) \
     4.2. [API References](#42-api-references) \
-    4.2. [Component Relationships](#43-component-relationships)
+    4.3. [Deployment Pipeline](#43-deployment-pipeline) \
+    4.3. [Database Schema](#44-database-schema) \
+    4.5. [Component Relationships](#45-component-relationships)
 5. [Documentation Overview](#5-documentation-overview)
 6. [FAQ](#6-faq)
 
 ## 1. Team Overview
 
 **Team Contact email**: <avantswiftsolutions@gmail.com> \
-*Expect a response within 1-2 business days*
 
 Amritesh Dasgupta, <adasgupta@student.unimelb.edu.au>, 1226974 \
 Mohamad Danielsyah Mahmud, <mohamaddanie@student.unimelb.edu.au>, 1190847 \
@@ -66,11 +67,11 @@ flutter run
 
 ## 4. Architecture Overview
 
-*For more information on architecture, please refer to: [4+1 Architecture View Model](<https://avantswiftsolutions.atlassian.net/wiki/spaces/SD/pages/8093853>)*
+*For more information on architecture, please refer to `docs/4+1 Architecture View Model.pdf`*
 
 ### 4.1. System Diagram
 
-![image](https://github.com/AvantSwift-Solutions/eportfolio-website/assets/118659767/f8c04efe-3abd-431c-89e4-dc32d0be6c28)
+![System Diagram](https://github.com/AvantSwift-Solutions/eportfolio-website/assets/118659767/f8c04efe-3abd-431c-89e4-dc32d0be6c28)
 
 ### 4.2. API References
 
@@ -82,9 +83,19 @@ flutter run
 
 Note: Firestore is the database while Firebase Storage is used to store files such as images and assets.
 
-### 4.3. Component Relationships
+### 4.3. Deployment Pipeline
 
-![image](https://github.com/AvantSwift-Solutions/eportfolio-website/assets/118659767/db887e2d-851f-4446-ab82-e9eb7bde764c)
+A key takeaway is that the main branch will be automatically deployed to the production website. As such, beware of pushing to the main branch.
+
+![Deployment Pipeline]()
+
+### 4.4. Database Schema
+
+![Database Schema]()
+
+### 4.5. Component Relationships
+
+![Component Relationships](https://github.com/AvantSwift-Solutions/eportfolio-website/assets/118659767/db887e2d-851f-4446-ab82-e9eb7bde764c)
 
 **Pages**: These pages are accessible by administrators for making changes and edits to the application. Broken into 2 folders, one for admin and one for view
 
@@ -102,14 +113,14 @@ Note: Firestore is the database while Firebase Storage is used to store files su
 
 ## 5. Documentation Overview
 
-Include:
+The following documents can be found in the `docs` folder:
 
-- Code coverage report
-- User stories
-- Requirement docs
-- 4+1 architecture
-- Unit testing
-- E2E and UAT
+- 4+1 Architecture View Model
+- Code Coverage Report
+- Requirements Document
+- User Stories
+
+If you would like to see all of the product's documentation and artefact, please refer to our [Confluence](<https://avantswiftsolutions.atlassian.net/wiki/spaces/SD/overview>).
 
 ## 6. FAQ
 

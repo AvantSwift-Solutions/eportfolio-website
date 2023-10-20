@@ -75,11 +75,10 @@ class LandingPageState extends State<LandingPage> {
     final screenWidth = MediaQuery.of(context).size.width;
     bool isSmallScreen = screenWidth <= 1000;
     double titleFontSize =
-           isSmallScreen ? screenWidth * 0.05 : screenWidth * 0.05;
-    double descriptionFontSize = 
-            isSmallScreen ? screenWidth * 0.03 : screenWidth * 0.02;
-    double imageSize = 
-            isSmallScreen ? screenWidth * 0.8 : screenWidth * 0.4;
+        isSmallScreen ? screenWidth * 0.05 : screenWidth * 0.05;
+    double descriptionFontSize =
+        isSmallScreen ? screenWidth * 0.03 : screenWidth * 0.02;
+    double imageSize = isSmallScreen ? screenWidth * 0.8 : screenWidth * 0.4;
 
     return Center(
         child: Padding(
@@ -98,8 +97,8 @@ class LandingPageState extends State<LandingPage> {
                                 text: TextSpan(
                                   style: PublicViewTextStyles.generalHeading
                                       .copyWith(
-                                          fontSize: titleFontSize,//
-                                          ),
+                                    fontSize: titleFontSize, //
+                                  ),
                                   children: [
                                     const TextSpan(
                                       text: 'Hey there, \nI\'m ',
@@ -134,8 +133,8 @@ class LandingPageState extends State<LandingPage> {
                                 text: TextSpan(
                                   style: PublicViewTextStyles.generalBodyText
                                       .copyWith(
-                                          fontSize: descriptionFontSize,
-                                          ),
+                                    fontSize: descriptionFontSize,
+                                  ),
                                   children: [
                                     const WidgetSpan(
                                       child: SizedBox(

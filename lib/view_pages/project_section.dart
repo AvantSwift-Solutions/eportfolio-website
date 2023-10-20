@@ -79,7 +79,8 @@ class ProjectSectionState extends State<ProjectSection> {
   }
 
   void openCustomLink() async {
-    const url = 'https://github.com/yijuzhou'; // Replace with your desired URL (github)
+    const url =
+        'https://github.com/yijuzhou'; // Replace with your desired URL (github)
     if (await canLaunchUrlString(url)) {
       await launchUrlString(url);
     } else {

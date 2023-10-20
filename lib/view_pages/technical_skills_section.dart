@@ -10,11 +10,10 @@ class TechnicalSkillsWidget extends StatefulWidget {
   const TechnicalSkillsWidget({Key? key, this.controller}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
-  _TechnicalSkillsWidgetState createState() => _TechnicalSkillsWidgetState();
+  TechnicalSkillsWidgetState createState() => TechnicalSkillsWidgetState();
 }
 
-class _TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
+class TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
   final PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
   late TechnicalSkillsController _technicalSkillsController;
@@ -55,8 +54,7 @@ class _TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
         isMobileView ? screenWidth * 0.05 : screenWidth * 0.02;
     double generalPadding =
         isMobileView ? screenWidth * 0.01 : screenWidth * 0.006;
-    double leftPadding = 
-        isMobileView ? screenWidth * 0.07 : screenWidth * 0.04;
+    // double leftPadding = isMobileView ? screenWidth * 0.07 : screenWidth * 0.04;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -68,7 +66,7 @@ class _TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Padding(
-              // padding: EdgeInsets.only(left: 0),
+            // padding: EdgeInsets.only(left: 0),
             Text(
               'Technical Skills',
               style: PublicViewTextStyles.generalSubHeading.copyWith(
@@ -79,7 +77,7 @@ class _TechnicalSkillsWidgetState extends State<TechnicalSkillsWidget> {
             // ),
             // title underline width
             // Padding(
-              // padding: EdgeInsets.only(left: leftPadding),
+            // padding: EdgeInsets.only(left: leftPadding),
             SizedBox(
               width: titleFontSize * 12,
               child: const Divider(

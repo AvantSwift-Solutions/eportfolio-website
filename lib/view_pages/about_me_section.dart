@@ -57,12 +57,11 @@ class AboutMeSectionState extends State<AboutMeSection> {
       builder: (BuildContext context, BoxConstraints constraints) {
         final screenWidth = constraints.maxWidth;
         bool isMobileView = screenWidth <= 600;
-        double titleFontSize = 
+        double titleFontSize =
             isMobileView ? screenWidth * 0.07 : screenWidth * 0.04;
-        double descriptionFontSize = 
+        double descriptionFontSize =
             isMobileView ? screenWidth * 0.015 : screenWidth * 0.01;
-        double imageSize = 
-            isMobileView ? screenWidth * 0.8 : screenWidth * 0.4;
+        double imageSize = isMobileView ? screenWidth * 0.8 : screenWidth * 0.4;
 
         // Check if it's a wide screen (desktop/tablet) or not (mobile)
         if (!isMobileView) {
