@@ -20,7 +20,7 @@ This ePortfolio is the subject work for *IT Project COMP30022_2023_SM2*. The pro
 
 ## 1. Team Overview
 
-**Team Contact email**: <avantswiftsolutions@gmail.com> \
+**Team Contact email**: <avantswiftsolutions@gmail.com>
 
 Amritesh Dasgupta, <adasgupta@student.unimelb.edu.au>, 1226974 \
 Mohamad Danielsyah Mahmud, <mohamaddanie@student.unimelb.edu.au>, 1190847 \
